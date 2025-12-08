@@ -7,7 +7,7 @@
  *   npm run ship "commit message"
  *
  * Sequence: Build → Commit → Push → Deploy
- * 
+ *
  * Safeguards:
  * - Stops immediately if any step fails
  * - Verifies git status before starting
@@ -105,13 +105,13 @@ async function main() {
   if (status) {
     log(`   Changes:\n${status.split('\n').map(l => '   ' + l).join('\n')}`, 'dim');
     run('git add -A');
-    
+
     // Verify staging worked
     const staged = runSilent('git diff --cached --name-only');
     if (!staged) {
       fail('git add failed - nothing staged');
     }
-    
+
     run(`git commit -m "${commitMessage}"`);
     log(`✓ Committed: "${commitMessage}"\n`, 'green');
   } else {
@@ -121,7 +121,7 @@ async function main() {
   // Step 3: Push to GitHub (backup source of truth)
   log('3/4 Pushing to GitHub...', 'yellow');
   run('git push');
-  
+
   // Verify push succeeded
   const localHash = runSilent('git rev-parse HEAD');
   const remoteHash = runSilent('git rev-parse origin/main');
