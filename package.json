@@ -7,8 +7,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "npm run build && wrangler pages deploy dist",
-    "og-image": "node scripts/generate-og-image.mjs"
+    "check": "astro build && echo '✓ Build passed'",
+    "deploy": "wrangler pages deploy dist",
+    "ship": "node scripts/ship.mjs",
+    "og-image": "node scripts/generate-og-image.mjs",
+    "new": "node scripts/new-page.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.37.0",
