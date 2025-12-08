@@ -7,7 +7,7 @@
  *   npm run ship "commit message"
  *
  * Sequence: Build → Commit → Push → Deploy
- * 
+ *
  * Why this order?
  * 1. Build first to verify code works
  * 2. Commit to save changes locally

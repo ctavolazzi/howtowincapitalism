@@ -77,6 +77,15 @@
   border-radius: var(--border-radius) !important;
 }
 
+/* Hide scrollbar but keep scroll functionality */
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
 html {
   color-scheme: light only !important;
   background: var(--color-bg) !important;
