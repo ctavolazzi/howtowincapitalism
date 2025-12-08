@@ -1,0 +1,106 @@
+---
+title: Decision Matrix
+description: A quantitative framework for comparing options against weighted criteria
+---
+
+import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
+import { makeDecision } from '../../../lib/tools';
+
+export const investmentResult = makeDecision({
+  options: ["401(k)", "Roth IRA", "Taxable Brokerage"],
+  criteria: ["Tax Advantage", "Flexibility", "Growth Potential", "Employer Match"],
+  scores: {
+    "401(k)": [9, 3, 7, 10],
+    "Roth IRA": [8, 6, 8, 0],
+    "Taxable Brokerage": [2, 10, 7, 0]
+  },
+  weights: [0.3, 0.2, 0.25, 0.25]
+});
+
+A **decision matrix** is a quantitative tool for comparing multiple options against weighted criteria. It transforms subjective comparisons into structured analysis.
+
+## When to Use
+
+Use a decision matrix when:
+
+- You have 2+ options to compare
+- Multiple factors influence the decision
+- You want to reduce emotional bias
+- The stakes justify systematic analysis
+
+## Example: Investment Account Selection
+
+Which account type should you prioritize for retirement savings?
+
+<DecisionMatrix
+  result={investmentResult}
+  title="Investment Account Comparison"
+/>
+
+### How to Read This
+
+1. **Winner** — The option with the highest weighted score
+2. **Confidence** — How much the winner leads (low = close race)
+3. **Scores** — Weighted contribution of each criterion
+4. **Strengths/Weaknesses** — What each option excels at or lacks
+
+## The Method
+
+### 1. Define Options
+
+List the choices you're comparing. Be specific:
+
+- ❌ "Invest more"
+- ✅ "Max 401(k)", "Max Roth IRA", "Taxable brokerage"
+
+### 2. Define Criteria
+
+What factors matter? Common financial criteria:
+
+| Category | Criteria Examples |
+|----------|-------------------|
+| Returns | Growth potential, dividend yield, historical performance |
+| Risk | Volatility, downside protection, diversification |
+| Access | Liquidity, withdrawal penalties, loan options |
+| Tax | Tax advantage, tax-loss harvesting, estate planning |
+| Cost | Fees, expense ratios, transaction costs |
+
+### 3. Assign Weights
+
+Weights reflect importance. Must sum to 1.0 (or be auto-normalized).
+
+```
+Tax Advantage: 0.30 (30% importance)
+Flexibility:   0.20 (20% importance)
+Growth:        0.25 (25% importance)
+Employer Match: 0.25 (25% importance)
+─────────────────────────────────────
+Total:         1.00
+```
+
+### 4. Score Each Option
+
+Rate each option on each criterion (typically 1-10):
+
+| Option | Tax | Flexibility | Growth | Match |
+|--------|-----|-------------|--------|-------|
+| 401(k) | 9 | 3 | 7 | 10 |
+| Roth IRA | 8 | 6 | 8 | 0 |
+| Taxable | 2 | 10 | 7 | 0 |
+
+### 5. Calculate & Analyze
+
+The matrix multiplies scores by weights and ranks options. The winner isn't always obvious—that's the point.
+
+## Limitations
+
+Decision matrices are tools, not oracles:
+
+- **Garbage in, garbage out** — Scores and weights are still subjective
+- **Doesn't capture everything** — Some factors resist quantification
+- **False precision** — A score of 7.23 isn't meaningfully different from 7.18
+- **Close races need judgment** — If confidence is low, other factors should decide
+
+## See Also
+
+- [Introduction](/protocol/introduction/) — Framework overview

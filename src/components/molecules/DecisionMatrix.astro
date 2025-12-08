@@ -1,0 +1,322 @@
+---
+/**
+ * DECISION MATRIX - MOLECULE
+ *
+ * Pattern: Composite (composed of WikiBox atom)
+ * Pattern: Adapter (transforms DecisionResult data to HTML)
+ *
+ * Renders decision matrix results in Wikipedia style.
+ * Use with makeDecision() from lib/tools/decision-matrix.
+ *
+ * Usage in MDX:
+ *   import DecisionMatrix from '../../components/molecules/DecisionMatrix.astro';
+ *   import { makeDecision } from '../../lib/tools';
+ *
+ *   export const result = makeDecision({
+ *     options: ["401k", "Roth IRA", "Taxable"],
+ *     criteria: ["Tax Benefit", "Flexibility", "Growth"],
+ *     scores: { "401k": [9, 3, 7], "Roth IRA": [7, 6, 8], "Taxable": [2, 9, 7] },
+ *     weights: [0.4, 0.3, 0.3]
+ *   });
+ *
+ *   <DecisionMatrix result={result} title="Investment Account Comparison" />
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+import type { DecisionResultData } from '../../lib/tools/decision-matrix';
+
+export interface Props {
+  /** Decision result from makeDecision() */
+  result: DecisionResultData;
+  /** Optional title override */
+  title?: string;
+  /** Show detailed breakdown */
+  showBreakdown?: boolean;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  result,
+  title = 'Decision Analysis',
+  showBreakdown = true,
+  class: className
+} = Astro.props;
+
+// Extract clean criteria names (remove weight annotations)
+const criteria = Object.keys(result.scoresBreakdown[result.winner] || {})
+  .map(c => c.split(' (')[0]);
+
+---
+
+<WikiBox variant="info" title={title} class={className}>
+  <!-- Winner Banner -->
+  <div class="dm-winner">
+    <span class="dm-winner__label">Winner:</span>
+    <span class="dm-winner__name">{result.winner}</span>
+    <span class="dm-winner__confidence">
+      ({result.confidenceScore.toFixed(0)}% confidence)
+    </span>
+  </div>
+
+  {result.whyWinnerWon && (
+    <p class="dm-explanation">{result.whyWinnerWon}</p>
+  )}
+
+  <!-- Comparison Table -->
+  <table class="dm-table">
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>Score</th>
+        {criteria.map(c => <th>{c}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {result.rankings.map(([option, _score], idx) => {
+        const isWinner = idx === 0;
+        const optionBreakdown = result.scoresBreakdown[option] || {};
+
+        return (
+          <tr class={isWinner ? 'dm-row--winner' : ''}>
+            <td class="dm-option">
+              {isWinner && <span class="dm-medal">★</span>}
+              {option}
+            </td>
+            <td class="dm-score">
+              {result.normalizedScores[option]?.toFixed(0) || '—'}%
+            </td>
+            {criteria.map(criterion => {
+              // Find the matching key in breakdown (may have annotations)
+              const key = Object.keys(optionBreakdown).find(k => k.startsWith(criterion));
+              const score = key ? optionBreakdown[key] : 0;
+              return <td class="dm-cell">{score.toFixed(1)}</td>;
+            })}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+
+  <!-- Warnings -->
+  {result.warnings.length > 0 && (
+    <div class="dm-warnings">
+      {result.warnings.map(w => (
+        <p class="dm-warning">⚠️ {w}</p>
+      ))}
+    </div>
+  )}
+
+  <!-- Recommendation -->
+  <div class="dm-recommendation">
+    <strong>Recommendation:</strong> {result.recommendation}
+  </div>
+
+  <!-- Detailed Breakdown (collapsible) -->
+  {showBreakdown && result.strengths && Object.keys(result.strengths).length > 0 && (
+    <details class="dm-details">
+      <summary>Strengths & Weaknesses</summary>
+      <div class="dm-strengths-grid">
+        {result.rankings.map(([option]) => {
+          const optStrengths = result.strengths[option] || [];
+          const optWeaknesses = result.weaknesses[option] || [];
+          return (
+            <div class="dm-option-analysis">
+              <h4>{option}</h4>
+              {optStrengths.length > 0 && (
+                <div class="dm-list dm-list--strengths">
+                  <span class="dm-list__label">Strengths:</span>
+                  {optStrengths.slice(0, 2).map(([c, s]) => (
+                    <span class="dm-tag dm-tag--strength">{c}</span>
+                  ))}
+                </div>
+              )}
+              {optWeaknesses.length > 0 && (
+                <div class="dm-list dm-list--weaknesses">
+                  <span class="dm-list__label">Weaknesses:</span>
+                  {optWeaknesses.slice(0, 2).map(([c, w]) => (
+                    <span class="dm-tag dm-tag--weakness">{c}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </details>
+  )}
+
+  <p class="dm-method">Analysis method: {result.analysisMethod}</p>
+</WikiBox>
+
+<style>
+  /* Decision Matrix Styles - Uses design tokens */
+  .dm-winner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border-left: 4px solid var(--color-link);
+    margin-bottom: var(--space-md);
+  }
+
+  .dm-winner__label {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .dm-winner__name {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-link);
+  }
+
+  .dm-winner__confidence {
+    font-size: var(--text-sm);
+    color: #72777d;
+  }
+
+  .dm-explanation {
+    font-style: italic;
+    color: #72777d;
+    margin: 0 0 var(--space-md) 0;
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-border-light);
+  }
+
+  /* Table */
+  .dm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    margin: var(--space-md) 0;
+  }
+
+  .dm-table th,
+  .dm-table td {
+    padding: var(--space-sm) var(--space-md);
+    border: var(--border-width) solid var(--color-border);
+    text-align: left;
+  }
+
+  .dm-table th {
+    background: var(--color-surface-alt);
+    font-weight: 600;
+  }
+
+  .dm-table td {
+    background: var(--color-bg);
+  }
+
+  .dm-row--winner td {
+    background: var(--color-info-bg);
+  }
+
+  .dm-option {
+    font-weight: 600;
+  }
+
+  .dm-medal {
+    color: #fc3;
+    margin-right: var(--space-xs);
+  }
+
+  .dm-score {
+    font-family: var(--font-mono);
+    text-align: right;
+  }
+
+  .dm-cell {
+    font-family: var(--font-mono);
+    text-align: right;
+  }
+
+  /* Warnings */
+  .dm-warnings {
+    margin: var(--space-md) 0;
+  }
+
+  .dm-warning {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-warning-bg);
+    border-left: 3px solid var(--color-warning-border);
+    margin: var(--space-sm) 0;
+    font-size: var(--text-sm);
+  }
+
+  /* Recommendation */
+  .dm-recommendation {
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    margin: var(--space-md) 0;
+  }
+
+  /* Details/Summary */
+  .dm-details {
+    margin: var(--space-md) 0;
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .dm-details summary {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface-alt);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .dm-details summary:hover {
+    background: var(--color-surface);
+  }
+
+  .dm-strengths-grid {
+    padding: var(--space-md);
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .dm-option-analysis h4 {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: var(--text-base);
+  }
+
+  .dm-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+    margin: var(--space-xs) 0;
+  }
+
+  .dm-list__label {
+    font-size: var(--text-xs);
+    color: #72777d;
+  }
+
+  .dm-tag {
+    font-size: var(--text-xs);
+    padding: 2px var(--space-sm);
+    border: var(--border-width) solid;
+  }
+
+  .dm-tag--strength {
+    background: #e6ffed;
+    border-color: #34d058;
+    color: #22863a;
+  }
+
+  .dm-tag--weakness {
+    background: #ffeef0;
+    border-color: #f97583;
+    color: #cb2431;
+  }
+
+  /* Method footer */
+  .dm-method {
+    font-size: var(--text-xs);
+    color: #72777d;
+    text-align: right;
+    margin: var(--space-md) 0 0 0;
+  }
+</style>

@@ -92,3 +92,17 @@ credentials/
 # Misc
 .turbo/
 .parcel-cache/
+
+# ==============================================
+# LOCAL ONLY - Never commit
+# ==============================================
+
+# Work efforts (local task tracking)
+_work_efforts/
+
+# Private/admin scripts and data
+.private/
+
+# Local notes and drafts
+_local/
+*.local.md

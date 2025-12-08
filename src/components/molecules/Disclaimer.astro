@@ -4,17 +4,83 @@
  *
  * Patterns: Composite, Decorator
  * Composes WikiBox with warning variant.
+ * Closable - remembers dismissal in localStorage.
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import { DEFAULTS } from '../../lib/constants';
 
 export interface Props {
   text?: string;
+  id?: string;
 }
 
-const { text = DEFAULTS.disclaimer } = Astro.props;
+const { text = DEFAULTS.disclaimer, id = 'site-disclaimer' } = Astro.props;
 ---
 
-<WikiBox variant="warning" padding="md">
-  <strong>⚠️ DISCLAIMER:</strong> {text}
-</WikiBox>
+<div class="disclaimer-wrapper" data-disclaimer-id={id}>
+  <WikiBox variant="warning" padding="md">
+    <div class="disclaimer-content">
+      <div class="disclaimer-text">
+        <strong>⚠️ DISCLAIMER:</strong> {text}
+      </div>
+      <button class="disclaimer-close" aria-label="Dismiss disclaimer" type="button">✕</button>
+    </div>
+  </WikiBox>
+</div>
+
+<style>
+  .disclaimer-wrapper {
+    display: block;
+  }
+
+  .disclaimer-wrapper[hidden] {
+    display: none;
+  }
+
+  .disclaimer-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .disclaimer-text {
+    flex: 1;
+  }
+
+  .disclaimer-close {
+    background: none;
+    border: 1px solid currentColor;
+    color: inherit;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px 8px;
+    opacity: 0.7;
+  }
+
+  .disclaimer-close:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.05);
+  }
+</style>
+
+<script>
+  // Closable disclaimer with localStorage persistence
+  document.querySelectorAll('.disclaimer-wrapper').forEach((wrapper) => {
+    const id = wrapper.getAttribute('data-disclaimer-id');
+    const storageKey = `disclaimer-dismissed-${id}`;
+
+    // Check if already dismissed
+    if (localStorage.getItem(storageKey) === 'true') {
+      wrapper.setAttribute('hidden', '');
+      return;
+    }
+
+    // Add close handler
+    const closeBtn = wrapper.querySelector('.disclaimer-close');
+    closeBtn?.addEventListener('click', () => {
+      wrapper.setAttribute('hidden', '');
+      localStorage.setItem(storageKey, 'true');
+    });
+  });
+</script>

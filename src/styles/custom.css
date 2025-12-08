@@ -186,121 +186,92 @@ a:hover {
   --sl-font: var(--font-sans);
 }
 
-/* ===== HEADER - Clean and Simple ===== */
-header, .header {
-  background: var(--color-bg) !important;
-  border-bottom: 2px solid var(--color-text) !important;
-  padding: var(--space-lg) !important;
-}
-
-/* Site title - clear and prominent */
-.site-title, [data-site-title] {
-  font-family: var(--font-serif) !important;
-  font-size: var(--text-2xl) !important;
-  font-weight: 700 !important;
-  color: var(--color-text) !important;
-  text-decoration: none !important;
-}
-
-.site-title:hover, [data-site-title]:hover {
-  text-decoration: none !important;
-  opacity: 0.8;
-}
-
-/* Header icons (search, menu) - clear and visible */
-header button,
-header [role="button"] {
-  background: var(--color-bg) !important;
-  border: 1px solid var(--color-text) !important;
-  padding: var(--space-sm) var(--space-md) !important;
-  margin-left: var(--space-md) !important;
-  min-width: 44px;
-  min-height: 44px;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-header button:hover,
-header [role="button"]:hover {
-  background: var(--color-surface) !important;
-}
-
-header button svg,
-header [role="button"] svg {
-  width: 20px !important;
-  height: 20px !important;
-  stroke: var(--color-text) !important;
-}
-
 /* Hide theme toggle */
 starlight-theme-select,
 label:has(select[aria-label*="theme"]) {
   display: none !important;
 }
+/* ===== NAVIGATION - Always Visible ===== */
 
-/* ===== NAVIGATION - Clean and Clear ===== */
-nav[aria-label="Main"],
-.sidebar,
-aside {
-  background: var(--color-surface) !important;
-  border-right: 1px solid var(--color-border) !important;
+/* Make nav links visible on mobile (not hidden in hamburger) */
+@media (max-width: 50rem) {
+  /* Show the nav container */
+  nav[aria-label="Main"] > div:last-child {
+    display: block;
+    position: static;
+    width: 100%;
+    height: auto;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    transform: none;
+    visibility: visible;
+  }
+
+  /* Horizontal layout for nav items */
+  nav[aria-label="Main"] ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav[aria-label="Main"] li {
+    border-right: 1px solid var(--color-border);
+  }
+
+  nav[aria-label="Main"] li:last-child {
+    border-right: none;
+  }
+
+  /* Hide hamburger button since nav is always visible */
+  nav[aria-label="Main"] button {
+    display: none;
+  }
 }
 
-/* Navigation links - big, clear, easy to tap */
+/* Nav link styling */
 nav[aria-label="Main"] a {
+  color: var(--color-link);
+  padding: var(--space-md) var(--space-lg);
   display: block;
-  font-size: var(--text-lg) !important;
-  color: var(--color-link) !important;
-  padding: var(--space-lg) var(--space-xl) !important;
-  border-bottom: 1px solid var(--color-border);
-  text-decoration: none;
-  background: var(--color-bg) !important;
 }
 
 nav[aria-label="Main"] a:hover {
-  background: var(--color-surface-alt) !important;
+  background: var(--color-surface-alt);
   text-decoration: underline;
 }
 
 nav[aria-label="Main"] a[aria-current="page"] {
-  background: var(--color-link) !important;
-  color: var(--color-bg) !important;
-  font-weight: 700 !important;
+  background: var(--color-link);
+  color: var(--color-bg);
+  font-weight: 600;
 }
 
-/* Hide accordion chevrons in sidebar links only - keep hamburger menu icon */
-nav[aria-label="Main"] li svg,
-nav[aria-label="Main"] a svg,
-nav[aria-label="Main"] [data-icon] {
-  display: none !important;
-}
-
-/* Mobile menu panel */
-@media (max-width: 50rem) {
-  nav[aria-label="Main"] {
-    background: var(--color-bg) !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-  }
-  
-  nav[aria-label="Main"] a {
-    font-size: var(--text-xl) !important;
-    padding: var(--space-xl) !important;
-  }
-}
-
-/* ===== MAIN CONTENT ===== */
-main, .main-frame, .content-panel {
-  background: var(--color-bg) !important;
-}
-
-/* ===== HIDE TABLE OF CONTENTS (confusing) ===== */
+/* Reinstate table of contents with readable contrast */
 starlight-toc,
 .right-sidebar-panel,
 mobile-starlight-toc,
 [data-mobile-toc] {
-  display: none !important;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.right-sidebar-panel h2,
+.right-sidebar-panel a {
+  color: var(--color-text);
+}
+
+starlight-toc a,
+[data-mobile-toc] a,
+mobile-starlight-toc a {
+  color: var(--color-link);
+}
+
+[data-mobile-toc] summary,
+mobile-starlight-toc summary {
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
 /* ===== CODE ===== */

@@ -10,6 +10,7 @@ export { default as WikiBox } from './atoms/WikiBox.astro';
 
 // Active
 export { default as Disclaimer } from './molecules/Disclaimer.astro';
+export { default as DecisionMatrix } from './molecules/DecisionMatrix.astro';
 
 // Utilities
 export { default as Empty } from './utilities/Empty.astro';
