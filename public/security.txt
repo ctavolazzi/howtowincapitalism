@@ -1,0 +1,7 @@
+# Security Policy for howtowincapitalism.com
+# https://securitytxt.org/
+
+Contact: mailto:security@howtowincapitalism.com
+Preferred-Languages: en
+Canonical: https://howtowincapitalism.com/.well-known/security.txt
+

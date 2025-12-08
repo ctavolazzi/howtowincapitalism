@@ -52,20 +52,15 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: OG_IMAGE } },
 				{ tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'How To Win Capitalism - A satirical wiki about financial autonomy' } },
 			],
+			// Simple flat navigation - no confusing accordions
 			sidebar: [
-				{
-					label: 'The Protocol',
-					autogenerate: { directory: 'protocol' },
-				},
-				{
-					label: 'Field Notes',
-					autogenerate: { directory: 'field-notes' },
-				},
-				{
-					label: 'Reports',
-					autogenerate: { directory: 'reports' },
-				},
+				{ label: 'Home', link: '/' },
+				{ label: 'Introduction', link: '/protocol/introduction/' },
+				{ label: 'Latest Updates', link: '/field-notes/latest/' },
+				{ label: 'Reports', link: '/reports/' },
 			],
+			// Disable table of contents (confusing on mobile)
+			tableOfContents: false,
 			components: {
 				ThemeSelect: './src/components/utilities/Empty.astro',
 			},

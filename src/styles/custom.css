@@ -196,44 +196,38 @@ label:has(select[aria-label*="theme"]) {
   display: none !important;
 }
 
-/* ===== SIDEBAR ===== */
+/* ===== SIDEBAR - SIMPLE FLAT NAV ===== */
 nav[aria-label="Main"],
 .sidebar,
 aside {
-  background: var(--color-surface) !important;
-}
-
-/* Sidebar section headers */
-nav[aria-label="Main"] summary,
-nav[aria-label="Main"] button[aria-expanded],
-nav[aria-label="Main"] .large {
-  font-family: var(--font-sans) !important;
-  font-weight: 600 !important;
-  font-size: var(--text-sm) !important;
-  color: var(--color-text) !important;
   background: var(--color-bg) !important;
-  border: var(--border-width) solid var(--color-border) !important;
-  padding: var(--space-sm) var(--space-md) !important;
-  opacity: 1 !important;
 }
 
-/* Sidebar links */
+/* Simple sidebar links - just a clean list */
 nav[aria-label="Main"] a {
-  font-size: var(--text-sm) !important;
+  display: block;
+  font-size: var(--text-base) !important;
   color: var(--color-link) !important;
-  padding: var(--space-xs) var(--space-md) !important;
-  border-left: 3px solid transparent;
+  padding: var(--space-sm) var(--space-md) !important;
+  border-bottom: 1px solid var(--color-border-light);
+  text-decoration: none;
 }
 
 nav[aria-label="Main"] a:hover {
-  background: var(--color-bg) !important;
+  background: var(--color-surface) !important;
+  text-decoration: underline;
 }
 
 nav[aria-label="Main"] a[aria-current="page"] {
   background: var(--color-info-bg) !important;
-  border-left-color: var(--color-link) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: var(--color-text) !important;
+}
+
+/* Hide accordion chevrons/arrows - we don't use them anymore */
+nav[aria-label="Main"] svg,
+nav[aria-label="Main"] [data-icon] {
+  display: none !important;
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -241,36 +235,12 @@ main, .main-frame, .content-panel {
   background: var(--color-bg) !important;
 }
 
-/* ===== TABLE OF CONTENTS ===== */
+/* ===== HIDE TABLE OF CONTENTS (confusing) ===== */
 starlight-toc,
-.right-sidebar-panel {
-  background: var(--color-bg) !important;
-}
-
-starlight-toc a {
-  font-size: var(--text-xs) !important;
-  color: var(--color-link) !important;
-}
-
-/* Mobile TOC */
+.right-sidebar-panel,
 mobile-starlight-toc,
-mobile-starlight-toc summary,
-[data-mobile-toc],
-[data-mobile-toc] summary {
-  background: var(--color-surface) !important;
-  border: var(--border-width) solid var(--color-border) !important;
-  color: var(--color-text) !important;
-}
-
-mobile-starlight-toc *,
-[data-mobile-toc] * {
-  background-color: var(--color-surface) !important;
-  color: var(--color-text) !important;
-}
-
-mobile-starlight-toc a,
-[data-mobile-toc] a {
-  color: var(--color-link) !important;
+[data-mobile-toc] {
+  display: none !important;
 }
 
 /* ===== CODE ===== */
