@@ -186,17 +186,37 @@ a:hover {
   --sl-font: var(--font-sans);
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER - Clean and Simple ===== */
 header, .header {
   background: var(--color-bg) !important;
-  border-bottom: var(--border-width) solid var(--color-border) !important;
+  border-bottom: 2px solid var(--color-text) !important;
+  padding: var(--space-md) var(--space-lg) !important;
 }
 
+/* Site title - clear and prominent */
 .site-title, [data-site-title] {
   font-family: var(--font-serif) !important;
-  font-size: var(--text-xl) !important;
-  font-weight: 400 !important;
+  font-size: var(--text-2xl) !important;
+  font-weight: 700 !important;
   color: var(--color-text) !important;
+  text-decoration: none !important;
+}
+
+.site-title:hover, [data-site-title]:hover {
+  text-decoration: none !important;
+  opacity: 0.8;
+}
+
+/* Header actions (search, menu) - proper spacing */
+header button {
+  background: var(--color-bg) !important;
+  border: 1px solid var(--color-border) !important;
+  padding: var(--space-sm) !important;
+  margin-left: var(--space-sm) !important;
+}
+
+header button:hover {
+  background: var(--color-surface) !important;
 }
 
 /* Hide theme toggle */
@@ -205,32 +225,34 @@ label:has(select[aria-label*="theme"]) {
   display: none !important;
 }
 
-/* ===== SIDEBAR - SIMPLE FLAT NAV ===== */
+/* ===== NAVIGATION - Clean and Clear ===== */
 nav[aria-label="Main"],
 .sidebar,
 aside {
+  background: var(--color-surface) !important;
+  border-right: 1px solid var(--color-border) !important;
+}
+
+/* Navigation links - big, clear, easy to tap */
+nav[aria-label="Main"] a {
+  display: block;
+  font-size: var(--text-lg) !important;
+  color: var(--color-link) !important;
+  padding: var(--space-lg) var(--space-xl) !important;
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
   background: var(--color-bg) !important;
 }
 
-/* Simple sidebar links - just a clean list */
-nav[aria-label="Main"] a {
-  display: block;
-  font-size: var(--text-base) !important;
-  color: var(--color-link) !important;
-  padding: var(--space-sm) var(--space-md) !important;
-  border-bottom: 1px solid var(--color-border-light);
-  text-decoration: none;
-}
-
 nav[aria-label="Main"] a:hover {
-  background: var(--color-surface) !important;
+  background: var(--color-surface-alt) !important;
   text-decoration: underline;
 }
 
 nav[aria-label="Main"] a[aria-current="page"] {
-  background: var(--color-info-bg) !important;
+  background: var(--color-link) !important;
+  color: var(--color-bg) !important;
   font-weight: 700 !important;
-  color: var(--color-text) !important;
 }
 
 /* Hide accordion chevrons in sidebar links only - keep hamburger menu icon */
@@ -238,6 +260,20 @@ nav[aria-label="Main"] li svg,
 nav[aria-label="Main"] a svg,
 nav[aria-label="Main"] [data-icon] {
   display: none !important;
+}
+
+/* Mobile menu panel */
+@media (max-width: 50rem) {
+  nav[aria-label="Main"] {
+    background: var(--color-bg) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  }
+  
+  nav[aria-label="Main"] a {
+    font-size: var(--text-xl) !important;
+    padding: var(--space-xl) !important;
+  }
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -326,25 +362,33 @@ dialog::backdrop {
 }
 
 /* ==============================================
-   6. RESPONSIVE GRID LAYOUT
-   Flexbox + Grid for proper responsive behavior.
+   6. PAGE CONTENT STYLING
    ============================================== */
 
-@media (max-width: 50rem) {
-  /* Mobile: Stack everything */
-  nav[aria-label="Main"],
-  nav[aria-label="Main"] * {
-    background-color: var(--color-surface) !important;
-  }
+/* Main content area */
+main {
+  padding: var(--space-xl) !important;
+  max-width: 800px !important;
+}
 
-  nav[aria-label="Main"] a {
-    background-color: transparent !important;
-  }
+/* Page title - only show once, make it clear */
+main h1:first-of-type {
+  font-size: 2rem !important;
+  margin-top: 0 !important;
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--color-text);
+}
 
-  nav[aria-label="Main"] summary,
-  nav[aria-label="Main"] button[aria-expanded] {
-    background-color: var(--color-bg) !important;
-  }
+/* Content spacing */
+main p {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+}
+
+main ul, main ol {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  padding-left: var(--space-xl);
 }
 
 /* ==============================================
