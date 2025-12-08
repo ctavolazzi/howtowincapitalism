@@ -385,12 +385,18 @@ main {
   max-width: 800px !important;
 }
 
-/* Page title - only show once, make it clear */
+/* Page title styling */
 main h1:first-of-type {
   font-size: 2rem !important;
   margin-top: 0 !important;
   padding-bottom: var(--space-md);
   border-bottom: 2px solid var(--color-text);
+}
+
+/* Hide the "Home" title on home page (redundant with site title) */
+[data-page="home"] main h1:first-of-type,
+body:has(a[href="/"][aria-current="page"]) main h1:first-of-type {
+  display: none !important;
 }
 
 /* Content spacing */
