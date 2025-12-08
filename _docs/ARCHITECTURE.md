@@ -29,7 +29,7 @@ howtowincapitalism/
 ├── src/
 │   ├── components/           # Astro components
 │   │   ├── atoms/            # Base components (WikiBox)
-│   │   ├── molecules/        # Composed components (Disclaimer, InfoBox)
+│   │   ├── molecules/        # Composed components (Disclaimer, DecisionMatrix)
 │   │   ├── organisms/        # Complex components (PageHeader)
 │   │   ├── utilities/        # Helper components (Empty)
 │   │   └── index.ts          # Component registry
@@ -39,7 +39,11 @@ howtowincapitalism/
 │   │   ├── field-notes/      # Blog/updates
 │   │   └── reports/          # Downloadable reports
 │   ├── lib/                  # Shared utilities
-│   │   └── constants.ts      # App constants
+│   │   ├── constants.ts      # App constants
+│   │   └── tools/            # Reusable utilities
+│   │       ├── index.ts      # Tool exports
+│   │       ├── decision-matrix.ts  # Decision matrix (924 lines)
+│   │       └── README.md     # Tool documentation
 │   └── styles/
 │       └── custom.css        # All custom styling
 ├── astro.config.mjs          # Astro + Starlight config
@@ -60,6 +64,7 @@ Atoms → Molecules → Organisms → Pages
 
 **Molecules** (src/components/molecules/)
 - `Disclaimer.astro` - Warning banner (closable)
+- `DecisionMatrix.astro` - Decision matrix renderer (uses tools/decision-matrix.ts)
 - `InfoBox.astro` - Information callout
 - `NoteBox.astro` - Note callout
 - `NavBox.astro` - Navigation box
@@ -68,6 +73,44 @@ Atoms → Molecules → Organisms → Pages
 **Organisms** (src/components/organisms/)
 - `PageHeader.astro` - Page header with title
 - `ContentSection.astro` - Content wrapper
+
+## Tools (src/lib/tools/)
+
+Reusable TypeScript utilities for data processing and analysis.
+
+### Decision Matrix
+
+**File:** `decision-matrix.ts` (924 lines)
+**Purpose:** Quantitative decision-making tool
+
+**Features:**
+- 4 analysis methods (weighted, normalized, ranking, best-worst)
+- Confidence scoring
+- Strength/weakness detection
+- Recommendation generation
+
+**Integration:**
+```
+┌─────────────────────────┐     ┌───────────────────────────┐
+│  decision-matrix.ts     │────▶│  DecisionMatrix.astro     │
+│  (logic layer)          │     │  (presentation layer)     │
+└─────────────────────────┘     └───────────────────────────┘
+         ▲                                  │
+         │                                  ▼
+    makeDecision()              Wikipedia-style HTML table
+```
+
+**Usage in MDX:**
+```mdx
+import DecisionMatrix from '../../components/molecules/DecisionMatrix.astro';
+import { makeDecision } from '../../lib/tools';
+
+export const result = makeDecision({ options, criteria, scores, weights });
+
+<DecisionMatrix result={result} title="My Comparison" />
+```
+
+See `src/lib/tools/README.md` for full API documentation.
 
 ### Starlight Integration
 
