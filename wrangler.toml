@@ -1,0 +1,10 @@
+# Cloudflare Pages Configuration
+# Run: npm run deploy
+
+name = "howtowincapitalism"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+# Your custom domain will be configured in Cloudflare Dashboard
+# Settings > Custom domains > Add domain
+

@@ -1,0 +1,20 @@
+---
+/**
+ * DISCLAIMER - Molecule
+ *
+ * Patterns: Composite, Decorator
+ * Composes WikiBox with warning variant.
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+import { DEFAULTS } from '../../lib/constants';
+
+export interface Props {
+  text?: string;
+}
+
+const { text = DEFAULTS.disclaimer } = Astro.props;
+---
+
+<WikiBox variant="warning" padding="md">
+  <strong>⚠️ DISCLAIMER:</strong> {text}
+</WikiBox>

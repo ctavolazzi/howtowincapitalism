@@ -1,0 +1,8 @@
+# Robots.txt for howtowincapitalism.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://howtowincapitalism.com/sitemap-index.xml
+

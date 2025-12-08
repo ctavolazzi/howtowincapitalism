@@ -1,0 +1,25 @@
+---
+/**
+ * NAVBOX - MOLECULE
+ *
+ * Pattern: Composite (composed of WikiBox atom)
+ * Pattern: Template Method (nav structure with link slots)
+ *
+ * A navigation section box for link collections.
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+
+export interface Props {
+  /** Section title (required) */
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<WikiBox variant="nav" title={title}>
+  <nav>
+    <slot />
+  </nav>
+</WikiBox>
+

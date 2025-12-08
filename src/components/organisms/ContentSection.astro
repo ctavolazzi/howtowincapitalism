@@ -1,0 +1,49 @@
+---
+/**
+ * CONTENTSECTION - ORGANISM
+ *
+ * Pattern: Composite (composed of WikiBox + content)
+ * Pattern: Template Method (section structure with slots)
+ *
+ * A content section with optional sidebar.
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+
+export interface Props {
+  /** Section title */
+  title?: string;
+  /** Show in a box */
+  boxed?: boolean;
+  /** Box variant if boxed */
+  variant?: 'default' | 'info' | 'nav';
+}
+
+const {
+  title,
+  boxed = false,
+  variant = 'default'
+} = Astro.props;
+---
+
+{boxed ? (
+  <WikiBox variant={variant} title={title}>
+    <slot />
+  </WikiBox>
+) : (
+  <section class="content-section">
+    {title && <h2>{title}</h2>}
+    <slot />
+  </section>
+)}
+
+<style>
+  .content-section {
+    margin: var(--space-xl, 24px) 0;
+  }
+
+  .content-section h2 {
+    border-bottom: 1px solid var(--color-border, #a2a9b1);
+    padding-bottom: var(--space-xs, 4px);
+  }
+</style>
+

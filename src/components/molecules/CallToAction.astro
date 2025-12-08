@@ -1,0 +1,67 @@
+---
+/**
+ * CALLTOACTION - Molecule
+ *
+ * Patterns: Composite, Strategy
+ * For monetization (book sales, etc.)
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+import { LINKS } from '../../lib/constants';
+
+export interface Props {
+  title: string;
+  buttonText?: string;
+  href?: string;
+  price?: string;
+}
+
+const {
+  title,
+  buttonText = 'Learn More',
+  href = LINKS.gumroad,
+  price
+} = Astro.props;
+
+// Security: Validate URL to prevent javascript: protocol injection
+function sanitizeUrl(url: string): string {
+  const trimmed = url.trim().toLowerCase();
+  if (trimmed.startsWith('javascript:') || trimmed.startsWith('data:') || trimmed.startsWith('vbscript:')) {
+    return '#';
+  }
+  return url;
+}
+
+const safeHref = sanitizeUrl(href);
+---
+
+<WikiBox variant="cta" title={title} class="cta">
+  <slot />
+  {price && <p class="cta__price">{price}</p>}
+  <a href={safeHref} class="cta__button" target="_blank" rel="noopener noreferrer">
+    {buttonText}
+  </a>
+</WikiBox>
+
+<style>
+  .cta__price {
+    text-align: center;
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: var(--space-sm) 0;
+  }
+
+  .cta__button {
+    display: block;
+    text-align: center;
+    background: var(--color-link);
+    color: var(--color-bg) !important;
+    padding: var(--space-md) var(--space-lg);
+    margin-top: var(--space-md);
+    font-weight: 600;
+    text-decoration: none !important;
+  }
+
+  .cta__button:hover {
+    opacity: 0.9;
+  }
+</style>

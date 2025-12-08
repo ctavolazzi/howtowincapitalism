@@ -1,0 +1,362 @@
+/* ==============================================
+   HOW TO WIN CAPITALISM
+   MODULAR DESIGN SYSTEM v0.0.1
+
+   Built from ONE base unit.
+   Everything extends this foundation.
+   ============================================== */
+
+/* ==============================================
+   1. DESIGN TOKENS (The DNA)
+   One source of truth for all values.
+   ============================================== */
+
+:root {
+  /* ===== SPACING SCALE (8px base) ===== */
+  --space-unit: 8px;
+  --space-xs: calc(var(--space-unit) * 0.5);   /* 4px */
+  --space-sm: var(--space-unit);                /* 8px */
+  --space-md: calc(var(--space-unit) * 1.5);   /* 12px */
+  --space-lg: calc(var(--space-unit) * 2);     /* 16px */
+  --space-xl: calc(var(--space-unit) * 3);     /* 24px */
+  --space-2xl: calc(var(--space-unit) * 4);    /* 32px */
+
+  /* ===== COLORS (Wikipedia palette) ===== */
+  --color-bg: #ffffff;
+  --color-text: #202122;
+  --color-link: #0645ad;
+  --color-link-visited: #0b0080;
+  --color-border: #a2a9b1;
+  --color-border-light: #c8ccd1;
+  --color-surface: #f8f9fa;
+  --color-surface-alt: #eaecf0;
+
+  /* Warning colors */
+  --color-warning-bg: #fef6e7;
+  --color-warning-border: #fc3;
+  --color-warning-text: #705000;
+
+  /* Info colors */
+  --color-info-bg: #eaf3ff;
+  --color-info-border: #36c;
+
+  /* ===== TYPOGRAPHY ===== */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Linux Libertine", Georgia, "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 24px;
+  --text-3xl: 28px;
+
+  --line-height: 1.6;
+  --line-height-tight: 1.3;
+
+  /* ===== BORDERS ===== */
+  --border-width: 1px;
+  --border-radius: 0; /* Wikipedia = no radius */
+
+  /* ===== LAYOUT ===== */
+  --content-width: 960px;
+  --sidebar-width: 240px;
+
+  /* ===== FORCE LIGHT MODE ===== */
+  color-scheme: light only;
+}
+
+/* ==============================================
+   2. RESET & BASE (The Foundation)
+   ============================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  border-radius: var(--border-radius) !important;
+}
+
+html {
+  color-scheme: light only !important;
+  background: var(--color-bg) !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* ==============================================
+   3. TYPOGRAPHY (Built on base unit)
+   ============================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding-bottom: var(--space-xs);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding-bottom: var(--space-xs);
+}
+
+h3 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+}
+
+h4, h5, h6 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+p {
+  margin: var(--space-md) 0;
+}
+
+/* ==============================================
+   4. LINKS (Consistent everywhere)
+   ============================================== */
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--color-link-visited);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ==============================================
+   5. STARLIGHT OVERRIDES
+   Make Starlight use our design system.
+   ============================================== */
+
+/* Override Starlight variables with ours */
+:root,
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  --sl-color-white: var(--color-bg);
+  --sl-color-black: var(--color-text);
+  --sl-color-gray-1: var(--color-surface);
+  --sl-color-gray-2: var(--color-surface-alt);
+  --sl-color-gray-3: var(--color-border-light);
+  --sl-color-gray-4: var(--color-border);
+  --sl-color-gray-5: #72777d;
+  --sl-color-gray-6: var(--color-text);
+  --sl-color-accent: var(--color-link);
+  --sl-color-accent-low: var(--color-info-bg);
+  --sl-color-accent-high: var(--color-link);
+  --sl-color-text: var(--color-text);
+  --sl-color-text-accent: var(--color-link);
+  --sl-color-bg: var(--color-bg);
+  --sl-color-bg-nav: var(--color-surface);
+  --sl-color-bg-sidebar: var(--color-surface);
+  --sl-color-hairline: var(--color-border);
+  --sl-font: var(--font-sans);
+}
+
+/* ===== HEADER ===== */
+header, .header {
+  background: var(--color-bg) !important;
+  border-bottom: var(--border-width) solid var(--color-border) !important;
+}
+
+.site-title, [data-site-title] {
+  font-family: var(--font-serif) !important;
+  font-size: var(--text-xl) !important;
+  font-weight: 400 !important;
+  color: var(--color-text) !important;
+}
+
+/* Hide theme toggle */
+starlight-theme-select,
+label:has(select[aria-label*="theme"]) {
+  display: none !important;
+}
+
+/* ===== SIDEBAR ===== */
+nav[aria-label="Main"],
+.sidebar,
+aside {
+  background: var(--color-surface) !important;
+}
+
+/* Sidebar section headers */
+nav[aria-label="Main"] summary,
+nav[aria-label="Main"] button[aria-expanded],
+nav[aria-label="Main"] .large {
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  font-size: var(--text-sm) !important;
+  color: var(--color-text) !important;
+  background: var(--color-bg) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  opacity: 1 !important;
+}
+
+/* Sidebar links */
+nav[aria-label="Main"] a {
+  font-size: var(--text-sm) !important;
+  color: var(--color-link) !important;
+  padding: var(--space-xs) var(--space-md) !important;
+  border-left: 3px solid transparent;
+}
+
+nav[aria-label="Main"] a:hover {
+  background: var(--color-bg) !important;
+}
+
+nav[aria-label="Main"] a[aria-current="page"] {
+  background: var(--color-info-bg) !important;
+  border-left-color: var(--color-link) !important;
+  font-weight: 600 !important;
+  color: var(--color-text) !important;
+}
+
+/* ===== MAIN CONTENT ===== */
+main, .main-frame, .content-panel {
+  background: var(--color-bg) !important;
+}
+
+/* ===== TABLE OF CONTENTS ===== */
+starlight-toc,
+.right-sidebar-panel {
+  background: var(--color-bg) !important;
+}
+
+starlight-toc a {
+  font-size: var(--text-xs) !important;
+  color: var(--color-link) !important;
+}
+
+/* Mobile TOC */
+mobile-starlight-toc,
+mobile-starlight-toc summary,
+[data-mobile-toc],
+[data-mobile-toc] summary {
+  background: var(--color-surface) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+mobile-starlight-toc *,
+[data-mobile-toc] * {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+}
+
+mobile-starlight-toc a,
+[data-mobile-toc] a {
+  color: var(--color-link) !important;
+}
+
+/* ===== CODE ===== */
+code {
+  font-family: var(--font-mono) !important;
+  font-size: var(--text-sm) !important;
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border: var(--border-width) solid var(--color-border);
+  padding: 1px var(--space-xs);
+}
+
+pre {
+  background: var(--color-surface) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+  padding: var(--space-md) !important;
+  overflow-x: auto;
+}
+
+pre code {
+  border: none;
+  padding: 0;
+  background: transparent !important;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--color-bg) !important;
+  border-top: var(--border-width) solid var(--color-border) !important;
+}
+
+/* ==============================================
+   6. RESPONSIVE GRID LAYOUT
+   Flexbox + Grid for proper responsive behavior.
+   ============================================== */
+
+@media (max-width: 50rem) {
+  /* Mobile: Stack everything */
+  nav[aria-label="Main"],
+  nav[aria-label="Main"] * {
+    background-color: var(--color-surface) !important;
+  }
+
+  nav[aria-label="Main"] a {
+    background-color: transparent !important;
+  }
+
+  nav[aria-label="Main"] summary,
+  nav[aria-label="Main"] button[aria-expanded] {
+    background-color: var(--color-bg) !important;
+  }
+}
+
+/* ==============================================
+   7. UTILITY CLASSES
+   Reusable helpers.
+   ============================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ==============================================
+   8. PRINT STYLES
+   ============================================== */
+
+@media print {
+  nav, aside, footer {
+    display: none !important;
+  }
+
+  main {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}

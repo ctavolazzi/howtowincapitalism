@@ -1,0 +1,25 @@
+---
+/**
+ * INFOBOX - MOLECULE
+ *
+ * Pattern: Composite (composed of WikiBox atom)
+ * Pattern: Template Method (defines structure, content via slot)
+ *
+ * A sidebar information box, like Wikipedia infoboxes.
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+
+export interface Props {
+  /** Box title (required) */
+  title: string;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<WikiBox variant="sidebar" title={title} class={className}>
+  <slot />
+</WikiBox>
+

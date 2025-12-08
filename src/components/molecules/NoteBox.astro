@@ -1,0 +1,23 @@
+---
+/**
+ * NOTEBOX - MOLECULE
+ *
+ * Pattern: Composite (composed of WikiBox atom)
+ * Pattern: Decorator (adds "Note" semantics)
+ *
+ * An informational callout box for tips and notes.
+ */
+import WikiBox from '../atoms/WikiBox.astro';
+
+export interface Props {
+  /** Box title (defaults to "Note") */
+  title?: string;
+}
+
+const { title = 'Note' } = Astro.props;
+---
+
+<WikiBox variant="info" title={title}>
+  <slot />
+</WikiBox>
+

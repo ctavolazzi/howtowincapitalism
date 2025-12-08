@@ -1,0 +1,37 @@
+---
+/**
+ * PAGEHEADER - ORGANISM
+ *
+ * Pattern: Composite (composed of multiple molecules)
+ * Pattern: Template Method (defined structure with slots)
+ * Pattern: Facade (simple interface to complex header layout)
+ *
+ * A complete page header section with optional components.
+ */
+import Disclaimer from '../molecules/Disclaimer.astro';
+
+export interface Props {
+  /** Show disclaimer banner */
+  showDisclaimer?: boolean;
+  /** Custom disclaimer text */
+  disclaimerText?: string;
+}
+
+const {
+  showDisclaimer = true,
+  disclaimerText
+} = Astro.props;
+---
+
+<header class="page-header">
+  {showDisclaimer && <Disclaimer text={disclaimerText} />}
+  <slot name="after-disclaimer" />
+  <slot />
+</header>
+
+<style>
+  .page-header {
+    margin-bottom: var(--space-lg, 16px);
+  }
+</style>
+

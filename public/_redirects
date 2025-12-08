@@ -1,0 +1,6 @@
+# Cloudflare Pages Redirects
+# https://developers.cloudflare.com/pages/platform/redirects
+
+# Redirect www to non-www (configure in Cloudflare dashboard)
+# https://www.howtowincapitalism.com/* https://howtowincapitalism.com/:splat 301
+

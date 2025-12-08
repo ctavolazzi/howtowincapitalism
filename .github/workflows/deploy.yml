@@ -1,0 +1,61 @@
+# ==============================================
+# CLOUDFLARE PAGES DEPLOYMENT
+# ==============================================
+# This workflow does NOT auto-deploy.
+# It only builds and validates the site.
+#
+# To deploy manually, run locally:
+#   npm run deploy
+# ==============================================
+
+name: Build & Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Validate build
+        run: |
+          if [ -d "dist" ]; then
+            echo "✅ Build successful"
+            ls -la dist/
+          else
+            echo "❌ Build failed - no dist directory"
+            exit 1
+          fi
+
+# ==============================================
+# MANUAL DEPLOYMENT
+# ==============================================
+# To deploy to Cloudflare Pages:
+#
+# 1. First time setup:
+#    npx wrangler pages project create howtowincapitalism
+#
+# 2. Deploy:
+#    npm run deploy
+#
+# 3. Or use wrangler directly:
+#    npx wrangler pages deploy dist
+# ==============================================

@@ -1,0 +1,28 @@
+# Security Headers for Cloudflare Pages
+
+/*
+  # Prevent clickjacking
+  X-Frame-Options: DENY
+
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+
+  # XSS Protection
+  X-XSS-Protection: 1; mode=block
+
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Disable unnecessary browser features
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+  # Content Security Policy (strict)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+
+# Cache static assets (immutable)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache reports/PDFs
+/reports/*
+  Cache-Control: public, max-age=86400

@@ -1,0 +1,21 @@
+{
+  "name": "howtowincapitalism",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "A satirical but practical wiki about financial autonomy",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy dist",
+    "og-image": "node scripts/generate-og-image.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.37.0",
+    "astro": "^5.6.1"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5",
+    "wrangler": "^4.53.0"
+  }
+}
