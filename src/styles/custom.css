@@ -224,8 +224,9 @@ nav[aria-label="Main"] a[aria-current="page"] {
   color: var(--color-text) !important;
 }
 
-/* Hide accordion chevrons/arrows - we don't use them anymore */
-nav[aria-label="Main"] svg,
+/* Hide accordion chevrons in sidebar links only - keep hamburger menu icon */
+nav[aria-label="Main"] li svg,
+nav[aria-label="Main"] a svg,
 nav[aria-label="Main"] [data-icon] {
   display: none !important;
 }
