@@ -190,7 +190,7 @@ a:hover {
 header, .header {
   background: var(--color-bg) !important;
   border-bottom: 2px solid var(--color-text) !important;
-  padding: var(--space-md) var(--space-lg) !important;
+  padding: var(--space-lg) !important;
 }
 
 /* Site title - clear and prominent */
@@ -207,16 +207,30 @@ header, .header {
   opacity: 0.8;
 }
 
-/* Header actions (search, menu) - proper spacing */
-header button {
+/* Header icons (search, menu) - clear and visible */
+header button,
+header [role="button"] {
   background: var(--color-bg) !important;
-  border: 1px solid var(--color-border) !important;
-  padding: var(--space-sm) !important;
-  margin-left: var(--space-sm) !important;
+  border: 1px solid var(--color-text) !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  margin-left: var(--space-md) !important;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-header button:hover {
+header button:hover,
+header [role="button"]:hover {
   background: var(--color-surface) !important;
+}
+
+header button svg,
+header [role="button"] svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: var(--color-text) !important;
 }
 
 /* Hide theme toggle */
