@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
  * SHIP SCRIPT
- * 
+ *
  * One command to rule them all:
  *   npm run ship
  *   npm run ship "commit message"
- * 
+ *
  * Does: Build → Commit → Deploy → Push
  */
 
@@ -27,10 +27,10 @@ function log(msg, color = 'reset') {
 
 function run(cmd, options = {}) {
   try {
-    return execSync(cmd, { 
+    return execSync(cmd, {
       stdio: options.silent ? 'pipe' : 'inherit',
       encoding: 'utf8',
-      ...options 
+      ...options
     });
   } catch (error) {
     if (!options.ignoreError) {
@@ -48,7 +48,7 @@ function getGitStatus() {
 
 async function main() {
   const commitMessage = process.argv[2] || `update: ${new Date().toISOString().split('T')[0]}`;
-  
+
   console.log('\n' + '='.repeat(50));
   log('🚀 SHIP: Build → Commit → Deploy → Push', 'cyan');
   console.log('='.repeat(50) + '\n');
@@ -61,7 +61,7 @@ async function main() {
   // Step 2: Git commit (if changes exist)
   log('2/4 Checking git status...', 'yellow');
   const status = getGitStatus();
-  
+
   if (status) {
     log(`   Changes detected:\n${status.split('\n').map(l => '   ' + l).join('\n')}`, 'dim');
     run('git add -A');

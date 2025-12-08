@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * NEW PAGE SCRIPT
- * 
+ *
  * Create a new content page:
  *   npm run new protocol my-concept
  *   npm run new field-notes my-update
@@ -117,7 +117,7 @@ Usage: npm run new <section> <slug>
 
 Sections:
   protocol     - Wiki definitions
-  field-notes  - Updates and observations  
+  field-notes  - Updates and observations
   reports      - Downloadable reports
 
 Examples:

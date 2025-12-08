@@ -1,8 +1,20 @@
 # Robots.txt for howtowincapitalism.com
+# https://howtowincapitalism.com/robots.txt
 
 User-agent: *
 Allow: /
 
-# Sitemap
+# Crawl-delay for politeness (optional)
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://howtowincapitalism.com/sitemap-index.xml
+
+# Block AI training crawlers (optional - uncomment if desired)
+# User-agent: GPTBot
+# Disallow: /
+# User-agent: ChatGPT-User
+# Disallow: /
+# User-agent: CCBot
+# Disallow: /
 

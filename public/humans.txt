@@ -1,0 +1,14 @@
+/* TEAM */
+Site: How To Win Capitalism
+URL: https://howtowincapitalism.com
+
+/* THANKS */
+Built with Astro + Starlight
+Hosted on Cloudflare Pages
+
+/* SITE */
+Last update: 2024
+Language: English
+Standards: HTML5, CSS3, ES6+
+Software: Astro, Starlight, Wrangler
+

@@ -11,6 +11,7 @@
     "deploy": "wrangler pages deploy dist",
     "ship": "node scripts/ship.mjs",
     "og-image": "node scripts/generate-og-image.mjs",
+    "icons": "node scripts/generate-icons.mjs",
     "new": "node scripts/new-page.mjs"
   },
   "dependencies": {

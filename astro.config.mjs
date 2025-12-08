@@ -25,11 +25,16 @@ export default defineConfig({
 			lastUpdated: false,
 			// Favicon
 			favicon: '/favicon.svg',
-			// Social preview meta tags
+			// Head meta tags and links
 			head: [
-				// Charset and viewport (best practice)
+				// Standard meta
 				{ tag: 'meta', attrs: { name: 'author', content: 'How To Win Capitalism' } },
 				{ tag: 'meta', attrs: { name: 'robots', content: 'index, follow' } },
+				{ tag: 'meta', attrs: { name: 'theme-color', content: '#ffffff' } },
+				{ tag: 'meta', attrs: { name: 'msapplication-TileColor', content: '#ffffff' } },
+				// PWA / App manifest
+				{ tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
+				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
 				// Open Graph (Facebook, LinkedIn, Discord, Slack, iMessage)
 				{ tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
 				{ tag: 'meta', attrs: { property: 'og:site_name', content: SITE_TITLE } },
@@ -46,8 +51,6 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:description', content: SITE_DESCRIPTION } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: OG_IMAGE } },
 				{ tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'How To Win Capitalism - A satirical wiki about financial autonomy' } },
-				// Theme color for mobile browsers
-				{ tag: 'meta', attrs: { name: 'theme-color', content: '#ffffff' } },
 			],
 			sidebar: [
 				{
