@@ -1,9 +1,18 @@
+# ==============================================
+# HOW TO WIN CAPITALISM - .gitignore
+# ==============================================
+
 # Build output
 dist/
 .astro/
 
 # Dependencies
 node_modules/
+.pnpm-store/
+
+# Package manager locks (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
 
 # Logs
 *.log
@@ -11,6 +20,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
 # Environment variables (NEVER COMMIT)
 .env
@@ -19,10 +29,15 @@ pnpm-debug.log*
 .env.development
 .env.production
 .env.test
+.env.staging
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 *.swp
 *.swo
 *~
@@ -32,12 +47,17 @@ Thumbs.db
 *.sublime-*
 .vscode/settings.json
 .vscode/launch.json
+*.code-workspace
+.history/
 
 # Temporary files
 *.tmp
 *.temp
 *.bak
 *.cache
+.cache/
+*.pid
+*.seed
 
 # Cloudflare
 .wrangler/
@@ -46,14 +66,29 @@ Thumbs.db
 # Test coverage
 coverage/
 .nyc_output/
+*.lcov
 
 # Debug
-*.log
 debug/
+*.debug
 
 # Secrets (extra protection)
 *.pem
 *.key
 *.crt
+*.p12
+*.pfx
 secrets/
 credentials/
+.secrets/
+
+# Astro specific
+.vercel/
+.netlify/
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.turbo/
+.parcel-cache/

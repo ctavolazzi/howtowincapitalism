@@ -2,7 +2,9 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// Site metadata for social sharing
+// ==============================================
+// SITE CONFIGURATION
+// ==============================================
 const SITE_URL = 'https://howtowincapitalism.com';
 const SITE_TITLE = 'How To Win Capitalism';
 const SITE_DESCRIPTION = 'A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind.';
@@ -10,6 +12,10 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default defineConfig({
 	site: SITE_URL,
+	trailingSlash: 'always',
+	build: {
+		format: 'directory',
+	},
 	integrations: [
 		starlight({
 			title: SITE_TITLE,
@@ -17,8 +23,13 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			pagination: false,
 			lastUpdated: false,
+			// Favicon
+			favicon: '/favicon.svg',
 			// Social preview meta tags
 			head: [
+				// Charset and viewport (best practice)
+				{ tag: 'meta', attrs: { name: 'author', content: 'How To Win Capitalism' } },
+				{ tag: 'meta', attrs: { name: 'robots', content: 'index, follow' } },
 				// Open Graph (Facebook, LinkedIn, Discord, Slack, iMessage)
 				{ tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
 				{ tag: 'meta', attrs: { property: 'og:site_name', content: SITE_TITLE } },
@@ -35,6 +46,8 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { name: 'twitter:description', content: SITE_DESCRIPTION } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: OG_IMAGE } },
 				{ tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'How To Win Capitalism - A satirical wiki about financial autonomy' } },
+				// Theme color for mobile browsers
+				{ tag: 'meta', attrs: { name: 'theme-color', content: '#ffffff' } },
 			],
 			sidebar: [
 				{
@@ -56,4 +69,6 @@ export default defineConfig({
 		}),
 	],
 	output: 'static',
+	// Compression for smaller builds
+	compressHTML: true,
 });
