@@ -302,6 +302,49 @@ footer {
   border-top: var(--border-width) solid var(--color-border) !important;
 }
 
+/* ===== SEARCH MODAL ===== */
+dialog,
+[role="dialog"],
+.search-dialog,
+[data-pagefind-ui],
+.pagefind-ui,
+.pagefind-ui__search-clear,
+.pagefind-ui__search-input,
+.pagefind-ui__results,
+.pagefind-ui__result,
+[data-search],
+starlight-search,
+starlight-search *,
+dialog *,
+[aria-label="Search"],
+[aria-label="Search"] * {
+  background: var(--color-bg) !important;
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+/* Search input */
+input[type="search"],
+input[name="search"],
+input[placeholder*="Search"],
+.search-input,
+[data-pagefind-ui] input {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  border: var(--border-width) solid var(--color-border) !important;
+}
+
+/* Search results */
+.pagefind-ui__result-link,
+[data-pagefind-ui] a {
+  color: var(--color-link) !important;
+}
+
+/* Search backdrop */
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
 /* ==============================================
    6. RESPONSIVE GRID LAYOUT
    Flexbox + Grid for proper responsive behavior.
