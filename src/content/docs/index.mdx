@@ -10,6 +10,8 @@ head:
 ---
 
 import Disclaimer from '../../components/molecules/Disclaimer.astro';
+import TopicCard from '../../components/molecules/TopicCard.astro';
+import CardGrid from '../../components/utilities/CardGrid.astro';
 
 <Disclaimer />
 
@@ -17,19 +19,64 @@ A satirical but practical wiki about financial autonomy. We document strategies,
 
 This wiki is maintained by people who are tired of the grind and want to understand the game well enough to play it on their own terms.
 
-## Contents
+---
 
-### The Protocol
+## Featured Tool
 
-The Protocol contains wiki-style definitions and explanations of key concepts:
+<TopicCard
+  title="Decision Matrix"
+  description="A quantitative framework for comparing options against weighted criteria. Transform subjective comparisons into structured analysis."
+  href="/protocol/decision-matrix/"
+  tag="Tool"
+  icon="🎯"
+/>
 
-- [Introduction](/protocol/introduction/) — Start here to understand the framework
+---
 
-### Field Notes
+## The Protocol
 
-Field Notes contains updates, observations, and lessons learned:
+The Protocol contains wiki-style definitions and explanations of key concepts.
 
-- [Latest Updates](/field-notes/latest/) — Recent additions and changes
+<CardGrid columns={2} gap="md">
+  <TopicCard
+    title="Introduction"
+    description="Start here to understand the framework and core principles"
+    href="/protocol/introduction/"
+    icon="📖"
+  />
+  <TopicCard
+    title="Decision Matrix"
+    description="Quantitative decision-making tool"
+    href="/protocol/decision-matrix/"
+    icon="📊"
+    tag="Tool"
+  />
+</CardGrid>
+
+---
+
+## Field Notes
+
+Updates, observations, and lessons learned from navigating the system.
+
+<TopicCard
+  title="Latest Updates"
+  description="Recent additions and changes to the wiki"
+  href="/field-notes/latest/"
+  icon="📝"
+  tag="New"
+/>
+
+---
+
+## Resources
+
+<TopicCard
+  title="Reports"
+  description="Free downloadable reports on building financial autonomy"
+  href="/reports/"
+  icon="📄"
+/>
 
 ---
 

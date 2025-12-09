@@ -1,0 +1,97 @@
+---
+/**
+ * FAQ - MOLECULE
+ *
+ * Design Patterns:
+ * - FAQ (UI-Patterns.com): Common questions in expandable format
+ * - Composite: Renders multiple Collapsible atoms
+ *
+ * Renders a list of questions and answers using collapsible sections.
+ * Wikipedia-style, accessible, semantic HTML.
+ *
+ * Usage:
+ *   <FAQ items={[
+ *     { question: "What is this?", answer: "A wiki about capitalism." },
+ *     { question: "Is this financial advice?", answer: "No." }
+ *   ]} />
+ *
+ *   <FAQ title="Common Questions" items={...} />
+ */
+import Collapsible from '../atoms/Collapsible.astro';
+
+export interface FAQItem {
+  /** The question */
+  question: string;
+  /** The answer (can include HTML) */
+  answer: string;
+}
+
+export interface Props {
+  /** Array of FAQ items */
+  items: FAQItem[];
+  /** Optional section title */
+  title?: string;
+  /** Start with first item open */
+  firstOpen?: boolean;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  items,
+  title,
+  firstOpen = false,
+  class: className
+} = Astro.props;
+
+if (!items || items.length === 0) {
+  return null;
+}
+
+const sectionClasses = ['faq', className].filter(Boolean).join(' ');
+---
+
+<section class={sectionClasses}>
+  {title && <h2 class="faq__title">{title}</h2>}
+  <div class="faq__list">
+    {items.map((item, index) => (
+      <Collapsible
+        title={item.question}
+        variant="faq"
+        open={firstOpen && index === 0}
+      >
+        <Fragment set:html={item.answer} />
+      </Collapsible>
+    ))}
+  </div>
+</section>
+
+<style>
+  .faq {
+    margin: var(--space-xl) 0;
+  }
+
+  .faq__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    margin: 0 0 var(--space-md) 0;
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Remove gaps between FAQ items - they share borders */
+  .faq__list :global(.collapsible) {
+    margin: 0;
+  }
+
+  .faq__list :global(.collapsible + .collapsible) {
+    border-top: none;
+  }
+</style>

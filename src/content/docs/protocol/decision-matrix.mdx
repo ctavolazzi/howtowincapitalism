@@ -101,6 +101,81 @@ Decision matrices are tools, not oracles:
 - **False precision** — A score of 7.23 isn't meaningfully different from 7.18
 - **Close races need judgment** — If confidence is low, other factors should decide
 
+---
+
+## More Examples
+
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+
+<Collapsible title="Example: Job Offer Comparison">
+
+export const jobResult = makeDecision({
+  options: ["Startup", "Big Tech", "Consulting"],
+  criteria: ["Salary", "Work-Life Balance", "Growth Potential", "Job Security", "Learning"],
+  scores: {
+    "Startup": [6, 4, 9, 3, 9],
+    "Big Tech": [9, 7, 6, 9, 6],
+    "Consulting": [8, 3, 7, 5, 8]
+  },
+  weights: [0.25, 0.20, 0.20, 0.15, 0.20]
+});
+
+<DecisionMatrix
+  result={jobResult}
+  title="Job Offer Comparison"
+/>
+
+**Context:** Comparing job offers based on what matters to you. Adjust weights based on your life situation—new grad might prioritize learning, while a parent might prioritize work-life balance.
+
+</Collapsible>
+
+<Collapsible title="Example: Side Hustle Evaluation">
+
+export const hustleResult = makeDecision({
+  options: ["Freelancing", "Content Creation", "E-commerce", "Consulting"],
+  criteria: ["Startup Cost", "Time Flexibility", "Income Potential", "Scalability", "Skill Match"],
+  scores: {
+    "Freelancing": [9, 8, 6, 4, 8],
+    "Content Creation": [8, 9, 5, 8, 6],
+    "E-commerce": [4, 5, 8, 9, 5],
+    "Consulting": [9, 6, 8, 5, 9]
+  },
+  weights: [0.15, 0.25, 0.25, 0.15, 0.20]
+});
+
+<DecisionMatrix
+  result={hustleResult}
+  title="Side Hustle Evaluation"
+/>
+
+**Context:** Evaluating side income opportunities. Time flexibility weighted high for those with full-time jobs. Income potential and scalability matter for long-term wealth building.
+
+</Collapsible>
+
+<Collapsible title="Example: Housing Decision (Rent vs Buy)">
+
+export const housingResult = makeDecision({
+  options: ["Rent Apartment", "Buy Condo", "Buy House"],
+  criteria: ["Monthly Cost", "Flexibility", "Wealth Building", "Maintenance", "Space"],
+  scores: {
+    "Rent Apartment": [8, 10, 2, 10, 4],
+    "Buy Condo": [6, 4, 7, 7, 6],
+    "Buy House": [4, 3, 9, 3, 10]
+  },
+  weights: [0.25, 0.20, 0.25, 0.15, 0.15]
+});
+
+<DecisionMatrix
+  result={housingResult}
+  title="Housing Decision"
+/>
+
+**Context:** The rent vs buy debate depends heavily on your situation. Those who value flexibility might prefer renting. Those focused on long-term wealth building might prefer buying.
+
+</Collapsible>
+
+---
+
 ## See Also
 
 - [Introduction](/protocol/introduction/) — Framework overview

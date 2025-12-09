@@ -1,0 +1,150 @@
+---
+/**
+ * TOPICCARD - MOLECULE
+ *
+ * Design Patterns:
+ * - Cards (UI-Patterns.com): Content preview in scannable format
+ * - Composite: Composed of WikiBox atom styling
+ *
+ * Displays a clickable card linking to a topic/article.
+ * Used on index pages for content discovery.
+ *
+ * Usage:
+ *   <TopicCard
+ *     title="Introduction"
+ *     description="Start here to understand the framework"
+ *     href="/protocol/introduction/"
+ *   />
+ *
+ *   <TopicCard
+ *     title="Decision Matrix"
+ *     description="Quantitative decision-making tool"
+ *     href="/protocol/decision-matrix/"
+ *     tag="Tool"
+ *   />
+ */
+
+export interface Props {
+  /** Card title (required) */
+  title: string;
+  /** Short description */
+  description?: string;
+  /** Link destination (required) */
+  href: string;
+  /** Optional tag/label (e.g., "New", "Tool", "Guide") */
+  tag?: string;
+  /** Optional icon (emoji or text) */
+  icon?: string;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  href,
+  tag,
+  icon,
+  class: className
+} = Astro.props;
+
+const cardClasses = ['topic-card', className].filter(Boolean).join(' ');
+---
+
+<a href={href} class={cardClasses}>
+  <article class="topic-card__inner">
+    {tag && <span class="topic-card__tag">{tag}</span>}
+
+    <header class="topic-card__header">
+      {icon && <span class="topic-card__icon">{icon}</span>}
+      <h3 class="topic-card__title">{title}</h3>
+    </header>
+
+    {description && (
+      <p class="topic-card__description">{description}</p>
+    )}
+
+    <span class="topic-card__link">
+      Read more →
+    </span>
+  </article>
+</a>
+
+<style>
+  /* TopicCard - Wikipedia-inspired card design */
+  .topic-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: var(--border-width) solid var(--color-border);
+    background: var(--color-bg);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .topic-card:hover {
+    border-color: var(--color-link);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .topic-card__inner {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg);
+    height: 100%;
+  }
+
+  .topic-card__tag {
+    align-self: flex-start;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-bg);
+    background: var(--color-link);
+    padding: 2px var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .topic-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .topic-card__icon {
+    font-size: var(--text-xl);
+    line-height: 1;
+  }
+
+  .topic-card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0;
+    line-height: var(--line-height-tight);
+  }
+
+  .topic-card:hover .topic-card__title {
+    color: var(--color-link);
+  }
+
+  .topic-card__description {
+    font-size: var(--text-sm);
+    color: #72777d;
+    margin: 0 0 var(--space-md) 0;
+    line-height: var(--line-height);
+    flex: 1;
+  }
+
+  .topic-card__link {
+    font-size: var(--text-sm);
+    color: var(--color-link);
+    margin-top: auto;
+  }
+
+  .topic-card:hover .topic-card__link {
+    text-decoration: underline;
+  }
+</style>

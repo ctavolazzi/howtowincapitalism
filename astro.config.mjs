@@ -27,11 +27,19 @@ export default defineConfig({
 			favicon: '/favicon.svg',
 			// Head meta tags and links
 			head: [
-				// Standard meta
+				// === PERFORMANCE: Resource Hints ===
+				// DNS prefetch for external resources (if any added later)
+				{ tag: 'link', attrs: { rel: 'dns-prefetch', href: '//fonts.googleapis.com' } },
+				// Preconnect (currently no external resources - good for sustainability!)
+				// { tag: 'link', attrs: { rel: 'preconnect', href: 'https://example.com' } },
+
+				// === Standard meta ===
 				{ tag: 'meta', attrs: { name: 'author', content: 'How To Win Capitalism' } },
 				{ tag: 'meta', attrs: { name: 'robots', content: 'index, follow' } },
 				{ tag: 'meta', attrs: { name: 'theme-color', content: '#ffffff' } },
 				{ tag: 'meta', attrs: { name: 'msapplication-TileColor', content: '#ffffff' } },
+				// Viewport hint for mobile optimization
+				{ tag: 'meta', attrs: { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' } },
 				// PWA / App manifest
 				{ tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
@@ -66,6 +74,7 @@ export default defineConfig({
 				Header: './src/components/overrides/Header.astro',
 				Sidebar: './src/components/utilities/Empty.astro',
 				MobileMenuToggle: './src/components/utilities/Empty.astro',
+				Footer: './src/components/organisms/Footer.astro',
 			},
 		}),
 	],

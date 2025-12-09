@@ -1,0 +1,192 @@
+---
+/**
+ * COLLAPSIBLE - ATOM
+ *
+ * Design Patterns:
+ * - Progressive Disclosure (UI-Patterns.com): Show summary, reveal details on demand
+ * - Accordion variant: Multiple collapsibles can be grouped
+ *
+ * Wikipedia-style collapsible section using native <details> element.
+ * Accessible, no JavaScript required, works without CSS.
+ *
+ * Usage:
+ *   <Collapsible title="More details">
+ *     Hidden content here...
+ *   </Collapsible>
+ *
+ *   <Collapsible title="FAQ Question" open>
+ *     Answer shown by default
+ *   </Collapsible>
+ */
+
+export interface Props {
+  /** Summary text shown when collapsed (required) */
+  title: string;
+  /** Whether to start expanded */
+  open?: boolean;
+  /** Visual variant */
+  variant?: 'default' | 'faq' | 'warning' | 'info';
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  title,
+  open = false,
+  variant = 'default',
+  class: className
+} = Astro.props;
+
+const detailsClasses = [
+  'collapsible',
+  `collapsible--${variant}`,
+  className
+].filter(Boolean).join(' ');
+---
+
+<details class={detailsClasses} open={open}>
+  <summary class="collapsible__summary">
+    <span class="collapsible__icon" aria-hidden="true"></span>
+    <span class="collapsible__title">{title}</span>
+  </summary>
+  <div class="collapsible__content">
+    <slot />
+  </div>
+</details>
+
+<style>
+  /* Collapsible - Wikipedia-style progressive disclosure */
+  .collapsible {
+    border: var(--border-width) solid var(--color-border);
+    margin: var(--space-md) 0;
+    background: var(--color-bg);
+  }
+
+  .collapsible__summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: var(--color-surface);
+    cursor: pointer;
+    user-select: none;
+    list-style: none; /* Remove default marker */
+    font-weight: 600;
+  }
+
+  .collapsible__summary::-webkit-details-marker {
+    display: none; /* Remove default marker (Safari) */
+  }
+
+  .collapsible__summary:hover {
+    background: var(--color-surface-alt);
+  }
+
+  .collapsible__summary:focus {
+    outline: 2px solid var(--color-link);
+    outline-offset: -2px;
+  }
+
+  /* Custom expand/collapse icon */
+  .collapsible__icon {
+    flex-shrink: 0;
+    width: 0;
+    height: 0;
+    border-left: 5px solid var(--color-text);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: transform 0.15s ease;
+  }
+
+  .collapsible[open] .collapsible__icon {
+    transform: rotate(90deg);
+  }
+
+  .collapsible__title {
+    flex: 1;
+  }
+
+  .collapsible__content {
+    padding: var(--space-md);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  /* Remove default paragraph margin in content */
+  .collapsible__content > :first-child {
+    margin-top: 0;
+  }
+
+  .collapsible__content > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* === VARIANTS === */
+
+  /* FAQ variant - for Q&A style */
+  .collapsible--faq .collapsible__summary {
+    font-family: var(--font-serif);
+  }
+
+  .collapsible--faq .collapsible__title::before {
+    content: "Q: ";
+    color: var(--color-link);
+  }
+
+  /* Warning variant */
+  .collapsible--warning {
+    border-color: var(--color-warning-border);
+    border-left-width: 4px;
+  }
+
+  .collapsible--warning .collapsible__summary {
+    background: var(--color-warning-bg);
+  }
+
+  .collapsible--warning .collapsible__summary:hover {
+    background: #fef0cc;
+  }
+
+  /* Info variant */
+  .collapsible--info {
+    border-color: var(--color-info-border);
+    border-left-width: 4px;
+  }
+
+  .collapsible--info .collapsible__summary {
+    background: var(--color-info-bg);
+  }
+
+  /* === ANIMATION === */
+  @media (prefers-reduced-motion: no-preference) {
+    .collapsible__content {
+      animation: collapsible-open 0.2s ease-out;
+    }
+  }
+
+  @keyframes collapsible-open {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* === PRINT === */
+  @media print {
+    .collapsible {
+      border: none;
+    }
+
+    .collapsible__summary {
+      display: none;
+    }
+
+    .collapsible__content {
+      padding: 0;
+      border: none;
+    }
+  }
+</style>

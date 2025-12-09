@@ -1,0 +1,94 @@
+---
+/**
+ * CARDGRID - UTILITY
+ *
+ * A responsive grid container for TopicCard components.
+ * Handles layout so cards don't need to know about grid.
+ *
+ * Usage:
+ *   <CardGrid>
+ *     <TopicCard ... />
+ *     <TopicCard ... />
+ *   </CardGrid>
+ *
+ *   <CardGrid columns={3}>
+ *     ...
+ *   </CardGrid>
+ */
+
+export interface Props {
+  /** Number of columns (default: 2, auto-adjusts on mobile) */
+  columns?: 2 | 3 | 4;
+  /** Gap size */
+  gap?: 'sm' | 'md' | 'lg';
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  columns = 2,
+  gap = 'md',
+  class: className
+} = Astro.props;
+
+const gridClasses = [
+  'card-grid',
+  `card-grid--cols-${columns}`,
+  `card-grid--gap-${gap}`,
+  className
+].filter(Boolean).join(' ');
+---
+
+<div class={gridClasses}>
+  <slot />
+</div>
+
+<style>
+  .card-grid {
+    display: grid;
+    width: 100%;
+  }
+
+  /* Column variants */
+  .card-grid--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-grid--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card-grid--cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Gap variants */
+  .card-grid--gap-sm {
+    gap: var(--space-sm);
+  }
+
+  .card-grid--gap-md {
+    gap: var(--space-lg);
+  }
+
+  .card-grid--gap-lg {
+    gap: var(--space-xl);
+  }
+
+  /* Responsive: stack on mobile */
+  @media (max-width: 768px) {
+    .card-grid--cols-2,
+    .card-grid--cols-3,
+    .card-grid--cols-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Medium screens: max 2 columns */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .card-grid--cols-3,
+    .card-grid--cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

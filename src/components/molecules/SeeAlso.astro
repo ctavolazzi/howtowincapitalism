@@ -1,0 +1,109 @@
+---
+/**
+ * SEEALSO - MOLECULE
+ *
+ * Design Patterns:
+ * - Related Content: Surface related articles
+ * - Progressive Disclosure: Optional expanded info
+ *
+ * Wikipedia-style "See also" section for linking related content.
+ * Common wiki pattern for discovery and navigation.
+ *
+ * Usage:
+ *   <SeeAlso links={[
+ *     { title: "Introduction", href: "/protocol/introduction/" },
+ *     { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Tool for comparing options" }
+ *   ]} />
+ */
+
+export interface SeeAlsoLink {
+  /** Link title */
+  title: string;
+  /** Link destination */
+  href: string;
+  /** Optional description */
+  description?: string;
+}
+
+export interface Props {
+  /** Array of related links */
+  links: SeeAlsoLink[];
+  /** Section title */
+  title?: string;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  links,
+  title = 'See also',
+  class: className
+} = Astro.props;
+
+if (!links || links.length === 0) {
+  return null;
+}
+
+const sectionClasses = ['see-also', className].filter(Boolean).join(' ');
+---
+
+<section class={sectionClasses}>
+  <h2 class="see-also__title">{title}</h2>
+  <ul class="see-also__list">
+    {links.map(link => (
+      <li class="see-also__item">
+        <a href={link.href} class="see-also__link">{link.title}</a>
+        {link.description && (
+          <span class="see-also__description"> — {link.description}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  /* SeeAlso - Wikipedia-style related links */
+  .see-also {
+    margin: var(--space-xl) 0;
+    padding-top: var(--space-lg);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .see-also__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    margin: 0 0 var(--space-md) 0;
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .see-also__list {
+    list-style: disc;
+    margin: 0;
+    padding-left: var(--space-xl);
+  }
+
+  .see-also__item {
+    margin-bottom: var(--space-sm);
+    line-height: var(--line-height);
+  }
+
+  .see-also__link {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .see-also__link:hover {
+    text-decoration: underline;
+  }
+
+  .see-also__link:visited {
+    color: var(--color-link-visited);
+  }
+
+  .see-also__description {
+    color: #72777d;
+    font-size: var(--text-sm);
+  }
+</style>

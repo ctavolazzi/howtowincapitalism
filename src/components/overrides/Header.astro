@@ -192,6 +192,7 @@ import Search from '@astrojs/starlight/components/Search.astro';
      NAV MENU (Overlay)
      - Fixed, covers viewport below header
      - Hidden by default
+     - Animated open/close (2026 microinteraction)
      ============================================ */
   .nav-menu {
     position: fixed;
@@ -202,10 +203,18 @@ import Search from '@astrojs/starlight/components/Search.astro';
     background: var(--header-bg);
     z-index: 9999;
     overflow-y: auto;
+    /* Animation */
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   }
 
   .nav-menu[hidden] {
-    display: none;
+    display: block;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    visibility: hidden;
   }
 
   /* ============================================

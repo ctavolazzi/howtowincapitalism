@@ -1,0 +1,149 @@
+---
+/**
+ * BREADCRUMBS - ATOM
+ *
+ * Design Patterns:
+ * - Breadcrumbs (UI-Patterns.com): Navigation hierarchy visualization
+ * - Template Method: Customizable separator and home label
+ *
+ * Shows the current page's location in the site hierarchy.
+ * Wikipedia-style minimal design using design tokens.
+ *
+ * Usage:
+ *   <Breadcrumbs />
+ *   <Breadcrumbs homeLabel="Wiki" separator="›" />
+ */
+
+export interface Props {
+  /** Label for home/root link */
+  homeLabel?: string;
+  /** Separator character between crumbs */
+  separator?: string;
+  /** Optional CSS class */
+  class?: string;
+  /** Hide on home page */
+  hideOnHome?: boolean;
+}
+
+const {
+  homeLabel = 'Home',
+  separator = '›',
+  class: className,
+  hideOnHome = true
+} = Astro.props;
+
+// Get current path and parse into segments
+const pathname = Astro.url.pathname;
+const segments = pathname.split('/').filter(Boolean);
+
+// Hide on home page if configured
+const isHome = segments.length === 0;
+if (hideOnHome && isHome) {
+  return null;
+}
+
+// Build breadcrumb items
+interface BreadcrumbItem {
+  label: string;
+  href: string;
+  isLast: boolean;
+}
+
+const crumbs: BreadcrumbItem[] = [
+  { label: homeLabel, href: '/', isLast: segments.length === 0 }
+];
+
+let path = '';
+segments.forEach((segment, index) => {
+  path += `/${segment}`;
+  const isLast = index === segments.length - 1;
+
+  // Format label: kebab-case → Title Case
+  const label = segment
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+
+  crumbs.push({ label, href: path + '/', isLast });
+});
+
+const navClasses = ['breadcrumbs', className].filter(Boolean).join(' ');
+---
+
+<nav class={navClasses} aria-label="Breadcrumb">
+  <ol class="breadcrumbs__list">
+    {crumbs.map((crumb, index) => (
+      <li class="breadcrumbs__item">
+        {index > 0 && (
+          <span class="breadcrumbs__separator" aria-hidden="true">
+            {separator}
+          </span>
+        )}
+        {crumb.isLast ? (
+          <span class="breadcrumbs__current" aria-current="page">
+            {crumb.label}
+          </span>
+        ) : (
+          <a href={crumb.href} class="breadcrumbs__link">
+            {crumb.label}
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  /* Breadcrumbs - Wikipedia-style minimal design */
+  .breadcrumbs {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+    line-height: 1.4;
+  }
+
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .breadcrumbs__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .breadcrumbs__separator {
+    color: #72777d;
+    user-select: none;
+  }
+
+  .breadcrumbs__link {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .breadcrumbs__link:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumbs__link:visited {
+    color: var(--color-link-visited);
+  }
+
+  .breadcrumbs__current {
+    color: var(--color-text);
+    font-weight: 400;
+  }
+
+  /* Print: hide breadcrumbs */
+  @media print {
+    .breadcrumbs {
+      display: none;
+    }
+  }
+</style>

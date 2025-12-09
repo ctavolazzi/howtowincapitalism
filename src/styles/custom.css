@@ -431,7 +431,341 @@ main ul, main ol {
 }
 
 /* ==============================================
-   8. PRINT STYLES
+   8. MICROINTERACTIONS & ANIMATIONS (2026 Trends)
+   Subtle, purposeful animations that enhance UX.
+   ============================================== */
+
+/* ===== Global Transition Defaults ===== */
+a,
+button,
+input,
+summary,
+[role="button"] {
+  transition: all 0.2s ease-out;
+}
+
+/* ===== Smooth Scrolling ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== Enhanced Link Interactions ===== */
+a {
+  position: relative;
+  transition: color 0.2s ease-out;
+}
+
+/* Animated underline on hover */
+main a:not(.title):not([class*="btn"]):not([class*="button"]) {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.3s ease-out, color 0.2s ease-out;
+}
+
+main a:not(.title):not([class*="btn"]):not([class*="button"]):hover {
+  background-size: 100% 1px;
+}
+
+/* ===== Button Microinteractions ===== */
+button,
+[role="button"],
+.btn,
+input[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease-out, box-shadow 0.2s ease-out, background 0.2s ease-out;
+}
+
+button:hover,
+[role="button"]:hover,
+.btn:hover,
+input[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:active,
+[role="button"]:active,
+.btn:active,
+input[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Focus States (Accessibility) ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+  border-radius: 2px !important;
+}
+
+/* ===== Card/Box Hover Effects ===== */
+details,
+.wiki-box,
+[class*="InfoBox"],
+[class*="NoteBox"] {
+  transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
+}
+
+details:hover,
+.wiki-box:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Summary/Accordion Animation ===== */
+details summary {
+  cursor: pointer;
+  transition: background 0.2s ease-out;
+}
+
+details summary::marker,
+details summary::-webkit-details-marker {
+  transition: transform 0.2s ease-out;
+}
+
+details[open] summary {
+  background: var(--color-surface);
+}
+
+/* ===== Table Row Hover ===== */
+table tbody tr {
+  transition: background 0.15s ease-out;
+}
+
+table tbody tr:hover {
+  background: var(--color-surface) !important;
+}
+
+/* ===== Loading/Pulse Animation ===== */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.loading,
+[aria-busy="true"] {
+  animation: subtle-pulse 1.5s ease-in-out infinite;
+}
+
+/* ===== Entrance Animations ===== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Apply to main content on page load */
+main {
+  animation: fade-in-up 0.4s ease-out;
+}
+
+/* ===== Hero Section Styles (2026 Trend) ===== */
+.hero {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  margin-bottom: var(--space-xl);
+  border-bottom: 2px solid var(--color-text);
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.hero__tagline {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 var(--space-md) 0;
+  line-height: var(--line-height-tight);
+}
+
+.hero__subtitle {
+  font-size: var(--text-lg);
+  color: #72777d;
+  margin: 0 0 var(--space-xl) 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  background: var(--color-text);
+  color: var(--color-bg) !important;
+  font-weight: 600;
+  text-decoration: none !important;
+  border: 2px solid var(--color-text);
+  transition: all 0.2s ease-out;
+}
+
+.hero__cta:hover {
+  background: var(--color-bg);
+  color: var(--color-text) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hero__cta:active {
+  transform: translateY(0);
+}
+
+/* Arrow animation on CTA */
+.hero__cta svg,
+.hero__cta .arrow {
+  transition: transform 0.2s ease-out;
+}
+
+.hero__cta:hover svg,
+.hero__cta:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ===== Scroll Indicator ===== */
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.scroll-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-lg);
+  color: var(--color-border);
+  animation: bounce-down 2s ease-in-out infinite;
+}
+
+/* ===== Icon Hover Effects ===== */
+svg {
+  transition: transform 0.2s ease-out;
+}
+
+button:hover svg,
+a:hover svg {
+  transform: scale(1.05);
+}
+
+/* ==============================================
+   9. PERFORMANCE OPTIMIZATIONS (2026 Sustainability)
+   Reduce energy usage, improve Core Web Vitals.
+   ============================================== */
+
+/* ===== GPU-Accelerated Animations ===== */
+/* Use transform/opacity instead of top/left for smooth 60fps */
+.hero__cta,
+button,
+[role="button"],
+details,
+.wiki-box {
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU layer */
+}
+
+/* Remove will-change after animation completes to free memory */
+.hero__cta:not(:hover),
+button:not(:hover):not(:active) {
+  will-change: auto;
+}
+
+/* ===== Content Visibility (Below-fold optimization) ===== */
+/* Browser can skip rendering until needed */
+footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 100px;
+}
+
+/* ===== Layout Containment ===== */
+/* Isolate components to prevent layout thrashing */
+.wiki-box,
+details,
+[class*="InfoBox"],
+[class*="NoteBox"],
+.hero {
+  contain: layout style;
+}
+
+/* ===== Image Optimization Hints ===== */
+img {
+  /* Prevent layout shift */
+  height: auto;
+  max-width: 100%;
+  /* Hint for lazy loading */
+  content-visibility: auto;
+}
+
+/* ===== Font Optimization ===== */
+/* System fonts are already used (no web font load) */
+/* Ensure text remains visible during font load */
+body {
+  font-display: swap;
+  text-rendering: optimizeSpeed;
+}
+
+/* ===== Reduce Motion for Battery Savings ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* Already handled in section 8, but reinforce */
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .scroll-indicator {
+    display: none; /* Hide bouncing indicator */
+  }
+}
+
+/* ===== Dark Mode Media Query (Future) ===== */
+/* Prepared for optional dark mode - uses less energy on OLED */
+@media (prefers-color-scheme: dark) {
+  /* Currently forced light mode, but CSS is ready */
+  /* Uncomment below to enable auto dark mode:
+  :root {
+    --color-bg: #1a1a1a;
+    --color-text: #e0e0e0;
+    --color-surface: #2a2a2a;
+    --color-surface-alt: #333333;
+    --color-border: #444444;
+  }
+  */
+}
+
+/* ==============================================
+   10. PRINT STYLES
    ============================================== */
 
 @media print {
@@ -442,5 +776,24 @@ main ul, main ol {
   main {
     width: 100% !important;
     margin: 0 !important;
+    animation: none !important;
+  }
+
+  /* Remove all visual effects for printing */
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure links show URLs */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: var(--text-sm);
+    color: #666;
   }
 }

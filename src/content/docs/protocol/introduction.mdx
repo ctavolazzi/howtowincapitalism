@@ -11,6 +11,7 @@ head:
 ---
 
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
 
 <Disclaimer />
 
@@ -35,6 +36,40 @@ This wiki is organized into two main sections:
 
 Start by reading through The Protocol to understand the foundational concepts, then follow Field Notes for ongoing updates and practical applications.
 
-## See Also
+---
 
-- [Latest Updates](/field-notes/latest/) — Recent additions to the wiki
+## Frequently Asked Questions
+
+import FAQ from '../../../components/molecules/FAQ.astro';
+
+<FAQ
+  items={[
+    {
+      question: "Is this financial advice?",
+      answer: "No. This wiki documents concepts and frameworks for educational purposes. We are not licensed financial advisors. Always consult qualified professionals for personal financial decisions."
+    },
+    {
+      question: "What's the 'satirical' part about?",
+      answer: "The title 'How To Win Capitalism' is tongue-in-cheek. We recognize that the system has problems. The satire is in taking the game seriously enough to document it like a strategy guide—because for most people, opting out isn't an option."
+    },
+    {
+      question: "Who maintains this wiki?",
+      answer: "People who got tired of learning expensive lessons the hard way. We document what we learn so others don't have to repeat our mistakes. Contributions and corrections are welcome."
+    },
+    {
+      question: "Why Wikipedia-style?",
+      answer: "Wikipedia's design prioritizes information density, readability, and accessibility. It's proven to work for encyclopedic content. We borrowed the aesthetic because it works, not because we're affiliated with Wikipedia."
+    },
+    {
+      question: "How often is this updated?",
+      answer: "Regularly. Check <a href='/field-notes/latest/'>Latest Updates</a> for recent changes. The Protocol section contains foundational content that changes less frequently. Field Notes capture ongoing observations."
+    }
+  ]}
+  firstOpen={true}
+/>
+
+<SeeAlso links={[
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Quantitative decision-making tool" },
+  { title: "Latest Updates", href: "/field-notes/latest/", description: "Recent additions to the wiki" },
+  { title: "Reports", href: "/reports/", description: "Downloadable analysis documents" }
+]} />
