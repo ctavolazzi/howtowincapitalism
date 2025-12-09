@@ -39,16 +39,33 @@
   --space-lg: calc(var(--space-unit) * 2);     /* 16px */
   --space-xl: calc(var(--space-unit) * 3);     /* 24px */
   --space-2xl: calc(var(--space-unit) * 4);    /* 32px */
+  --space-3xl: calc(var(--space-unit) * 6);    /* 48px */
 
-  /* ===== COLORS (Wikipedia palette) ===== */
+  /* ===== SECTION SPACING (tighter rhythm) ===== */
+  --section-gap: var(--space-xl);              /* 24px between sections */
+  --content-gap: var(--space-lg);              /* 16px between content elements */
+
+  /* ===== COLORS (Wikipedia palette) =====
+     All text colors are WCAG AA compliant (4.5:1 minimum)
+     Verify at: https://webaim.org/resources/contrastchecker/
+     ============================================== */
   --color-bg: #ffffff;
-  --color-text: #202122;
-  --color-link: #0645ad;
-  --color-link-visited: #0b0080;
+  --color-text: #202122;           /* 16.1:1 contrast - primary text */
+  --color-text-muted: #54595d;     /* 7.0:1 contrast - secondary text, subtitles */
+  --color-text-subtle: #6b6b6b;    /* 5.3:1 contrast - tertiary text, captions */
+  --color-link: #0645ad;           /* 7.2:1 contrast - links */
+  --color-link-visited: #0b0080;   /* 9.4:1 contrast - visited links */
   --color-border: #a2a9b1;
   --color-border-light: #c8ccd1;
   --color-surface: #f8f9fa;
   --color-surface-alt: #eaecf0;
+
+  /* ===== ACCESSIBILITY DANGER ZONE =====
+     NEVER use these colors for text on white backgrounds:
+     ❌ #72777d (4.48:1) - FAILS WCAG AA
+     ❌ #a2a9b1 (3.0:1)  - FAILS WCAG AA
+     ❌ #c8ccd1 (2.1:1)  - FAILS WCAG AA
+     ============================================== */
 
   /* Warning colors */
   --color-warning-bg: #fef6e7;
@@ -58,6 +75,16 @@
   /* Info colors */
   --color-info-bg: #eaf3ff;
   --color-info-border: #36c;
+
+  /* Success colors (green - for positive states) */
+  --color-success-bg: #e6ffed;
+  --color-success-border: #34d058;
+  --color-success-text: #22863a;     /* 4.5:1 contrast on white */
+
+  /* Error colors (red - for negative states) */
+  --color-error-bg: #ffeef0;
+  --color-error-border: #f97583;
+  --color-error-text: #cb2431;       /* 5.9:1 contrast on white */
 
   /* ===== TYPOGRAPHY ===== */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -129,34 +156,50 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   line-height: var(--line-height-tight);
   color: var(--color-text);
-  margin-top: var(--space-lg);
+  margin-top: var(--space-xl);
   margin-bottom: var(--space-sm);
+}
+
+/* First heading after hr or at start - reduce top margin */
+hr + h2,
+main > h2:first-child,
+.sl-markdown-content > h2:first-of-type {
+  margin-top: var(--space-lg);
 }
 
 h1 {
   font-size: var(--text-3xl);
   border-bottom: var(--border-width) solid var(--color-border);
   padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
 }
 
 h2 {
   font-size: var(--text-2xl);
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-bottom: var(--border-width) solid var(--color-border-light);
   padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
 }
 
 h3 {
   font-size: var(--text-xl);
-  font-weight: 700;
+  font-weight: 600;
+  margin-top: var(--space-lg);
 }
 
 h4, h5, h6 {
   font-size: var(--text-lg);
-  font-weight: 700;
+  font-weight: 600;
+  margin-top: var(--space-lg);
 }
 
 p {
-  margin: var(--space-md) 0;
+  margin: var(--space-sm) 0 var(--space-md) 0;
+}
+
+/* Paragraphs following headings - tighter */
+h2 + p, h3 + p, h4 + p {
+  margin-top: var(--space-xs);
 }
 
 /* ==============================================
@@ -191,7 +234,7 @@ a:hover {
   --sl-color-gray-2: var(--color-surface-alt);
   --sl-color-gray-3: var(--color-border-light);
   --sl-color-gray-4: var(--color-border);
-  --sl-color-gray-5: #72777d;
+  --sl-color-gray-5: var(--color-text-muted); /* Accessible muted text */
   --sl-color-gray-6: var(--color-text);
   --sl-color-accent: var(--color-link);
   --sl-color-accent-low: var(--color-info-bg);
@@ -224,6 +267,188 @@ aside,
 starlight-menu-button + *,
 body > div > nav:not(.mobile-nav):not(#main-nav) {
   display: none !important;
+}
+
+/* ==============================================
+   STARLIGHT HEADER CLEANUP
+   Remove accent borders, keep it clean
+   ============================================== */
+
+header,
+[role="banner"],
+.header {
+  background: var(--color-bg) !important;
+  border-bottom: 1px solid var(--color-border-light) !important;
+}
+
+/* Remove any decorative pseudo-elements from header */
+header::after,
+header::before,
+.header::after,
+.header::before,
+[role="banner"]::after,
+[role="banner"]::before,
+.header-wrap::after,
+.header-wrap::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* ==============================================
+   STARLIGHT WRAPPER LAYOUT
+   Force wider layouts on splash/hero pages
+   ============================================== */
+
+/* Container widths - MINIMAL padding on hero pages */
+.sl-container,
+[data-sl-container],
+.content-panel,
+[data-content-panel] {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Content panel that contains hero - kill top padding */
+.content-panel,
+.content-panel:first-child,
+[data-has-hero] .content-panel {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* The sl-container inside content-panel */
+.content-panel > .sl-container,
+.sl-container:has(.hero) {
+  padding: 0 var(--space-sm) !important;
+  margin: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .content-panel > .sl-container,
+  .sl-container:has(.hero) {
+    padding: 0 var(--space-md) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sl-container,
+  [data-sl-container],
+  .content-panel,
+  [data-content-panel] {
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+  }
+
+  .content-panel > .sl-container,
+  .sl-container:has(.hero) {
+    padding: 0 var(--space-lg) !important;
+  }
+}
+
+/* Starlight splash template - full width hero area */
+[data-template="splash"] main,
+.sl-splash main {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* ==============================================
+   CONTENT WRAPPER - SPLASH/HERO PAGES
+   Tighter, more refined spacing
+   ============================================== */
+
+/* Main content area for splash pages */
+[data-template="splash"] .sl-markdown-content,
+.sl-splash .sl-markdown-content,
+[data-has-hero] .sl-markdown-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-lg);
+}
+
+/* All direct children get centered */
+[data-template="splash"] .sl-markdown-content > *,
+.sl-splash .sl-markdown-content > *,
+[data-has-hero] .sl-markdown-content > * {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tighter section rhythm */
+[data-template="splash"] .sl-markdown-content > h2,
+.sl-splash .sl-markdown-content > h2,
+[data-has-hero] .sl-markdown-content > h2 {
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-md);
+}
+
+/* Paragraphs after headings */
+[data-template="splash"] .sl-markdown-content > h2 + p,
+.sl-splash .sl-markdown-content > h2 + p,
+[data-has-hero] .sl-markdown-content > h2 + p {
+  margin-top: 0;
+  margin-bottom: var(--space-lg);
+}
+
+/* Card grids - full width within container */
+[data-template="splash"] .card-grid,
+.sl-splash .card-grid,
+[data-has-hero] .card-grid,
+.sl-markdown-content .card-grid {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin-bottom: var(--space-lg);
+}
+
+/* Horizontal rules as section dividers */
+[data-template="splash"] .sl-markdown-content > hr,
+.sl-splash .sl-markdown-content > hr,
+[data-has-hero] .sl-markdown-content > hr {
+  margin: var(--space-xl) 0;
+  border: none;
+  border-top: 1px solid var(--color-border-light);
+}
+
+@media (min-width: 768px) {
+  [data-template="splash"] .sl-markdown-content,
+  .sl-splash .sl-markdown-content,
+  [data-has-hero] .sl-markdown-content {
+    max-width: 960px;
+    padding: var(--space-xl) var(--space-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-template="splash"] .sl-markdown-content,
+  .sl-splash .sl-markdown-content,
+  [data-has-hero] .sl-markdown-content {
+    max-width: 1100px;
+    padding: var(--space-xl) var(--space-2xl);
+  }
+}
+
+/* ==============================================
+   FORCE WIDE LAYOUT ON DESKTOP
+   Override any Starlight constraints
+   ============================================== */
+
+@media (min-width: 768px) {
+  /* Force the main content wrapper to be wider */
+  main,
+  [data-page-content],
+  .sl-markdown-content,
+  .content {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Ensure grid containers can expand */
+  .card-grid {
+    min-width: 500px;
+  }
 }
 
 /* Style Starlight's search button to match our header */
@@ -447,10 +672,37 @@ table a {
    6. PAGE CONTENT STYLING
    ============================================== */
 
-/* Main content area */
+/* ==============================================
+   MAIN CONTENT AREA
+   Clean, tight spacing
+   ============================================== */
+
 main {
-  padding: var(--space-xl) !important;
-  max-width: 800px !important;
+  padding: var(--space-lg) !important;
+  max-width: 100% !important;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Full-width elements within main */
+.card-grid,
+.completeness-meter,
+.favorites,
+.see-also {
+  max-width: 100%;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  main {
+    padding: var(--space-xl) var(--space-xl) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  main {
+    padding: var(--space-xl) var(--space-2xl) !important;
+  }
 }
 
 /* Page title styling */
@@ -500,6 +752,21 @@ main ul, main ol {
   display: table;
   clear: both;
 }
+
+/* ===== ACCESSIBLE TEXT UTILITIES =====
+   Use these instead of hardcoding colors.
+   All meet WCAG AA (4.5:1 minimum contrast).
+   ============================================== */
+.text-primary   { color: var(--color-text) !important; }        /* 16.1:1 */
+.text-muted     { color: var(--color-text-muted) !important; }  /* 7.0:1 */
+.text-subtle    { color: var(--color-text-subtle) !important; } /* 5.3:1 */
+.text-link      { color: var(--color-link) !important; }        /* 7.2:1 */
+
+/* ===== BACKGROUND + TEXT COMBOS (Always safe) ===== */
+.bg-surface     { background: var(--color-surface) !important; color: var(--color-text) !important; }
+.bg-surface-alt { background: var(--color-surface-alt) !important; color: var(--color-text) !important; }
+.bg-warning     { background: var(--color-warning-bg) !important; color: var(--color-warning-text) !important; }
+.bg-info        { background: var(--color-info-bg) !important; color: var(--color-text) !important; }
 
 /* ==============================================
    8. MICROINTERACTIONS & ANIMATIONS (2026 Trends)
@@ -662,66 +929,178 @@ main {
   animation: fade-in-up 0.4s ease-out;
 }
 
-/* ===== Hero Section Styles (2026 Trend) ===== */
-.hero {
+/* ==============================================
+   STARLIGHT HERO OVERRIDES
+   AGGRESSIVE - Minimal whitespace
+   ============================================== */
+
+/* Kill any Starlight hero wrapper padding */
+.content-panel:has(.hero),
+[data-has-hero] .content-panel,
+.hero + * {
+  padding-top: 0 !important;
+}
+
+/* Hero container - MINIMAL padding */
+.hero,
+[data-hero],
+.sl-hero,
+[class*="Hero"],
+.astro-jbfsktt5 {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  padding: var(--space-sm) var(--space-md) var(--space-sm) !important;
+  margin: 0 !important;
   text-align: center;
-  padding: var(--space-2xl) var(--space-lg);
-  margin-bottom: var(--space-xl);
-  border-bottom: 2px solid var(--color-text);
-  animation: fade-in-up 0.5s ease-out;
 }
 
-.hero__tagline {
-  font-family: var(--font-serif);
-  font-size: var(--text-2xl);
-  font-weight: 400;
-  color: var(--color-text);
-  margin: 0 0 var(--space-md) 0;
-  line-height: var(--line-height-tight);
+/* Kill ALL hero internal spacing */
+.hero .stack,
+.hero .sl-flex.stack,
+.hero .sl-flex,
+.hero .copy,
+.hero .sl-flex.copy,
+[class*="Hero"] .stack {
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.hero__subtitle {
-  font-size: var(--text-lg);
-  color: #72777d;
-  margin: 0 0 var(--space-xl) 0;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+/* Reset Starlight's scoped hero styles */
+[class*="astro-jbfsktt5"] {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
+/* Hero copy (title + tagline container) */
+.hero .copy,
+.hero .sl-flex.copy {
+  gap: var(--space-xs) !important;
+}
+
+/* Starlight hero title - compact */
+.hero h1,
+[data-hero] h1,
+.sl-hero h1,
+[class*="Hero"] h1 {
+  color: var(--color-text) !important;
+  font-size: clamp(1.4rem, 6vw, 1.75rem) !important;
+  margin: 0 !important;
+  padding-bottom: 4px !important;
+  border-bottom: 2px solid var(--color-text) !important;
+  display: inline-block;
+  line-height: 1.15 !important;
+}
+
+/* Hero tagline/subtitle - tight */
+.hero .tagline,
+.hero p,
+[data-hero] .tagline,
+[data-hero] p,
+.sl-hero .tagline,
+.sl-hero p,
+[class*="Hero"] p,
+[class*="Hero"] .tagline,
+.hero .copy p,
+.hero .copy .tagline {
+  color: var(--color-text) !important;
+  opacity: 0.8 !important;
+  font-size: var(--text-sm) !important;
+  line-height: 1.4 !important;
+  margin: var(--space-xs) auto var(--space-sm) !important;
+  padding: 0 !important;
+  max-width: 420px !important;
+}
+
+/* Hero actions container - tight */
+.hero .sl-flex:not(.stack),
+.hero .actions,
+[data-hero] .sl-flex:not(.stack),
+[class*="Hero"] .actions {
+  gap: var(--space-xs) !important;
+  margin: var(--space-xs) 0 0 !important;
+  padding: 0 !important;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Primary button - compact */
+.hero .sl-link-button,
+[data-hero] .sl-link-button,
+.hero a[class*="primary"] {
+  color: var(--color-bg) !important;
+  background: var(--color-text) !important;
+  border-color: var(--color-text) !important;
+  padding: 6px 14px !important;
+  font-size: var(--text-sm) !important;
+}
+
+/* Secondary button */
+.hero .sl-link-button.secondary,
+[data-hero] .sl-link-button.secondary,
+.hero a[class*="secondary"] {
+  color: var(--color-text) !important;
+  background: transparent !important;
+  border-color: var(--color-border) !important;
+  padding: 6px 14px !important;
+}
+
+/* Tablet+ hero - slightly more breathing room */
+@media (min-width: 640px) {
+  .hero,
+  [data-hero],
+  .sl-hero,
+  [class*="Hero"] {
+    padding: var(--space-md) var(--space-lg) var(--space-md) !important;
+  }
+
+  .hero h1,
+  [data-hero] h1,
+  .sl-hero h1 {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+  }
+
+  .hero .tagline,
+  [data-hero] .tagline,
+  .sl-hero .tagline {
+    font-size: var(--text-base) !important;
+    max-width: 480px !important;
+  }
+}
+
+/* ===== Custom Hero CTA (compact) ===== */
 .hero__cta {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-xl);
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
   background: var(--color-text);
   color: var(--color-bg) !important;
   font-weight: 600;
+  font-size: var(--text-sm);
   text-decoration: none !important;
-  border: 2px solid var(--color-text);
-  transition: all 0.2s ease-out;
+  border: 1px solid var(--color-text);
+  transition: all 0.15s ease-out;
 }
 
 .hero__cta:hover {
   background: var(--color-bg);
   color: var(--color-text) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
 .hero__cta:active {
   transform: translateY(0);
 }
 
-/* Arrow animation on CTA */
 .hero__cta svg,
 .hero__cta .arrow {
-  transition: transform 0.2s ease-out;
+  transition: transform 0.15s ease-out;
 }
 
 .hero__cta:hover svg,
 .hero__cta:hover .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 /* ===== Scroll Indicator ===== */

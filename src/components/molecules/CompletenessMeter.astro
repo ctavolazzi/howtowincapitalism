@@ -120,7 +120,7 @@ const meterId = 'protocol-progress';
   .cm-count {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    color: #72777d;
+    color: var(--color-text);
   }
 
   .cm-visited {
@@ -197,7 +197,7 @@ const meterId = 'protocol-progress';
   }
 
   .cm-item[data-visited="true"] .cm-status {
-    color: #22863a;
+    color: var(--color-success-text, #22863a);
   }
 
   .cm-item[data-visited="true"] .cm-status::before {
@@ -205,13 +205,13 @@ const meterId = 'protocol-progress';
   }
 
   .cm-item[data-visited="true"] .cm-link {
-    color: #72777d;
+    color: var(--color-text-muted);
   }
 
   /* Compact mode */
   .cm-compact-label {
     font-size: var(--text-xs);
-    color: #72777d;
+    color: var(--color-text-muted);
   }
 
   .cm-percentage-inline {

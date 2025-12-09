@@ -49,46 +49,58 @@ const gridClasses = [
     width: 100%;
   }
 
-  /* Column variants */
-  .card-grid--cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .card-grid--cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .card-grid--cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  /* Gap variants */
+  /* Gap variants - tighter spacing */
   .card-grid--gap-sm {
-    gap: var(--space-sm);
+    gap: var(--space-xs);
   }
 
   .card-grid--gap-md {
-    gap: var(--space-lg);
+    gap: var(--space-sm);
   }
 
   .card-grid--gap-lg {
-    gap: var(--space-xl);
+    gap: var(--space-md);
   }
 
-  /* Responsive: stack on mobile */
-  @media (max-width: 768px) {
+  /* ===== MOBILE FIRST: Stack by default ===== */
+  .card-grid--cols-2,
+  .card-grid--cols-3,
+  .card-grid--cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* ===== TABLET (640px+): 2 columns ===== */
+  @media (min-width: 640px) {
     .card-grid--cols-2,
     .card-grid--cols-3,
     .card-grid--cols-4 {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  /* Medium screens: max 2 columns */
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .card-grid--cols-3,
-    .card-grid--cols-4 {
+  /* ===== DESKTOP (1024px+): Full columns ===== */
+  @media (min-width: 1024px) {
+    .card-grid--cols-2 {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-grid--cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card-grid--cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* ===== LARGE DESKTOP (1280px+): Slightly wider gaps ===== */
+  @media (min-width: 1280px) {
+    .card-grid--gap-md {
+      gap: var(--space-md);
+    }
+
+    .card-grid--gap-lg {
+      gap: var(--space-lg);
     }
   }
 </style>

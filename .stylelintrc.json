@@ -1,0 +1,46 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      ["color", "background-color", "border-color", "fill", "stroke"],
+      {
+        "ignoreValues": ["inherit", "initial", "unset", "currentColor", "transparent", "none"],
+        "disableFix": true,
+        "message": "❌ ACCESSIBILITY: Use CSS variables for colors (e.g., var(--color-text-muted)). Hardcoded hex values may fail WCAG contrast requirements."
+      }
+    ],
+    "color-no-hex": [
+      true,
+      {
+        "message": "❌ ACCESSIBILITY: Hex colors are not allowed. Use CSS variables: --color-text, --color-text-muted, --color-text-subtle, --color-link, etc.",
+        "severity": "warning"
+      }
+    ],
+    "color-named": [
+      "never",
+      {
+        "message": "❌ ACCESSIBILITY: Named colors are not allowed. Use CSS variables for consistent, accessible colors."
+      }
+    ],
+    "declaration-property-value-disallowed-list": {
+      "color": ["/^#/", "/^rgb/", "/^hsl/"],
+      "background-color": ["/^#/", "/^rgb/", "/^hsl/"],
+      "border-color": ["/^#/", "/^rgb/", "/^hsl/"]
+    },
+    "at-rule-no-unknown": null,
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "custom-property-pattern": null
+  },
+  "overrides": [
+    {
+      "files": ["**/custom.css"],
+      "rules": {
+        "color-no-hex": null,
+        "scale-unlimited/declaration-strict-value": null,
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ]
+}

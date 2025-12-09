@@ -185,12 +185,14 @@ debug.log('components', 'Extracted criteria', criteria);
 
   .dm-winner__confidence {
     font-size: var(--text-sm);
-    color: #72777d;
+    color: var(--color-text);
+    opacity: 0.8;
   }
 
   .dm-explanation {
     font-style: italic;
-    color: #72777d;
+    color: var(--color-text);
+    opacity: 0.85;
     margin: 0 0 var(--space-md) 0;
     padding-left: var(--space-md);
     border-left: 2px solid var(--color-border-light);
@@ -230,7 +232,7 @@ debug.log('components', 'Extracted criteria', criteria);
   }
 
   .dm-medal {
-    color: #fc3;
+    color: var(--color-warning-border); /* Gold medal color */
     margin-right: var(--space-xs);
   }
 
@@ -304,7 +306,8 @@ debug.log('components', 'Extracted criteria', criteria);
 
   .dm-list__label {
     font-size: var(--text-xs);
-    color: #72777d;
+    color: var(--color-text);
+    opacity: 0.8;
   }
 
   .dm-tag {
@@ -314,22 +317,35 @@ debug.log('components', 'Extracted criteria', criteria);
   }
 
   .dm-tag--strength {
-    background: #e6ffed;
-    border-color: #34d058;
-    color: #22863a;
+    background: var(--color-success-bg, #e6ffed);
+    border-color: var(--color-success-border, #34d058);
+    color: var(--color-success-text, #22863a);
   }
 
   .dm-tag--weakness {
-    background: #ffeef0;
-    border-color: #f97583;
-    color: #cb2431;
+    background: var(--color-error-bg, #ffeef0);
+    border-color: var(--color-error-border, #f97583);
+    color: var(--color-error-text, #cb2431);
   }
 
   /* Method footer */
   .dm-method {
     font-size: var(--text-xs);
-    color: #72777d;
+    color: var(--color-text);
+    opacity: 0.7;
     text-align: right;
     margin: var(--space-md) 0 0 0;
+  }
+
+  /* Responsive table */
+  @media (max-width: 640px) {
+    .dm-table {
+      font-size: var(--text-xs);
+    }
+
+    .dm-table th,
+    .dm-table td {
+      padding: var(--space-xs) var(--space-sm);
+    }
   }
 </style>
