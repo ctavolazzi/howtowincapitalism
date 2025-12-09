@@ -196,10 +196,15 @@ label:has(select[aria-label*="theme"]) {
    STARLIGHT LAYOUT ADJUSTMENTS
    ============================================== */
 
-/* Remove Starlight's default sidebar */
+/* Remove Starlight's default sidebar and navigation */
 .sidebar,
-nav[aria-label="Main"] {
-  display: none;
+nav[aria-label="Main"],
+.sl-sidebar,
+aside,
+[data-sl-sidebar],
+starlight-menu-button + *,
+body > div > nav:not(.mobile-nav):not(#main-nav) {
+  display: none !important;
 }
 
 /* Style Starlight's search button to match our header */
@@ -211,18 +216,62 @@ starlight-search button {
   height: 40px;
   padding: 0;
   background: transparent;
-  border: 1px solid #a2a9b1;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px !important;
   cursor: pointer;
   color: #202122;
 }
 
 starlight-search button:hover {
-  background: #f8f9fa;
+  background: #f5f5f5;
 }
 
 /* Hide Starlight's default mobile menu button */
 starlight-menu-button {
   display: none;
+}
+
+/* ===== MOBILE NAV DROPDOWN ===== */
+/* Positioned outside header to escape stacking context */
+nav.mobile-nav {
+  position: fixed !important;
+  top: 72px !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 999999 !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+  border-bottom: 1px solid #eaecf0 !important;
+}
+
+nav.mobile-nav[hidden] {
+  display: none !important;
+}
+
+nav.mobile-nav ul {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  background: #ffffff !important;
+}
+
+nav.mobile-nav li {
+  background: #ffffff !important;
+}
+
+nav.mobile-nav li a {
+  display: block !important;
+  padding: 14px 24px !important;
+  color: #202122 !important;
+  text-decoration: none !important;
+  font-size: 16px !important;
+  background: #ffffff !important;
+  transition: background 0.15s ease !important;
+}
+
+nav.mobile-nav li a:hover {
+  background: #f8f9fa !important;
+  color: #0645ad !important;
 }
 
 /* Reinstate table of contents with readable contrast */

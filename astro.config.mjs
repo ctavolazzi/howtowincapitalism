@@ -64,6 +64,8 @@ export default defineConfig({
 			components: {
 				ThemeSelect: './src/components/utilities/Empty.astro',
 				Header: './src/components/overrides/Header.astro',
+				Sidebar: './src/components/utilities/Empty.astro',
+				MobileMenuToggle: './src/components/utilities/Empty.astro',
 			},
 		}),
 	],
