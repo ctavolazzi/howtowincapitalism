@@ -186,3 +186,33 @@ export const log = ENABLED
  * Export enabled state for conditional logic
  */
 export const DEBUG_ENABLED = ENABLED;
+
+/**
+ * Initialize debug logging - call once on app start
+ * Logs environment info for troubleshooting
+ */
+export function initDebug(): void {
+  if (!ENABLED) return;
+
+  console.log(`
+╔═══════════════════════════════════════════════════════════════╗
+║  🔍 DEBUG MODE ENABLED                                        ║
+║  How To Win Capitalism - Debug Console                        ║
+╠═══════════════════════════════════════════════════════════════╣
+║  Environment: ${isDev ? 'Development' : 'Production'}                                    ║
+║  Force Debug: ${forceDebug}                                           ║
+║  Time: ${new Date().toISOString()}                 ║
+╚═══════════════════════════════════════════════════════════════╝
+  `);
+
+  debug.log('config', 'Debug modules available', Object.keys(MODULE_COLORS));
+}
+
+// Auto-init in dev mode
+if (ENABLED && typeof window !== 'undefined') {
+  // Client-side: init on load
+  window.addEventListener('DOMContentLoaded', () => initDebug());
+} else if (ENABLED) {
+  // Server-side: init immediately
+  initDebug();
+}
