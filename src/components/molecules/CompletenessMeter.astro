@@ -222,17 +222,27 @@ const meterId = 'protocol-progress';
 </style>
 
 <script define:vars={{ trackablePages, meterId }}>
-  // Completeness Meter - Client-side tracking
+  // Completeness Meter - Client-side tracking with debug logging
   (function() {
+    const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
+    const log = DEBUG
+      ? (...args) => console.log('🔍 [completeness-meter]', ...args)
+      : () => {};
+
     const STORAGE_KEY = 'htwc-visited-pages';
     const currentPath = window.location.pathname;
+
+    log('Initializing', { currentPath, trackablePages: trackablePages.length });
 
     // Get visited pages from localStorage
     function getVisitedPages() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
-      } catch {
+        const pages = stored ? JSON.parse(stored) : [];
+        log('getVisitedPages()', { count: pages.length, pages });
+        return pages;
+      } catch (e) {
+        log('getVisitedPages() error', e);
         return [];
       }
     }
@@ -241,19 +251,26 @@ const meterId = 'protocol-progress';
     function saveVisitedPages(pages) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
-      } catch {
-        // localStorage not available
+        log('saveVisitedPages()', { count: pages.length });
+      } catch (e) {
+        log('saveVisitedPages() error - localStorage not available', e);
       }
     }
 
     // Mark current page as visited
     function markCurrentPageVisited() {
       const trackablePaths = trackablePages.map(p => p.path);
-      if (trackablePaths.includes(currentPath)) {
+      const isTrackable = trackablePaths.includes(currentPath);
+      log('markCurrentPageVisited()', { currentPath, isTrackable });
+
+      if (isTrackable) {
         const visited = getVisitedPages();
         if (!visited.includes(currentPath)) {
           visited.push(currentPath);
           saveVisitedPages(visited);
+          log('Page marked as visited', currentPath);
+        } else {
+          log('Page already visited', currentPath);
         }
       }
     }
@@ -267,8 +284,13 @@ const meterId = 'protocol-progress';
       ).length;
       const percentage = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
 
+      log('updateMeterUI()', { visitedCount, total, percentage: percentage + '%' });
+
       // Update all meters on the page
-      document.querySelectorAll('.completeness-meter').forEach(meter => {
+      const meters = document.querySelectorAll('.completeness-meter');
+      log('Found meters on page', meters.length);
+
+      meters.forEach((meter, idx) => {
         // Update count
         const visitedEl = meter.querySelector('.cm-visited');
         if (visitedEl) visitedEl.textContent = visitedCount;
@@ -298,7 +320,9 @@ const meterId = 'protocol-progress';
     }
 
     // Initialize
+    log('Running initialization...');
     markCurrentPageVisited();
     updateMeterUI();
+    log('Initialization complete ✅');
   })();
 </script>

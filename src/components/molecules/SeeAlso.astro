@@ -15,6 +15,7 @@
  *     { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Tool for comparing options" }
  *   ]} />
  */
+import { debug } from '../../lib/debug';
 
 export interface SeeAlsoLink {
   /** Link title */
@@ -40,7 +41,14 @@ const {
   class: className
 } = Astro.props;
 
+debug.log('components', 'SeeAlso rendering', {
+  title,
+  linkCount: links?.length ?? 0,
+  links: links?.map(l => l.title) ?? [],
+});
+
 if (!links || links.length === 0) {
+  debug.warn('components', 'SeeAlso has no links, returning null');
   return null;
 }
 

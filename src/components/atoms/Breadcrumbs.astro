@@ -13,6 +13,7 @@
  *   <Breadcrumbs />
  *   <Breadcrumbs homeLabel="Wiki" separator="›" />
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Label for home/root link */
@@ -36,9 +37,16 @@ const {
 const pathname = Astro.url.pathname;
 const segments = pathname.split('/').filter(Boolean);
 
+debug.log('components', 'Breadcrumbs rendering', {
+  pathname,
+  segments,
+  hideOnHome,
+});
+
 // Hide on home page if configured
 const isHome = segments.length === 0;
 if (hideOnHome && isHome) {
+  debug.log('components', 'Breadcrumbs hidden (home page)');
   return null;
 }
 
@@ -64,6 +72,11 @@ segments.forEach((segment, index) => {
     .replace(/\b\w/g, c => c.toUpperCase());
 
   crumbs.push({ label, href: path + '/', isLast });
+});
+
+debug.log('components', 'Breadcrumbs built', {
+  crumbCount: crumbs.length,
+  labels: crumbs.map(c => c.label),
 });
 
 const navClasses = ['breadcrumbs', className].filter(Boolean).join(' ');

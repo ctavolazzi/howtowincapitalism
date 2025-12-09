@@ -1,41 +1,68 @@
 ---
 title: Reports
-description: Free reports and resources
+description: Free reports, checklists, and templates
 category: reference
-pagefind: false
 sidebar:
   order: 1
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: financial reports, checklists, templates, guides, financial planning
 ---
 
 import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
-import BlankSlate from '../../../components/molecules/BlankSlate.astro';
 import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import TopicCard from '../../../components/molecules/TopicCard.astro';
+import CardGrid from '../../../components/utilities/CardGrid.astro';
 
 <Breadcrumbs />
 
 <Disclaimer />
 
-## Free Reports
+## Free Reports & Templates
 
-Download free reports on building financial autonomy.
+Practical resources for building financial autonomy. All free, no signup required.
 
-<BlankSlate
-  title="Reports Coming Soon"
-  description="We're working on in-depth analysis and downloadable guides. Check back later or follow Field Notes for updates."
-  icon="📊"
-  ctaText="Read Latest Updates"
-  ctaHref="/field-notes/latest/"
-/>
+<CardGrid columns={2} gap="md">
+  <TopicCard
+    title="Financial Autonomy Checklist"
+    description="Step-by-step roadmap from foundation to financial independence"
+    href="/reports/financial-autonomy-checklist/"
+    icon="✅"
+    tag="Checklist"
+  />
+  <TopicCard
+    title="Decision Matrix Template"
+    description="Blank template for making any multi-criteria decision"
+    href="/reports/decision-matrix-template/"
+    icon="📋"
+    tag="Template"
+  />
+  <TopicCard
+    title="Tax Optimization Guide"
+    description="Legal strategies to minimize your tax burden by income level"
+    href="/reports/tax-optimization-guide/"
+    icon="📊"
+    tag="Guide"
+  />
+</CardGrid>
 
-{/*
-When you add a PDF to /public/reports/, link it like this:
+---
 
-- [Report Name](/reports/report-name.pdf) — Description
+## What's in Each Report
 
-*/}
+| Report | Best For |
+|--------|----------|
+| **Financial Autonomy Checklist** | Tracking your progress through 7 levels |
+| **Decision Matrix Template** | Job offers, housing, major purchases |
+| **Tax Optimization Guide** | Understanding tax-advantaged strategies |
+
+---
 
 <SeeAlso links={[
   { title: "Introduction", href: "/protocol/introduction/", description: "Start here to understand the framework" },
-  { title: "Latest Updates", href: "/field-notes/latest/", description: "Recent additions to the wiki" }
+  { title: "Decision Matrix Tool", href: "/protocol/decision-matrix/", description: "Interactive decision tool" },
+  { title: "Tax-Advantaged Accounts", href: "/protocol/tax-advantaged-accounts/", description: "Deep dive on accounts" }
 ]} />

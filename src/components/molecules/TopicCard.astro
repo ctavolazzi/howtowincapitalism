@@ -23,6 +23,7 @@
  *     tag="Tool"
  *   />
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Card title (required) */
@@ -47,6 +48,14 @@ const {
   icon,
   class: className
 } = Astro.props;
+
+debug.log('components', 'TopicCard rendering', {
+  title,
+  href,
+  tag: tag ?? '(no tag)',
+  hasDescription: !!description,
+  hasIcon: !!icon,
+});
 
 const cardClasses = ['topic-card', className].filter(Boolean).join(' ');
 ---

@@ -18,6 +18,7 @@
  *     Answer shown by default
  *   </Collapsible>
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Summary text shown when collapsed (required) */
@@ -36,6 +37,12 @@ const {
   variant = 'default',
   class: className
 } = Astro.props;
+
+debug.log('components', 'Collapsible rendering', {
+  title: title.slice(0, 40) + (title.length > 40 ? '...' : ''),
+  variant,
+  open,
+});
 
 const detailsClasses = [
   'collapsible',

@@ -4,6 +4,25 @@
 
    Built from ONE base unit.
    Everything extends this foundation.
+   
+   NOTE ON !important USAGE:
+   This stylesheet contains ~80 !important declarations.
+   Most are NECESSARY to override Starlight's theme system,
+   which uses its own CSS variables and specificity.
+   
+   Categories of !important usage:
+   1. REQUIRED: Forcing light-mode (Starlight defaults to dark)
+   2. REQUIRED: Mobile nav overrides (Starlight's nav structure)
+   3. REQUIRED: Color consistency (preventing theme bleed)
+   4. REQUIRED: Accessibility (reduced-motion, print styles)
+   5. FRAMEWORK: Overriding Starlight component styles
+   
+   To reduce !important usage, we would need to either:
+   - Fork Starlight's CSS entirely
+   - Use CSS layers (@layer) - requires build changes
+   - Accept Starlight's default styling
+   
+   Current approach: Document and maintain intentionally.
    ============================================== */
 
 /* ==============================================
@@ -377,20 +396,13 @@ dialog::backdrop {
    Ensure all elements have explicit light-mode colors.
    ============================================== */
 
-/* Force text colors on all table elements */
-table,
-table th,
-table td,
-table thead,
-table tbody,
-table tr {
+/* Force text colors on all table elements (Starlight override) */
+table, table th, table td, table tr {
   color: var(--color-text) !important;
-  background-color: var(--color-bg);
 }
 
 table th {
   background-color: var(--color-surface-alt) !important;
-  color: var(--color-text) !important;
 }
 
 table tbody tr:nth-child(even) {

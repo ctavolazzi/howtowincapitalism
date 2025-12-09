@@ -9,6 +9,7 @@
  *
  * All colors/spacing come from CSS custom properties (single source of truth).
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   variant?: 'default' | 'warning' | 'info' | 'sidebar' | 'nav' | 'cta';
@@ -25,6 +26,13 @@ const {
   id,
   padding = 'md'
 } = Astro.props;
+
+debug.log('components', 'WikiBox rendering', {
+  variant,
+  title: title ?? '(no title)',
+  id: id ?? '(no id)',
+  padding,
+});
 
 // Compose classes (clean approach)
 const boxClasses = [

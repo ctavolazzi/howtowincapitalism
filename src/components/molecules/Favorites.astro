@@ -1,0 +1,334 @@
+---
+/**
+ * Favorites Component
+ * 
+ * Allows users to bookmark pages and view their favorites list.
+ * Uses localStorage to persist across sessions.
+ * 
+ * Usage:
+ * <Favorites />
+ * 
+ * Features:
+ * - Add/remove current page from favorites
+ * - Display favorites list
+ * - Persist across sessions via localStorage
+ */
+
+export interface Props {
+  /** Show compact version (button only, no list) */
+  compact?: boolean;
+  /** Title for the favorites section */
+  title?: string;
+}
+
+const { compact = false, title = "Your Favorites" } = Astro.props;
+---
+
+<div class="favorites-container" data-compact={compact}>
+  {/* Favorite toggle button */}
+  <button 
+    class="favorite-toggle" 
+    id="favorite-toggle"
+    aria-label="Add to favorites"
+    title="Add to favorites"
+  >
+    <span class="favorite-icon" id="favorite-icon">☆</span>
+    <span class="favorite-text" id="favorite-text">Add to Favorites</span>
+  </button>
+  
+  {!compact && (
+    <div class="favorites-list-container" id="favorites-list-container">
+      <h3 class="favorites-title">{title}</h3>
+      <ul class="favorites-list" id="favorites-list">
+        <li class="favorites-empty" id="favorites-empty">No favorites yet. Click the star on any page to add it.</li>
+      </ul>
+    </div>
+  )}
+</div>
+
+<style>
+  .favorites-container {
+    margin: var(--space-md) 0;
+  }
+  
+  .favorite-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+  
+  .favorite-toggle:hover {
+    background: var(--color-surface-alt);
+    border-color: var(--color-primary);
+  }
+  
+  .favorite-toggle.is-favorited {
+    background: var(--color-warning-bg, #fff8e6);
+    border-color: var(--color-warning, #f5a623);
+  }
+  
+  .favorite-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  
+  .favorite-toggle:hover .favorite-icon {
+    transform: scale(1.1);
+  }
+  
+  .favorite-toggle.is-favorited .favorite-icon {
+    color: var(--color-warning, #f5a623);
+  }
+  
+  [data-compact="true"] .favorite-text {
+    display: none;
+  }
+  
+  [data-compact="true"] .favorite-toggle {
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .favorites-list-container {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  .favorites-title {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  
+  .favorites-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .favorites-list li {
+    padding: var(--space-xs) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .favorites-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .favorites-empty {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+  
+  .favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .favorite-item a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+  
+  .favorite-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .favorite-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    padding: var(--space-xs);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  
+  .favorite-remove:hover {
+    opacity: 1;
+    color: var(--color-error, #e53e3e);
+  }
+</style>
+
+<script>
+  // Favorites management with debug logging
+  const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
+  const log = DEBUG
+    ? (...args: unknown[]) => console.log('🔍 [favorites]', ...args)
+    : () => {};
+
+  const STORAGE_KEY = 'htwc-favorites';
+
+  interface FavoriteItem {
+    path: string;
+    title: string;
+    addedAt: string;
+  }
+
+  function getFavorites(): FavoriteItem[] {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const favorites = stored ? JSON.parse(stored) : [];
+      log('getFavorites()', { count: favorites.length });
+      return favorites;
+    } catch (e) {
+      log('getFavorites() error', e);
+      return [];
+    }
+  }
+
+  function saveFavorites(favorites: FavoriteItem[]): void {
+    log('saveFavorites()', { count: favorites.length });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+  }
+
+  function isFavorited(path: string): boolean {
+    const result = getFavorites().some(f => f.path === path);
+    log('isFavorited()', { path, result });
+    return result;
+  }
+
+  function addFavorite(path: string, title: string): void {
+    log('addFavorite()', { path, title });
+    const favorites = getFavorites();
+    if (!favorites.some(f => f.path === path)) {
+      favorites.push({ path, title, addedAt: new Date().toISOString() });
+      saveFavorites(favorites);
+      log('Favorite added ✅', { path, title });
+    } else {
+      log('Already favorited, skipping', path);
+    }
+  }
+
+  function removeFavorite(path: string): void {
+    log('removeFavorite()', { path });
+    const favorites = getFavorites().filter(f => f.path !== path);
+    saveFavorites(favorites);
+    log('Favorite removed ✅', { path, remaining: favorites.length });
+  }
+
+  function getCurrentPath(): string {
+    return window.location.pathname;
+  }
+
+  function getCurrentTitle(): string {
+    const h1 = document.querySelector('h1');
+    const title = h1?.textContent?.trim() || document.title.split('|')[0].trim();
+    log('getCurrentTitle()', { title });
+    return title;
+  }
+
+  function updateToggleButton(): void {
+    const toggle = document.getElementById('favorite-toggle');
+    const icon = document.getElementById('favorite-icon');
+    const text = document.getElementById('favorite-text');
+
+    if (!toggle || !icon || !text) {
+      log('updateToggleButton() - elements not found');
+      return;
+    }
+
+    const path = getCurrentPath();
+    const favorited = isFavorited(path);
+
+    log('updateToggleButton()', { path, favorited });
+
+    toggle.classList.toggle('is-favorited', favorited);
+    icon.textContent = favorited ? '★' : '☆';
+    text.textContent = favorited ? 'Remove from Favorites' : 'Add to Favorites';
+    toggle.setAttribute('aria-label', text.textContent);
+    toggle.setAttribute('title', text.textContent);
+  }
+
+  function renderFavoritesList(): void {
+    const listContainer = document.getElementById('favorites-list-container');
+    const list = document.getElementById('favorites-list');
+    const empty = document.getElementById('favorites-empty');
+
+    if (!list) {
+      log('renderFavoritesList() - list element not found');
+      return;
+    }
+
+    const favorites = getFavorites();
+    log('renderFavoritesList()', { count: favorites.length });
+
+    // Clear existing items (except empty message)
+    const existingItems = list.querySelectorAll('.favorite-item');
+    existingItems.forEach(item => item.remove());
+
+    if (favorites.length === 0) {
+      if (empty) empty.style.display = 'block';
+      log('Showing empty state');
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+
+    favorites.forEach(fav => {
+      const li = document.createElement('li');
+      li.className = 'favorite-item';
+      li.innerHTML = `
+        <a href="${fav.path}">${fav.title}</a>
+        <button class="favorite-remove" data-path="${fav.path}" aria-label="Remove ${fav.title}">×</button>
+      `;
+      list.appendChild(li);
+    });
+
+    // Add remove handlers
+    list.querySelectorAll('.favorite-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const path = (e.currentTarget as HTMLElement).dataset.path;
+        if (path) {
+          log('Remove button clicked', { path });
+          removeFavorite(path);
+          renderFavoritesList();
+          updateToggleButton();
+        }
+      });
+    });
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    log('Favorites component initializing...', { path: getCurrentPath() });
+
+    updateToggleButton();
+    renderFavoritesList();
+
+    // Toggle handler
+    const toggle = document.getElementById('favorite-toggle');
+    toggle?.addEventListener('click', () => {
+      const path = getCurrentPath();
+      const title = getCurrentTitle();
+
+      log('Toggle clicked', { path, title, wasFavorited: isFavorited(path) });
+
+      if (isFavorited(path)) {
+        removeFavorite(path);
+      } else {
+        addFavorite(path, title);
+      }
+
+      updateToggleButton();
+      renderFavoritesList();
+    });
+
+    log('Favorites component initialized ✅');
+  });
+</script>

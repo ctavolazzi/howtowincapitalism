@@ -8,6 +8,7 @@
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import { DEFAULTS } from '../../lib/constants';
+import { debug } from '../../lib/debug';
 
 export interface Props {
   text?: string;
@@ -15,6 +16,11 @@ export interface Props {
 }
 
 const { text = DEFAULTS.disclaimer, id = 'site-disclaimer' } = Astro.props;
+
+debug.log('components', 'Disclaimer rendering', {
+  id,
+  textLength: text.length,
+});
 ---
 
 <div class="disclaimer-wrapper" data-disclaimer-id={id}>
@@ -65,20 +71,31 @@ const { text = DEFAULTS.disclaimer, id = 'site-disclaimer' } = Astro.props;
 </style>
 
 <script>
-  // Closable disclaimer with localStorage persistence
+  // Closable disclaimer with localStorage persistence and debug logging
+  const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
+  const log = DEBUG
+    ? (...args: unknown[]) => console.log('🔍 [disclaimer]', ...args)
+    : () => {};
+
   document.querySelectorAll('.disclaimer-wrapper').forEach((wrapper) => {
     const id = wrapper.getAttribute('data-disclaimer-id');
     const storageKey = `disclaimer-dismissed-${id}`;
 
+    log('Checking disclaimer', { id, storageKey });
+
     // Check if already dismissed
     if (localStorage.getItem(storageKey) === 'true') {
+      log('Disclaimer already dismissed, hiding', { id });
       wrapper.setAttribute('hidden', '');
       return;
     }
 
+    log('Disclaimer visible', { id });
+
     // Add close handler
     const closeBtn = wrapper.querySelector('.disclaimer-close');
     closeBtn?.addEventListener('click', () => {
+      log('Disclaimer dismissed by user', { id });
       wrapper.setAttribute('hidden', '');
       localStorage.setItem(storageKey, 'true');
     });

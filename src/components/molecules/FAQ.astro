@@ -18,6 +18,7 @@
  *   <FAQ title="Common Questions" items={...} />
  */
 import Collapsible from '../atoms/Collapsible.astro';
+import { debug } from '../../lib/debug';
 
 export interface FAQItem {
   /** The question */
@@ -44,7 +45,14 @@ const {
   class: className
 } = Astro.props;
 
+debug.log('components', 'FAQ rendering', {
+  title: title ?? '(no title)',
+  itemCount: items?.length ?? 0,
+  firstOpen,
+});
+
 if (!items || items.length === 0) {
+  debug.warn('components', 'FAQ has no items, returning null');
   return null;
 }
 

@@ -12,6 +12,7 @@
  * Usage in layout:
  *   <Footer />
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Optional CSS class */
@@ -21,6 +22,7 @@ export interface Props {
 const { class: className } = Astro.props;
 
 const currentYear = new Date().getFullYear();
+debug.log('components', 'Footer rendering', { year: currentYear });
 
 // Navigation links
 const navLinks = [

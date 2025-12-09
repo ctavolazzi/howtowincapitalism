@@ -14,6 +14,7 @@
  *   import Hero from '../../components/organisms/Hero.astro';
  *   <Hero />
  */
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Main tagline */
@@ -35,6 +36,13 @@ const {
   ctaLink = "/protocol/introduction/",
   showScrollIndicator = true
 } = Astro.props;
+
+debug.log('components', 'Hero rendering', {
+  tagline: tagline.slice(0, 30) + '...',
+  ctaText,
+  ctaLink,
+  showScrollIndicator,
+});
 ---
 
 <section class="hero">

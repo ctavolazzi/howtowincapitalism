@@ -4,7 +4,7 @@
  *
  * ACTIVE (in use on pages):
  *   Atoms:     WikiBox, Breadcrumbs, Collapsible
- *   Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter
+ *   Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter, Favorites
  *   Utilities: Empty, CardGrid
  *   Organisms: Footer
  *
@@ -29,6 +29,7 @@ export { default as SeeAlso } from './molecules/SeeAlso.astro';
 export { default as FAQ } from './molecules/FAQ.astro';
 export { default as BlankSlate } from './molecules/BlankSlate.astro';
 export { default as CompletenessMeter } from './molecules/CompletenessMeter.astro';
+export { default as Favorites } from './molecules/Favorites.astro';
 
 // Utilities
 export { default as Empty } from './utilities/Empty.astro';

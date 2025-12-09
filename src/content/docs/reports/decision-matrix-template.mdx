@@ -1,0 +1,203 @@
+---
+title: Decision Matrix Template
+description: A blank template for making quantitative decisions
+category: tool
+difficulty: beginner
+readTime: "4 min"
+sidebar:
+  order: 3
+  badge:
+    text: Template
+    variant: note
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: decision matrix, weighted scoring, decision template, comparison framework
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+<Breadcrumbs />
+
+<Disclaimer />
+
+## Decision Matrix Template
+
+Use this template to make any multi-criteria decision. Copy and fill in your options, criteria, weights, and scores.
+
+---
+
+## Blank Template
+
+### Step 1: Define Your Options
+
+| # | Option |
+|---|--------|
+| A | ___ |
+| B | ___ |
+| C | ___ |
+| D | ___ |
+
+### Step 2: Define Your Criteria and Weights
+
+| Criterion | Weight (%) |
+|-----------|------------|
+| ___ | __% |
+| ___ | __% |
+| ___ | __% |
+| ___ | __% |
+| ___ | __% |
+| **Total** | **100%** |
+
+<Aside type="note" title="Weights Must Sum to 100%">
+Weights represent relative importance. If cost matters twice as much as convenience, give cost 40% and convenience 20%.
+</Aside>
+
+### Step 3: Score Each Option (1-10)
+
+| Criterion | Option A | Option B | Option C | Option D |
+|-----------|----------|----------|----------|----------|
+| ___ | __ | __ | __ | __ |
+| ___ | __ | __ | __ | __ |
+| ___ | __ | __ | __ | __ |
+| ___ | __ | __ | __ | __ |
+| ___ | __ | __ | __ | __ |
+
+### Step 4: Calculate Weighted Scores
+
+For each option: (Score × Weight) for each criterion, then sum.
+
+| Option | Calculation | Total |
+|--------|-------------|-------|
+| A | ___ | ___ |
+| B | ___ | ___ |
+| C | ___ | ___ |
+| D | ___ | ___ |
+
+### Step 5: Result
+
+**Winner:** _______________
+
+**Confidence:** High / Medium / Low (based on score gaps)
+
+---
+
+## How to Use This Template
+
+<Steps>
+1. **List 2-4 realistic options** — Don't include options you wouldn't actually choose
+2. **Identify 3-5 criteria that matter** — What factors will determine success?
+3. **Assign weights** — Force rank importance, must total 100%
+4. **Score honestly (1-10)** — 1 = worst, 10 = best, 5 = average
+5. **Calculate totals** — Math reveals the answer
+6. **Sanity check** — Does the result feel right? If not, adjust weights
+</Steps>
+
+---
+
+## Scoring Guide
+
+| Score | Meaning |
+|-------|---------|
+| 10 | Exceptional, best possible |
+| 8-9 | Very good, strong performer |
+| 6-7 | Above average, solid |
+| 5 | Average, acceptable |
+| 3-4 | Below average, weak |
+| 1-2 | Poor, significant concerns |
+
+<Aside type="tip" title="Avoid All 5s">
+If everything scores 5, you're not being honest. Force differentiation between options.
+</Aside>
+
+---
+
+## Example: Job Offer Decision
+
+<Collapsible title="Filled-In Example">
+
+**Options:**
+- A: Current Job
+- B: Startup Offer  
+- C: Big Tech Offer
+
+**Criteria & Weights:**
+
+| Criterion | Weight |
+|-----------|--------|
+| Total Compensation | 30% |
+| Growth Opportunity | 25% |
+| Work-Life Balance | 20% |
+| Job Security | 15% |
+| Culture Fit | 10% |
+| **Total** | **100%** |
+
+**Scores:**
+
+| Criterion | Current | Startup | Big Tech |
+|-----------|---------|---------|----------|
+| Total Comp | 6 | 5 | 9 |
+| Growth | 5 | 9 | 7 |
+| Work-Life | 7 | 4 | 6 |
+| Security | 8 | 4 | 8 |
+| Culture | 7 | 8 | 5 |
+
+**Calculations:**
+
+| Option | Calculation | Total |
+|--------|-------------|-------|
+| Current | (6×0.30)+(5×0.25)+(7×0.20)+(8×0.15)+(7×0.10) | **6.35** |
+| Startup | (5×0.30)+(9×0.25)+(4×0.20)+(4×0.15)+(8×0.10) | **5.85** |
+| Big Tech | (9×0.30)+(7×0.25)+(6×0.20)+(8×0.15)+(5×0.10) | **7.35** |
+
+**Winner:** Big Tech Offer (7.35)
+
+**Note:** If the scores are very close (within 0.5), consider which criteria you might be under-weighting.
+
+</Collapsible>
+
+---
+
+## Common Use Cases
+
+| Decision | Typical Criteria |
+|----------|------------------|
+| **Job offers** | Comp, growth, WLB, security, culture |
+| **Housing** | Cost, location, size, commute, schools |
+| **Major purchases** | Price, quality, features, reviews, warranty |
+| **Career paths** | Income potential, interest, demand, barriers |
+| **Investments** | Return, risk, liquidity, fees, complexity |
+
+---
+
+## Spreadsheet Version
+
+For complex decisions, use a spreadsheet:
+
+```
+=SUMPRODUCT(scores, weights)
+```
+
+Or use our interactive [Decision Matrix Tool](/protocol/decision-matrix/).
+
+---
+
+## When NOT to Use This
+
+- **Obvious decisions** — Don't overcomplicate simple choices
+- **Emotional decisions** — Relationships, passion projects (matrix is a data point, not the answer)
+- **Insufficient information** — Garbage in, garbage out
+- **One dominant factor** — If cost is 90% of your decision, just pick the cheapest
+
+---
+
+<SeeAlso links={[
+  { title: "Decision Matrix Tool", href: "/protocol/decision-matrix/", description: "Interactive examples" },
+  { title: "Career Decisions", href: "/protocol/career-decisions/", description: "Job offer framework" },
+  { title: "Rent vs Buy", href: "/protocol/rent-vs-buy/", description: "Housing decision example" }
+]} />
