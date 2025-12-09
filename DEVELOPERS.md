@@ -20,7 +20,7 @@ Comprehensive documentation for contributing to How To Win Capitalism.
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm 9+
 - Git
 
@@ -139,7 +139,7 @@ Atoms → Molecules → Organisms → Pages
 
 /**
  * MYCOMPONENT - MOLECULE
- * 
+ *
  * Description of what this component does.
  */
 
@@ -162,7 +162,7 @@ const { title, variant = 'default' } = Astro.props;
     padding: var(--space-md);
     border: var(--border-width) solid var(--color-border);
   }
-  
+
   .my-component--warning {
     background: var(--color-warning-bg);
   }
@@ -343,14 +343,14 @@ All values come from CSS custom properties in `src/styles/custom.css`:
   --space-md: 12px;
   --space-lg: 16px;
   --space-xl: 24px;
-  
+
   /* Colors (Wikipedia palette) */
   --color-bg: #ffffff;
   --color-text: #202122;
   --color-link: #0645ad;
   --color-border: #a2a9b1;
   --color-surface: #f8f9fa;
-  
+
   /* Typography */
   --font-sans: system-ui, sans-serif;
   --font-serif: Georgia, serif;
