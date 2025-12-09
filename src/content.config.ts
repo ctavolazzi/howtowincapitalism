@@ -2,6 +2,9 @@ import { defineCollection, z } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
+// Content collection configuration with extended schema
+// Debug: This file runs at build time to define content collections
+
 export const collections = {
 	docs: defineCollection({
 		loader: docsLoader(),
@@ -17,3 +20,8 @@ export const collections = {
 		}),
 	}),
 };
+
+// Log collection setup (only during build)
+if (typeof console !== 'undefined') {
+	console.log('🔍 [content-config] Collections defined:', Object.keys(collections));
+}

@@ -29,6 +29,12 @@ const MODULE_COLORS: Record<string, string> = {
   'components': '#10b981',       // green
   'tools': '#f59e0b',            // amber
   'config': '#8b5cf6',           // purple
+  'header': '#ec4899',           // pink
+  'favorites': '#f97316',        // orange
+  'completeness-meter': '#14b8a6', // teal
+  'disclaimer': '#eab308',       // yellow
+  'navigation': '#6366f1',       // indigo
+  'localStorage': '#84cc16',     // lime
   'default': '#6b7280',          // gray
 };
 
@@ -171,6 +177,58 @@ export const debug = {
   assert(module: string, condition: boolean, message: string, data?: unknown): void {
     if (!ENABLED || condition) return;
     this.warn(module, `ASSERT FAILED: ${message}`, data);
+  },
+
+  /**
+   * Track a user interaction or event
+   */
+  track(module: string, action: string, details?: Record<string, unknown>): void {
+    if (!ENABLED) return;
+    const ts = getTimestamp();
+    console.log(
+      `📊 ${ts} ${formatModule(module)} [TRACK] ${action}`,
+      getModuleStyle(module),
+      details ?? ''
+    );
+  },
+
+  /**
+   * Inspect an object with expandable output
+   */
+  inspect(module: string, label: string, obj: unknown): void {
+    if (!ENABLED) return;
+    const ts = getTimestamp();
+    console.log(`🔎 ${ts} [${module}] ${label}:`);
+    console.dir(obj, { depth: 4 });
+  },
+
+  /**
+   * Log page navigation / route change
+   */
+  route(path: string, referrer?: string): void {
+    if (!ENABLED) return;
+    const ts = getTimestamp();
+    console.log(
+      `🧭 ${ts} %c[navigation]%c Route: ${path}`,
+      'color: #6366f1; font-weight: bold;',
+      '',
+      referrer ? { from: referrer } : ''
+    );
+  },
+
+  /**
+   * Log localStorage operations
+   */
+  storage(action: 'get' | 'set' | 'remove', key: string, value?: unknown): void {
+    if (!ENABLED) return;
+    const ts = getTimestamp();
+    const emoji = action === 'set' ? '💾' : action === 'get' ? '📖' : '🗑️';
+    console.log(
+      `${emoji} ${ts} %c[localStorage]%c ${action.toUpperCase()}: ${key}`,
+      'color: #84cc16; font-weight: bold;',
+      '',
+      value !== undefined ? value : ''
+    );
   },
 };
 

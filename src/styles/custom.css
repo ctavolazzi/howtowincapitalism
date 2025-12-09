@@ -4,24 +4,24 @@
 
    Built from ONE base unit.
    Everything extends this foundation.
-   
+
    NOTE ON !important USAGE:
    This stylesheet contains ~80 !important declarations.
    Most are NECESSARY to override Starlight's theme system,
    which uses its own CSS variables and specificity.
-   
+
    Categories of !important usage:
    1. REQUIRED: Forcing light-mode (Starlight defaults to dark)
    2. REQUIRED: Mobile nav overrides (Starlight's nav structure)
    3. REQUIRED: Color consistency (preventing theme bleed)
    4. REQUIRED: Accessibility (reduced-motion, print styles)
    5. FRAMEWORK: Overriding Starlight component styles
-   
+
    To reduce !important usage, we would need to either:
    - Fork Starlight's CSS entirely
    - Use CSS layers (@layer) - requires build changes
    - Accept Starlight's default styling
-   
+
    Current approach: Document and maintain intentionally.
    ============================================== */
 

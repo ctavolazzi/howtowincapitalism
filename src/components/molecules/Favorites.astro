@@ -1,13 +1,13 @@
 ---
 /**
  * Favorites Component
- * 
+ *
  * Allows users to bookmark pages and view their favorites list.
  * Uses localStorage to persist across sessions.
- * 
+ *
  * Usage:
  * <Favorites />
- * 
+ *
  * Features:
  * - Add/remove current page from favorites
  * - Display favorites list
@@ -26,8 +26,8 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
 
 <div class="favorites-container" data-compact={compact}>
   {/* Favorite toggle button */}
-  <button 
-    class="favorite-toggle" 
+  <button
+    class="favorite-toggle"
     id="favorite-toggle"
     aria-label="Add to favorites"
     title="Add to favorites"
@@ -35,7 +35,7 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     <span class="favorite-icon" id="favorite-icon">☆</span>
     <span class="favorite-text" id="favorite-text">Add to Favorites</span>
   </button>
-  
+
   {!compact && (
     <div class="favorites-list-container" id="favorites-list-container">
       <h3 class="favorites-title">{title}</h3>
@@ -50,7 +50,7 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
   .favorites-container {
     margin: var(--space-md) 0;
   }
-  
+
   .favorite-toggle {
     display: inline-flex;
     align-items: center;
@@ -64,39 +64,39 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     color: var(--color-text);
     transition: all 0.2s ease;
   }
-  
+
   .favorite-toggle:hover {
     background: var(--color-surface-alt);
     border-color: var(--color-primary);
   }
-  
+
   .favorite-toggle.is-favorited {
     background: var(--color-warning-bg, #fff8e6);
     border-color: var(--color-warning, #f5a623);
   }
-  
+
   .favorite-icon {
     font-size: 1.2rem;
     line-height: 1;
     transition: transform 0.2s ease;
   }
-  
+
   .favorite-toggle:hover .favorite-icon {
     transform: scale(1.1);
   }
-  
+
   .favorite-toggle.is-favorited .favorite-icon {
     color: var(--color-warning, #f5a623);
   }
-  
+
   [data-compact="true"] .favorite-text {
     display: none;
   }
-  
+
   [data-compact="true"] .favorite-toggle {
     padding: var(--space-xs) var(--space-sm);
   }
-  
+
   .favorites-list-container {
     margin-top: var(--space-lg);
     padding: var(--space-md);
@@ -104,50 +104,50 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
   }
-  
+
   .favorites-title {
     margin: 0 0 var(--space-sm) 0;
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-text);
   }
-  
+
   .favorites-list {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  
+
   .favorites-list li {
     padding: var(--space-xs) 0;
     border-bottom: 1px solid var(--color-border);
   }
-  
+
   .favorites-list li:last-child {
     border-bottom: none;
   }
-  
+
   .favorites-empty {
     color: var(--color-text-muted);
     font-style: italic;
     font-size: 0.9rem;
   }
-  
+
   .favorite-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .favorite-item a {
     color: var(--color-link);
     text-decoration: none;
   }
-  
+
   .favorite-item a:hover {
     text-decoration: underline;
   }
-  
+
   .favorite-remove {
     background: none;
     border: none;
@@ -158,7 +158,7 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     opacity: 0.6;
     transition: opacity 0.2s;
   }
-  
+
   .favorite-remove:hover {
     opacity: 1;
     color: var(--color-error, #e53e3e);
