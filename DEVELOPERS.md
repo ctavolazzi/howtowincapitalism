@@ -47,6 +47,8 @@ npm run dev
 | `npm run build` | Production build to `dist/` |
 | `npm run preview` | Preview production build locally |
 | `npm run check` | Validate build (CI check) |
+| `npm test` | Run unit tests |
+| `npm run test:watch` | Run tests in watch mode |
 | `npm run deploy` | Deploy to Cloudflare Pages |
 | `npm run ship "msg"` | Build + Commit + Push + Deploy |
 | `npm run new <section> <name>` | Create new content page |
@@ -381,6 +383,23 @@ All values come from CSS custom properties in `src/styles/custom.css`:
 
 ## Testing & Quality
 
+### Unit Tests
+
+```bash
+npm test         # Run all tests once
+npm run test:watch  # Watch mode (re-run on changes)
+```
+
+Tests use [Vitest](https://vitest.dev/) and are located adjacent to source files:
+
+```
+src/lib/tools/
+├── decision-matrix.ts       # Source
+└── decision-matrix.test.ts  # Tests
+```
+
+**Current coverage:** 52 tests for Decision Matrix (all passing)
+
 ### Build Validation
 
 ```bash
@@ -402,6 +421,7 @@ TypeScript errors surface during build. No separate lint command currently.
 
 ### Pre-Commit Checklist
 
+- [ ] `npm test` passes
 - [ ] `npm run check` passes
 - [ ] No TypeScript errors
 - [ ] Components render correctly
