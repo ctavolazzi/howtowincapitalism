@@ -106,3 +106,6 @@ _work_efforts/
 # Local notes and drafts
 _local/
 *.local.md
+
+# Development logs (keep folder, ignore files)
+_dev/logs/*.log
