@@ -1,8 +1,12 @@
 ---
 title: Debt Strategies
 description: Avalanche vs Snowball — how to escape debt systematically
+category: framework
+difficulty: beginner
+readTime: "7 min"
 sidebar:
   order: 5
+  badge: New
 head:
   - tag: meta
     attrs:
@@ -14,6 +18,7 @@ import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
 import SeeAlso from '../../../components/molecules/SeeAlso.astro';
 import Collapsible from '../../../components/atoms/Collapsible.astro';
+import { Tabs, TabItem, Steps, Aside } from '@astrojs/starlight/components';
 
 <Breadcrumbs />
 
@@ -64,33 +69,34 @@ Both work. The best one is the one you'll actually stick with.
 
 **Extra payment available:** $300/month beyond minimums
 
-<Collapsible title="Avalanche Order (by interest rate)">
+<Tabs>
+  <TabItem label="Avalanche (by interest rate)">
+    **Payment order:**
+    <Steps>
+      1. Credit Card A (24%) — paid off in ~6 months
+      2. Credit Card B (18%) — paid off in ~14 months
+      3. Car Loan (6%) — paid off in ~24 months
+      4. Student Loan (5%) — paid off in ~36 months
+    </Steps>
 
-**Payment order:**
-1. Credit Card A (24%) — paid off in ~6 months
-2. Credit Card B (18%) — paid off in ~14 months
-3. Car Loan (6%) — paid off in ~24 months
-4. Student Loan (5%) — paid off in ~36 months
+    **Total interest paid:** ~$4,200  
+    **Time to debt-free:** ~36 months
+  </TabItem>
+  <TabItem label="Snowball (by balance)">
+    **Payment order:**
+    <Steps>
+      1. Credit Card A ($2,000) — paid off in ~6 months
+      2. Credit Card B ($5,000) — paid off in ~14 months
+      3. Car Loan ($8,000) — paid off in ~24 months
+      4. Student Loan ($15,000) — paid off in ~36 months
+    </Steps>
 
-**Total interest paid:** ~$4,200
-**Time to debt-free:** ~36 months
+    **Total interest paid:** ~$4,800  
+    **Time to debt-free:** ~36 months
 
-</Collapsible>
-
-<Collapsible title="Snowball Order (by balance)">
-
-**Payment order:**
-1. Credit Card A ($2,000) — paid off in ~6 months
-2. Credit Card B ($5,000) — paid off in ~14 months
-3. Car Loan ($8,000) — paid off in ~24 months
-4. Student Loan ($15,000) — paid off in ~36 months
-
-**Total interest paid:** ~$4,800
-**Time to debt-free:** ~36 months
-
-**Note:** In this example, the order happens to be similar because the smallest debt also has the highest rate. That's not always the case.
-
-</Collapsible>
+    **Note:** In this example, the order happens to be similar because the smallest debt also has the highest rate. That's not always the case.
+  </TabItem>
+</Tabs>
 
 ## Which Should You Use?
 
@@ -129,8 +135,7 @@ See [Emergency Fund](/protocol/emergency-fund/) for details.
 
 ## Common Mistakes
 
-<Collapsible title="Closing cards after payoff" variant="warning">
-
+<Aside type="caution" title="Don't close cards after payoff">
 Paying off a credit card doesn't mean you should close it. Closing cards:
 - Reduces your total credit limit
 - Increases your credit utilization ratio
@@ -138,11 +143,9 @@ Paying off a credit card doesn't mean you should close it. Closing cards:
 - Can hurt your credit score
 
 Instead: Pay it off, cut it up if needed, but leave the account open.
+</Aside>
 
-</Collapsible>
-
-<Collapsible title="Ignoring minimum payments" variant="warning">
-
+<Aside type="caution" title="Never ignore minimum payments">
 Both methods require paying **all minimums** on **all debts** every month. The extra payment goes to the target debt. Miss a minimum and you'll:
 - Pay late fees
 - Trigger penalty interest rates
@@ -150,20 +153,15 @@ Both methods require paying **all minimums** on **all debts** every month. The e
 - Undo your progress
 
 Automate minimums. Never miss them.
+</Aside>
 
-</Collapsible>
-
-<Collapsible title="No emergency fund" variant="warning">
-
+<Aside type="caution" title="Build an emergency fund first">
 Putting every dollar toward debt without a buffer means any unexpected expense becomes new debt. You're making negative progress. Build at least $1,000 first.
+</Aside>
 
-</Collapsible>
-
-<Collapsible title="Lifestyle inflation during payoff" variant="warning">
-
+<Aside type="caution" title="Avoid lifestyle inflation during payoff">
 Getting a raise? Paying off a debt? Don't increase spending. Redirect that money to the next debt. Lifestyle inflation extends your debt-free date by years.
-
-</Collapsible>
+</Aside>
 
 ## Advanced: Debt Consolidation
 

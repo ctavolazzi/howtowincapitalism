@@ -21,6 +21,10 @@
  *   console.log(result.toString());  // Shows ranking and analysis
  */
 
+import { debug } from '../debug';
+
+const MODULE = 'decision-matrix';
+
 // Types
 export type AnalysisMethod = 'weighted' | 'normalized' | 'ranking' | 'best_worst';
 
