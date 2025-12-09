@@ -1,0 +1,247 @@
+---
+title: Tax-Advantaged Accounts
+description: The legal loopholes that make the middle class wealthy — 401(k), IRA, HSA explained
+sidebar:
+  order: 4
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: 401k, IRA, Roth IRA, HSA, tax-advantaged accounts, retirement accounts, tax benefits
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
+import { makeDecision } from '../../../lib/tools/decision-matrix';
+
+<Breadcrumbs />
+
+<Disclaimer />
+
+## What Are Tax-Advantaged Accounts?
+
+**Tax-advantaged accounts** are special investment accounts where the government gives you tax benefits to encourage certain behaviors — mainly saving for retirement and healthcare.
+
+These aren't loopholes in the shady sense. They're deliberately created incentives written into tax law. The catch: they come with rules about when and how you can access the money.
+
+The three main types:
+- **401(k) / 403(b)** — Employer-sponsored retirement accounts
+- **IRA** — Individual Retirement Accounts (you open these yourself)
+- **HSA** — Health Savings Account (triple tax advantage)
+
+## Why They Matter
+
+The difference between using tax-advantaged accounts and not using them is **massive** over a career:
+
+| Scenario | 30 Years of $500/month at 7% |
+|----------|------------------------------|
+| Taxable account (25% tax drag) | ~$400,000 |
+| Tax-advantaged account | ~$567,000 |
+| **Difference** | **$167,000** |
+
+That's $167,000 extra just from using the right account type. Same money, same investments, same time — just a different wrapper.
+
+## The Big Three Explained
+
+### 401(k) / 403(b): Employer-Sponsored
+
+**What it is:** A retirement account offered through your employer. Money is deducted from your paycheck before taxes.
+
+**Tax treatment:** Traditional 401(k) = pre-tax contributions, taxed on withdrawal. Roth 401(k) = after-tax contributions, tax-free growth and withdrawal.
+
+**2024 Limits:**
+- Employee contribution: $23,000/year
+- If age 50+: Additional $7,500 catch-up
+- Total including employer: $69,000
+
+<Collapsible title="The Employer Match: Free Money">
+
+Many employers offer a **match** — they'll contribute money to your 401(k) based on your contributions.
+
+**Common match formulas:**
+- 50% match up to 6% of salary = You contribute 6%, employer adds 3%
+- 100% match up to 3% of salary = You contribute 3%, employer adds 3%
+- Dollar-for-dollar up to 4% = You contribute 4%, employer adds 4%
+
+**Example:** $60,000 salary with 100% match up to 4%
+- You contribute 4% ($2,400/year)
+- Employer matches 4% ($2,400/year)
+- **Total: $4,800/year invested** — that's a 100% instant return on your contribution
+
+**The rule:** Always contribute at least enough to get the full match. Anything less is leaving free money on the table.
+
+</Collapsible>
+
+### IRA: Individual Retirement Account
+
+**What it is:** A retirement account you open yourself, not tied to an employer. More investment options, but lower limits.
+
+**Types:**
+- **Traditional IRA** — Pre-tax contributions (may be deductible), taxed on withdrawal
+- **Roth IRA** — After-tax contributions, tax-free growth, tax-free qualified withdrawals
+
+**2024 Limits:**
+- Contribution: $7,000/year
+- If age 50+: Additional $1,000 catch-up
+- Income limits apply for Roth IRA
+
+<Collapsible title="Traditional vs Roth: Which to Choose?">
+
+**Choose Traditional when:**
+- You're in a high tax bracket now
+- You expect lower income in retirement
+- You want to reduce this year's taxes
+
+**Choose Roth when:**
+- You're in a low tax bracket now
+- You expect higher income in retirement
+- You want tax-free withdrawals later
+- You're young (more years of tax-free growth)
+
+**The simple heuristic:** If you're early in your career and earning less than you will later, go Roth. If you're at peak earning years, go Traditional.
+
+**The hedge:** Some of both is fine. Tax diversification means flexibility later.
+
+</Collapsible>
+
+### HSA: Health Savings Account
+
+**What it is:** A savings account for healthcare expenses, available only with high-deductible health plans (HDHP).
+
+**The triple tax advantage:**
+1. **Tax-deductible contributions** (reduces taxable income)
+2. **Tax-free growth** (no taxes on investment gains)
+3. **Tax-free withdrawals** (for qualified medical expenses)
+
+No other account type has all three. This makes the HSA the most tax-efficient account available.
+
+**2024 Limits:**
+- Individual: $4,150
+- Family: $8,300
+- If age 55+: Additional $1,000 catch-up
+
+<Collapsible title="The HSA Stealth Retirement Account">
+
+Here's the advanced play: treat your HSA as a retirement account.
+
+**The strategy:**
+1. Contribute max to HSA
+2. Invest it (don't just leave as cash)
+3. Pay current medical expenses out of pocket
+4. Save receipts (indefinitely)
+5. Let HSA grow tax-free for decades
+6. Reimburse yourself for old receipts any time (no time limit)
+
+**Result:** Decades of tax-free growth, then tax-free withdrawals for expenses you already paid. After age 65, you can also withdraw for any purpose (taxed like Traditional IRA, but no penalty).
+
+This makes the HSA a better retirement account than traditional retirement accounts — if you can afford to pay medical expenses from other sources in the meantime.
+
+</Collapsible>
+
+## The Recommended Order
+
+If you can't max everything, prioritize in this order:
+
+1. **401(k) up to employer match** — Free money, always take it
+2. **Emergency fund** — See [Emergency Fund](/protocol/emergency-fund/)
+3. **HSA max** — Triple tax advantage is unbeatable
+4. **Roth IRA max** — Tax-free growth, flexible access
+5. **401(k) to max** — Finish maxing retirement
+6. **Taxable brokerage** — After all tax-advantaged space is used
+
+<Collapsible title="Example: $50k Salary Allocation">
+
+**Income:** $50,000/year gross
+**Employer match:** 50% up to 6%
+
+**Allocation:**
+1. 401(k): 6% ($3,000) → Employer adds $1,500 = $4,500 total
+2. HSA: $4,150 (max)
+3. Roth IRA: $7,000 (max)
+
+**Total tax-advantaged:** $15,650/year + $1,500 match = $17,150
+
+That's 34% of gross income in tax-advantaged accounts. At 7% return over 30 years, this becomes ~$1.7 million.
+
+</Collapsible>
+
+## Comparison at a Glance
+
+| Feature | 401(k) | Traditional IRA | Roth IRA | HSA |
+|---------|--------|-----------------|----------|-----|
+| 2024 Limit | $23,000 | $7,000 | $7,000 | $4,150-$8,300 |
+| Tax on contribution | Pre-tax | Deductible* | After-tax | Deductible |
+| Tax on growth | Deferred | Deferred | None | None |
+| Tax on withdrawal | Taxed | Taxed | None* | None* |
+| Early withdrawal penalty | 10%** | 10%** | None on contributions | 20%** |
+| Required distributions | Yes (age 73) | Yes (age 73) | No | No |
+
+\* Subject to income limits and rules
+\** Before age 59½, with exceptions
+
+## Decision Matrix: Which Account First?
+
+export const accountResult = makeDecision({
+  options: ['401k to Match', 'Max HSA', 'Max Roth IRA', '401k to Max', 'Taxable'],
+  criteria: ['Tax Efficiency', 'Accessibility', 'Employer Benefit', 'Flexibility', 'Growth Potential'],
+  weights: [0.26, 0.16, 0.21, 0.16, 0.21],
+  scores: {
+    '401k to Match': [8, 3, 10, 4, 8],
+    'Max HSA': [10, 5, 2, 6, 8],
+    'Max Roth IRA': [9, 7, 1, 8, 8],
+    '401k to Max': [8, 3, 5, 4, 9],
+    'Taxable': [3, 10, 1, 10, 7]
+  }
+});
+
+<DecisionMatrix result={accountResult} showStrengths={false} />
+
+The 401(k) to match wins primarily because of employer matching — it's the only option where someone else adds free money.
+
+## Common Mistakes
+
+<Collapsible title="Not contributing enough to get the full match" variant="warning">
+
+This is the most expensive mistake in personal finance. A 50% match is a guaranteed 50% return. No investment can match that. Always contribute at least to the match threshold.
+
+</Collapsible>
+
+<Collapsible title="Leaving 401(k) as cash" variant="warning">
+
+Many people contribute to their 401(k) but never select investments — leaving money in a money market fund earning almost nothing. Log in and allocate to actual investments (typically a target-date fund if you're unsure).
+
+</Collapsible>
+
+<Collapsible title="Cashing out when changing jobs" variant="warning">
+
+When you leave a job, you can roll your 401(k) to an IRA or your new employer's plan. **Do not cash it out.** You'll pay income tax plus a 10% penalty — potentially losing 30-40% of your savings instantly.
+
+</Collapsible>
+
+<Collapsible title="Ignoring the HSA" variant="warning">
+
+The HSA is often overlooked because it's tied to health insurance. If you have access to one, use it. The triple tax advantage makes it more powerful than any other account type.
+
+</Collapsible>
+
+## The Bottom Line
+
+Tax-advantaged accounts are:
+- **Legal tax breaks** designed to encourage saving
+- **Massively valuable** over a career (potentially six figures of extra wealth)
+- **Ordered by priority** — match → HSA → Roth → more 401(k) → taxable
+- **Not optional** if you're serious about building wealth
+
+The tax code rewards those who know the rules. Now you know the rules.
+
+---
+
+<SeeAlso links={[
+  { title: "Compound Interest", href: "/protocol/compound-interest/", description: "Why these accounts are so powerful" },
+  { title: "Emergency Fund", href: "/protocol/emergency-fund/", description: "What to build before maxing accounts" },
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Compare your options quantitatively" },
+  { title: "Introduction", href: "/protocol/introduction/", description: "Back to The Protocol overview" }
+]} />

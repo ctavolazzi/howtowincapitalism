@@ -1,0 +1,161 @@
+---
+title: Compound Interest
+description: The mathematical force that makes the rich richer — and how to put it to work for you
+sidebar:
+  order: 2
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: compound interest, time value of money, exponential growth, investing basics, wealth building
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+
+<Breadcrumbs />
+
+<Disclaimer />
+
+## What is Compound Interest?
+
+**Compound interest** is interest calculated on both the initial principal and the accumulated interest from previous periods. Unlike simple interest (which only applies to the principal), compound interest creates exponential growth over time.
+
+Albert Einstein allegedly called it "the eighth wonder of the world" — though there's no evidence he actually said this. What *is* true: compound interest is the primary mechanism by which wealth grows and the primary reason early investing matters more than late investing with more money.
+
+## The Formula
+
+The compound interest formula is:
+
+**A = P(1 + r/n)^(nt)**
+
+Where:
+- **A** = Final amount
+- **P** = Principal (initial investment)
+- **r** = Annual interest rate (decimal)
+- **n** = Number of times interest compounds per year
+- **t** = Time in years
+
+<Collapsible title="Example: $10,000 at 7% for 30 years">
+
+**Inputs:**
+- P = $10,000
+- r = 0.07 (7%)
+- n = 12 (monthly compounding)
+- t = 30 years
+
+**Calculation:**
+A = 10,000 × (1 + 0.07/12)^(12×30)
+A = 10,000 × (1.00583)^360
+A = 10,000 × 8.116
+**A = $81,165**
+
+Your $10,000 became $81,165 — an 8x return — just by sitting there.
+
+</Collapsible>
+
+## Why Time Matters More Than Amount
+
+The most counterintuitive aspect of compound interest is that **when** you invest matters more than **how much** you invest.
+
+| Scenario | Monthly Investment | Years | Total Invested | Final Value (7%) |
+|----------|-------------------|-------|----------------|------------------|
+| Early Start | $200/mo | 40 years (age 25-65) | $96,000 | **$525,000** |
+| Late Start | $400/mo | 20 years (age 45-65) | $96,000 | **$208,000** |
+| Very Late | $800/mo | 10 years (age 55-65) | $96,000 | **$138,000** |
+
+All three people invested the same total amount ($96,000). The early starter ends up with **4x more money** — not from being smarter or luckier, but from starting earlier.
+
+This is why the standard advice is: **start now, with whatever you have.**
+
+## The Rule of 72
+
+A quick mental math shortcut: divide 72 by your interest rate to estimate how many years it takes to double your money.
+
+| Interest Rate | Years to Double |
+|---------------|-----------------|
+| 4% | 18 years |
+| 6% | 12 years |
+| 7% | ~10 years |
+| 10% | 7.2 years |
+| 12% | 6 years |
+
+At 7% (roughly the historical stock market average after inflation), your money doubles every ~10 years.
+
+## Compound Interest Works Both Ways
+
+Here's the uncomfortable truth: **debt compounds too.**
+
+Credit card debt at 24% APR doubles in 3 years. That $5,000 balance you're "paying minimum on" becomes $10,000, then $20,000. The same mathematical force that builds wealth destroys it when you're on the wrong side.
+
+<Collapsible title="The Dark Side: Credit Card Math" variant="warning">
+
+**Scenario:** $5,000 credit card balance at 24% APR, paying only minimum payments (2% of balance or $25, whichever is higher)
+
+**Result:**
+- Time to pay off: **28 years**
+- Total interest paid: **$12,400**
+- Total paid: **$17,400** for a $5,000 purchase
+
+This is why credit card companies are very profitable.
+
+</Collapsible>
+
+## Practical Applications
+
+### 1. Start Your Emergency Fund Now
+
+Even small amounts compound. $50/month at 4% (high-yield savings) for 5 years = $3,316. Not life-changing, but a real emergency fund that started from almost nothing.
+
+### 2. Maximize Tax-Advantaged Accounts
+
+Compound interest is more powerful when you're not losing 20-30% to taxes every year. See [Tax-Advantaged Accounts](/protocol/tax-advantaged-accounts/) for details.
+
+### 3. Automate and Forget
+
+The best investment strategy is one you don't think about. Set up automatic contributions and let compound interest do its job over decades.
+
+### 4. Pay Off High-Interest Debt First
+
+If your debt interest rate exceeds your expected investment return, you're mathematically better off paying down debt. A guaranteed 24% return (avoiding credit card interest) beats an uncertain 7% market return.
+
+## Common Misconceptions
+
+<Collapsible title="'I'll start investing when I make more money'">
+
+This is backwards. The earlier you start, the less total money you need to invest. Someone who invests $100/month from age 22-32 (10 years) and then stops will often have more at 65 than someone who invests $100/month from age 32-65 (33 years). Time beats amount.
+
+</Collapsible>
+
+<Collapsible title="'The stock market is too risky'">
+
+Over any 30-year period in US history, the stock market has had positive returns. The "risk" is in short-term volatility. If your time horizon is decades, compound interest in diversified index funds has historically been the most reliable wealth-building tool available to regular people.
+
+</Collapsible>
+
+<Collapsible title="'I need to pick the right stocks'">
+
+No. Index funds that track the entire market (like total stock market funds) let you capture the average return without trying to be clever. The average return, compounded over decades, is enough. Most professional fund managers fail to beat the index anyway.
+
+</Collapsible>
+
+## The Bottom Line
+
+Compound interest is:
+- **The reason to start investing now**, even with small amounts
+- **The reason debt is dangerous**, especially high-interest debt
+- **The reason time is the most valuable investing resource**
+- **The mathematical engine behind long-term wealth building**
+
+You don't need to be clever. You need to be early, consistent, and patient.
+
+---
+
+<SeeAlso links={[
+  { title: "Emergency Fund", href: "/protocol/emergency-fund/", description: "Your first financial foundation" },
+  { title: "Tax-Advantaged Accounts", href: "/protocol/tax-advantaged-accounts/", description: "Compound interest + tax benefits" },
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Compare investment options quantitatively" },
+  { title: "Introduction", href: "/protocol/introduction/", description: "Back to The Protocol overview" }
+]} />

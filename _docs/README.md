@@ -10,6 +10,7 @@ This folder contains internal documentation, architecture notes, and development
 | `AUDIT.md` | Site audit and recommendations |
 | `DEVLOG.md` | Development log and decisions |
 | `devlog/YYYY/MM/DD.md` | Daily development entries |
+| `status_reports/` | Project manager status reports |
 
 ## Quick Links
 
