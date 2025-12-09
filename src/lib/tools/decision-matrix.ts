@@ -293,6 +293,14 @@ export class DecisionMatrix {
   private method: AnalysisMethod;
 
   constructor(input: DecisionMatrixInput) {
+    debug.group(MODULE, 'DecisionMatrix Constructor');
+    debug.log(MODULE, 'Input received', {
+      optionCount: input.options.length,
+      criteriaCount: input.criteria.length,
+      method: input.method ?? 'weighted',
+      hasCustomWeights: !!input.weights,
+    });
+
     this.options = input.options;
     this.criteria = input.criteria;
     this.scores = input.scores;
@@ -300,37 +308,55 @@ export class DecisionMatrix {
 
     // Validate inputs
     this.validateInputs();
+    debug.success(MODULE, 'Input validation passed');
 
     // Set weights (equal if not provided)
     if (!input.weights) {
       this.weights = Array(this.criteria.length).fill(1.0 / this.criteria.length);
+      debug.log(MODULE, 'Using equal weights', this.weights);
     } else {
       // Normalize weights to sum to 1
       const total = input.weights.reduce((a, b) => a + b, 0);
       this.weights = input.weights.map(w => w / total);
+      debug.log(MODULE, 'Normalized weights', {
+        original: input.weights,
+        normalized: this.weights,
+        total,
+      });
     }
+    debug.groupEnd();
   }
 
   private validateInputs(): void {
+    debug.log(MODULE, 'Validating inputs...');
+
     if (this.options.length === 0) {
+      debug.error(MODULE, 'Validation failed: no options provided');
       throw new Error('Must provide at least one option');
     }
 
     if (this.criteria.length === 0) {
+      debug.error(MODULE, 'Validation failed: no criteria provided');
       throw new Error('Must provide at least one criterion');
     }
 
     if (Object.keys(this.scores).length === 0) {
+      debug.error(MODULE, 'Validation failed: no scores provided');
       throw new Error('Must provide scores');
     }
 
     // Check all options have scores
     for (const option of this.options) {
       if (!(option in this.scores)) {
+        debug.error(MODULE, `Validation failed: missing scores for "${option}"`);
         throw new Error(`Missing scores for option: ${option}`);
       }
 
       if (this.scores[option].length !== this.criteria.length) {
+        debug.error(MODULE, `Validation failed: score count mismatch for "${option}"`, {
+          scoresProvided: this.scores[option].length,
+          criteriaCount: this.criteria.length,
+        });
         throw new Error(
           `Option '${option}' has ${this.scores[option].length} ` +
           `scores but ${this.criteria.length} criteria`
@@ -343,21 +369,39 @@ export class DecisionMatrix {
    * Perform decision matrix analysis.
    */
   analyze(): DecisionResult {
+    const endTimer = debug.time(MODULE, `analyze(${this.method})`);
+
+    let result: DecisionResult;
     switch (this.method) {
       case 'weighted':
-        return this.analyzeWeighted();
+        result = this.analyzeWeighted();
+        break;
       case 'normalized':
-        return this.analyzeNormalized();
+        result = this.analyzeNormalized();
+        break;
       case 'ranking':
-        return this.analyzeRanking();
+        result = this.analyzeRanking();
+        break;
       case 'best_worst':
-        return this.analyzeBestWorst();
+        result = this.analyzeBestWorst();
+        break;
       default:
+        debug.error(MODULE, `Unknown analysis method: ${this.method}`);
         throw new Error(`Unknown analysis method: ${this.method}`);
     }
+
+    endTimer();
+    debug.success(MODULE, 'Analysis complete', {
+      winner: result.winner,
+      confidence: result.confidenceScore.toFixed(1) + '%',
+      rankings: result.rankings.map(([opt, score]) => `${opt}: ${score.toFixed(2)}`),
+    });
+
+    return result;
   }
 
   private analyzeWeighted(): DecisionResult {
+    debug.log(MODULE, 'Running weighted analysis...');
     const totalScores: Record<string, number> = {};
     const breakdown: Record<string, Record<string, number>> = {};
 
@@ -369,6 +413,10 @@ export class DecisionMatrix {
         0
       );
       totalScores[option] = weightedTotal;
+      debug.log(MODULE, `Weighted total for "${option}"`, {
+        rawScores: optionScores,
+        weightedTotal: weightedTotal.toFixed(2),
+      });
 
       // Build breakdown
       breakdown[option] = {};
@@ -831,6 +879,15 @@ export class DecisionMatrix {
 export function makeDecision(
   options: MakeDecisionOptions
 ): DecisionResult | Record<AnalysisMethod, DecisionResult> {
+  debug.group(MODULE, 'makeDecision()');
+  debug.log(MODULE, 'Called with', {
+    optionCount: options.options.length,
+    criteriaCount: options.criteria.length,
+    method: options.method ?? 'weighted',
+    showAllMethods: options.showAllMethods ?? false,
+    topN: options.topN,
+  });
+
   const {
     options: opts,
     criteria,
@@ -842,6 +899,7 @@ export function makeDecision(
   } = options;
 
   if (showAllMethods) {
+    debug.log(MODULE, 'Running all 4 analysis methods...');
     const results: Record<string, DecisionResult> = {};
     const methods: AnalysisMethod[] = ['weighted', 'normalized', 'ranking', 'best_worst'];
 
@@ -858,6 +916,10 @@ export function makeDecision(
       results[methodName] = result;
     }
 
+    debug.log(MODULE, 'All methods complete', {
+      winners: Object.entries(results).map(([m, r]) => `${m}: ${r.winner}`),
+    });
+    debug.groupEnd();
     return results as Record<AnalysisMethod, DecisionResult>;
   } else {
     const matrix = new DecisionMatrix({
@@ -869,6 +931,7 @@ export function makeDecision(
     });
     const result = matrix.analyze();
     result.topN = topN;
+    debug.groupEnd();
     return result;
   }
 }
@@ -884,6 +947,12 @@ export function compareMethods(
   scores: Record<string, number[]>,
   weights?: number[]
 ): string {
+  debug.log(MODULE, 'compareMethods() called', {
+    options,
+    criteria,
+    hasWeights: !!weights,
+  });
+
   const results = makeDecision({
     options,
     criteria,

@@ -23,6 +23,7 @@
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import type { DecisionResultData } from '../../lib/tools/decision-matrix';
+import { debug } from '../../lib/debug';
 
 export interface Props {
   /** Decision result from makeDecision() */
@@ -42,9 +43,19 @@ const {
   class: className
 } = Astro.props;
 
+// Debug: Log component render
+debug.log('components', `DecisionMatrix rendering: "${title}"`, {
+  winner: result.winner,
+  confidence: result.confidenceScore?.toFixed(1) + '%',
+  optionCount: result.rankings?.length ?? 0,
+  showBreakdown,
+});
+
 // Extract clean criteria names (remove weight annotations)
 const criteria = Object.keys(result.scoresBreakdown[result.winner] || {})
   .map(c => c.split(' (')[0]);
+
+debug.log('components', 'Extracted criteria', criteria);
 
 ---
 

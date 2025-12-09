@@ -20,6 +20,7 @@ import SeeAlso from '../../../components/molecules/SeeAlso.astro';
 import Collapsible from '../../../components/atoms/Collapsible.astro';
 import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
 import { makeDecision } from '../../../lib/tools';
+import { Tabs, TabItem, Steps, Aside } from '@astrojs/starlight/components';
 
 <Breadcrumbs />
 
@@ -91,8 +92,7 @@ Buying a home involves costs that don't show up in the mortgage payment:
 | Time | Maintenance, yard work, repairs |
 | Mobility reduction | Harder to move for jobs/opportunities |
 
-<Collapsible title="The Opportunity Cost Problem" variant="warning">
-
+<Aside type="caution" title="The Opportunity Cost Problem">
 That $80,000 down payment on a $400,000 home? If invested in the stock market at 7% average return instead:
 
 - **10 years:** ~$157,000
@@ -100,8 +100,7 @@ That $80,000 down payment on a $400,000 home? If invested in the stock market at
 - **30 years:** ~$609,000
 
 Your home would need to appreciate significantly just to match what your down payment could have earned elsewhere. This doesn't mean don't buy—but factor it in.
-
-</Collapsible>
+</Aside>
 
 ## The True Cost of Renting
 
@@ -118,29 +117,28 @@ Renting has costs too, often overlooked:
 
 **BUT:** Renters avoid property tax, maintenance, HOA fees, and can invest the difference.
 
-## When Buying Makes Sense
+## When Does Each Make Sense?
 
-Buy if:
-
-- ✅ You'll stay **5+ years** (ideally 7-10+)
-- ✅ You have **stable income and employment**
-- ✅ You have **20% down payment** (avoid PMI)
-- ✅ You have **6+ month emergency fund** remaining after purchase
-- ✅ Local **rent is > 5%** of home price annually
-- ✅ You **want** the responsibilities of ownership
-- ✅ You're in a **stable or growing market**
-
-## When Renting Makes Sense
-
-Rent if:
-
-- ✅ You might move in **< 5 years**
-- ✅ Your **income is variable or uncertain**
-- ✅ Local **rent is < 5%** of home price annually
-- ✅ You value **flexibility and mobility**
-- ✅ You'd rather **invest the difference**
-- ✅ You don't want **maintenance responsibilities**
-- ✅ You're in a **declining or uncertain market**
+<Tabs>
+  <TabItem label="Buy If...">
+    - ✅ You'll stay **5+ years** (ideally 7-10+)
+    - ✅ You have **stable income and employment**
+    - ✅ You have **20% down payment** (avoid PMI)
+    - ✅ You have **6+ month emergency fund** remaining after purchase
+    - ✅ Local **rent is > 5%** of home price annually
+    - ✅ You **want** the responsibilities of ownership
+    - ✅ You're in a **stable or growing market**
+  </TabItem>
+  <TabItem label="Rent If...">
+    - ✅ You might move in **< 5 years**
+    - ✅ Your **income is variable or uncertain**
+    - ✅ Local **rent is < 5%** of home price annually
+    - ✅ You value **flexibility and mobility**
+    - ✅ You'd rather **invest the difference**
+    - ✅ You don't want **maintenance responsibilities**
+    - ✅ You're in a **declining or uncertain market**
+  </TabItem>
+</Tabs>
 
 ## Decision Matrix: Your Situation
 
@@ -166,6 +164,7 @@ export const housingResult = makeDecision({
 
 To make this decision for your specific situation:
 
+<Steps>
 1. **Calculate your numbers:**
    - What's the home price you're considering?
    - What's comparable rent?
@@ -181,6 +180,7 @@ To make this decision for your specific situation:
    - Do you want to maintain a property?
    - How important is flexibility?
    - What does your partner/family prefer?
+</Steps>
 
 Use our [Decision Matrix](/protocol/decision-matrix/) tool to run your own analysis with your weights.
 

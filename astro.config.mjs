@@ -67,8 +67,11 @@ export default defineConfig({
 				{ label: 'Latest Updates', link: '/field-notes/latest/' },
 				{ label: 'Reports', link: '/reports/' },
 			],
-			// Disable table of contents (confusing on mobile)
-			tableOfContents: false,
+			// Table of contents configuration
+			tableOfContents: {
+				minHeadingLevel: 2,
+				maxHeadingLevel: 3,
+			},
 			components: {
 				ThemeSelect: './src/components/utilities/Empty.astro',
 				Header: './src/components/overrides/Header.astro',
