@@ -2,6 +2,35 @@
 
 ## December 8, 2025
 
+### Session 2e: Decision Matrix Tests
+
+**Time:** 4:45 PM PST
+
+Added comprehensive test suite for the Decision Matrix tool.
+
+**Files Created:**
+- `src/lib/tools/decision-matrix.test.ts` - 52 tests (~420 lines)
+
+**Dependencies Added:**
+- `vitest` (dev dependency)
+
+**Scripts Added:**
+- `npm test` - Run tests once
+- `npm run test:watch` - Watch mode
+
+**Test Coverage:**
+- Constructor validation (6 tests)
+- All 4 analysis methods (11 tests)
+- DecisionResult output methods (8 tests)
+- API functions (7 tests)
+- Real-world scenarios (5 tests)
+- Edge cases (6 tests)
+- Strengths/Weaknesses (5 tests)
+
+**Meta:** Used our own Decision Matrix to decide what to work on. It chose "Tests" over "Build Another Tool" (8.05 vs 7.85 — statistical tie, but tests won on Impact and Foundation criteria).
+
+---
+
 ### Session 2d: Development Logger
 
 **Time:** 4:15 PM PST
@@ -124,6 +153,7 @@ Built initial site with Astro + Starlight. Key decisions:
 - [ ] Clean up header spacing
 - [ ] Refactor CSS to reduce `!important`
 - [ ] Add proper current-page indicator
+- [x] Add unit tests for Decision Matrix ✅ (52 tests)
 
 ---
 
@@ -132,6 +162,8 @@ Built initial site with Astro + Starlight. Key decisions:
 ```bash
 # Development
 npm run dev          # Start dev server
+npm test             # Run unit tests
+npm run test:watch   # Tests in watch mode
 
 # Content
 npm run new protocol my-topic   # Create new page
