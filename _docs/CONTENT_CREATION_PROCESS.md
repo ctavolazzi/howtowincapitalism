@@ -244,6 +244,15 @@ npx wrangler pages deploy dist --project-name howtowincapitalism
 3. **Sidebar order** — Plan ahead to leave room for future pages
 4. **Build verification** — Always run `npm run build` before committing
 
+### 2025-12-09 (Session 6 - Process Refinement)
+
+5. **Batch related pages** — Creating 2 pages at once is efficient; same integration step covers both
+6. **Update SeeAlso on related pages** — New content should link TO and FROM existing pages
+7. **Process document value** — Following a checklist prevents missed steps
+8. **Metrics tracking** — Recording before/after stats (pages, words) shows progress
+9. **Gitignored work efforts** — `_work_efforts/` is gitignored, so changes there don't appear in commits (that's fine, it's local tracking)
+10. **Todo list parallelism** — Following the process doc phases maps directly to todo items
+
 ---
 
 ## Metrics to Track
