@@ -63,6 +63,7 @@ export default defineConfig({
 			tableOfContents: false,
 			components: {
 				ThemeSelect: './src/components/utilities/Empty.astro',
+				Header: './src/components/overrides/Header.astro',
 			},
 		}),
 	],

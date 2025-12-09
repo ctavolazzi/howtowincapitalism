@@ -191,61 +191,38 @@ starlight-theme-select,
 label:has(select[aria-label*="theme"]) {
   display: none !important;
 }
-/* ===== NAVIGATION - Always Visible ===== */
 
-/* Make nav links visible on mobile (not hidden in hamburger) */
-@media (max-width: 50rem) {
-  /* Show the nav container */
-  nav[aria-label="Main"] > div:last-child {
-    display: block;
-    position: static;
-    width: 100%;
-    height: auto;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    transform: none;
-    visibility: visible;
-  }
+/* ==============================================
+   STARLIGHT LAYOUT ADJUSTMENTS
+   ============================================== */
 
-  /* Horizontal layout for nav items */
-  nav[aria-label="Main"] ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  nav[aria-label="Main"] li {
-    border-right: 1px solid var(--color-border);
-  }
-
-  nav[aria-label="Main"] li:last-child {
-    border-right: none;
-  }
-
-  /* Hide hamburger button since nav is always visible */
-  nav[aria-label="Main"] button {
-    display: none;
-  }
+/* Remove Starlight's default sidebar */
+.sidebar,
+nav[aria-label="Main"] {
+  display: none;
 }
 
-/* Nav link styling */
-nav[aria-label="Main"] a {
-  color: var(--color-link);
-  padding: var(--space-md) var(--space-lg);
-  display: block;
+/* Style Starlight's search button to match our header */
+starlight-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid #a2a9b1;
+  cursor: pointer;
+  color: #202122;
 }
 
-nav[aria-label="Main"] a:hover {
-  background: var(--color-surface-alt);
-  text-decoration: underline;
+starlight-search button:hover {
+  background: #f8f9fa;
 }
 
-nav[aria-label="Main"] a[aria-current="page"] {
-  background: var(--color-link);
-  color: var(--color-bg);
-  font-weight: 600;
+/* Hide Starlight's default mobile menu button */
+starlight-menu-button {
+  display: none;
 }
 
 /* Reinstate table of contents with readable contrast */
