@@ -1,0 +1,269 @@
+---
+title: Career Decisions
+description: Evaluating job offers and career moves with more than gut instinct
+sidebar:
+  order: 8
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: job offer, career change, salary negotiation, total compensation, job evaluation
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
+import { makeDecision } from '../../../lib/tools';
+
+<Breadcrumbs />
+
+<Disclaimer />
+
+## Career as Strategy
+
+Your career is likely your largest financial asset. The difference between a good career decision and a bad one can be worth hundreds of thousands of dollars over a lifetime.
+
+Yet most people evaluate job offers with gut instinct and a salary comparison. That's not strategy—that's guessing.
+
+## Total Compensation (Not Just Salary)
+
+**Salary is not compensation.** Total compensation includes everything of value:
+
+| Component | Notes |
+|-----------|-------|
+| **Base salary** | Fixed annual pay |
+| **Bonus** | Variable, often 10-30% at senior levels |
+| **Equity/Stock** | RSUs, options, ESPP (can be significant) |
+| **401(k) match** | Free money—calculate the dollar value |
+| **Health insurance** | Employer-paid premium can be $10-20k/year |
+| **HSA contributions** | Employer contribution is tax-free money |
+| **Other benefits** | Education, transit, gym, meals, etc. |
+
+<Collapsible title="Example: Two Offers Compared">
+
+**Offer A:** $120,000 salary
+
+**Offer B:** $105,000 salary + $15,000 annual bonus + $20,000 RSU vest/year + 6% 401k match
+
+**True comparison:**
+
+| Component | Offer A | Offer B |
+|-----------|---------|---------|
+| Base | $120,000 | $105,000 |
+| Bonus | $0 | $15,000 |
+| Equity | $0 | $20,000 |
+| 401k match (on 6%) | $0 | $6,300 |
+| **Total** | **$120,000** | **$146,300** |
+
+Offer B is worth $26,300 more per year despite a lower base salary.
+
+</Collapsible>
+
+## The Career Decision Framework
+
+When evaluating a job change or offer, consider five dimensions:
+
+### 1. Compensation (Short-term)
+
+- Total compensation (not just salary)
+- Signing bonus / relocation
+- Cost of living adjustment if moving
+
+### 2. Growth (Long-term)
+
+- Learning opportunities
+- Career progression path
+- Skill development
+- Resume/brand building
+
+### 3. Stability
+
+- Company financial health
+- Industry outlook
+- Job security
+- Vesting schedules (golden handcuffs)
+
+### 4. Work-Life Balance
+
+- Hours expected
+- Remote/hybrid flexibility
+- PTO policy and culture
+- Travel requirements
+- On-call expectations
+
+### 5. Culture & Fit
+
+- Management quality
+- Team dynamics
+- Company values alignment
+- Day-to-day enjoyment
+
+## Decision Matrix: Job Offer Comparison
+
+export const jobResult = makeDecision({
+  options: ['Current Job', 'Startup Offer', 'Big Tech Offer', 'Consulting Offer'],
+  criteria: ['Total Comp', 'Growth', 'Stability', 'Work-Life Balance', 'Culture Fit'],
+  weights: [0.25, 0.25, 0.15, 0.20, 0.15],
+  scores: {
+    'Current Job': [6, 5, 8, 7, 7],
+    'Startup Offer': [5, 9, 4, 4, 8],
+    'Big Tech Offer': [9, 7, 8, 6, 5],
+    'Consulting Offer': [8, 8, 7, 3, 6]
+  }
+});
+
+<DecisionMatrix result={jobResult} title="Job Offer Comparison (Example)" />
+
+**Adjust weights for your situation:**
+- Early career? Weight **Growth** higher
+- Have a family? Weight **Work-Life Balance** higher
+- Risk-averse? Weight **Stability** higher
+- Need cash now? Weight **Total Comp** higher
+
+## When to Leave Your Job
+
+Consider leaving when:
+
+- ✅ **You've stopped learning** — Growth has plateaued
+- ✅ **You're significantly underpaid** — Market rate is 20%+ higher
+- ✅ **The environment is toxic** — Bad management, poor culture
+- ✅ **There's no path forward** — Promotion is blocked
+- ✅ **You have a better offer** — That meets your criteria
+
+Consider staying when:
+
+- ❌ **You're running away** — New job won't fix the real issue
+- ❌ **You haven't negotiated** — Try fixing compensation first
+- ❌ **Unvested equity is significant** — Calculate the true cost of leaving
+- ❌ **The grass isn't greener** — New job has same problems
+- ❌ **You're making emotional decisions** — Bad day ≠ bad job
+
+<Collapsible title="The 'Unvested Equity' Trap" variant="warning">
+
+If you have $100,000 in unvested stock vesting over 2 years, leaving costs you $100,000. That's a $50k/year pay cut.
+
+A new job needs to compensate for this, either through:
+- Signing bonus to offset the loss
+- Higher total compensation
+- Significantly better growth/opportunity
+
+Don't underestimate what you're leaving on the table.
+
+</Collapsible>
+
+## Negotiation Basics
+
+### Know Your Leverage
+
+Your leverage is highest when:
+- You have competing offers
+- You have rare/in-demand skills
+- They've invested time in hiring you
+- The role has been open a long time
+
+### What to Negotiate
+
+| Always Negotiate | Sometimes Negotiate | Hard to Negotiate |
+|------------------|---------------------|-------------------|
+| Base salary | Equity/RSUs | Benefits (company-wide) |
+| Signing bonus | Vacation days | PTO policy |
+| Start date | Title | Work hours |
+| Remote flexibility | Relocation | Vesting schedule |
+
+### How to Negotiate
+
+1. **Get the offer in writing** first
+2. **Express enthusiasm** — Don't be adversarial
+3. **Counter with justification** — Market data, competing offers, specific skills
+4. **Ask, don't demand** — "Is there flexibility on..."
+5. **Get the final offer in writing**
+
+<Collapsible title="Sample Negotiation Script">
+
+**After receiving offer:**
+
+"Thank you for this offer—I'm very excited about the role and the team. I've been doing some market research, and based on my experience with [specific skill] and the [competing offer / market data], I was hoping we could discuss the base salary. Is there flexibility to move closer to $X?"
+
+**Key elements:**
+- Gratitude and enthusiasm
+- Justification (not entitlement)
+- Specific ask with rationale
+- Question format (collaborative)
+
+</Collapsible>
+
+## The Job Search Strategy
+
+### If Employed
+
+- **Never quit before you have an offer** — You lose all leverage
+- **Keep searches confidential** — Don't tell coworkers
+- **Interview strategically** — Take PTO, schedule around work
+- **Don't badmouth current employer** — Red flag to recruiters
+
+### If Unemployed
+
+- **Savings runway matters** — See [Emergency Fund](/protocol/emergency-fund/)
+- **Don't take the first offer** — Unless you must
+- **Fill gaps productively** — Freelance, volunteer, skill-building
+- **Address the gap directly** — Have a concise explanation
+
+## Common Mistakes
+
+<Collapsible title="Chasing salary at the expense of growth" variant="warning">
+
+A $10,000 raise at a dead-end job costs you more than a $10,000 pay cut at a high-growth opportunity. Early career especially—optimize for learning, not earning.
+
+</Collapsible>
+
+<Collapsible title="Ignoring total compensation" variant="warning">
+
+Stock options, 401k matches, and health insurance premiums can be worth $20-50k+ annually. Comparing only base salary is comparing apples to oranges.
+
+</Collapsible>
+
+<Collapsible title="Not negotiating" variant="warning">
+
+Most offers have 5-15% flexibility. Not asking costs thousands per year, compounding over your career. The worst they can say is no.
+
+</Collapsible>
+
+<Collapsible title="Emotional decisions" variant="warning">
+
+Bad week at work? Difficult project? These are temporary. Quitting in frustration often leads to worse situations. Wait until you can think clearly.
+
+</Collapsible>
+
+## Career Compounding
+
+Like money, career decisions compound:
+
+| Year | Good Decisions | Mediocre Decisions |
+|------|----------------|-------------------|
+| 1 | $80k (learning fast) | $85k (comfortable) |
+| 5 | $150k (senior role) | $100k (same role) |
+| 10 | $250k (leadership) | $120k (individual contributor) |
+| 20 | $400k+ (executive) | $150k (senior IC) |
+
+The person who took "less money for more learning" early career often earns multiples more later. Compound growth applies to skills and reputation, not just money.
+
+## The Bottom Line
+
+Career decisions are:
+- **Total compensation** — Salary is just one component
+- **Multi-dimensional** — Growth, stability, balance, culture all matter
+- **Personal** — Your weights depend on your life stage
+- **Compounding** — Early career decisions have outsized impact
+
+Don't optimize for salary. Optimize for the career that builds wealth, skills, and satisfaction over decades.
+
+---
+
+<SeeAlso links={[
+  { title: "Tax-Advantaged Accounts", href: "/protocol/tax-advantaged-accounts/", description: "401(k) match is part of total comp" },
+  { title: "Income Streams", href: "/protocol/income-streams/", description: "Career is usually your primary stream" },
+  { title: "Emergency Fund", href: "/protocol/emergency-fund/", description: "Runway for job transitions" },
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Build your own job comparison" }
+]} />

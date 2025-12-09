@@ -1,0 +1,245 @@
+---
+title: Rent vs Buy
+description: The math behind the biggest financial decision most people make
+sidebar:
+  order: 7
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: rent vs buy, housing decision, home ownership, renting, real estate, 5% rule
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+import Collapsible from '../../../components/atoms/Collapsible.astro';
+import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
+import { makeDecision } from '../../../lib/tools';
+
+<Breadcrumbs />
+
+<Disclaimer />
+
+## The Housing Question
+
+"Should I rent or buy?" is one of the most emotionally charged financial decisions. Everyone has opinions. Real estate agents say buy. Your parents say buy. The internet says... it depends.
+
+**The truth:** It's math, not morality. Neither renting nor buying is universally better. The right answer depends on your numbers, your timeline, and your priorities.
+
+## The 5% Rule (Quick Decision)
+
+Here's a simple heuristic from financial planner Ben Felix:
+
+**Annual Cost of Owning = Home Price × 5%**
+
+This 5% breaks down roughly as:
+- **1%** — Property taxes
+- **1%** — Maintenance and repairs
+- **3%** — Cost of capital (opportunity cost of down payment + mortgage interest)
+
+**The rule:** If annual rent < 5% of home price, renting is likely cheaper. If annual rent > 5%, buying might make sense.
+
+<Collapsible title="Example: 5% Rule Calculation">
+
+**Home price:** $400,000
+**Annual cost of owning:** $400,000 × 5% = **$20,000/year** ($1,667/month)
+
+**Compare to rent:**
+- If rent is $1,400/month ($16,800/year) → **Rent wins**
+- If rent is $1,800/month ($21,600/year) → **Buying might win**
+
+This is a simplification. The real calculation is more complex, but this gives you a quick filter.
+
+</Collapsible>
+
+## The True Cost of Owning
+
+Buying a home involves costs that don't show up in the mortgage payment:
+
+### Upfront Costs
+
+| Cost | Typical Amount |
+|------|----------------|
+| Down payment | 5-20% of home price |
+| Closing costs | 2-5% of home price |
+| Moving expenses | $1,000-10,000 |
+| Immediate repairs/updates | Varies widely |
+
+### Ongoing Costs
+
+| Cost | Typical Amount |
+|------|----------------|
+| Mortgage payment (P&I) | Varies |
+| Property taxes | 0.5-2.5% of home value/year |
+| Homeowner's insurance | $1,000-3,000/year |
+| Maintenance | 1-2% of home value/year |
+| HOA fees (if applicable) | $200-500/month |
+| Utilities (often higher than renting) | Varies |
+
+### Hidden Costs
+
+| Cost | Notes |
+|------|-------|
+| Opportunity cost | Down payment money not invested |
+| Illiquidity | Can't easily access home equity |
+| Transaction costs | 6-10% to sell (agent fees, closing) |
+| Time | Maintenance, yard work, repairs |
+| Mobility reduction | Harder to move for jobs/opportunities |
+
+<Collapsible title="The Opportunity Cost Problem" variant="warning">
+
+That $80,000 down payment on a $400,000 home? If invested in the stock market at 7% average return instead:
+
+- **10 years:** ~$157,000
+- **20 years:** ~$310,000
+- **30 years:** ~$609,000
+
+Your home would need to appreciate significantly just to match what your down payment could have earned elsewhere. This doesn't mean don't buy—but factor it in.
+
+</Collapsible>
+
+## The True Cost of Renting
+
+Renting has costs too, often overlooked:
+
+| Factor | Notes |
+|--------|-------|
+| Rent increases | 2-5% annually in most markets |
+| No equity building | Monthly payment builds nothing |
+| No tax benefits | Can't deduct mortgage interest |
+| Less control | Landlord decides renovations, pets, etc. |
+| Lease constraints | Typically 12-month commitments |
+| Moving costs | Every 2-3 years on average |
+
+**BUT:** Renters avoid property tax, maintenance, HOA fees, and can invest the difference.
+
+## When Buying Makes Sense
+
+Buy if:
+
+- ✅ You'll stay **5+ years** (ideally 7-10+)
+- ✅ You have **stable income and employment**
+- ✅ You have **20% down payment** (avoid PMI)
+- ✅ You have **6+ month emergency fund** remaining after purchase
+- ✅ Local **rent is > 5%** of home price annually
+- ✅ You **want** the responsibilities of ownership
+- ✅ You're in a **stable or growing market**
+
+## When Renting Makes Sense
+
+Rent if:
+
+- ✅ You might move in **< 5 years**
+- ✅ Your **income is variable or uncertain**
+- ✅ Local **rent is < 5%** of home price annually
+- ✅ You value **flexibility and mobility**
+- ✅ You'd rather **invest the difference**
+- ✅ You don't want **maintenance responsibilities**
+- ✅ You're in a **declining or uncertain market**
+
+## Decision Matrix: Your Situation
+
+export const housingResult = makeDecision({
+  options: ['Buy Home', 'Rent + Invest Difference', 'Rent (Status Quo)'],
+  criteria: ['Monthly Cost', 'Wealth Building', 'Flexibility', 'Stability', 'Lifestyle Fit'],
+  weights: [0.25, 0.25, 0.20, 0.15, 0.15],
+  scores: {
+    'Buy Home': [5, 8, 3, 9, 7],
+    'Rent + Invest Difference': [7, 7, 8, 6, 6],
+    'Rent (Status Quo)': [8, 3, 9, 5, 5]
+  }
+});
+
+<DecisionMatrix result={housingResult} title="Housing Decision (Default Weights)" />
+
+**Note:** This uses balanced weights. Your personal situation might weight factors differently:
+- **Job uncertainty?** Weight flexibility higher
+- **Kids/schools?** Weight stability higher
+- **High rent market?** Weight monthly cost higher
+
+<Collapsible title="Customize Your Analysis">
+
+To make this decision for your specific situation:
+
+1. **Calculate your numbers:**
+   - What's the home price you're considering?
+   - What's comparable rent?
+   - What's your down payment amount?
+   - What would that down payment earn if invested?
+
+2. **Assess your timeline:**
+   - How long will you likely stay?
+   - Is your job/career stable?
+   - Any major life changes coming?
+
+3. **Consider non-financial factors:**
+   - Do you want to maintain a property?
+   - How important is flexibility?
+   - What does your partner/family prefer?
+
+Use our [Decision Matrix](/protocol/decision-matrix/) tool to run your own analysis with your weights.
+
+</Collapsible>
+
+## Common Myths
+
+<Collapsible title="'Renting is throwing money away'">
+
+This is the most persistent myth. Every dollar of rent pays for housing—a real service. Meanwhile, mortgage interest, property taxes, maintenance, and insurance are also "thrown away" (not building equity).
+
+The real question is: does the equity you build exceed what you could have built by investing the difference? Often it doesn't.
+
+</Collapsible>
+
+<Collapsible title="'Real estate always goes up'">
+
+On average, home prices track inflation—about 3-4% annually before costs. After transaction costs, maintenance, and opportunity cost, real returns are often modest.
+
+Some markets have exceptional growth. Many don't. Past performance doesn't guarantee future returns.
+
+</Collapsible>
+
+<Collapsible title="'You need to buy before you're priced out'">
+
+FOMO is not a financial strategy. Markets can go sideways or down for years. Buying at an inflated price to avoid missing out often backfires.
+
+If you can't afford to buy comfortably today, forcing it rarely ends well.
+
+</Collapsible>
+
+<Collapsible title="'Mortgage interest deduction makes buying cheaper'">
+
+The mortgage interest deduction only helps if you itemize deductions AND your itemized deductions exceed the standard deduction. After the 2017 tax law changes, most homeowners take the standard deduction—getting zero tax benefit from mortgage interest.
+
+</Collapsible>
+
+## The Real Answer
+
+Neither buying nor renting is inherently better. The right choice depends on:
+
+1. **Your numbers** — Run the actual math for your situation
+2. **Your timeline** — Buying is a long-term commitment
+3. **Your priorities** — Stability vs flexibility, control vs convenience
+4. **Your market** — Local rent-to-price ratios vary wildly
+
+Don't let social pressure, FOMO, or "conventional wisdom" make this decision. Do the math. Be honest about your priorities. Choose what fits *your* life.
+
+## The Bottom Line
+
+Rent vs Buy is:
+- **Math, not morality** — Neither choice is universally right
+- **The 5% rule** — Quick filter: if rent < 5% of home price, renting is likely cheaper
+- **Timeline-dependent** — Buying only makes sense for 5+ year horizons
+- **Personal** — Your priorities matter as much as the numbers
+
+The biggest financial mistake isn't renting or buying—it's making this decision emotionally instead of analytically.
+
+---
+
+<SeeAlso links={[
+  { title: "Emergency Fund", href: "/protocol/emergency-fund/", description: "Build this before buying" },
+  { title: "Compound Interest", href: "/protocol/compound-interest/", description: "What your down payment could earn instead" },
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Run your own housing analysis" },
+  { title: "Income Streams", href: "/protocol/income-streams/", description: "Can you afford the payments long-term?" }
+]} />

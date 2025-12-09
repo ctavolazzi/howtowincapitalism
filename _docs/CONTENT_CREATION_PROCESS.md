@@ -253,6 +253,10 @@ npx wrangler pages deploy dist --project-name howtowincapitalism
 9. **Gitignored work efforts** — `_work_efforts/` is gitignored, so changes there don't appear in commits (that's fine, it's local tracking)
 10. **Todo list parallelism** — Following the process doc phases maps directly to todo items
 
+### 2025-12-09 (Session 7 - Phase 2 Content)
+
+11. **MDX escaping** — `<` followed by numbers/letters (like `<5%`) is interpreted as JSX. Use "less than" or `&lt;` instead.
+
 ---
 
 ## Metrics to Track
