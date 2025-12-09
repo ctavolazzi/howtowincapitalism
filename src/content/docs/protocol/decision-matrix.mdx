@@ -3,8 +3,11 @@ title: Decision Matrix
 description: A quantitative framework for comparing options against weighted criteria
 ---
 
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 import DecisionMatrix from '../../../components/molecules/DecisionMatrix.astro';
 import { makeDecision } from '../../../lib/tools';
+
+<Breadcrumbs />
 
 export const investmentResult = makeDecision({
   options: ["401(k)", "Roth IRA", "Taxable Brokerage"],
@@ -176,6 +179,9 @@ export const housingResult = makeDecision({
 
 ---
 
-## See Also
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
 
-- [Introduction](/protocol/introduction/) — Framework overview
+<SeeAlso links={[
+  { title: "Introduction", href: "/protocol/introduction/", description: "Framework overview and core principles" },
+  { title: "Latest Updates", href: "/field-notes/latest/", description: "Recent additions to the wiki" }
+]} />

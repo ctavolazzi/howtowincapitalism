@@ -5,8 +5,12 @@ sidebar:
   order: 1
 ---
 
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
 import BlankSlate from '../../../components/molecules/BlankSlate.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+
+<Breadcrumbs />
 
 <Disclaimer />
 
@@ -29,3 +33,7 @@ When you add a PDF to /public/reports/, link it like this:
 
 */}
 
+<SeeAlso links={[
+  { title: "Introduction", href: "/protocol/introduction/", description: "Start here to understand the framework" },
+  { title: "Latest Updates", href: "/field-notes/latest/", description: "Recent additions to the wiki" }
+]} />

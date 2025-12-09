@@ -5,7 +5,11 @@ sidebar:
   order: 1
 ---
 
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import SeeAlso from '../../../components/molecules/SeeAlso.astro';
+
+<Breadcrumbs />
 
 <Disclaimer />
 
@@ -33,3 +37,9 @@ Future updates will include:
 ---
 
 *Check back regularly for updates. This wiki grows over time.*
+
+<SeeAlso links={[
+  { title: "Introduction", href: "/protocol/introduction/", description: "Start here to understand the framework" },
+  { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Quantitative decision-making tool" },
+  { title: "Reports", href: "/reports/", description: "Downloadable analysis documents" }
+]} />
