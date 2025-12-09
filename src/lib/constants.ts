@@ -2,6 +2,8 @@
  * Site Constants
  */
 
+import { debug } from './debug';
+
 export const SITE = {
   name: 'How To Win Capitalism',
   description: 'A satirical but practical wiki about financial autonomy',
@@ -16,3 +18,9 @@ export const DEFAULTS = {
 export const LINKS = {
   gumroad: '#', // Update when product is ready
 } as const;
+
+// Log config load in dev
+debug.log('config', 'Site constants loaded', {
+  site: SITE.name,
+  url: SITE.url,
+});

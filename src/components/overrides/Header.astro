@@ -264,19 +264,29 @@ import Search from '@astrojs/starlight/components/Search.astro';
 </style>
 
 <script>
+  // Debug logging (client-side) - only in dev
+  const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
+  const log = DEBUG
+    ? (...args: unknown[]) => console.log('🔍 [header]', ...args)
+    : () => {};
+
   // Get elements
   const menuBtn = document.querySelector('.menu-btn');
   const navMenu = document.getElementById('nav-menu');
 
+  log('Header initialized', { menuBtn: !!menuBtn, navMenu: !!navMenu });
+
   // Toggle menu
   function toggleMenu() {
     const isOpen = !navMenu?.hidden;
+    log('Menu toggle', { wasOpen: isOpen, nowOpen: !isOpen });
     if (navMenu) navMenu.hidden = isOpen;
     menuBtn?.setAttribute('aria-expanded', String(!isOpen));
   }
 
   // Close menu
   function closeMenu() {
+    log('Menu close');
     if (navMenu) navMenu.hidden = true;
     menuBtn?.setAttribute('aria-expanded', 'false');
   }
@@ -286,12 +296,17 @@ import Search from '@astrojs/starlight/components/Search.astro';
 
   // Close on nav link click
   navMenu?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeMenu);
+    link.addEventListener('click', (e) => {
+      const target = e.currentTarget as HTMLAnchorElement;
+      log('Nav link clicked', { href: target?.href });
+      closeMenu();
+    });
   });
 
   // Close on escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !navMenu?.hidden) {
+      log('Escape pressed, closing menu');
       closeMenu();
     }
   });
