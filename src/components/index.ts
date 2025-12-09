@@ -1,8 +1,19 @@
 /**
  * Component Registry
+ * Updated: 2025-12-09
  *
- * Active: WikiBox, Breadcrumbs, Disclaimer, DecisionMatrix, TopicCard, SeeAlso, CardGrid, Footer, Hero
- * Reserved: InfoBox, NoteBox, NavBox, CallToAction, PageHeader, ContentSection
+ * ACTIVE (in use on pages):
+ *   Atoms:     WikiBox, Breadcrumbs, Collapsible
+ *   Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter
+ *   Utilities: Empty, CardGrid
+ *   Organisms: Footer
+ *
+ * AVAILABLE (exported, not currently used):
+ *   Organisms: Hero
+ *
+ * RESERVED (exported for future use):
+ *   Molecules: InfoBox, NoteBox, NavBox, CallToAction
+ *   Organisms: PageHeader, ContentSection
  */
 
 // Atoms

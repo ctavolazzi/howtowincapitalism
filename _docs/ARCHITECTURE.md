@@ -59,20 +59,48 @@ howtowincapitalism/
 Atoms → Molecules → Organisms → Pages
 ```
 
+### Component Inventory (Updated 2025-12-09)
+
 **Atoms** (src/components/atoms/)
-- `WikiBox.astro` - Base container component with variants
+| Component | Purpose | Pattern |
+|-----------|---------|---------|
+| `WikiBox.astro` | Base container with variants | Container |
+| `Breadcrumbs.astro` | Navigation hierarchy | Breadcrumbs |
+| `Collapsible.astro` | Expandable sections | Progressive Disclosure |
 
 **Molecules** (src/components/molecules/)
-- `Disclaimer.astro` - Warning banner (closable)
-- `DecisionMatrix.astro` - Decision matrix renderer (uses tools/decision-matrix.ts)
-- `InfoBox.astro` - Information callout
-- `NoteBox.astro` - Note callout
-- `NavBox.astro` - Navigation box
-- `CallToAction.astro` - CTA with button
+| Component | Purpose | Pattern |
+|-----------|---------|---------|
+| `Disclaimer.astro` | Warning banner (closable) | Alert |
+| `DecisionMatrix.astro` | Decision matrix renderer | Data Display |
+| `TopicCard.astro` | Content preview cards | Cards |
+| `SeeAlso.astro` | Related content links | Related Content |
+| `FAQ.astro` | Q&A sections | FAQ |
+| `BlankSlate.astro` | Empty state / onboarding | Blank Slate |
+| `CompletenessMeter.astro` | Progress tracking | Completeness Meter |
+| `InfoBox.astro` | Information callout | Alert (reserved) |
+| `NoteBox.astro` | Note callout | Alert (reserved) |
+| `NavBox.astro` | Navigation box | Navigation (reserved) |
+| `CallToAction.astro` | CTA with button | CTA (reserved) |
 
 **Organisms** (src/components/organisms/)
-- `PageHeader.astro` - Page header with title
-- `ContentSection.astro` - Content wrapper
+| Component | Purpose | Pattern |
+|-----------|---------|---------|
+| `Footer.astro` | Site-wide footer | Fat Footer |
+| `Hero.astro` | Hero section | Hero (available, not used) |
+| `PageHeader.astro` | Page header with title | Header (reserved) |
+| `ContentSection.astro` | Content wrapper | Section (reserved) |
+
+**Utilities** (src/components/utilities/)
+| Component | Purpose |
+|-----------|---------|
+| `CardGrid.astro` | Responsive grid layout |
+| `Empty.astro` | Placeholder for disabled Starlight components |
+
+**Overrides** (src/components/overrides/)
+| Component | Purpose |
+|-----------|---------|
+| `Header.astro` | Custom site header |
 
 ## Tools (src/lib/tools/)
 
