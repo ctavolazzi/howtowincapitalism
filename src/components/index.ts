@@ -14,10 +14,10 @@ export { default as Collapsible } from './atoms/Collapsible.astro';
 export { default as Disclaimer } from './molecules/Disclaimer.astro';
 export { default as DecisionMatrix } from './molecules/DecisionMatrix.astro';
 export { default as TopicCard } from './molecules/TopicCard.astro';
-export { default as ConceptCard } from './molecules/ConceptCard.astro';
 export { default as SeeAlso } from './molecules/SeeAlso.astro';
 export { default as FAQ } from './molecules/FAQ.astro';
 export { default as BlankSlate } from './molecules/BlankSlate.astro';
+export { default as CompletenessMeter } from './molecules/CompletenessMeter.astro';
 
 // Utilities
 export { default as Empty } from './utilities/Empty.astro';

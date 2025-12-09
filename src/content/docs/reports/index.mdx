@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import Disclaimer from '../../../components/molecules/Disclaimer.astro';
+import BlankSlate from '../../../components/molecules/BlankSlate.astro';
 
 <Disclaimer />
 
@@ -13,7 +14,13 @@ import Disclaimer from '../../../components/molecules/Disclaimer.astro';
 
 Download free reports on building financial autonomy.
 
-*Reports coming soon.*
+<BlankSlate
+  title="Reports Coming Soon"
+  description="We're working on in-depth analysis and downloadable guides. Check back later or follow Field Notes for updates."
+  icon="📊"
+  ctaText="Read Latest Updates"
+  ctaHref="/field-notes/latest/"
+/>
 
 {/*
 When you add a PDF to /public/reports/, link it like this:

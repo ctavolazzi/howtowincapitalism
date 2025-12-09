@@ -1,0 +1,299 @@
+---
+/**
+ * COMPLETENESSMETER - MOLECULE
+ *
+ * Pattern: Completeness Meter (UI-Patterns.com)
+ * Pattern: Progress Indicator
+ *
+ * Tracks user progress through wiki content using localStorage.
+ * Shows percentage complete and list of visited/unvisited pages.
+ *
+ * Usage:
+ *   <CompletenessMeter />
+ *
+ *   <CompletenessMeter
+ *     title="Your Progress"
+ *     showList={true}
+ *   />
+ */
+
+export interface Props {
+  /** Widget title */
+  title?: string;
+  /** Show list of pages */
+  showList?: boolean;
+  /** Compact mode (just the bar) */
+  compact?: boolean;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  title = 'Protocol Progress',
+  showList = true,
+  compact = false,
+  class: className
+} = Astro.props;
+
+// Define trackable content (The Protocol pages)
+const trackablePages = [
+  { path: '/protocol/introduction/', label: 'Introduction', icon: '📖' },
+  { path: '/protocol/decision-matrix/', label: 'Decision Matrix', icon: '📊' },
+  // Add more as content grows:
+  // { path: '/protocol/asset-building/', label: 'Asset Building', icon: '💰' },
+  // { path: '/protocol/time-leverage/', label: 'Time Leverage', icon: '⏰' },
+];
+
+const totalPages = trackablePages.length;
+const meterId = 'protocol-progress';
+---
+
+<div class:list={['completeness-meter', { 'completeness-meter--compact': compact }, className]} data-meter-id={meterId}>
+  {!compact && (
+    <header class="cm-header">
+      <h4 class="cm-title">{title}</h4>
+      <span class="cm-count">
+        <span class="cm-visited">0</span>/<span class="cm-total">{totalPages}</span>
+      </span>
+    </header>
+  )}
+
+  <div class="cm-bar-container">
+    <div class="cm-bar">
+      <div class="cm-bar-fill" style="width: 0%"></div>
+    </div>
+    <span class="cm-percentage">0%</span>
+  </div>
+
+  {showList && !compact && (
+    <ul class="cm-list">
+      {trackablePages.map((page) => (
+        <li class="cm-item" data-path={page.path}>
+          <span class="cm-icon">{page.icon}</span>
+          <a href={page.path} class="cm-link">{page.label}</a>
+          <span class="cm-status">○</span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {compact && (
+    <span class="cm-compact-label">{title}: <span class="cm-percentage-inline">0%</span></span>
+  )}
+</div>
+
+<style>
+  .completeness-meter {
+    background: var(--color-bg);
+    border: var(--border-width) solid var(--color-border);
+    padding: var(--space-lg);
+    margin: var(--space-lg) 0;
+  }
+
+  .completeness-meter--compact {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  /* Header */
+  .cm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+  }
+
+  .cm-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 400;
+  }
+
+  .cm-count {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: #72777d;
+  }
+
+  .cm-visited {
+    color: var(--color-link);
+    font-weight: 600;
+  }
+
+  /* Progress Bar */
+  .cm-bar-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .cm-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--color-surface-alt);
+    border: var(--border-width) solid var(--color-border);
+    overflow: hidden;
+  }
+
+  .cm-bar-fill {
+    height: 100%;
+    background: var(--color-link);
+    transition: width 0.3s ease;
+  }
+
+  .cm-percentage {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-link);
+    min-width: 3em;
+    text-align: right;
+  }
+
+  /* List */
+  .cm-list {
+    list-style: none;
+    margin: var(--space-md) 0 0 0;
+    padding: 0;
+    border-top: var(--border-width) solid var(--color-border);
+    padding-top: var(--space-md);
+  }
+
+  .cm-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+  }
+
+  .cm-icon {
+    font-size: var(--text-base);
+  }
+
+  .cm-link {
+    flex: 1;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+
+  .cm-link:hover {
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+
+  .cm-status {
+    font-size: var(--text-lg);
+    color: var(--color-border);
+    transition: color 0.2s ease;
+  }
+
+  .cm-item[data-visited="true"] .cm-status {
+    color: #22863a;
+  }
+
+  .cm-item[data-visited="true"] .cm-status::before {
+    content: '●';
+  }
+
+  .cm-item[data-visited="true"] .cm-link {
+    color: #72777d;
+  }
+
+  /* Compact mode */
+  .cm-compact-label {
+    font-size: var(--text-xs);
+    color: #72777d;
+  }
+
+  .cm-percentage-inline {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--color-link);
+  }
+</style>
+
+<script define:vars={{ trackablePages, meterId }}>
+  // Completeness Meter - Client-side tracking
+  (function() {
+    const STORAGE_KEY = 'htwc-visited-pages';
+    const currentPath = window.location.pathname;
+
+    // Get visited pages from localStorage
+    function getVisitedPages() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    // Save visited pages to localStorage
+    function saveVisitedPages(pages) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
+      } catch {
+        // localStorage not available
+      }
+    }
+
+    // Mark current page as visited
+    function markCurrentPageVisited() {
+      const trackablePaths = trackablePages.map(p => p.path);
+      if (trackablePaths.includes(currentPath)) {
+        const visited = getVisitedPages();
+        if (!visited.includes(currentPath)) {
+          visited.push(currentPath);
+          saveVisitedPages(visited);
+        }
+      }
+    }
+
+    // Update the meter UI
+    function updateMeterUI() {
+      const visited = getVisitedPages();
+      const total = trackablePages.length;
+      const visitedCount = visited.filter(p => 
+        trackablePages.some(tp => tp.path === p)
+      ).length;
+      const percentage = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
+
+      // Update all meters on the page
+      document.querySelectorAll('.completeness-meter').forEach(meter => {
+        // Update count
+        const visitedEl = meter.querySelector('.cm-visited');
+        if (visitedEl) visitedEl.textContent = visitedCount;
+
+        // Update bar
+        const barFill = meter.querySelector('.cm-bar-fill');
+        if (barFill) barFill.style.width = percentage + '%';
+
+        // Update percentage
+        const percentageEl = meter.querySelector('.cm-percentage');
+        if (percentageEl) percentageEl.textContent = percentage + '%';
+
+        const percentageInline = meter.querySelector('.cm-percentage-inline');
+        if (percentageInline) percentageInline.textContent = percentage + '%';
+
+        // Update list items
+        meter.querySelectorAll('.cm-item').forEach(item => {
+          const path = item.getAttribute('data-path');
+          const isVisited = visited.includes(path);
+          item.setAttribute('data-visited', isVisited);
+          const status = item.querySelector('.cm-status');
+          if (status) {
+            status.textContent = isVisited ? '●' : '○';
+          }
+        });
+      });
+    }
+
+    // Initialize
+    markCurrentPageVisited();
+    updateMeterUI();
+  })();
+</script>
