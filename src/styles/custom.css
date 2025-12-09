@@ -373,6 +373,65 @@ dialog::backdrop {
 }
 
 /* ==============================================
+   5b. COLOR CONSISTENCY (Fix Starlight theme bleed)
+   Ensure all elements have explicit light-mode colors.
+   ============================================== */
+
+/* Force text colors on all table elements */
+table,
+table th,
+table td,
+table thead,
+table tbody,
+table tr {
+  color: var(--color-text) !important;
+  background-color: var(--color-bg);
+}
+
+table th {
+  background-color: var(--color-surface-alt) !important;
+  color: var(--color-text) !important;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: var(--color-surface) !important;
+}
+
+/* Force text colors on summary/details elements */
+summary,
+details summary {
+  color: var(--color-text) !important;
+  background-color: var(--color-surface) !important;
+}
+
+details summary:hover {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* Force colors on all boxed content */
+.wiki-box,
+.wiki-box *,
+details,
+details * {
+  color: var(--color-text);
+}
+
+/* Exception: info and cta variant headers have light text on dark bg */
+.wiki-box--info .wiki-box__header,
+.wiki-box--info .wiki-box__header *,
+.wiki-box--cta .wiki-box__header,
+.wiki-box--cta .wiki-box__header * {
+  color: var(--color-bg) !important;
+}
+
+/* Ensure links still use link color */
+.wiki-box a,
+details a,
+table a {
+  color: var(--color-link) !important;
+}
+
+/* ==============================================
    6. PAGE CONTENT STYLING
    ============================================== */
 
