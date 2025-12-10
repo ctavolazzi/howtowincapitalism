@@ -2,14 +2,24 @@
 /**
  * Seed Users to Cloudflare KV
  *
- * Run: node scripts/seed-users.mjs
+ * Run: node scripts/seed-users.mjs [--preview]
  *
  * This script hashes passwords and uploads users to KV.
  * Uses wrangler CLI to write to KV.
+ *
+ * --preview: Seed to preview namespace (for local dev)
  */
 
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
+
+// Check for --preview flag
+const isPreview = process.argv.includes('--preview');
+
+// Namespace IDs
+const USERS_ID = isPreview
+  ? '6a7210df39874497b8cac57b112484eb'  // preview
+  : '5b575785cbaa4b9e90e324501799cd39'; // production
 
 // Same hashing as kv-auth.ts (SHA-256 with salt)
 function hashPassword(password) {
@@ -66,7 +76,7 @@ const users = [
   },
 ];
 
-console.log('🌱 Seeding users to Cloudflare KV...\n');
+console.log(`🌱 Seeding users to Cloudflare KV (${isPreview ? 'PREVIEW' : 'PRODUCTION'})...\n`);
 
 for (const user of users) {
   // Hash the password
@@ -91,7 +101,7 @@ for (const user of users) {
 
   try {
     execSync(
-      `wrangler kv key put --namespace-id=5b575785cbaa4b9e90e324501799cd39 "${userKey}" '${userValue.replace(/'/g, "'\\''")}'`,
+      `wrangler kv key put --namespace-id=${USERS_ID} "${userKey}" '${userValue.replace(/'/g, "'\\''")}'`,
       { stdio: 'pipe' }
     );
     console.log(`✅ Created user: ${user.id} (${user.email})`);
@@ -104,7 +114,7 @@ for (const user of users) {
 
   try {
     execSync(
-      `wrangler kv key put --namespace-id=5b575785cbaa4b9e90e324501799cd39 "${emailKey}" "${user.id}"`,
+      `wrangler kv key put --namespace-id=${USERS_ID} "${emailKey}" "${user.id}"`,
       { stdio: 'pipe' }
     );
     console.log(`✅ Created email index: ${user.email} → ${user.id}`);
@@ -116,6 +126,7 @@ for (const user of users) {
 }
 
 console.log('🎉 Done! Users seeded to KV.');
+console.log(`\nEnvironment: ${isPreview ? 'PREVIEW (local dev)' : 'PRODUCTION'}`);
 console.log('\nTest credentials:');
 console.log('  admin@email.com / itcan\'tbethateasy...');
 console.log('  editor@email.com / editor123');
