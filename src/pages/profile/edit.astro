@@ -5,43 +5,93 @@
  * Protected route for editing the current user's profile.
  * Auth check happens client-side (nanostores).
  *
+ * Error Handling:
+ * - Not logged in -> Redirect to /login?redirect=/profile/edit/
+ * - Profile not found -> Show "Profile Setup Required" state
+ * - System error -> Show graceful error with retry option
+ *
  * Flow:
  * 1. Page renders with loading state
  * 2. Client-side script checks auth
- * 3. If not logged in -> redirect to /login
- * 4. If logged in -> fetch profile and show form
+ * 3. If not logged in -> redirect to /login with redirect param
+ * 4. If logged in -> verify profile exists
+ * 5. If profile exists -> show form
+ * 6. If profile missing -> show setup required state
  */
 
 import Base from '../../layouts/Base.astro';
 import ProfileForm from '../../components/organisms/profile/ProfileForm.astro';
-import { fetchUserProfile, getAllUserIds } from '../../lib/api';
+import { fetchUserProfile, getAllUserIds, userExists } from '../../lib/api';
 
-// For SSR, we need to pre-fetch profile data
-// The client will verify auth and show/hide accordingly
-// Default to first user for initial render (will be replaced client-side)
+// For SSR, we pre-render with a placeholder profile
+// The client will fetch the actual user's profile after auth check
 const userIds = getAllUserIds();
-const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], userIds[0]) : null;
+let defaultProfile = null;
+let ssrError: string | null = null;
+
+try {
+  if (userIds.length > 0) {
+    defaultProfile = await fetchUserProfile(userIds[0], userIds[0]);
+  }
+} catch (err) {
+  console.error('SSR profile fetch error:', err);
+  ssrError = 'Failed to load profile template';
+}
 ---
 
 <Base title="Edit Profile">
   <div class="edit-page">
-    <!-- Auth Loading State -->
-    <div id="auth-loading" class="auth-loading">
+    <!-- State: Loading (shown initially) -->
+    <div id="state-loading" class="state-container state-loading">
       <div class="loading-spinner"></div>
-      <p>Checking authentication...</p>
+      <p class="state-text">Checking authentication...</p>
     </div>
 
-    <!-- Not Logged In State (hidden by default) -->
-    <div id="auth-required" class="auth-required" style="display: none;">
-      <div class="auth-message">
+    <!-- State: Auth Required (not logged in) -->
+    <div id="state-auth-required" class="state-container state-auth" style="display: none;">
+      <div class="state-card">
+        <div class="state-icon">🔐</div>
         <h1>Login Required</h1>
         <p>You must be logged in to edit your profile.</p>
-        <a href="/login/" class="login-link">Go to Login</a>
+        <div class="state-actions">
+          <a href="/login/?redirect=/profile/edit/" class="btn-primary">Log In</a>
+          <a href="/" class="btn-secondary">Go Home</a>
+        </div>
+        <p class="redirect-notice" id="redirect-notice"></p>
       </div>
     </div>
 
-    <!-- Edit Form (hidden until auth verified) -->
-    <div id="edit-container" class="edit-container" style="display: none;">
+    <!-- State: Profile Not Found (logged in but no profile) -->
+    <div id="state-profile-missing" class="state-container state-warning" style="display: none;">
+      <div class="state-card">
+        <div class="state-icon">⚠️</div>
+        <h1>Profile Setup Required</h1>
+        <p>Your account exists, but we couldn't find your profile data.</p>
+        <p class="state-detail">This might happen if you're a new user or if there was a sync issue.</p>
+        <div class="state-actions">
+          <button id="btn-retry" class="btn-primary">Try Again</button>
+          <a href="/profile/me/" class="btn-secondary">View Profile</a>
+        </div>
+        <p class="error-detail" id="profile-error-detail"></p>
+      </div>
+    </div>
+
+    <!-- State: System Error -->
+    <div id="state-error" class="state-container state-error" style="display: none;">
+      <div class="state-card">
+        <div class="state-icon">❌</div>
+        <h1>Something Went Wrong</h1>
+        <p>We encountered an error while loading your profile.</p>
+        <p class="error-detail" id="error-detail"></p>
+        <div class="state-actions">
+          <button id="btn-retry-error" class="btn-primary">Retry</button>
+          <a href="/" class="btn-secondary">Go Home</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- State: Edit Form (success) -->
+    <div id="state-edit" class="state-container state-edit" style="display: none;">
       <div class="page-header">
         <h1>Edit Your Profile</h1>
         <a href="/profile/me/" class="back-link">← Back to Profile</a>
@@ -50,8 +100,15 @@ const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], u
       <div id="form-container">
         {defaultProfile ? (
           <ProfileForm profile={defaultProfile} />
+        ) : ssrError ? (
+          <div class="error-box">
+            <p><strong>Template Error:</strong> {ssrError}</p>
+            <p>Please refresh the page or try again later.</p>
+          </div>
         ) : (
-          <p class="error-message">Unable to load profile data.</p>
+          <div class="error-box">
+            <p>Unable to load profile form. Please refresh and try again.</p>
+          </div>
         )}
       </div>
     </div>
@@ -59,65 +116,137 @@ const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], u
 </Base>
 
 <script>
-  import { authStore, getCurrentUser } from '../../lib/auth';
-  import { fetchUserProfile } from '../../lib/api';
+  import { authStore, getUserById } from '../../lib/auth';
+  import { userExists } from '../../lib/api';
 
-  const authLoading = document.getElementById('auth-loading');
-  const authRequired = document.getElementById('auth-required');
-  const editContainer = document.getElementById('edit-container');
+  // DOM Elements
+  const stateLoading = document.getElementById('state-loading');
+  const stateAuthRequired = document.getElementById('state-auth-required');
+  const stateProfileMissing = document.getElementById('state-profile-missing');
+  const stateError = document.getElementById('state-error');
+  const stateEdit = document.getElementById('state-edit');
+  const redirectNotice = document.getElementById('redirect-notice');
+  const profileErrorDetail = document.getElementById('profile-error-detail');
+  const errorDetail = document.getElementById('error-detail');
+  const btnRetry = document.getElementById('btn-retry');
+  const btnRetryError = document.getElementById('btn-retry-error');
 
-  async function checkAuthAndLoad() {
-    // Wait a tick for store to hydrate from localStorage
-    await new Promise((r) => setTimeout(r, 50));
+  // State management
+  type PageState = 'loading' | 'auth-required' | 'profile-missing' | 'error' | 'edit';
 
-    const state = authStore.get();
-    const isLoggedIn = state.isLoggedIn === 'true';
+  function showState(state: PageState) {
+    // Hide all states
+    [stateLoading, stateAuthRequired, stateProfileMissing, stateError, stateEdit].forEach(el => {
+      if (el) el.style.display = 'none';
+    });
 
-    if (!isLoggedIn) {
-      // Not logged in - show auth required message
-      if (authLoading) authLoading.style.display = 'none';
-      if (authRequired) authRequired.style.display = 'flex';
-      
-      // Auto-redirect after brief delay
-      setTimeout(() => {
-        window.location.href = '/login/';
-      }, 2000);
-      return;
+    // Show requested state
+    const stateMap: Record<PageState, HTMLElement | null> = {
+      'loading': stateLoading,
+      'auth-required': stateAuthRequired,
+      'profile-missing': stateProfileMissing,
+      'error': stateError,
+      'edit': stateEdit,
+    };
+
+    const targetEl = stateMap[state];
+    if (targetEl) {
+      targetEl.style.display = 'flex';
     }
-
-    // Logged in - show edit form
-    const userId = state.userId;
-    
-    if (authLoading) authLoading.style.display = 'none';
-    if (editContainer) editContainer.style.display = 'block';
-
-    // Update the form's userId hidden input to match logged-in user
-    const userIdInput = document.querySelector('input[name="userId"]') as HTMLInputElement;
-    if (userIdInput) {
-      userIdInput.value = userId;
-    }
-
-    // Update form fields with current user data
-    const usernameInput = document.getElementById('username') as HTMLInputElement;
-    const bioInput = document.getElementById('bio') as HTMLTextAreaElement;
-    const avatarInput = document.getElementById('avatarUrl') as HTMLInputElement;
-
-    if (usernameInput) usernameInput.value = state.userName || '';
-    // Bio and avatar need to come from profile data
-    // For now, the SSR-rendered defaults are fine
   }
 
-  // Run auth check on load
-  checkAuthAndLoad();
+  async function checkAuthAndLoad() {
+    showState('loading');
 
-  // Also listen for auth changes
+    try {
+      // Wait for store to hydrate from localStorage
+      await new Promise((r) => setTimeout(r, 100));
+
+      const state = authStore.get();
+      const isLoggedIn = state.isLoggedIn === 'true';
+      const userId = state.userId;
+
+      // Check 1: Is user logged in?
+      if (!isLoggedIn || !userId) {
+        showState('auth-required');
+
+        // Show countdown
+        let countdown = 3;
+        if (redirectNotice) {
+          const updateCountdown = () => {
+            redirectNotice.textContent = `Redirecting to login in ${countdown}s...`;
+            countdown--;
+            if (countdown >= 0) {
+              setTimeout(updateCountdown, 1000);
+            } else {
+              window.location.href = '/login/?redirect=/profile/edit/';
+            }
+          };
+          updateCountdown();
+        }
+        return;
+      }
+
+      // Check 2: Does user profile exist?
+      const profileExists = userExists(userId);
+      if (!profileExists) {
+        showState('profile-missing');
+        if (profileErrorDetail) {
+          profileErrorDetail.textContent = `User ID "${userId}" not found in profile database.`;
+        }
+        return;
+      }
+
+      // Check 3: Can we load user data from store?
+      const userData = getUserById(userId);
+      if (!userData) {
+        showState('profile-missing');
+        if (profileErrorDetail) {
+          profileErrorDetail.textContent = 'Profile data could not be loaded from storage.';
+        }
+        return;
+      }
+
+      // Success: Show edit form
+      showState('edit');
+
+      // Update form fields with actual user data
+      const userIdInput = document.querySelector('input[name="userId"]') as HTMLInputElement;
+      const usernameInput = document.getElementById('username') as HTMLInputElement;
+      const bioInput = document.getElementById('bio') as HTMLTextAreaElement;
+      const avatarInput = document.getElementById('avatarUrl') as HTMLInputElement;
+
+      if (userIdInput) userIdInput.value = userId;
+      if (usernameInput) usernameInput.value = userData.name || state.userName || '';
+      if (bioInput) bioInput.value = userData.bio || '';
+      if (avatarInput) avatarInput.value = userData.avatar || '';
+
+    } catch (err) {
+      console.error('Edit page error:', err);
+      showState('error');
+      if (errorDetail) {
+        errorDetail.textContent = err instanceof Error ? err.message : 'Unknown error occurred';
+      }
+    }
+  }
+
+  // Event handlers
+  btnRetry?.addEventListener('click', () => checkAuthAndLoad());
+  btnRetryError?.addEventListener('click', () => checkAuthAndLoad());
+
+  // Listen for auth changes
   authStore.subscribe(() => {
     const state = authStore.get();
-    if (state.isLoggedIn !== 'true' && editContainer?.style.display === 'block') {
+    const editVisible = stateEdit?.style.display === 'flex';
+
+    if (state.isLoggedIn !== 'true' && editVisible) {
       // User logged out while on page
-      window.location.href = '/login/';
+      window.location.href = '/login/?redirect=/profile/edit/';
     }
   });
+
+  // Initialize
+  checkAuthAndLoad();
 </script>
 
 <style>
@@ -128,19 +257,29 @@ const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], u
     min-height: 60vh;
   }
 
-  /* Auth Loading State */
-  .auth-loading {
+  /* State Containers */
+  .state-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
+    min-height: 400px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Loading State */
+  .state-loading {
     color: var(--color-text-muted, #72777d);
   }
 
   .loading-spinner {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border: 3px solid var(--color-border-light, #eaecef);
     border-top-color: var(--color-primary, #0645ad);
     border-radius: 50%;
@@ -152,56 +291,111 @@ const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], u
     to { transform: rotate(360deg); }
   }
 
-  /* Auth Required State */
-  .auth-required {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
+  .state-text {
+    font-size: 0.9375rem;
+    margin: 0;
   }
 
-  .auth-message {
+  /* State Cards */
+  .state-card {
     text-align: center;
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     background: var(--color-surface, #f8f9fa);
     border: 1px solid var(--color-border, #a2a9b1);
     border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
   }
 
-  .auth-message h1 {
+  .state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .state-card h1 {
     font-size: 1.5rem;
     color: var(--color-text, #202122);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.75rem 0;
   }
 
-  .auth-message p {
+  .state-card p {
     color: var(--color-text-muted, #72777d);
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.5;
   }
 
-  .login-link {
-    display: inline-block;
+  .state-detail {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .error-detail {
+    font-size: 0.75rem;
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 1rem !important;
+    word-break: break-all;
+  }
+
+  .redirect-notice {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #72777d);
+    margin-top: 1rem !important;
+  }
+
+  /* Buttons */
+  .state-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary {
     padding: 0.75rem 1.5rem;
     background: var(--color-primary, #0645ad);
     color: white;
     text-decoration: none;
+    border: none;
     border-radius: 6px;
+    font-size: 0.9375rem;
     font-weight: 500;
+    cursor: pointer;
     transition: background 0.2s;
   }
 
-  .login-link:hover {
+  .btn-primary:hover {
     background: #003d99;
   }
 
-  /* Edit Container */
-  .edit-container {
-    animation: fadeIn 0.3s ease;
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--color-text, #202122);
+    text-decoration: none;
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  .btn-secondary:hover {
+    border-color: var(--color-primary, #0645ad);
+    color: var(--color-primary, #0645ad);
+  }
+
+  /* Edit State */
+  .state-edit {
+    display: block !important;
+    min-height: auto;
+  }
+
+  .state-edit[style*="flex"] {
+    display: block !important;
   }
 
   .page-header {
@@ -230,11 +424,19 @@ const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], u
     text-decoration: underline;
   }
 
-  .error-message {
-    padding: 1rem;
-    background: #fee;
-    border: 1px solid #c00;
+  .error-box {
+    padding: 1.25rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
     border-radius: 8px;
-    color: #c00;
+    color: #991b1b;
+  }
+
+  .error-box p {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .error-box p:last-child {
+    margin-bottom: 0;
   }
 </style>
