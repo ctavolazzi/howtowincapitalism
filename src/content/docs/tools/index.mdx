@@ -1,0 +1,41 @@
+---
+title: Tools
+description: Templates, checklists, and calculators for financial decisions
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import TopicCard from '../../../components/molecules/TopicCard.astro';
+import CardGrid from '../../../components/utilities/CardGrid.astro';
+
+<Breadcrumbs />
+
+## Tools & Templates
+
+Downloadable resources for making better financial decisions.
+
+<CardGrid>
+  <TopicCard
+    title="Decision Matrix"
+    description="Quantitative framework for comparing options against weighted criteria"
+    href="/faq/decision-matrix/"
+    tag="Interactive"
+  />
+  <TopicCard
+    title="Financial Autonomy Checklist"
+    description="Step-by-step roadmap from foundation to financial independence"
+    href="/tools/financial-autonomy-checklist/"
+    tag="Checklist"
+  />
+  <TopicCard
+    title="Decision Matrix Template"
+    description="Blank template for making any multi-criteria decision"
+    href="/tools/decision-matrix-template/"
+    tag="Template"
+  />
+  <TopicCard
+    title="Tax Optimization Guide"
+    description="Legal strategies to minimize your tax burden by income level"
+    href="/tools/tax-optimization-guide/"
+    tag="Guide"
+  />
+</CardGrid>

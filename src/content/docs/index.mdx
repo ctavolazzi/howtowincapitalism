@@ -8,11 +8,11 @@ hero:
   tagline: A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind.
   actions:
     - text: Start Reading
-      link: /protocol/introduction/
+      link: /faq/introduction/
       icon: right-arrow
       variant: primary
     - text: Browse Topics
-      link: "#the-protocol"
+      link: "#faq"
       icon: down-caret
       variant: secondary
 head:
@@ -25,135 +25,109 @@ head:
 import Disclaimer from '../../components/molecules/Disclaimer.astro';
 import TopicCard from '../../components/molecules/TopicCard.astro';
 import CardGrid from '../../components/utilities/CardGrid.astro';
-import CompletenessMeter from '../../components/molecules/CompletenessMeter.astro';
-import Favorites from '../../components/molecules/Favorites.astro';
 import SeeAlso from '../../components/molecules/SeeAlso.astro';
 
 <Disclaimer />
 
 ---
 
-## Featured Tool
+## FAQ
 
-<TopicCard
-  title="Decision Matrix"
-  description="A quantitative framework for comparing options against weighted criteria. Transform subjective comparisons into structured analysis."
-  href="/protocol/decision-matrix/"
-  tag="Tool"
-/>
-
----
-
-## The Protocol
-
-The Protocol contains wiki-style definitions and explanations of key concepts.
+Core concepts and answers to common questions.
 
 <CardGrid columns={2} gap="md">
   <TopicCard
     title="Introduction"
-    description="Start here to understand the framework and core principles"
-    href="/protocol/introduction/"
+    description="Start here to understand the framework"
+    href="/faq/introduction/"
   />
   <TopicCard
     title="Compound Interest"
-    description="The mathematical force that makes the rich richer — and how to use it"
-    href="/protocol/compound-interest/"
-    tag="New"
+    description="The mathematical force that makes the rich richer"
+    href="/faq/compound-interest/"
   />
   <TopicCard
     title="Emergency Fund"
     description="The boring foundation that makes everything else possible"
-    href="/protocol/emergency-fund/"
-    tag="New"
+    href="/faq/emergency-fund/"
   />
   <TopicCard
     title="Tax-Advantaged Accounts"
-    description="401(k), IRA, HSA — the legal loopholes that build wealth"
-    href="/protocol/tax-advantaged-accounts/"
-    tag="New"
+    description="401(k), IRA, HSA — the legal loopholes"
+    href="/faq/tax-advantaged-accounts/"
   />
   <TopicCard
     title="Debt Strategies"
-    description="Avalanche vs Snowball — how to escape debt systematically"
-    href="/protocol/debt-strategies/"
-    tag="New"
-  />
-  <TopicCard
-    title="Income Streams"
-    description="Active vs passive income — building beyond your paycheck"
-    href="/protocol/income-streams/"
+    description="Avalanche vs Snowball methods"
+    href="/faq/debt-strategies/"
   />
   <TopicCard
     title="Rent vs Buy"
-    description="The math behind the biggest financial decision most people make"
-    href="/protocol/rent-vs-buy/"
-    tag="New"
-  />
-  <TopicCard
-    title="Career Decisions"
-    description="Evaluating job offers with more than gut instinct"
-    href="/protocol/career-decisions/"
-    tag="New"
-  />
-  <TopicCard
-    title="Investment Allocation"
-    description="How to divide your investments without overthinking it"
-    href="/protocol/investment-allocation/"
-    tag="New"
-  />
-  <TopicCard
-    title="Decision Matrix"
-    description="Quantitative decision-making tool"
-    href="/protocol/decision-matrix/"
-    tag="Tool"
+    description="The math behind housing decisions"
+    href="/faq/rent-vs-buy/"
   />
 </CardGrid>
 
-<CompletenessMeter title="Your Progress" />
-
-<Favorites title="Your Bookmarks" />
-
 ---
 
-## Field Notes
+## Notes
 
-Updates, observations, and lessons learned from navigating the system.
+Research, analysis, and observations.
 
 <CardGrid columns={2} gap="md">
   <TopicCard
     title="Latest Updates"
-    description="Recent additions and changes to the wiki"
-    href="/field-notes/latest/"
+    description="Recent additions and changes"
+    href="/notes/latest/"
   />
   <TopicCard
     title="Inflation Strategies"
     description="Protecting your purchasing power"
-    href="/field-notes/inflation-strategies/"
-    tag="New"
+    href="/notes/inflation-strategies/"
   />
   <TopicCard
     title="Negotiation Tactics"
     description="Scripts for getting paid what you're worth"
-    href="/field-notes/negotiation-tactics/"
-    tag="New"
+    href="/notes/negotiation-tactics/"
   />
   <TopicCard
     title="Financial Automation"
     description="Set it and forget it systems"
-    href="/field-notes/automation/"
-    tag="New"
+    href="/notes/automation/"
   />
 </CardGrid>
 
 ---
 
-## Browse All Content
+## Tools
+
+Templates and calculators for decisions.
+
+<CardGrid columns={2} gap="md">
+  <TopicCard
+    title="Decision Matrix"
+    description="Quantitative framework for comparing options"
+    href="/faq/decision-matrix/"
+    tag="Interactive"
+  />
+  <TopicCard
+    title="Financial Autonomy Checklist"
+    description="Step-by-step roadmap to FI"
+    href="/tools/financial-autonomy-checklist/"
+    tag="Checklist"
+  />
+</CardGrid>
+
+---
+
+## Browse All
 
 <SeeAlso links={[
-  { title: "The Protocol", href: "/protocol/", description: "Core concepts and frameworks" },
-  { title: "Field Notes", href: "/field-notes/", description: "Practical guides, templates, and updates" }
+  { title: "FAQ", href: "/faq/", description: "Core concepts and answers" },
+  { title: "Notes", href: "/notes/", description: "Research and observations" },
+  { title: "Tools", href: "/tools/", description: "Templates and calculators" }
 ]} />
 
 ---
 
-<small>This wiki is a living document. Content is added and refined over time.</small>
+<small>This is a living document. Content is added and refined over time.</small>

@@ -1,0 +1,37 @@
+---
+title: Notes
+description: Research, analysis, and observations
+---
+
+import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
+import TopicCard from '../../../components/molecules/TopicCard.astro';
+import CardGrid from '../../../components/utilities/CardGrid.astro';
+
+<Breadcrumbs />
+
+## Notes
+
+Research, analysis, and lessons learned from navigating the financial system.
+
+<CardGrid>
+  <TopicCard
+    title="Latest Updates"
+    description="Recent additions and changes"
+    href="/notes/latest/"
+  />
+  <TopicCard
+    title="Inflation Strategies"
+    description="Protecting your purchasing power in real-time"
+    href="/notes/inflation-strategies/"
+  />
+  <TopicCard
+    title="Negotiation Tactics"
+    description="Scripts for getting paid what you're worth"
+    href="/notes/negotiation-tactics/"
+  />
+  <TopicCard
+    title="Financial Automation"
+    description="Set it and forget it systems"
+    href="/notes/automation/"
+  />
+</CardGrid>
