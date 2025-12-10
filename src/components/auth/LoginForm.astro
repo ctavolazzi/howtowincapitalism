@@ -79,8 +79,8 @@
     max-width: 400px;
     margin: 2rem auto;
     padding: 2rem;
-    background: var(--sl-color-bg);
-    border: 1px solid var(--sl-color-gray-5);
+    background: var(--color-bg, #ffffff);
+    border: 1px solid var(--color-border, #a2a9b1);
     border-radius: 8px;
   }
 
@@ -98,20 +98,20 @@
 
   .form-group label {
     font-weight: 600;
-    color: var(--sl-color-text);
+    color: var(--color-text, #202122);
   }
 
   .form-group input {
     padding: 0.75rem 1rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid var(--color-border, #a2a9b1);
     border-radius: 4px;
     font-size: 1rem;
-    background: var(--sl-color-bg);
-    color: var(--sl-color-text);
+    background: var(--color-bg, #ffffff);
+    color: var(--color-text, #202122);
   }
 
   .form-group input:focus {
-    outline: 2px solid var(--sl-color-accent);
+    outline: 2px solid var(--color-primary, #0645ad);
     outline-offset: 2px;
   }
 
@@ -126,8 +126,8 @@
 
   .login-button {
     padding: 0.75rem 1.5rem;
-    background: var(--sl-color-accent);
-    color: var(--sl-color-accent-high);
+    background: var(--color-primary, #0645ad);
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     font-size: 1rem;
@@ -143,7 +143,7 @@
   .login-hint {
     margin-top: 1.5rem;
     text-align: center;
-    color: var(--sl-color-gray-3);
+    color: var(--color-text-muted, #72777d);
   }
 
   .shake {

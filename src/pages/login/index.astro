@@ -17,14 +17,11 @@ import UserMenu from '../../components/auth/UserMenu.astro';
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     :root {
-      --sl-color-bg: #fff;
-      --sl-color-text: #1a1a1a;
-      --sl-color-accent: #0066cc;
-      --sl-color-accent-high: #fff;
-      --sl-color-gray-3: #666;
-      --sl-color-gray-4: #888;
-      --sl-color-gray-5: #ccc;
-      --sl-color-gray-6: #f5f5f5;
+      --color-bg: #ffffff;
+      --color-text: #202122;
+      --color-text-muted: #72777d;
+      --color-primary: #0645ad;
+      --color-border: #a2a9b1;
     }
 
     * {
@@ -35,8 +32,8 @@ import UserMenu from '../../components/auth/UserMenu.astro';
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--sl-color-bg);
-      color: var(--sl-color-text);
+      background: var(--color-bg);
+      color: var(--color-text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -44,7 +41,7 @@ import UserMenu from '../../components/auth/UserMenu.astro';
 
     header {
       padding: 1rem 2rem;
-      border-bottom: 1px solid var(--sl-color-gray-5);
+      border-bottom: 1px solid var(--color-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -53,12 +50,12 @@ import UserMenu from '../../components/auth/UserMenu.astro';
     .site-title {
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--sl-color-text);
+      color: var(--color-text);
       text-decoration: none;
     }
 
     .site-title:hover {
-      color: var(--sl-color-accent);
+      color: var(--color-primary);
     }
 
     main {
@@ -80,7 +77,7 @@ import UserMenu from '../../components/auth/UserMenu.astro';
     }
 
     .login-header p {
-      color: var(--sl-color-gray-3);
+      color: var(--color-text-muted);
     }
   </style>
 </head>

@@ -68,198 +68,86 @@
 }
 
 /* ==============================================
-   STARLIGHT OVERRIDES FOR LIGHT MODE
+   TYPOGRAPHY
    ============================================== */
 
-/* Override Starlight's color system for light mode */
-:root,
-:root[data-theme="light"],
-:root[data-theme="dark"] {
-  --sl-color-white: #ffffff;
-  --sl-color-gray-1: #f8f9fa;
-  --sl-color-gray-2: #eaecef;
-  --sl-color-gray-3: #c8ccd0;
-  --sl-color-gray-4: #a2a9b1;
-  --sl-color-gray-5: #72777d;
-  --sl-color-gray-6: #54595d;
-  --sl-color-black: #202122;
-
-  /* Accent colors (blue) */
-  --sl-color-accent-low: #d4e4f7;
-  --sl-color-accent: #0645ad;
-  --sl-color-accent-high: #003d99;
-
-  /* Backgrounds */
-  --sl-color-bg: var(--sl-color-white);
-  --sl-color-bg-nav: var(--sl-color-white);
-  --sl-color-bg-sidebar: var(--sl-color-gray-1);
-  --sl-color-bg-inline-code: var(--sl-color-gray-2);
-
-  /* Text */
-  --sl-color-text: var(--sl-color-black);
-  --sl-color-text-accent: var(--sl-color-white);
-
-  /* Hairline borders */
-  --sl-color-hairline: var(--sl-color-gray-3);
-  --sl-color-hairline-light: var(--sl-color-gray-2);
-}
-
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  color: var(--sl-color-black);
-}
-
-/* Heading anchor links should be visible */
-.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) a {
-  color: var(--sl-color-black);
-}
-
-.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) a:hover {
-  color: var(--sl-color-accent);
-}
-
-/* ==============================================
-   SPLASH PAGE FIXES
-   Force dark text on light background for splash template
-   ============================================== */
-
-/* All content after hero should have dark text */
-[data-has-hero] .sl-markdown-content,
-.content-panel .sl-markdown-content {
-  color: var(--sl-color-black);
-}
-
-/* Headings in splash content - ensure visibility */
-[data-has-hero] h2,
-[data-has-hero] h3,
-[data-has-hero] h4,
-.content-panel h2,
-.content-panel h3,
-.content-panel h4 {
-  color: var(--sl-color-black);
-}
-
-/* Heading anchor text inside splash pages */
-[data-has-hero] :is(h2, h3, h4) a,
-.content-panel :is(h2, h3, h4) a {
-  color: var(--sl-color-black);
-}
-
-/* Paragraph and list text */
-[data-has-hero] p,
-[data-has-hero] li,
-[data-has-hero] td,
-[data-has-hero] th,
-.content-panel p,
-.content-panel li,
-.content-panel td,
-.content-panel th {
-  color: var(--sl-color-black);
-}
-
-/* Small/muted text should be gray, not invisible */
-[data-has-hero] small,
-.content-panel small {
-  color: var(--sl-color-gray-5);
+  color: var(--color-text);
 }
 
 a {
   color: var(--color-link);
 }
 
+a:visited {
+  color: var(--color-link-visited);
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
 /* ==============================================
-   HERO FIXES
+   BUTTONS
    ============================================== */
 
-/* Hero title - dark text on light background */
-.hero h1 {
-  color: var(--sl-color-black);
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-bg);
 }
 
-/* Hero tagline - readable gray on light background */
-.hero .tagline {
-  color: var(--sl-color-gray-6);
+.btn-primary:hover {
+  background-color: #003d99;
+  border-color: #003d99;
 }
 
-/* Primary action button - white text on accent */
-.sl-link-button.primary,
-.action.primary {
-  background-color: var(--sl-color-accent);
-  border-color: var(--sl-color-accent);
-  color: var(--sl-color-white);
-}
-
-.sl-link-button.primary:hover,
-.action.primary:hover {
-  background-color: var(--sl-color-accent-high);
-  border-color: var(--sl-color-accent-high);
-  color: var(--sl-color-white);
-}
-
-/* Secondary action button */
-.sl-link-button.secondary,
-.action.secondary,
-.action.minimal {
+.btn-secondary {
   background-color: transparent;
-  border-color: var(--sl-color-gray-3);
-  color: var(--sl-color-text);
+  border: var(--border-width) solid var(--color-border);
+  color: var(--color-text);
 }
 
-.sl-link-button.secondary:hover,
-.action.secondary:hover,
-.action.minimal:hover {
-  border-color: var(--sl-color-accent);
-  color: var(--sl-color-accent);
+.btn-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 /* ==============================================
-   HEADER FIXES
+   HEADER
    ============================================== */
 
-/* Site title should be dark, not link blue - use high specificity */
 header .site-title,
-header .site-title a,
-.header .site-title,
-.header .site-title a {
-  color: var(--sl-color-black);
+header .site-title a {
+  color: var(--color-text);
 }
 
 header .site-title:hover,
-header .site-title a:hover,
-.header .site-title:hover,
-.header .site-title a:hover {
-  color: var(--sl-color-accent);
-}
-
-/* Make search icon more visible
-   Starlight uses --sl-color-gray-1 for button color which is too light on white bg
-   Unlayered CSS wins over Starlight's layered CSS */
-site-search button[data-open-modal] {
-  color: var(--sl-color-gray-5);
-}
-
-site-search button[data-open-modal]:hover {
-  color: var(--sl-color-accent);
+header .site-title a:hover {
+  color: var(--color-primary);
 }
 
 /* ==============================================
-   LAYOUT
+   CONTENT
    ============================================== */
 
-/* Hide theme toggle everywhere */
-starlight-theme-select {
-  display: none;
+.content-panel {
+  color: var(--color-text);
+}
+
+.content-panel small {
+  color: var(--color-text-muted);
 }
 
 /* ==============================================
-   SIDEBAR
+   HERO
    ============================================== */
 
-/* Hide sidebar only on homepage (splash page) */
-[data-has-hero] .sidebar,
-[data-has-hero] nav[aria-label="Main"] {
-  display: none;
+.hero h1 {
+  color: var(--color-text);
 }
 
-/* Content pages: sidebar is visible (Starlight default) */
+.hero .tagline {
+  color: var(--color-text-muted);
+}

@@ -2,20 +2,13 @@
 /**
  * FORCELIGHTTHEME - UTILITY
  *
- * Overrides Starlight's ThemeProvider to force light mode only.
- * This prevents the theme from respecting system dark mode preference.
- *
+ * Forces light mode only. Prevents respecting system dark mode preference.
  * Uses meta tag approach to set theme BEFORE page render.
  */
 ---
 
 <meta name="color-scheme" content="light" />
-<script is:inline data-theme-provider>
+<script is:inline>
   // Set theme immediately before any rendering
-  window.StarlightThemeProvider = { updatePickers() {} };
   document.documentElement.dataset.theme = 'light';
-  // Prevent flash by also removing any stored dark preference
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('starlight-theme', 'light');
-  }
 </script>
