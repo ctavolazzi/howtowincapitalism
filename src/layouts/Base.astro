@@ -77,6 +77,18 @@ const currentPath = Astro.url.pathname;
       display: none;
     }
     .password-gate .error.show { display: block; }
+    .gate-disclaimer {
+      max-width: 400px;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: #666;
+      line-height: 1.5;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -88,6 +100,9 @@ const currentPath = Astro.url.pathname;
       <button type="submit">Enter</button>
       <p class="error" id="passwordError">Incorrect password</p>
     </form>
+    <div class="gate-disclaimer">
+      <strong>Notice:</strong> The content on this site is for personal reference only. Nothing here constitutes financial, legal, or professional advice. Do not use any information on this site to make financial decisions. Always consult qualified professionals.
+    </div>
   </div>
 
   <script is:inline>
@@ -99,7 +114,8 @@ const currentPath = Astro.url.pathname;
       const input = document.getElementById('passwordInput');
       const error = document.getElementById('passwordError');
 
-      if (localStorage.getItem(KEY) === 'true') {
+      // Use sessionStorage - clears when browser closes
+      if (sessionStorage.getItem(KEY) === 'true') {
         gate.classList.add('hidden');
       } else {
         input.focus();
@@ -108,7 +124,7 @@ const currentPath = Astro.url.pathname;
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value === PASS) {
-          localStorage.setItem(KEY, 'true');
+          sessionStorage.setItem(KEY, 'true');
           gate.classList.add('hidden');
         } else {
           error.classList.add('show');
