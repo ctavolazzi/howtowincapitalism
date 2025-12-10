@@ -25,10 +25,8 @@ const currentPath = Astro.url.pathname;
     <nav>
       <a href="/" class="site-title">How To Win Capitalism</a>
       <ul>
-        <li><a href="/" class:list={{ active: currentPath === '/' }}>Home</a></li>
         <li><a href="/protocol/" class:list={{ active: currentPath.startsWith('/protocol/') }}>Protocol</a></li>
         <li><a href="/field-notes/" class:list={{ active: currentPath.startsWith('/field-notes/') }}>Field Notes</a></li>
-        <li><a href="/reports/" class:list={{ active: currentPath.startsWith('/reports/') }}>Reports</a></li>
       </ul>
     </nav>
   </header>
