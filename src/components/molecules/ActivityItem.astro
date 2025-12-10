@@ -1,0 +1,140 @@
+---
+/**
+ * ActivityItem Molecule
+ *
+ * Displays a single activity log entry with icon, description, and timestamp.
+ * Uses absolute dates to prevent SSR hydration mismatches.
+ *
+ * @example
+ * <ActivityItem
+ *   type="edit"
+ *   pageTitle="Compound Interest"
+ *   pageSlug="faq/compound-interest"
+ *   timestamp="2025-12-10T10:30:00Z"
+ *   meta={{ wordsDelta: 450, comment: "Added examples" }}
+ * />
+ */
+
+import type { ActivityEvent, ActivityMeta, PageReference } from '../../lib/auth/schemas/userProfile';
+
+interface Props {
+  /** Activity type */
+  type: ActivityEvent['type'];
+  /** Target page (optional - not all activities have a page) */
+  targetPage?: PageReference;
+  /** ISO timestamp */
+  timestamp: string;
+  /** Additional metadata */
+  meta?: ActivityMeta;
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const { type, targetPage, timestamp, meta = {}, class: className = '' } = Astro.props;
+
+// Activity type icons and labels
+const activityConfig: Record<ActivityEvent['type'], { icon: string; label: string; color: string }> = {
+  edit: { icon: '✏️', label: 'Edited', color: 'text-blue-600' },
+  create: { icon: '📝', label: 'Created', color: 'text-green-600' },
+  comment: { icon: '💬', label: 'Commented on', color: 'text-purple-600' },
+  review: { icon: '👁️', label: 'Reviewed', color: 'text-amber-600' },
+  badge: { icon: '🏆', label: 'Earned badge', color: 'text-yellow-600' },
+  login: { icon: '🔑', label: 'Logged in', color: 'text-gray-500' },
+  profile: { icon: '👤', label: 'Updated profile', color: 'text-gray-500' },
+};
+
+const config = activityConfig[type] || { icon: '•', label: type, color: 'text-gray-500' };
+
+// Format date as absolute (prevents hydration mismatch)
+const formattedDate = new Date(timestamp).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+
+// Build description text
+function getDescription(): string {
+  if (type === 'badge' && meta?.badgeType) {
+    return `Earned the "${meta.badgeType}" badge`;
+  }
+  if (type === 'review' && meta?.reviewResult) {
+    return `${config.label} (${meta.reviewResult})`;
+  }
+  if (targetPage) {
+    return `${config.label} "${targetPage.title}"`;
+  }
+  return config.label;
+}
+
+// Build word delta string
+function getWordDelta(): string | null {
+  if (meta?.wordsDelta === undefined) return null;
+  const delta = meta.wordsDelta;
+  if (delta > 0) return `+${delta} words`;
+  if (delta < 0) return `${delta} words`;
+  return null;
+}
+
+const description = getDescription();
+const wordDelta = getWordDelta();
+---
+
+<div class:list={['activity-item flex items-start gap-3 py-3', className]}>
+  <!-- Icon -->
+  <span class="activity-icon text-lg flex-shrink-0" aria-hidden="true">
+    {config.icon}
+  </span>
+
+  <!-- Content -->
+  <div class="activity-content flex-1 min-w-0">
+    <!-- Main description -->
+    <p class="activity-description text-sm">
+      <span class={config.color}>{description}</span>
+      {targetPage && (
+        <a
+          href={`/${targetPage.slug}/`}
+          class="text-link hover:underline"
+        >
+          {targetPage.section && (
+            <span class="text-gray-400">#{targetPage.section}</span>
+          )}
+        </a>
+      )}
+    </p>
+
+    <!-- Meta info -->
+    <div class="activity-meta flex items-center gap-2 mt-0.5 text-xs text-gray-500">
+      <time datetime={timestamp}>{formattedDate}</time>
+      {wordDelta && (
+        <>
+          <span class="text-gray-300">•</span>
+          <span class={meta?.wordsDelta && meta.wordsDelta > 0 ? 'text-green-600' : 'text-red-600'}>
+            {wordDelta}
+          </span>
+        </>
+      )}
+      {meta?.comment && (
+        <>
+          <span class="text-gray-300">•</span>
+          <span class="truncate max-w-[200px]" title={meta.comment}>
+            "{meta.comment}"
+          </span>
+        </>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .activity-item {
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+  }
+
+  .activity-item:last-child {
+    border-bottom: none;
+  }
+
+  .text-link {
+    color: var(--color-link, #0645ad);
+  }
+</style>

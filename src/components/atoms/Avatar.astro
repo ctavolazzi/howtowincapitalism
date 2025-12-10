@@ -1,0 +1,53 @@
+---
+/**
+ * Avatar Atom
+ *
+ * Circular avatar image with size variants.
+ * Handles missing images gracefully (service provides fallback URL).
+ *
+ * @example
+ * <Avatar src={user.avatarUrl} alt={user.username} size="lg" />
+ */
+
+interface Props {
+  /** Image source URL (pre-normalized by profileService) */
+  src: string;
+  /** Alt text for accessibility */
+  alt: string;
+  /** Size variant */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const { src, alt, size = 'md', class: className = '' } = Astro.props;
+
+// Size mappings using Tailwind classes
+const sizeClasses: Record<NonNullable<Props['size']>, string> = {
+  sm: 'w-8 h-8',      // 32px - inline/compact
+  md: 'w-12 h-12',    // 48px - list items
+  lg: 'w-16 h-16',    // 64px - cards
+  xl: 'w-24 h-24',    // 96px - profile headers
+};
+---
+
+<img
+  src={src}
+  alt={alt}
+  class:list={[
+    'rounded-full object-cover',
+    'border-2 border-white shadow-sm',
+    'bg-gray-100',
+    sizeClasses[size],
+    className,
+  ]}
+  loading="lazy"
+  decoding="async"
+/>
+
+<style>
+  img {
+    /* Fallback background while loading */
+    background-color: var(--color-surface-alt, #eaecef);
+  }
+</style>

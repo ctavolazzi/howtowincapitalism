@@ -1,0 +1,229 @@
+---
+/**
+ * ProfileHeader Organism
+ *
+ * Identity card displaying user's core information.
+ * Responsive layout: avatar left, details center/right.
+ *
+ * @example
+ * <ProfileHeader identity={profile.identity} stats={profile.stats} />
+ */
+
+import type { UserIdentity, UserStats } from '../../../lib/auth/schemas/userProfile';
+import Avatar from '../../atoms/Avatar.astro';
+import RoleBadge from '../../atoms/RoleBadge.astro';
+
+interface Props {
+  /** User identity data */
+  identity: UserIdentity;
+  /** User statistics (optional) */
+  stats?: UserStats | null;
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const { identity, stats, class: className = '' } = Astro.props;
+
+// Format join date
+const joinedDate = new Date(identity.joinedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+});
+
+// Format last active
+const lastActiveDate = new Date(identity.lastActiveAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<header class:list={['profile-header', className]}>
+  <div class="header-content">
+    <!-- Avatar Section -->
+    <div class="avatar-section">
+      <Avatar
+        src={identity.avatarUrl}
+        alt={identity.username}
+        size="xl"
+      />
+      {identity.badges.length > 0 && (
+        <div class="badge-count" title={`${identity.badges.length} badge(s) earned`}>
+          🏆 {identity.badges.length}
+        </div>
+      )}
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+      <div class="name-row">
+        <h1 class="username">{identity.username}</h1>
+        <RoleBadge role={identity.role} />
+      </div>
+
+      {identity.bio && (
+        <p class="bio">{identity.bio}</p>
+      )}
+
+      <div class="meta-row">
+        <span class="meta-item" title="Reputation score">
+          ⭐ {identity.reputationScore.toLocaleString()} rep
+        </span>
+        <span class="meta-divider">•</span>
+        <span class="meta-item" title="Member since">
+          📅 Joined {joinedDate}
+        </span>
+        <span class="meta-divider">•</span>
+        <span class="meta-item" title="Last active">
+          🟢 Active {lastActiveDate}
+        </span>
+      </div>
+
+      {/* Stats row - only show if stats provided */}
+      {stats && (
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-value">{stats.totalEdits}</span>
+            <span class="stat-label">Edits</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{stats.totalCreations}</span>
+            <span class="stat-label">Pages</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{stats.totalWordsAdded.toLocaleString()}</span>
+            <span class="stat-label">Words</span>
+          </div>
+          {stats.currentStreak > 0 && (
+            <div class="stat-item streak">
+              <span class="stat-value">🔥 {stats.currentStreak}</span>
+              <span class="stat-label">Day Streak</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</header>
+
+<style>
+  .profile-header {
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .header-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .avatar-section {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .badge-count {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: white;
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 999px;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .info-section {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .username {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text, #202122);
+  }
+
+  .bio {
+    margin: 0.75rem 0;
+    color: var(--color-text-muted, #54595d);
+    line-height: 1.5;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #54595d);
+  }
+
+  .meta-divider {
+    color: var(--color-border, #a2a9b1);
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border, #a2a9b1);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text, #202122);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #54595d);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-item.streak .stat-value {
+    color: #ea580c;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .name-row {
+      justify-content: center;
+    }
+
+    .meta-row {
+      justify-content: center;
+    }
+
+    .stats-row {
+      justify-content: center;
+    }
+  }
+</style>
