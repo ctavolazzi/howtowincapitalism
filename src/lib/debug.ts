@@ -25,6 +25,7 @@ const ENABLED = isDev || forceDebug;
 
 // Colors for different modules (browser console)
 const MODULE_COLORS: Record<string, string> = {
+  // Existing modules
   'decision-matrix': '#3b82f6',  // blue
   'components': '#10b981',       // green
   'tools': '#f59e0b',            // amber
@@ -35,6 +36,23 @@ const MODULE_COLORS: Record<string, string> = {
   'disclaimer': '#eab308',       // yellow
   'navigation': '#6366f1',       // indigo
   'localStorage': '#84cc16',     // lime
+
+  // Auth & Permissions modules
+  'auth': '#ef4444',             // red - high visibility
+  'auth:login': '#dc2626',       // dark red
+  'auth:logout': '#b91c1c',      // darker red
+  'auth:check': '#f87171',       // light red
+  'permissions': '#7c3aed',      // violet
+  'permissions:check': '#8b5cf6', // purple
+  'permissions:denied': '#dc2626', // red
+  'owner': '#0891b2',            // cyan
+  'owner:check': '#06b6d4',      // light cyan
+  'owner:match': '#10b981',      // green (success)
+  'owner:mismatch': '#ef4444',   // red (failure)
+  'content': '#0d9488',          // teal
+  'content:load': '#14b8a6',     // light teal
+  'content:save': '#0f766e',     // dark teal
+
   'default': '#6b7280',          // gray
 };
 
@@ -244,6 +262,51 @@ export const log = ENABLED
  * Export enabled state for conditional logic
  */
 export const DEBUG_ENABLED = ENABLED;
+
+/**
+ * Auth-specific debug helpers
+ * Usage:
+ *   authDebug.login('crispy', true);
+ *   authDebug.permissionCheck('edit', 'tool', true);
+ *   authDebug.ownerCheck('crispy', 'crispy', true);
+ */
+export const authDebug = {
+  login(userId: string, success: boolean): void {
+    if (success) {
+      debug.success('auth:login', `User logged in: ${userId}`);
+    } else {
+      debug.warn('auth:login', `Login failed for: ${userId}`);
+    }
+  },
+
+  logout(userId: string): void {
+    debug.log('auth:logout', `User logged out: ${userId}`);
+  },
+
+  check(userId: string | null): void {
+    debug.log('auth:check', userId ? `Authenticated as: ${userId}` : 'Not authenticated');
+  },
+
+  permissionCheck(action: string, resource: string, granted: boolean, details?: Record<string, unknown>): void {
+    const module = granted ? 'permissions:check' : 'permissions:denied';
+    const status = granted ? '✓ GRANTED' : '✗ DENIED';
+    debug.log(module, `${status}: ${action} on ${resource}`, details);
+  },
+
+  ownerCheck(contentOwner: string, currentUser: string | null, isMatch: boolean): void {
+    const module = isMatch ? 'owner:match' : 'owner:mismatch';
+    debug.log(module, `Owner: ${contentOwner} | User: ${currentUser || 'anonymous'} | Match: ${isMatch}`);
+  },
+
+  contentAccess(contentId: string, visibility: string, accessGranted: boolean): void {
+    const emoji = accessGranted ? '🔓' : '🔒';
+    debug.log('content:load', `${emoji} Content: ${contentId} | Visibility: ${visibility} | Access: ${accessGranted}`);
+  },
+
+  stateChange(from: string, to: string, trigger: string): void {
+    debug.log('auth', `State: ${from} → ${to} (trigger: ${trigger})`);
+  },
+};
 
 /**
  * Initialize debug logging - call once on app start

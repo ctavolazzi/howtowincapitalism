@@ -23,7 +23,9 @@
     "@astrojs/mdx": "^4.3.12",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/starlight": "^0.37.0",
-    "astro": "^5.6.1"
+    "@nanostores/persistent": "^1.2.0",
+    "astro": "^5.6.1",
+    "nanostores": "^1.1.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.15",

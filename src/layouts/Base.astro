@@ -2,6 +2,9 @@
 /**
  * Base Layout - Simple, clean, yours.
  */
+import UserMenu from '../components/auth/UserMenu.astro';
+import GlobalSearch from '../components/search/GlobalSearch.astro';
+
 export interface Props {
   title: string;
   description?: string;
@@ -141,7 +144,11 @@ const currentPath = Astro.url.pathname;
         <li><a href="/faq/" class:list={{ active: currentPath.startsWith('/faq/') }}>FAQ</a></li>
         <li><a href="/notes/" class:list={{ active: currentPath.startsWith('/notes/') }}>Notes</a></li>
         <li><a href="/tools/" class:list={{ active: currentPath.startsWith('/tools/') }}>Tools</a></li>
+        <li><a href="/users/" class:list={{ active: currentPath.startsWith('/users/') }}>Users</a></li>
       </ul>
+      <div class="nav-actions">
+        <GlobalSearch compact />
+      </div>
     </nav>
   </header>
 
@@ -156,6 +163,24 @@ const currentPath = Astro.url.pathname;
     </div>
     <p class="copyright">&copy; {new Date().getFullYear()} How To Win Capitalism &middot; <a href="/disclaimer/">Full Disclaimer</a></p>
   </footer>
+
+  <!-- User Menu (Login/Profile) -->
+  <UserMenu />
+
+  <!-- Activity Tracking -->
+  <script>
+    import { trackPageView, isAuthenticated } from '../lib/auth';
+
+    // Track page view if user is logged in
+    if (typeof window !== 'undefined') {
+      // Small delay to ensure auth state is loaded
+      setTimeout(() => {
+        if (isAuthenticated()) {
+          trackPageView(window.location.pathname);
+        }
+      }, 100);
+    }
+  </script>
 </body>
 </html>
 
@@ -319,6 +344,12 @@ const currentPath = Astro.url.pathname;
     font-weight: 600;
   }
 
+  header .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   main {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -371,6 +402,13 @@ const currentPath = Astro.url.pathname;
     header ul {
       flex-wrap: wrap;
       justify-content: center;
+      gap: 1rem;
+    }
+
+    header .nav-actions {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.5rem;
     }
   }
 

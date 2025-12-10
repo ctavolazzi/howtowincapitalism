@@ -1,0 +1,251 @@
+---
+/**
+ * Users Directory
+ *
+ * Lists all users with search functionality.
+ * Anyone can view, but only users can see detailed info.
+ */
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+// Get all users from content collection
+const users = await getCollection('users');
+---
+
+<Base title="Users Directory">
+  <h1>Users Directory</h1>
+  <p class="subtitle">Browse and search all registered users.</p>
+
+  <!-- Search Box -->
+  <div class="search-container">
+    <input
+      type="search"
+      id="user-search"
+      placeholder="Search users by name or role..."
+      class="search-input"
+      autocomplete="off"
+    />
+    <span class="search-hint" id="search-hint">
+      {users.length} users
+    </span>
+  </div>
+
+  <!-- User Grid -->
+  <div class="users-grid" id="users-grid">
+    {users.map((user) => (
+      <a href={`/users/${user.id}/`} class="user-card" data-name={user.data.name.toLowerCase()} data-role={user.data.role}>
+        <div class="user-avatar">
+          <img src={user.data.avatar || '/favicon.svg'} alt={user.data.name} />
+        </div>
+        <div class="user-info">
+          <h3 class="user-name">{user.data.name}</h3>
+          <span class={`role-badge role-${user.data.role}`}>{user.data.role}</span>
+        </div>
+        <div class="user-level">
+          <span class="level-label">Level</span>
+          <span class="level-value">{user.data.accessLevel}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <!-- No Results Message -->
+  <div class="no-results" id="no-results" style="display: none;">
+    <p>No users found matching your search.</p>
+  </div>
+</Base>
+
+<script>
+  const searchInput = document.getElementById('user-search') as HTMLInputElement;
+  const usersGrid = document.getElementById('users-grid');
+  const searchHint = document.getElementById('search-hint');
+  const noResults = document.getElementById('no-results');
+  const userCards = document.querySelectorAll('.user-card');
+
+  searchInput?.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    userCards.forEach((card) => {
+      const name = card.getAttribute('data-name') || '';
+      const role = card.getAttribute('data-role') || '';
+
+      const matches = name.includes(query) || role.includes(query);
+
+      if (matches) {
+        (card as HTMLElement).style.display = 'flex';
+        visibleCount++;
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // Update hint
+    if (searchHint) {
+      searchHint.textContent = query
+        ? `${visibleCount} of ${userCards.length} users`
+        : `${userCards.length} users`;
+    }
+
+    // Show/hide no results message
+    if (noResults) {
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  });
+</script>
+
+<style>
+  .subtitle {
+    color: var(--color-text-muted, #666);
+    margin-bottom: 2rem;
+  }
+
+  .search-container {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--color-border, #a2a9b1);
+    border-radius: 8px;
+    background: var(--color-bg, #fff);
+    color: var(--color-text, #202122);
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-link, #0645ad);
+  }
+
+  .search-hint {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #666);
+    pointer-events: none;
+  }
+
+  .users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+
+  .user-card:hover {
+    border-color: var(--color-link, #0645ad);
+    background: var(--color-bg, #fff);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-surface-alt, #eaecef);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .user-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .role-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .role-admin {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .role-editor {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .role-contributor {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .role-viewer {
+    background: #f3f4f6;
+    color: #4b5563;
+  }
+
+  .user-level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--color-bg, #fff);
+    border-radius: 8px;
+    min-width: 50px;
+  }
+
+  .level-label {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #666);
+  }
+
+  .level-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-link, #0645ad);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  @media (max-width: 640px) {
+    .users-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

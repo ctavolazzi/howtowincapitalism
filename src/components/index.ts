@@ -7,6 +7,7 @@
  *   Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter, Favorites
  *   Utilities: Empty, CardGrid
  *   Organisms: Footer
+ *   Guards:    OwnerGuard
  *
  * AVAILABLE (exported, not currently used):
  *   Organisms: Hero
@@ -38,6 +39,12 @@ export { default as CardGrid } from './utilities/CardGrid.astro';
 // Organisms
 export { default as Footer } from './organisms/Footer.astro';
 export { default as Hero } from './organisms/Hero.astro';
+
+// Guards (Auth/Permissions)
+export { default as OwnerGuard } from './guards/OwnerGuard.astro';
+
+// Search
+export { default as GlobalSearch } from './search/GlobalSearch.astro';
 
 // Reserved for future use
 export { default as InfoBox } from './molecules/InfoBox.astro';

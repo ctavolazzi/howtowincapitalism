@@ -1,0 +1,440 @@
+---
+/**
+ * Global Search Component
+ *
+ * Provides search across users, tools, and content.
+ * Can be placed in header or as a standalone page element.
+ */
+
+interface Props {
+  placeholder?: string;
+  compact?: boolean;
+}
+
+const { placeholder = 'Search users, tools, content...', compact = false } = Astro.props;
+---
+
+<div class:list={['global-search', { compact }]}>
+  <button class="search-trigger" id="search-trigger" aria-label="Open search">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    {!compact && <span>Search</span>}
+  </button>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="search-modal" style="display: none;">
+    <div class="search-backdrop" id="search-backdrop"></div>
+    <div class="search-dialog">
+      <div class="search-header">
+        <input
+          type="search"
+          id="global-search-input"
+          placeholder={placeholder}
+          autocomplete="off"
+        />
+        <button class="close-btn" id="search-close" aria-label="Close search">×</button>
+      </div>
+
+      <div class="search-results" id="search-results">
+        <div class="search-section">
+          <h3>Quick Links</h3>
+          <div class="quick-links">
+            <a href="/users/" class="quick-link">
+              <span class="quick-icon">👥</span>
+              <span>Users Directory</span>
+            </a>
+            <a href="/faq/" class="quick-link">
+              <span class="quick-icon">❓</span>
+              <span>FAQ</span>
+            </a>
+            <a href="/notes/" class="quick-link">
+              <span class="quick-icon">📝</span>
+              <span>Notes</span>
+            </a>
+            <a href="/tools/" class="quick-link">
+              <span class="quick-icon">🛠️</span>
+              <span>Tools</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="search-section" id="user-results" style="display: none;">
+          <h3>Users</h3>
+          <div class="results-list" id="user-results-list"></div>
+        </div>
+
+        <div class="search-section" id="content-results" style="display: none;">
+          <h3>Content</h3>
+          <div class="results-list" id="content-results-list"></div>
+        </div>
+
+        <div class="search-empty" id="search-empty" style="display: none;">
+          <p>No results found for "<span id="search-query"></span>"</p>
+        </div>
+      </div>
+
+      <div class="search-footer">
+        <span class="keyboard-hint">
+          <kbd>↑</kbd><kbd>↓</kbd> Navigate
+          <kbd>Enter</kbd> Select
+          <kbd>Esc</kbd> Close
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Search data (populated at build time)
+  interface SearchItem {
+    type: 'user' | 'content' | 'tool';
+    title: string;
+    url: string;
+    description?: string;
+    role?: string;
+  }
+
+  // This would ideally be built from content collections
+  // For now, we'll use a simplified approach
+  const searchData: SearchItem[] = [
+    { type: 'user', title: 'Christopher Tavolazzi', url: '/users/crispy/', role: 'admin' },
+    { type: 'user', title: 'Editor', url: '/users/editor/', role: 'editor' },
+    { type: 'user', title: 'Contributor', url: '/users/contributor/', role: 'contributor' },
+    { type: 'user', title: 'Viewer', url: '/users/viewer/', role: 'viewer' },
+    { type: 'content', title: 'Introduction', url: '/faq/introduction/', description: 'Getting started guide' },
+    { type: 'content', title: 'Compound Interest', url: '/faq/compound-interest/', description: 'The engine of wealth' },
+    { type: 'content', title: 'Emergency Fund', url: '/faq/emergency-fund/', description: 'Your first foundation' },
+    { type: 'content', title: 'Decision Matrix', url: '/faq/decision-matrix/', description: 'Quantitative decision tool' },
+    { type: 'tool', title: 'Nova Scraper Agent', url: '/tools/nova-scraper/', description: 'Web scraping agent' },
+  ];
+
+  const trigger = document.getElementById('search-trigger');
+  const modal = document.getElementById('search-modal');
+  const backdrop = document.getElementById('search-backdrop');
+  const closeBtn = document.getElementById('search-close');
+  const input = document.getElementById('global-search-input') as HTMLInputElement;
+  const userResults = document.getElementById('user-results');
+  const userResultsList = document.getElementById('user-results-list');
+  const contentResults = document.getElementById('content-results');
+  const contentResultsList = document.getElementById('content-results-list');
+  const searchEmpty = document.getElementById('search-empty');
+  const searchQuery = document.getElementById('search-query');
+
+  function openSearch() {
+    modal!.style.display = 'flex';
+    input?.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSearch() {
+    modal!.style.display = 'none';
+    document.body.style.overflow = '';
+    if (input) input.value = '';
+    resetResults();
+  }
+
+  function resetResults() {
+    if (userResults) userResults.style.display = 'none';
+    if (contentResults) contentResults.style.display = 'none';
+    if (searchEmpty) searchEmpty.style.display = 'none';
+  }
+
+  function performSearch(query: string) {
+    if (!query.trim()) {
+      resetResults();
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const users = searchData.filter(item =>
+      item.type === 'user' && (item.title.toLowerCase().includes(q) || item.role?.includes(q))
+    );
+    const content = searchData.filter(item =>
+      (item.type === 'content' || item.type === 'tool') &&
+      (item.title.toLowerCase().includes(q) || item.description?.toLowerCase().includes(q))
+    );
+
+    // Update user results
+    if (users.length > 0) {
+      userResults!.style.display = 'block';
+      userResultsList!.innerHTML = users.map(item => `
+        <a href="${item.url}" class="result-item">
+          <span class="result-icon">👤</span>
+          <div class="result-info">
+            <span class="result-title">${item.title}</span>
+            <span class="result-meta">${item.role}</span>
+          </div>
+        </a>
+      `).join('');
+    } else {
+      userResults!.style.display = 'none';
+    }
+
+    // Update content results
+    if (content.length > 0) {
+      contentResults!.style.display = 'block';
+      contentResultsList!.innerHTML = content.map(item => `
+        <a href="${item.url}" class="result-item">
+          <span class="result-icon">${item.type === 'tool' ? '🛠️' : '📄'}</span>
+          <div class="result-info">
+            <span class="result-title">${item.title}</span>
+            <span class="result-meta">${item.description || ''}</span>
+          </div>
+        </a>
+      `).join('');
+    } else {
+      contentResults!.style.display = 'none';
+    }
+
+    // Show empty state
+    if (users.length === 0 && content.length === 0) {
+      searchEmpty!.style.display = 'block';
+      searchQuery!.textContent = query;
+    } else {
+      searchEmpty!.style.display = 'none';
+    }
+  }
+
+  // Event listeners
+  trigger?.addEventListener('click', openSearch);
+  backdrop?.addEventListener('click', closeSearch);
+  closeBtn?.addEventListener('click', closeSearch);
+
+  input?.addEventListener('input', () => {
+    performSearch(input.value);
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Open with Cmd/Ctrl + K
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    // Close with Escape
+    if (e.key === 'Escape' && modal?.style.display === 'flex') {
+      closeSearch();
+    }
+  });
+</script>
+
+<style>
+  .global-search {
+    position: relative;
+  }
+
+  .search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--color-text-muted, #666);
+    font-size: 0.875rem;
+    transition: all 0.2s;
+  }
+
+  .search-trigger:hover {
+    border-color: var(--color-link, #0645ad);
+    color: var(--color-text, #202122);
+  }
+
+  .compact .search-trigger {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+  }
+
+  /* Modal */
+  .search-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    padding-top: 10vh;
+  }
+
+  .search-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .search-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    background: var(--color-bg, #fff);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    margin: 0 1rem;
+  }
+
+  .search-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border, #a2a9b1);
+  }
+
+  .search-header input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    font-size: 1.125rem;
+    background: transparent;
+    outline: none;
+  }
+
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--color-surface, #f8f9fa);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .close-btn:hover {
+    background: var(--color-surface-alt, #eaecef);
+  }
+
+  .search-results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .search-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .search-section h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #666);
+    margin-bottom: 0.75rem;
+  }
+
+  .quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .quick-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--color-surface, #f8f9fa);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text, #202122);
+    transition: all 0.2s;
+  }
+
+  .quick-link:hover {
+    background: var(--color-surface-alt, #eaecef);
+  }
+
+  .quick-icon {
+    font-size: 1.25rem;
+  }
+
+  .results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text, #202122);
+    transition: background 0.2s;
+  }
+
+  .result-item:hover {
+    background: var(--color-surface, #f8f9fa);
+  }
+
+  .result-icon {
+    font-size: 1.25rem;
+  }
+
+  .result-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .result-title {
+    font-weight: 500;
+  }
+
+  .result-meta {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .search-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--color-border, #a2a9b1);
+    background: var(--color-surface, #f8f9fa);
+    border-radius: 0 0 12px 12px;
+  }
+
+  .keyboard-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  kbd {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    background: var(--color-bg, #fff);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.625rem;
+    margin: 0 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .search-modal {
+      padding-top: 0;
+    }
+
+    .search-dialog {
+      max-height: 100vh;
+      border-radius: 0;
+      margin: 0;
+    }
+
+    .quick-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

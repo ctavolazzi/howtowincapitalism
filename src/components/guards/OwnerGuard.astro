@@ -1,0 +1,244 @@
+---
+/**
+ * OwnerGuard Component
+ *
+ * Bridges build-time content ownership with runtime auth state.
+ * Uses Web Components (no React required) + your existing auth store.
+ *
+ * Usage:
+ *   <OwnerGuard ownerId="crispy" visibility="private">
+ *     <div slot="controls"><button>Edit</button></div>
+ *     <p>Protected content here</p>
+ *   </OwnerGuard>
+ */
+
+interface Props {
+  ownerId: string;
+  visibility?: 'public' | 'private' | 'team';
+}
+
+const { ownerId, visibility = 'private' } = Astro.props;
+---
+
+<owner-guard data-owner={ownerId} data-visibility={visibility}>
+  <!-- Protected content (hidden by default, shown when authorized) -->
+  <div class="protected-content" style="display: none;">
+    <div class="admin-bar">
+      <span class="badge">👑 Owner Access</span>
+      <slot name="controls" />
+    </div>
+    <slot />
+  </div>
+
+  <!-- Fallback for unauthorized users -->
+  <div class="fallback-message" style="display: none;">
+    <p>🔒 This content is locked.</p>
+    <p class="fallback-hint">Log in as <strong>{ownerId}</strong> to view.</p>
+  </div>
+
+  <!-- Public content (shown when visibility is public but user is not owner) -->
+  <div class="public-content" style="display: none;">
+    <slot />
+  </div>
+</owner-guard>
+
+<script>
+  // Import existing auth infrastructure
+  import { authStore, getCurrentUser } from '../../lib/auth/store';
+  import { checkPermission, ACCESS_LEVELS } from '../../lib/auth/permissions';
+  import { authDebug, debug } from '../../lib/debug';
+
+  class OwnerGuard extends HTMLElement {
+    private ownerId: string;
+    private visibility: 'public' | 'private' | 'team';
+    private protectedContent: HTMLElement | null;
+    private fallbackMessage: HTMLElement | null;
+    private publicContent: HTMLElement | null;
+    private adminBar: HTMLElement | null;
+    private unsubscribe: (() => void) | null = null;
+
+    constructor() {
+      super();
+      this.ownerId = this.dataset.owner || '';
+      this.visibility = (this.dataset.visibility as 'public' | 'private' | 'team') || 'private';
+      this.protectedContent = this.querySelector('.protected-content');
+      this.fallbackMessage = this.querySelector('.fallback-message');
+      this.publicContent = this.querySelector('.public-content');
+      this.adminBar = this.querySelector('.admin-bar');
+    }
+
+    connectedCallback() {
+      // Subscribe to auth state changes
+      this.unsubscribe = authStore.subscribe(() => {
+        this.checkAccess();
+      });
+
+      // Initial check
+      this.checkAccess();
+    }
+
+    disconnectedCallback() {
+      // Cleanup subscription
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+    }
+
+    checkAccess() {
+      const currentUser = getCurrentUser();
+      const userId = currentUser?.id || null;
+      const userRole = currentUser?.role || null;
+      const accessLevel = currentUser?.accessLevel || 0;
+
+      // Use the permissions system
+      const canRead = checkPermission('read', this.ownerId, this.visibility);
+      const canUpdate = checkPermission('update', this.ownerId);
+      const canDelete = checkPermission('delete', this.ownerId);
+
+      const isOwner = userId === this.ownerId;
+      const isAdminOrEditor = accessLevel >= ACCESS_LEVELS.EDITOR;
+
+      // Log the access check
+      debug.log('owner', `Checking access for ${this.ownerId}`, {
+        userId,
+        userRole,
+        accessLevel,
+        visibility: this.visibility,
+        canRead: canRead.granted,
+        canUpdate: canUpdate.granted,
+        canDelete: canDelete.granted,
+      });
+
+      // Update visibility based on permissions
+      if (canUpdate.granted) {
+        // Has edit access - show protected content with admin controls
+        this.showElement(this.protectedContent);
+        this.hideElement(this.fallbackMessage);
+        this.hideElement(this.publicContent);
+
+        // Update badge text based on role
+        const badge = this.querySelector('.badge');
+        if (badge) {
+          if (isOwner) {
+            badge.textContent = '👑 Owner Access';
+          } else if (accessLevel >= ACCESS_LEVELS.ADMIN) {
+            badge.textContent = '⚡ Admin Access';
+          } else if (accessLevel >= ACCESS_LEVELS.EDITOR) {
+            badge.textContent = '✏️ Editor Access';
+          }
+        }
+
+        // Show/hide delete button based on permission
+        const deleteBtn = this.querySelector('.btn-danger, [data-action="delete"]');
+        if (deleteBtn) {
+          (deleteBtn as HTMLElement).style.display = canDelete.granted ? 'inline-block' : 'none';
+        }
+
+      } else if (canRead.granted) {
+        // Can read but not edit - show content without controls
+        this.hideElement(this.protectedContent);
+        this.hideElement(this.fallbackMessage);
+        this.showElement(this.publicContent);
+
+      } else {
+        // No access - show locked message
+        this.hideElement(this.protectedContent);
+        this.showElement(this.fallbackMessage);
+        this.hideElement(this.publicContent);
+
+        // Update fallback message
+        const hint = this.querySelector('.fallback-hint');
+        if (hint) {
+          if (!currentUser) {
+            hint.textContent = 'Log in to view this content.';
+          } else {
+            hint.textContent = `Your access level (${userRole}) is insufficient.`;
+          }
+        }
+      }
+    }
+
+    private showElement(el: HTMLElement | null) {
+      if (el) el.style.display = 'block';
+    }
+
+    private hideElement(el: HTMLElement | null) {
+      if (el) el.style.display = 'none';
+    }
+  }
+
+  // Register the custom element
+  if (!customElements.get('owner-guard')) {
+    customElements.define('owner-guard', OwnerGuard);
+  }
+</script>
+
+<style>
+  .admin-bar {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #166534;
+    white-space: nowrap;
+  }
+
+  .fallback-message {
+    padding: 2rem;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 4px;
+    text-align: center;
+    color: #64748b;
+  }
+
+  .fallback-message p {
+    margin: 0.5rem 0;
+  }
+
+  .fallback-hint {
+    font-size: 0.875rem;
+    color: #94a3b8;
+  }
+
+  /* Slot controls styling */
+  .admin-bar ::slotted(button),
+  .admin-bar button {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .admin-bar ::slotted(button:hover),
+  .admin-bar button:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+  }
+
+  .admin-bar ::slotted(.btn-danger),
+  .admin-bar .btn-danger {
+    color: #dc2626;
+    border-color: #fca5a5;
+  }
+
+  .admin-bar ::slotted(.btn-danger:hover),
+  .admin-bar .btn-danger:hover {
+    background: #fef2f2;
+    border-color: #f87171;
+  }
+</style>
