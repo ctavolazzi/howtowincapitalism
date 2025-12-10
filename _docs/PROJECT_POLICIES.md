@@ -48,14 +48,16 @@ Folder paths should organize files, but each file should still be identifiable b
 | `devlog/2025/12/09.md` | `devlog/2025-12-09_devlog.md` |
 | `reports/january/summary.md` | `reports/2025-01_monthly-summary.md` |
 
-### `_docs/` vs `_dev/`
+### Key Folders
 
 | Folder | Contains | Examples |
 |--------|----------|----------|
 | `_docs/` | Documentation (human-readable) | Devlogs, architecture, policies |
-| `_dev/` | Development tooling (code) | Logger module, scripts |
+| `_work_efforts/` | Task tracking (Johnny Decimal) | Work effort documents |
+| `src/lib/tools/` | Development utilities | Logger, decision-matrix |
+| `scripts/` | Build/deploy automation | ship.mjs, generate-icons.mjs |
 
-**Do not** put documentation in `_dev/` or tooling in `_docs/`.
+**Note:** Development utilities live in `src/lib/tools/`, not a separate `_dev/` folder.
 
 ---
 

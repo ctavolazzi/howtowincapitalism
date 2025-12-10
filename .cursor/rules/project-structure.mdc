@@ -1,0 +1,71 @@
+# Project Structure
+
+This project follows a specific organizational structure. **Always** maintain these conventions.
+
+## Directory Structure
+
+```
+howtowincapitalism/
+├── .cursor/rules/        # AI assistant rules (this folder)
+├── _docs/                # Human-readable documentation
+│   ├── devlog/           # Daily development logs
+│   ├── status_reports/   # Project status reports
+│   ├── ARCHITECTURE.md   # Technical architecture
+│   ├── PROJECT_POLICIES.md # Standards and conventions
+│   └── README.md         # Documentation index
+├── _work_efforts/        # Task tracking (Johnny Decimal)
+│   ├── 00-09_meta/       # Organization, indexes
+│   ├── 10-19_development/# Dev tasks, architecture
+│   ├── 20-29_features/   # Feature work
+│   └── 30-39_infrastructure/ # Deployment, CI/CD
+├── src/                  # Source code
+│   ├── components/       # Astro components (atomic design)
+│   ├── content/          # MDX content pages
+│   ├── lib/              # Utilities and tools
+│   ├── pages/            # Route pages
+│   └── styles/           # CSS
+├── scripts/              # Build/deploy scripts
+├── public/               # Static assets
+├── README.md             # Project overview
+└── AGENTS.md             # AI assistant instructions
+```
+
+## Folder Purposes
+
+| Folder | Purpose | What Goes Here |
+|--------|---------|----------------|
+| `_docs/` | Documentation | Devlogs, architecture, policies, guides |
+| `_work_efforts/` | Task tracking | Work effort files (Johnny Decimal) |
+| `src/lib/tools/` | Utilities | Reusable TypeScript/JS utilities |
+| `scripts/` | Automation | Build, deploy, generator scripts |
+
+## Rules
+
+### 1. Never Create These Folders
+- `_dev/` — Use `src/lib/tools/` for development utilities
+- `utils/` at root — Use `src/lib/` instead
+- Nested date folders like `2025/12/` — Use flat structure with dated filenames
+
+### 2. Always Update Documentation
+When making significant changes:
+- Update relevant `_docs/` file
+- Update or create work effort in `_work_efforts/`
+- Update devlog if in active development session
+
+### 3. File Naming
+All filenames must be self-descriptive without relying on folder path.
+
+| ❌ Bad | ✅ Good |
+|--------|---------|
+| `09.md` | `2025-12-09_devlog.md` |
+| `index.md` (nested) | `feature-index.md` |
+| `utils.ts` | `decision-matrix-utils.ts` |
+
+**Exceptions:** `README.md`, `index.mdx` (for routes), standard config files.
+
+### 4. Date Format
+Use ISO 8601: `YYYY-MM-DD`
+
+Examples:
+- `2025-12-09_devlog.md`
+- `2025-12_monthly-summary.md`

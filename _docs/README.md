@@ -7,10 +7,10 @@ This folder contains internal documentation, architecture notes, and development
 | Document | Purpose |
 |----------|---------|
 | `ARCHITECTURE.md` | System architecture, component structure, tools |
-| `AUDIT.md` | Site audit and recommendations |
-| `DEVLOG.md` | Development log and decisions |
-| `devlog/YYYY/MM/DD.md` | Daily development entries |
-| `status_reports/` | Project manager status reports |
+| `PROJECT_POLICIES.md` | Standards and conventions |
+| `DEVLOG.md` | Development log index |
+| `devlog/YYYY-MM-DD_devlog.md` | Daily development entries |
+| `status_reports/` | Project status reports |
 
 ## Quick Links
 
@@ -22,8 +22,22 @@ This folder contains internal documentation, architecture notes, and development
 | Location | Purpose |
 |----------|---------|
 | `/README.md` | Project overview and quick start |
+| `/AGENTS.md` | AI assistant instructions |
 | `/DEVELOPERS.md` | Comprehensive developer guide |
+| `/.cursor/rules/` | Cursor AI rules for project conventions |
 | `/src/lib/tools/README.md` | Tools API reference |
+| `/_work_efforts/README.md` | Work efforts system guide |
+
+## Cursor Rules
+
+AI assistants follow rules defined in `.cursor/rules/`:
+
+| Rule File | Purpose |
+|-----------|---------|
+| `project-structure.mdc` | Directory organization |
+| `work-efforts.mdc` | Johnny Decimal task tracking |
+| `documentation.mdc` | Documentation standards |
+| `file-naming.mdc` | Naming conventions |
 
 ## Common Commands
 
@@ -45,25 +59,36 @@ npm run check            # Build validation
 
 ### Devlog Entries
 
-Create daily entries at `devlog/YYYY/MM/DD.md`:
+Create daily entries at `devlog/YYYY-MM-DD_devlog.md`:
 
 ```markdown
 # Devlog: Month Day, Year
 
-**Time:** HH:MM PM
+**Time:** HH:MM AM/PM TZ
+**Session:** Brief description
+**Work Effort:** [[XX.XX_work-effort-name]]
+
+---
 
 ## Summary
 What was accomplished.
 
-## Decisions Made
-Key decisions and rationale.
+## Session Log
 
-## Issues Found
-Bugs discovered and fixes.
+### HH:MM — Action
+Details of what was done.
 
-## Next Steps
-- [ ] Todo items
+---
+
+*Session complete: HH:MM AM/PM TZ*
 ```
+
+### Work Efforts
+
+Track tasks in `_work_efforts/` using Johnny Decimal:
+- `XX-XX_category/` — Category range
+- `XX_subcategory/` — Specific area
+- `XX.XX_document.md` — Individual work effort
 
 ### Architecture Updates
 
