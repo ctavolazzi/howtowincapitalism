@@ -1,0 +1,243 @@
+---
+/**
+ * User Profile Page (SSR)
+ *
+ * Server-side rendered profile page using the profileService API.
+ * Displays user identity, system bulletins, and activity feed.
+ *
+ * Privacy-aware: Data is filtered based on viewer context.
+ * - Owner sees full profile
+ * - Visitors see privacy-filtered data
+ */
+
+import Base from '../../layouts/Base.astro';
+import { fetchUserProfile } from '../../lib/api';
+import ProfileHeader from '../../components/organisms/profile/ProfileHeader.astro';
+import SystemBulletin from '../../components/organisms/profile/SystemBulletin.astro';
+import ActivityFeed from '../../components/organisms/profile/ActivityFeed.astro';
+
+// Get user ID from URL params
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect('/404/');
+}
+
+// TODO: Get real requester ID from session/cookies
+// For now, simulate anonymous viewer (null = not logged in)
+const requesterId: string | null = null;
+
+// Fetch profile with viewer context
+let profile;
+try {
+  profile = await fetchUserProfile(id, requesterId);
+} catch (error) {
+  // Handle 500 error case
+  console.error('Profile fetch error:', error);
+  return Astro.redirect('/500/');
+}
+
+// Handle 404 case
+if (!profile) {
+  return Astro.redirect('/404/');
+}
+
+const { identity, systemInjection, activityLog, stats } = profile;
+
+// Page metadata
+const pageTitle = `${identity.username} | Profile`;
+const pageDescription = identity.bio || `Profile page for ${identity.username}`;
+---
+
+<Base title={pageTitle}>
+  <div class="profile-page">
+    <!-- System Bulletin (if any) -->
+    <SystemBulletin bulletin={systemInjection} />
+
+    <!-- Bento Grid Layout -->
+    <div class="bento-grid">
+      <!-- Header Section (Full Width) -->
+      <div class="grid-header">
+        <ProfileHeader identity={identity} stats={stats} />
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="grid-main">
+        <!-- Badges Section -->
+        {identity.badges.length > 0 && (
+          <section class="badges-section">
+            <h2 class="section-title">Badges</h2>
+            <div class="badges-grid">
+              {identity.badges.map((badge) => (
+                <div class="badge-card" title={badge.description}>
+                  <span class="badge-icon">🏆</span>
+                  <span class="badge-type">{badge.type.replace(/_/g, ' ')}</span>
+                  <span class="badge-date">
+                    {new Date(badge.earnedAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Bio Section (if visible) -->
+        {identity.bio && (
+          <section class="bio-section">
+            <h2 class="section-title">About</h2>
+            <p class="bio-text">{identity.bio}</p>
+          </section>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="grid-sidebar">
+        <ActivityFeed activities={activityLog} limit={8} />
+      </div>
+    </div>
+
+    <!-- Back Navigation -->
+    <nav class="back-nav">
+      <a href="/users/" class="back-link">← Back to Users Directory</a>
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .profile-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  /* Bento Grid Layout */
+  .bento-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar";
+  }
+
+  @media (min-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+        "header header"
+        "main sidebar";
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas:
+        "header header header"
+        "main main sidebar";
+    }
+  }
+
+  .grid-header {
+    grid-area: header;
+  }
+
+  .grid-main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .grid-sidebar {
+    grid-area: sidebar;
+  }
+
+  /* Section Styles */
+  .badges-section,
+  .bio-section {
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border, #a2a9b1);
+    color: var(--color-text, #202122);
+  }
+
+  /* Badges Grid */
+  .badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .badge-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    background: white;
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .badge-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .badge-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .badge-type {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: var(--color-text, #202122);
+  }
+
+  .badge-date {
+    font-size: 0.625rem;
+    color: var(--color-text-muted, #54595d);
+    margin-top: 0.25rem;
+  }
+
+  /* Bio Section */
+  .bio-text {
+    line-height: 1.7;
+    color: var(--color-text, #202122);
+    margin: 0;
+  }
+
+  /* Back Navigation */
+  .back-nav {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #a2a9b1);
+  }
+
+  .back-link {
+    color: var(--color-link, #0645ad);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>

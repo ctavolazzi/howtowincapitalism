@@ -1,0 +1,126 @@
+---
+/**
+ * ActivityFeed Organism
+ *
+ * List of recent user activities.
+ * Handles empty state gracefully.
+ *
+ * @example
+ * <ActivityFeed activities={profile.activityLog} />
+ */
+
+import type { ActivityEvent } from '../../../lib/auth/schemas/userProfile';
+import ActivityItem from '../../molecules/ActivityItem.astro';
+
+interface Props {
+  /** Array of activity events */
+  activities: ActivityEvent[];
+  /** Maximum items to display */
+  limit?: number;
+  /** Optional title */
+  title?: string;
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const {
+  activities,
+  limit = 10,
+  title = 'Recent Activity',
+  class: className = '',
+} = Astro.props;
+
+// Limit activities to display
+const displayActivities = activities.slice(0, limit);
+const hasMore = activities.length > limit;
+---
+
+<section class:list={['activity-feed', className]}>
+  <h2 class="feed-title">{title}</h2>
+
+  {displayActivities.length === 0 ? (
+    <div class="empty-state">
+      <span class="empty-icon" aria-hidden="true">📭</span>
+      <p class="empty-text">No recent activity</p>
+      <p class="empty-subtext">Activity will appear here once this user makes contributions.</p>
+    </div>
+  ) : (
+    <div class="activity-list">
+      {displayActivities.map((activity) => (
+        <ActivityItem
+          type={activity.type}
+          targetPage={activity.targetPage}
+          timestamp={activity.timestamp}
+          meta={activity.meta}
+        />
+      ))}
+    </div>
+  )}
+
+  {hasMore && (
+    <div class="show-more">
+      <span class="show-more-text">
+        +{activities.length - limit} more activities
+      </span>
+    </div>
+  )}
+</section>
+
+<style>
+  .activity-feed {
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .feed-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border, #a2a9b1);
+    color: var(--color-text, #202122);
+  }
+
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .empty-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text, #202122);
+    margin: 0;
+  }
+
+  .empty-subtext {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #54595d);
+    margin: 0.5rem 0 0 0;
+  }
+
+  .show-more {
+    text-align: center;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--color-border, #a2a9b1);
+  }
+
+  .show-more-text {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #54595d);
+  }
+</style>

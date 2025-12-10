@@ -1,0 +1,196 @@
+---
+/**
+ * SystemBulletin Organism
+ *
+ * High-visibility alert box for admin announcements.
+ * Renders nothing if no bulletin is provided.
+ *
+ * @example
+ * <SystemBulletin bulletin={profile.systemInjection} />
+ */
+
+import type { SystemInjection } from '../../../lib/auth/schemas/userProfile';
+
+interface Props {
+  /** System bulletin data (null = no bulletin) */
+  bulletin: SystemInjection | null;
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const { bulletin, class: className = '' } = Astro.props;
+
+// Return nothing if no bulletin
+if (!bulletin) {
+  return null;
+}
+
+// Severity styling
+const severityStyles: Record<SystemInjection['severity'], { bg: string; border: string; icon: string }> = {
+  info: {
+    bg: 'bg-blue-50',
+    border: 'border-blue-200',
+    icon: 'ℹ️',
+  },
+  warn: {
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    icon: '⚠️',
+  },
+  critical: {
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    icon: '🚨',
+  },
+};
+
+const styles = severityStyles[bulletin.severity];
+---
+
+<aside
+  class:list={[
+    'system-bulletin',
+    styles.bg,
+    styles.border,
+    className,
+  ]}
+  role="alert"
+  aria-live={bulletin.severity === 'critical' ? 'assertive' : 'polite'}
+>
+  <div class="bulletin-header">
+    <span class="bulletin-icon" aria-hidden="true">{styles.icon}</span>
+    <h3 class="bulletin-title">{bulletin.title}</h3>
+    {bulletin.dismissible && (
+      <button
+        class="dismiss-btn"
+        type="button"
+        aria-label="Dismiss announcement"
+        data-bulletin-id={bulletin.id}
+      >
+        ✕
+      </button>
+    )}
+  </div>
+
+  <div class="bulletin-body" set:html={bulletin.bodyMarkdown} />
+</aside>
+
+<script>
+  // Handle bulletin dismissal (client-side)
+  document.querySelectorAll('.dismiss-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const bulletinId = button.dataset.bulletinId;
+      const bulletin = button.closest('.system-bulletin');
+
+      if (bulletin && bulletinId) {
+        // Store dismissal in localStorage
+        const dismissed = JSON.parse(localStorage.getItem('dismissed_bulletins') || '[]');
+        if (!dismissed.includes(bulletinId)) {
+          dismissed.push(bulletinId);
+          localStorage.setItem('dismissed_bulletins', JSON.stringify(dismissed));
+        }
+
+        // Animate out
+        bulletin.classList.add('dismissing');
+        setTimeout(() => {
+          bulletin.remove();
+        }, 300);
+      }
+    });
+  });
+
+  // Check if bulletin was previously dismissed
+  document.querySelectorAll('.system-bulletin').forEach((bulletin) => {
+    const dismissBtn = bulletin.querySelector('.dismiss-btn') as HTMLButtonElement;
+    if (dismissBtn) {
+      const bulletinId = dismissBtn.dataset.bulletinId;
+      const dismissed = JSON.parse(localStorage.getItem('dismissed_bulletins') || '[]');
+      if (bulletinId && dismissed.includes(bulletinId)) {
+        bulletin.remove();
+      }
+    }
+  });
+</script>
+
+<style>
+  .system-bulletin {
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .system-bulletin.dismissing {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .bulletin-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .bulletin-icon {
+    font-size: 1.25rem;
+  }
+
+  .bulletin-title {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text, #202122);
+  }
+
+  .dismiss-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: opacity 0.2s;
+  }
+
+  .dismiss-btn:hover {
+    opacity: 1;
+  }
+
+  .bulletin-body {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-muted, #54595d);
+  }
+
+  .bulletin-body :global(p) {
+    margin: 0.5rem 0;
+  }
+
+  .bulletin-body :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .bulletin-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .bulletin-body :global(a) {
+    color: var(--color-link, #0645ad);
+    text-decoration: underline;
+  }
+
+  .bulletin-body :global(strong) {
+    font-weight: 600;
+  }
+
+  .bulletin-body :global(ul),
+  .bulletin-body :global(ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.25rem;
+  }
+</style>

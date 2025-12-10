@@ -1,0 +1,71 @@
+---
+/**
+ * RoleBadge Atom
+ *
+ * Colored pill badge indicating user role.
+ * Color-coded for quick visual recognition.
+ *
+ * @example
+ * <RoleBadge role="admin" />
+ * <RoleBadge role="editor" />
+ */
+
+interface Props {
+  /** User role */
+  role: 'admin' | 'editor' | 'contributor' | 'viewer' | string;
+  /** Optional size variant */
+  size?: 'sm' | 'md';
+  /** Optional additional CSS classes */
+  class?: string;
+}
+
+const { role, size = 'md', class: className = '' } = Astro.props;
+
+// Role color mappings
+const roleStyles: Record<string, { bg: string; text: string; border: string }> = {
+  admin: {
+    bg: 'bg-rose-100',
+    text: 'text-rose-800',
+    border: 'border-rose-200',
+  },
+  editor: {
+    bg: 'bg-indigo-100',
+    text: 'text-indigo-800',
+    border: 'border-indigo-200',
+  },
+  contributor: {
+    bg: 'bg-emerald-100',
+    text: 'text-emerald-800',
+    border: 'border-emerald-200',
+  },
+  viewer: {
+    bg: 'bg-slate-100',
+    text: 'text-slate-600',
+    border: 'border-slate-200',
+  },
+};
+
+// Size classes
+const sizeClasses: Record<NonNullable<Props['size']>, string> = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-3 py-1 text-sm',
+};
+
+// Get styles with fallback to viewer
+const styles = roleStyles[role] || roleStyles.viewer;
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1',
+    'rounded-full font-medium capitalize',
+    'border',
+    styles.bg,
+    styles.text,
+    styles.border,
+    sizeClasses[size],
+    className,
+  ]}
+>
+  {role}
+</span>
