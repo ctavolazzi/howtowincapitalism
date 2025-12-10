@@ -259,6 +259,54 @@ window.location.href = '/login/';
 | contributor | 3 | CRUD on own content only |
 | viewer | 1 | Read public content only |
 
+## Testing
+
+### Running Tests
+
+```bash
+npm test              # Run all E2E tests
+npm run test:ui       # Interactive Playwright UI
+npm run test:report   # View HTML test report
+```
+
+### Test Coverage
+
+The auth system has comprehensive E2E tests in `tests/auth.spec.ts`:
+
+| Category | Tests |
+|----------|-------|
+| **Login Page** | Form display, error handling, success redirect |
+| **Protected Routes** | Unauthenticated redirect, public route access |
+| **Session Persistence** | Cookie persists across navigation |
+| **Logout** | Clears session, redirects to login |
+| **All User Roles** | Admin, editor, contributor, viewer login |
+| **API Endpoints** | /api/auth/me, /api/auth/login, /api/auth/logout |
+
+### Test Results
+
+```
+18 passed (33.2s)
+
+✓ Login Page › displays login form
+✓ Login Page › shows error for invalid credentials  
+✓ Login Page › successful login redirects to home
+✓ Login Page › login with redirect parameter returns to original page
+✓ Protected Routes › unauthenticated user is redirected to login
+✓ Protected Routes › home page redirects unauthenticated users
+✓ Protected Routes › users page redirects unauthenticated users
+✓ Protected Routes › disclaimer page is public (no redirect)
+✓ Session Persistence › session persists across page navigation
+✓ Logout › logout clears session and redirects to login
+✓ All User Roles › admin can login successfully
+✓ All User Roles › editor can login successfully
+✓ All User Roles › contributor can login successfully
+✓ All User Roles › viewer can login successfully
+✓ Auth API Endpoints › GET /api/auth/me returns unauthenticated
+✓ Auth API Endpoints › POST /api/auth/login returns user data
+✓ Auth API Endpoints › POST /api/auth/login returns error on invalid
+✓ Auth API Endpoints › POST /api/auth/logout clears session
+```
+
 ## Comparison: Old vs New
 
 | Aspect | Old (localStorage) | New (Cloudflare KV) |

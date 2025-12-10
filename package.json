@@ -16,8 +16,11 @@
     "og-image": "node scripts/generate-og-image.mjs",
     "icons": "node scripts/generate-icons.mjs",
     "new": "node scripts/new-page.mjs",
-    "test": "vitest run",
+    "test": "playwright test",
+    "test:unit": "vitest run",
     "test:watch": "vitest",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
     "lint:css": "stylelint 'src/**/*.{css,astro}' --allow-empty-input",
     "lint:css:fix": "stylelint 'src/**/*.{css,astro}' --fix --allow-empty-input",
     "a11y:colors": "echo '🎨 Color Accessibility Check' && grep -rn '#[0-9a-fA-F]\\{3,6\\}' src/components --include='*.astro' --include='*.css' | grep -v 'var(--' | grep 'color' && echo '❌ Found hardcoded colors!' || echo '✅ No hardcoded colors found'"
@@ -31,6 +34,8 @@
     "nanostores": "^1.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.0",
     "@vitest/coverage-v8": "^4.0.15",
     "@vitest/ui": "^4.0.15",
     "sharp": "^0.34.5",

@@ -96,7 +96,28 @@ Build → Commit → Push → Deploy. Live in ~30 seconds.
 | `npm run build` | Build site |
 | `npm run ship "msg"` | **Build + Commit + Push + Deploy** |
 | `npm run check` | Build + validate |
-| `npm test` | Run unit tests |
+| `npm test` | Run E2E tests (Playwright) |
+| `npm run test:ui` | Open Playwright test UI |
+| `npm run test:unit` | Run unit tests (Vitest) |
+
+### Testing
+
+The project uses **Playwright** for end-to-end testing:
+
+```bash
+npm test              # Run all tests
+npm run test:ui       # Open interactive test UI
+npm run test:report   # View HTML test report
+```
+
+**Test coverage:**
+- ✅ Login flow (all 4 user roles)
+- ✅ Session persistence
+- ✅ Protected route redirects
+- ✅ Logout functionality
+- ✅ Auth API endpoints
+
+See `tests/auth.spec.ts` for the full test suite.
 
 ### Tools
 
