@@ -1,16 +1,18 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
-export async function getStaticPaths() {
-  const docs = await getCollection('docs');
-  return docs.map((doc) => ({
-    params: { slug: doc.id },
-    props: { doc },
-  }));
+// In SSR mode, we get the slug from params and look up the doc
+const { slug } = Astro.params;
+
+// Get the doc from the collection
+const doc = await getEntry('docs', slug as string);
+
+// 404 if doc not found
+if (!doc) {
+  return Astro.redirect('/404/');
 }
 
-const { doc } = Astro.props;
 const { Content } = await render(doc);
 ---
 
