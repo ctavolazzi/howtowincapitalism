@@ -20,6 +20,7 @@
     "a11y:colors": "echo '🎨 Color Accessibility Check' && grep -rn '#[0-9a-fA-F]\\{3,6\\}' src/components --include='*.astro' --include='*.css' | grep -v 'var(--' | grep 'color' && echo '❌ Found hardcoded colors!' || echo '✅ No hardcoded colors found'"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.12",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/starlight": "^0.37.0",

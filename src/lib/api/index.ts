@@ -5,24 +5,22 @@
  * Import from here for clean imports throughout the codebase.
  *
  * @example
- * import { fetchUserProfile, getActiveSystemBulletin } from '../lib/api';
+ * import { fetchUserProfile, getActiveBulletinForRole } from '../lib/api';
  */
 
 // Profile Service
 export {
   fetchUserProfile,
-  fetchOwnProfile,
   getAllUserIds,
   userExists,
 } from './profileService';
 
-// System Bulletins
+// System Bulletins (from config)
 export {
-  getActiveSystemBulletin,
-  getAllActiveBulletins,
+  getActiveBulletinForRole,
   hasActiveCriticalBulletin,
-  ACTIVE_BULLETINS,
-} from './systemBulletins';
+  ACTIVE_BULLETIN,
+} from '../config/systemBulletins';
 
 // Re-export types for convenience
 export type {
