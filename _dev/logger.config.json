@@ -1,11 +1,8 @@
 {
   "enabled": true,
   "logLevel": "info",
-  "outputDir": "_dev/logs",
   "console": true,
-  "file": true,
-  "maxFileSizeMB": 5,
-  "retainDays": 7,
+  "file": false,
   "format": "pretty",
   "timestamps": true,
   "categories": {

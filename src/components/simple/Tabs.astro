@@ -1,0 +1,41 @@
+---
+/**
+ * Tabs - Simple tabbed content (uses details/summary for no-JS)
+ */
+---
+
+<div class="tabs">
+  <slot />
+</div>
+
+<style>
+  .tabs {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+
+  .tabs :global(details) {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .tabs :global(details:last-child) {
+    border-bottom: none;
+  }
+
+  .tabs :global(summary) {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    background: #f8f9fa;
+    font-weight: 500;
+  }
+
+  .tabs :global(summary:hover) {
+    background: #eee;
+  }
+
+  .tabs :global(details > div),
+  .tabs :global(details > p) {
+    padding: 1rem;
+  }
+</style>

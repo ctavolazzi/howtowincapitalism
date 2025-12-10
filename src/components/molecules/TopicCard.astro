@@ -62,9 +62,8 @@ const cardClasses = ['topic-card', className].filter(Boolean).join(' ');
 
 <a href={href} class={cardClasses}>
   <article class="topic-card__inner">
-    {tag && <span class="topic-card__tag">{tag}</span>}
-
     <header class="topic-card__header">
+      {tag && <span class="topic-card__tag">{tag}</span>}
       {icon && <span class="topic-card__icon">{icon}</span>}
       <h3 class="topic-card__title">{title}</h3>
     </header>
@@ -72,89 +71,7 @@ const cardClasses = ['topic-card', className].filter(Boolean).join(' ');
     {description && (
       <p class="topic-card__description">{description}</p>
     )}
-
-    <span class="topic-card__link">
-      Read more →
-    </span>
   </article>
 </a>
 
-<style>
-  /* TopicCard - Wikipedia-inspired card design */
-  .topic-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border: var(--border-width) solid var(--color-border);
-    background: var(--color-bg);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .topic-card:hover {
-    border-color: var(--color-link);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .topic-card__inner {
-    display: flex;
-    flex-direction: column;
-    padding: var(--space-md) var(--space-lg);
-    height: 100%;
-  }
-
-  .topic-card__tag {
-    align-self: flex-start;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-bg);
-    background: var(--color-link);
-    padding: 2px var(--space-sm);
-    margin-bottom: var(--space-xs);
-  }
-
-  .topic-card__header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-xs);
-  }
-
-  .topic-card__icon {
-    font-size: var(--text-lg);
-    line-height: 1;
-  }
-
-  .topic-card__title {
-    font-family: var(--font-serif);
-    font-size: var(--text-base);
-    font-weight: 400;
-    color: var(--color-text);
-    margin: 0;
-    line-height: var(--line-height-tight);
-  }
-
-  .topic-card:hover .topic-card__title {
-    color: var(--color-link);
-  }
-
-  .topic-card__description {
-    font-size: var(--text-sm);
-    color: var(--color-text);
-    margin: 0 0 var(--space-sm) 0;
-    line-height: 1.5;
-    flex: 1;
-    opacity: 0.85;
-  }
-
-  .topic-card__link {
-    font-size: var(--text-xs);
-    color: var(--color-link);
-    margin-top: auto;
-  }
-
-  .topic-card:hover .topic-card__link {
-    text-decoration: underline;
-  }
-</style>
+<!-- Styles in Base.astro -->

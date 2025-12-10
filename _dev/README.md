@@ -1,14 +1,16 @@
 # _dev/
 
-Development tooling for How To Win Capitalism.
+Development **tooling** for How To Win Capitalism.
+
+> **Note:** Development **documentation** (devlogs, session notes) lives in `_docs/devlog/`
+> This folder is for code/scripts only.
 
 ## Contents
 
 | File | Purpose |
 |------|---------|
-| `logger.mjs` | Development logger module |
+| `logger.mjs` | Development logger module (console output) |
 | `logger.config.json` | Logger configuration |
-| `logs/` | Log output (git-ignored) |
 
 ## Logger
 
@@ -77,17 +79,11 @@ Edit `logger.config.json`:
 node _dev/logger.mjs
 ```
 
-### Log Files
+### Output
 
-Logs are written to `_dev/logs/YYYY-MM-DD.log`:
+By default, logs go to console only. File output is disabled.
 
-```
-[2025-12-08T23:45:00.000Z] [INFO] Starting build
-[2025-12-08T23:45:01.000Z] [SUCCESS] [FILE] Created: src/new-file.ts
-[2025-12-08T23:45:02.000Z] [ERROR] Build failed {"error":"Module not found"}
-```
-
-Old logs are auto-deleted after `retainDays`.
+For human-readable development logs, use `_docs/devlog/YYYY-MM-DD_devlog.md`.
 
 ## Adding More Tools
 

@@ -1,0 +1,17 @@
+---
+/**
+ * TabItem - Individual tab content
+ */
+export interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<details>
+  <summary>{label}</summary>
+  <div>
+    <slot />
+  </div>
+</details>

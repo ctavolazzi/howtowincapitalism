@@ -1,0 +1,44 @@
+---
+/**
+ * Steps - Simple numbered steps component
+ */
+---
+
+<div class="steps">
+  <slot />
+</div>
+
+<style>
+  .steps {
+    counter-reset: step;
+  }
+
+  .steps :global(ol) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .steps :global(li) {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .steps :global(li)::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: #0645ad;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+</style>

@@ -97,9 +97,8 @@ debug.log('components', 'Hero rendering', {
     color: var(--color-text, #202122);
     margin: 0 0 var(--space-md, 12px) 0;
     line-height: 1.3;
-    /* No border on hero title */
-    border: none !important;
-    padding: 0 !important;
+    border: none;
+    padding: 0;
   }
 
   .hero__subtitle {
@@ -118,17 +117,17 @@ debug.log('components', 'Hero rendering', {
     gap: var(--space-sm, 8px);
     padding: var(--space-md, 12px) var(--space-xl, 24px);
     background: var(--color-text, #202122);
-    color: var(--color-bg, #ffffff) !important;
+    color: var(--color-bg, #ffffff);
     font-weight: 600;
-    text-decoration: none !important;
+    text-decoration: none;
     border: 2px solid var(--color-text, #202122);
     transition: all 0.2s ease-out;
-    background-image: none !important;
+    background-image: none;
   }
 
   .hero__cta:hover {
     background: var(--color-bg, #ffffff);
-    color: var(--color-text, #202122) !important;
+    color: var(--color-text, #202122);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }

@@ -1,0 +1,43 @@
+---
+/**
+ * Aside - Simple callout box
+ */
+export interface Props {
+  type?: 'note' | 'tip' | 'caution' | 'danger';
+  title?: string;
+}
+
+const { type = 'note', title } = Astro.props;
+
+const colors = {
+  note: { bg: '#eaf3ff', border: '#36c', icon: 'ℹ️' },
+  tip: { bg: '#e6f6e6', border: '#2a2', icon: '💡' },
+  caution: { bg: '#fef6e7', border: '#fc3', icon: '⚠️' },
+  danger: { bg: '#ffebec', border: '#c00', icon: '🚨' },
+};
+
+const style = colors[type];
+---
+
+<aside class="aside" style={`background: ${style.bg}; border-color: ${style.border};`}>
+  {title && <p class="aside-title">{style.icon} {title}</p>}
+  <slot />
+</aside>
+
+<style>
+  .aside {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-left: 4px solid;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .aside-title {
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .aside :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

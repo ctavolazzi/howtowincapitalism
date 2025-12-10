@@ -166,12 +166,7 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
 </style>
 
 <script>
-  // Favorites management with debug logging
-  const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
-  const log = DEBUG
-    ? (...args: unknown[]) => console.log('🔍 [favorites]', ...args)
-    : () => {};
-
+  // Favorites management
   const STORAGE_KEY = 'htwc-favorites';
 
   interface FavoriteItem {
@@ -183,43 +178,31 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
   function getFavorites(): FavoriteItem[] {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      const favorites = stored ? JSON.parse(stored) : [];
-      log('getFavorites()', { count: favorites.length });
-      return favorites;
-    } catch (e) {
-      log('getFavorites() error', e);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
       return [];
     }
   }
 
   function saveFavorites(favorites: FavoriteItem[]): void {
-    log('saveFavorites()', { count: favorites.length });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
   }
 
   function isFavorited(path: string): boolean {
-    const result = getFavorites().some(f => f.path === path);
-    log('isFavorited()', { path, result });
-    return result;
+    return getFavorites().some(f => f.path === path);
   }
 
   function addFavorite(path: string, title: string): void {
-    log('addFavorite()', { path, title });
     const favorites = getFavorites();
     if (!favorites.some(f => f.path === path)) {
       favorites.push({ path, title, addedAt: new Date().toISOString() });
       saveFavorites(favorites);
-      log('Favorite added ✅', { path, title });
-    } else {
-      log('Already favorited, skipping', path);
     }
   }
 
   function removeFavorite(path: string): void {
-    log('removeFavorite()', { path });
     const favorites = getFavorites().filter(f => f.path !== path);
     saveFavorites(favorites);
-    log('Favorite removed ✅', { path, remaining: favorites.length });
   }
 
   function getCurrentPath(): string {
@@ -228,9 +211,7 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
 
   function getCurrentTitle(): string {
     const h1 = document.querySelector('h1');
-    const title = h1?.textContent?.trim() || document.title.split('|')[0].trim();
-    log('getCurrentTitle()', { title });
-    return title;
+    return h1?.textContent?.trim() || document.title.split('|')[0].trim();
   }
 
   function updateToggleButton(): void {
@@ -238,15 +219,10 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     const icon = document.getElementById('favorite-icon');
     const text = document.getElementById('favorite-text');
 
-    if (!toggle || !icon || !text) {
-      log('updateToggleButton() - elements not found');
-      return;
-    }
+    if (!toggle || !icon || !text) return;
 
     const path = getCurrentPath();
     const favorited = isFavorited(path);
-
-    log('updateToggleButton()', { path, favorited });
 
     toggle.classList.toggle('is-favorited', favorited);
     icon.textContent = favorited ? '★' : '☆';
@@ -256,25 +232,19 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
   }
 
   function renderFavoritesList(): void {
-    const listContainer = document.getElementById('favorites-list-container');
     const list = document.getElementById('favorites-list');
     const empty = document.getElementById('favorites-empty');
 
-    if (!list) {
-      log('renderFavoritesList() - list element not found');
-      return;
-    }
+    if (!list) return;
 
     const favorites = getFavorites();
-    log('renderFavoritesList()', { count: favorites.length });
 
-    // Clear existing items (except empty message)
+    // Clear existing items
     const existingItems = list.querySelectorAll('.favorite-item');
     existingItems.forEach(item => item.remove());
 
     if (favorites.length === 0) {
       if (empty) empty.style.display = 'block';
-      log('Showing empty state');
       return;
     }
 
@@ -295,7 +265,6 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
       btn.addEventListener('click', (e) => {
         const path = (e.currentTarget as HTMLElement).dataset.path;
         if (path) {
-          log('Remove button clicked', { path });
           removeFavorite(path);
           renderFavoritesList();
           updateToggleButton();
@@ -306,8 +275,6 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
 
   // Initialize
   document.addEventListener('DOMContentLoaded', () => {
-    log('Favorites component initializing...', { path: getCurrentPath() });
-
     updateToggleButton();
     renderFavoritesList();
 
@@ -316,8 +283,6 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
     toggle?.addEventListener('click', () => {
       const path = getCurrentPath();
       const title = getCurrentTitle();
-
-      log('Toggle clicked', { path, title, wasFavorited: isFavorited(path) });
 
       if (isFavorited(path)) {
         removeFavorite(path);
@@ -328,7 +293,5 @@ const { compact = false, title = "Your Favorites" } = Astro.props;
       updateToggleButton();
       renderFavoritesList();
     });
-
-    log('Favorites component initialized ✅');
   });
 </script>

@@ -222,60 +222,39 @@ const meterId = 'protocol-progress';
 </style>
 
 <script define:vars={{ trackablePages, meterId }}>
-  // Completeness Meter - Client-side tracking with debug logging
+  // Completeness Meter - Client-side tracking
   (function() {
-    const DEBUG = import.meta.env?.DEV || localStorage.getItem('debug') === 'true';
-    const log = DEBUG
-      ? (...args) => console.log('🔍 [completeness-meter]', ...args)
-      : () => {};
-
     const STORAGE_KEY = 'htwc-visited-pages';
     const currentPath = window.location.pathname;
 
-    log('Initializing', { currentPath, trackablePages: trackablePages.length });
-
-    // Get visited pages from localStorage
     function getVisitedPages() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        const pages = stored ? JSON.parse(stored) : [];
-        log('getVisitedPages()', { count: pages.length, pages });
-        return pages;
-      } catch (e) {
-        log('getVisitedPages() error', e);
+        return stored ? JSON.parse(stored) : [];
+      } catch {
         return [];
       }
     }
 
-    // Save visited pages to localStorage
     function saveVisitedPages(pages) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
-        log('saveVisitedPages()', { count: pages.length });
-      } catch (e) {
-        log('saveVisitedPages() error - localStorage not available', e);
+      } catch {
+        // localStorage not available
       }
     }
 
-    // Mark current page as visited
     function markCurrentPageVisited() {
       const trackablePaths = trackablePages.map(p => p.path);
-      const isTrackable = trackablePaths.includes(currentPath);
-      log('markCurrentPageVisited()', { currentPath, isTrackable });
-
-      if (isTrackable) {
+      if (trackablePaths.includes(currentPath)) {
         const visited = getVisitedPages();
         if (!visited.includes(currentPath)) {
           visited.push(currentPath);
           saveVisitedPages(visited);
-          log('Page marked as visited', currentPath);
-        } else {
-          log('Page already visited', currentPath);
         }
       }
     }
 
-    // Update the meter UI
     function updateMeterUI() {
       const visited = getVisitedPages();
       const total = trackablePages.length;
@@ -284,29 +263,19 @@ const meterId = 'protocol-progress';
       ).length;
       const percentage = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
 
-      log('updateMeterUI()', { visitedCount, total, percentage: percentage + '%' });
-
-      // Update all meters on the page
-      const meters = document.querySelectorAll('.completeness-meter');
-      log('Found meters on page', meters.length);
-
-      meters.forEach((meter, idx) => {
-        // Update count
+      document.querySelectorAll('.completeness-meter').forEach(meter => {
         const visitedEl = meter.querySelector('.cm-visited');
         if (visitedEl) visitedEl.textContent = visitedCount;
 
-        // Update bar
         const barFill = meter.querySelector('.cm-bar-fill');
         if (barFill) barFill.style.width = percentage + '%';
 
-        // Update percentage
         const percentageEl = meter.querySelector('.cm-percentage');
         if (percentageEl) percentageEl.textContent = percentage + '%';
 
         const percentageInline = meter.querySelector('.cm-percentage-inline');
         if (percentageInline) percentageInline.textContent = percentage + '%';
 
-        // Update list items
         meter.querySelectorAll('.cm-item').forEach(item => {
           const path = item.getAttribute('data-path');
           const isVisited = visited.includes(path);
@@ -319,10 +288,7 @@ const meterId = 'protocol-progress';
       });
     }
 
-    // Initialize
-    log('Running initialization...');
     markCurrentPageVisited();
     updateMeterUI();
-    log('Initialization complete ✅');
   })();
 </script>

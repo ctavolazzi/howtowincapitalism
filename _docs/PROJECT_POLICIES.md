@@ -1,0 +1,137 @@
+# Project Policies
+
+Standards and conventions for the How To Win Capitalism project.
+
+---
+
+## File Naming
+
+### Rule: All filenames must be self-descriptive
+
+A filename should be understandable **without relying on its folder path**.
+
+| ❌ Bad | ✅ Good |
+|--------|---------|
+| `09.md` | `2025-12-09_devlog.md` |
+| `index.md` (in nested folder) | `protocol-index.md` or keep `index.md` only at root |
+| `styles.css` | `custom-starlight-overrides.css` |
+| `utils.ts` | `decision-matrix-utils.ts` |
+
+### Naming Format
+
+```
+[date]_[descriptive-name].[ext]
+```
+
+**Examples:**
+- `2025-12-09_devlog.md`
+- `2025-12-09_project-status.md`
+- `10.07_starlight-architecture-audit.md`
+
+### Exceptions
+
+These generic names are acceptable:
+- `README.md` — Standard convention
+- `index.mdx` — Web route convention (but only one per folder)
+- `package.json`, `tsconfig.json` — Config files with standard names
+
+---
+
+## Folder Structure
+
+### Rule: Folders provide hierarchy, not meaning
+
+Folder paths should organize files, but each file should still be identifiable by name alone.
+
+| ❌ Bad | ✅ Good |
+|--------|---------|
+| `devlog/2025/12/09.md` | `devlog/2025-12-09_devlog.md` |
+| `reports/january/summary.md` | `reports/2025-01_monthly-summary.md` |
+
+### `_docs/` vs `_dev/`
+
+| Folder | Contains | Examples |
+|--------|----------|----------|
+| `_docs/` | Documentation (human-readable) | Devlogs, architecture, policies |
+| `_dev/` | Development tooling (code) | Logger module, scripts |
+
+**Do not** put documentation in `_dev/` or tooling in `_docs/`.
+
+---
+
+## Date Formats
+
+Use ISO 8601 format for dates in filenames:
+
+| Format | Use Case |
+|--------|----------|
+| `YYYY-MM-DD` | Daily files (e.g., `2025-12-09_devlog.md`) |
+| `YYYY-MM` | Monthly files (e.g., `2025-12_summary.md`) |
+| `YYYY` | Annual files (e.g., `2025_annual-review.md`) |
+
+---
+
+## Code Style
+
+See user rules in Cursor settings for Python/coding style preferences.
+
+Key points:
+- Minimal abstractions
+- Direct code over wrapper functions
+- One file until 500+ lines
+- No unnecessary helpers
+
+---
+
+## Documentation
+
+### Required Documentation
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| `README.md` | Project root | Project overview |
+| `AGENTS.md` | Project root | AI assistant instructions |
+| `_docs/PROJECT_POLICIES.md` | This file | Standards and conventions |
+| `_docs/ARCHITECTURE.md` | `_docs/` | Technical architecture |
+
+### Work Efforts
+
+Follow Johnny Decimal system in `_work_efforts/`:
+- `XX.XX_descriptive-name.md`
+- Always include status, dates, and tasks
+
+### Devlogs
+
+- One file per day with active development
+- Filename: `YYYY-MM-DD_devlog.md`
+- Location: `_docs/devlog/`
+
+---
+
+## Git Commits
+
+Format: `type: description`
+
+| Type | Use |
+|------|-----|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation |
+| `style` | Formatting, CSS |
+| `refactor` | Code restructuring |
+| `chore` | Maintenance |
+
+---
+
+## Review Checklist
+
+Before committing, verify:
+
+- [ ] All new files have descriptive names
+- [ ] No files named only by date/number
+- [ ] Documentation updated if needed
+- [ ] Work effort updated if applicable
+
+---
+
+*Last updated: 2025-12-09*

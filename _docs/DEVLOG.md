@@ -1,5 +1,11 @@
 # Development Log
 
+> **Note:** Daily devlogs are now in `_docs/devlog/` with format `YYYY-MM-DD_devlog.md`
+> - [2025-12-09_devlog.md](devlog/2025-12-09_devlog.md) — Current session
+> - [2025-12-08_devlog.md](devlog/2025-12-08_devlog.md) — Previous session
+
+---
+
 ## December 8, 2025
 
 ### Session 2e: Decision Matrix Tests
