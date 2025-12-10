@@ -53,6 +53,21 @@
   const form = document.getElementById('login-form') as HTMLFormElement;
   const errorMessage = document.getElementById('error-message') as HTMLDivElement;
 
+  // Get redirect URL from query params (e.g., /login/?redirect=/profile/edit/)
+  function getRedirectUrl(): string {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      // Validate: only allow relative paths starting with /
+      if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
+        return redirect;
+      }
+    } catch (e) {
+      console.warn('Failed to parse redirect URL:', e);
+    }
+    return '/'; // Default to home
+  }
+
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -61,8 +76,9 @@
     const password = formData.get('password') as string;
 
     if (login(email, password)) {
-      // Success - redirect to home
-      window.location.href = '/';
+      // Success - redirect to intended destination or home
+      const redirectUrl = getRedirectUrl();
+      window.location.href = redirectUrl;
     } else {
       // Failed - show error
       errorMessage.style.display = 'block';
