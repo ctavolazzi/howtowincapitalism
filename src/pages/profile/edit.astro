@@ -1,0 +1,240 @@
+---
+/**
+ * Edit Profile Page
+ *
+ * Protected route for editing the current user's profile.
+ * Auth check happens client-side (nanostores).
+ *
+ * Flow:
+ * 1. Page renders with loading state
+ * 2. Client-side script checks auth
+ * 3. If not logged in -> redirect to /login
+ * 4. If logged in -> fetch profile and show form
+ */
+
+import Base from '../../layouts/Base.astro';
+import ProfileForm from '../../components/organisms/profile/ProfileForm.astro';
+import { fetchUserProfile, getAllUserIds } from '../../lib/api';
+
+// For SSR, we need to pre-fetch profile data
+// The client will verify auth and show/hide accordingly
+// Default to first user for initial render (will be replaced client-side)
+const userIds = getAllUserIds();
+const defaultProfile = userIds.length > 0 ? await fetchUserProfile(userIds[0], userIds[0]) : null;
+---
+
+<Base title="Edit Profile">
+  <div class="edit-page">
+    <!-- Auth Loading State -->
+    <div id="auth-loading" class="auth-loading">
+      <div class="loading-spinner"></div>
+      <p>Checking authentication...</p>
+    </div>
+
+    <!-- Not Logged In State (hidden by default) -->
+    <div id="auth-required" class="auth-required" style="display: none;">
+      <div class="auth-message">
+        <h1>Login Required</h1>
+        <p>You must be logged in to edit your profile.</p>
+        <a href="/login/" class="login-link">Go to Login</a>
+      </div>
+    </div>
+
+    <!-- Edit Form (hidden until auth verified) -->
+    <div id="edit-container" class="edit-container" style="display: none;">
+      <div class="page-header">
+        <h1>Edit Your Profile</h1>
+        <a href="/profile/me/" class="back-link">← Back to Profile</a>
+      </div>
+
+      <div id="form-container">
+        {defaultProfile ? (
+          <ProfileForm profile={defaultProfile} />
+        ) : (
+          <p class="error-message">Unable to load profile data.</p>
+        )}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { authStore, getCurrentUser } from '../../lib/auth';
+  import { fetchUserProfile } from '../../lib/api';
+
+  const authLoading = document.getElementById('auth-loading');
+  const authRequired = document.getElementById('auth-required');
+  const editContainer = document.getElementById('edit-container');
+
+  async function checkAuthAndLoad() {
+    // Wait a tick for store to hydrate from localStorage
+    await new Promise((r) => setTimeout(r, 50));
+
+    const state = authStore.get();
+    const isLoggedIn = state.isLoggedIn === 'true';
+
+    if (!isLoggedIn) {
+      // Not logged in - show auth required message
+      if (authLoading) authLoading.style.display = 'none';
+      if (authRequired) authRequired.style.display = 'flex';
+      
+      // Auto-redirect after brief delay
+      setTimeout(() => {
+        window.location.href = '/login/';
+      }, 2000);
+      return;
+    }
+
+    // Logged in - show edit form
+    const userId = state.userId;
+    
+    if (authLoading) authLoading.style.display = 'none';
+    if (editContainer) editContainer.style.display = 'block';
+
+    // Update the form's userId hidden input to match logged-in user
+    const userIdInput = document.querySelector('input[name="userId"]') as HTMLInputElement;
+    if (userIdInput) {
+      userIdInput.value = userId;
+    }
+
+    // Update form fields with current user data
+    const usernameInput = document.getElementById('username') as HTMLInputElement;
+    const bioInput = document.getElementById('bio') as HTMLTextAreaElement;
+    const avatarInput = document.getElementById('avatarUrl') as HTMLInputElement;
+
+    if (usernameInput) usernameInput.value = state.userName || '';
+    // Bio and avatar need to come from profile data
+    // For now, the SSR-rendered defaults are fine
+  }
+
+  // Run auth check on load
+  checkAuthAndLoad();
+
+  // Also listen for auth changes
+  authStore.subscribe(() => {
+    const state = authStore.get();
+    if (state.isLoggedIn !== 'true' && editContainer?.style.display === 'block') {
+      // User logged out while on page
+      window.location.href = '/login/';
+    }
+  });
+</script>
+
+<style>
+  .edit-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 60vh;
+  }
+
+  /* Auth Loading State */
+  .auth-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: var(--color-text-muted, #72777d);
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--color-border-light, #eaecef);
+    border-top-color: var(--color-primary, #0645ad);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Auth Required State */
+  .auth-required {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+  }
+
+  .auth-message {
+    text-align: center;
+    padding: 2rem;
+    background: var(--color-surface, #f8f9fa);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 12px;
+  }
+
+  .auth-message h1 {
+    font-size: 1.5rem;
+    color: var(--color-text, #202122);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .auth-message p {
+    color: var(--color-text-muted, #72777d);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .login-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary, #0645ad);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .login-link:hover {
+    background: #003d99;
+  }
+
+  /* Edit Container */
+  .edit-container {
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-light, #eaecef);
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text, #202122);
+    margin: 0;
+  }
+
+  .back-link {
+    color: var(--color-link, #0645ad);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .error-message {
+    padding: 1rem;
+    background: #fee;
+    border: 1px solid #c00;
+    border-radius: 8px;
+    color: #c00;
+  }
+</style>

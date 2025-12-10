@@ -1,0 +1,93 @@
+---
+/**
+ * Profile "Me" Redirect
+ *
+ * Utility route that redirects to the current user's profile.
+ * - If logged in -> /profile/{userId}/
+ * - If logged out -> /login/
+ *
+ * This allows linking to "your profile" without knowing the user ID.
+ * Example: <a href="/profile/me/">View My Profile</a>
+ */
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | How To Win Capitalism</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f8f9fa;
+      color: #202122;
+    }
+    .redirect-container {
+      text-align: center;
+      padding: 2rem;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #eaecef;
+      border-top-color: #0645ad;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    p {
+      color: #72777d;
+      margin: 0;
+    }
+    a {
+      color: #0645ad;
+    }
+  </style>
+</head>
+<body>
+  <div class="redirect-container">
+    <div class="spinner"></div>
+    <p id="status">Checking authentication...</p>
+  </div>
+
+  <script>
+    import { authStore } from '../../lib/auth';
+
+    const statusEl = document.getElementById('status');
+
+    async function redirect() {
+      // Wait a tick for store to hydrate from localStorage
+      await new Promise((r) => setTimeout(r, 50));
+
+      const state = authStore.get();
+      const isLoggedIn = state.isLoggedIn === 'true';
+
+      if (isLoggedIn && state.userId) {
+        // Logged in - redirect to user's profile
+        if (statusEl) statusEl.textContent = 'Redirecting to your profile...';
+        window.location.href = `/profile/${state.userId}/`;
+      } else {
+        // Not logged in - redirect to login
+        if (statusEl) {
+          statusEl.innerHTML = 'Not logged in. Redirecting to <a href="/login/">login</a>...';
+        }
+        setTimeout(() => {
+          window.location.href = '/login/';
+        }, 1000);
+      }
+    }
+
+    redirect();
+  </script>
+</body>
+</html>
