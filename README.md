@@ -114,6 +114,7 @@ The `src/lib/tools/` folder contains reusable utilities:
 | `AGENTS.md` | AI assistant instructions |
 | `DEVELOPERS.md` | Developer guide |
 | `_docs/ARCHITECTURE.md` | Technical architecture |
+| `_docs/AUTH.md` | Authentication system |
 | `_docs/PROJECT_POLICIES.md` | Standards & conventions |
 | `_docs/devlog/` | Daily development logs |
 
@@ -140,11 +141,34 @@ AI assistants follow rules in `.cursor/rules/`:
 | `documentation.mdc` | Documentation standards |
 | `file-naming.mdc` | Naming conventions |
 
+## Authentication
+
+The site requires login to access content. This is a **client-side mock auth system** for UX demonstration.
+
+### Test Credentials
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@email.com | itcan'tbethateasy... | admin |
+| editor@email.com | editor123 | editor |
+| contributor@email.com | contrib123 | contributor |
+| viewer@email.com | viewer123 | viewer |
+
+### How It Works
+
+- Auth state stored in `localStorage` (no backend)
+- All routes except `/login/` and `/disclaimer/` require authentication
+- Login redirects back to intended page via `?redirect=` parameter
+- Profile edits persist locally per browser
+
+See `_docs/AUTH.md` for full technical documentation.
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | [Astro](https://astro.build) v5 + Starlight |
+| Framework | [Astro](https://astro.build) v5 (SSR) |
+| Auth | Nanostores + localStorage (client-side) |
 | Content | MDX |
 | Styling | CSS (Wikipedia-inspired) |
 | Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |
