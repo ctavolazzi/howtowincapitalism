@@ -2,10 +2,9 @@
 /**
  * Profile Page
  *
- * Shows user profile information and activity history.
- * Redirects to login if not authenticated.
+ * Redirects to the user's editable profile page.
+ * If not logged in, redirects to login.
  */
-import UserMenu from '../../components/auth/UserMenu.astro';
 ---
 
 <!DOCTYPE html>
@@ -13,292 +12,41 @@ import UserMenu from '../../components/auth/UserMenu.astro';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile | How To Win Capitalism</title>
+  <title>Redirecting... | How To Win Capitalism</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
-    :root {
-      --sl-color-bg: #fff;
-      --sl-color-text: #1a1a1a;
-      --sl-color-accent: #0066cc;
-      --sl-color-accent-high: #fff;
-      --sl-color-gray-3: #666;
-      --sl-color-gray-4: #888;
-      --sl-color-gray-5: #ccc;
-      --sl-color-gray-6: #f5f5f5;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--sl-color-bg);
-      color: var(--sl-color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
     }
-
-    header {
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--sl-color-gray-5);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .site-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--sl-color-text);
-      text-decoration: none;
-    }
-
-    .site-title:hover {
-      color: var(--sl-color-accent);
-    }
-
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--sl-color-gray-5);
-    }
-
-    .profile-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--sl-color-gray-6);
-    }
-
-    .profile-info h1 {
-      font-size: 1.75rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .profile-info p {
-      color: var(--sl-color-gray-3);
-    }
-
-    .section {
-      margin-bottom: 2rem;
-    }
-
-    .section h2 {
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
-      color: var(--sl-color-text);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-    }
-
-    .stat-card {
-      padding: 1.25rem;
-      background: var(--sl-color-gray-6);
-      border-radius: 8px;
+    .loading {
       text-align: center;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--sl-color-accent);
-    }
-
-    .stat-label {
-      font-size: 0.875rem;
-      color: var(--sl-color-gray-3);
-      margin-top: 0.25rem;
-    }
-
-    .activity-list {
-      list-style: none;
-    }
-
-    .activity-item {
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--sl-color-gray-6);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .activity-item:last-child {
-      border-bottom: none;
-    }
-
-    .activity-path {
-      font-family: monospace;
-      background: var(--sl-color-gray-6);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.875rem;
-    }
-
-    .activity-time {
-      font-size: 0.75rem;
-      color: var(--sl-color-gray-4);
-    }
-
-    .not-logged-in {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
-    .not-logged-in h1 {
-      margin-bottom: 1rem;
-    }
-
-    .not-logged-in a {
-      color: var(--sl-color-accent);
-    }
-
-    #profile-content {
-      display: none;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <header>
-    <a href="/" class="site-title">How To Win Capitalism</a>
-  </header>
-
-  <main>
-    <!-- Shown when not logged in -->
-    <div id="not-logged-in" class="not-logged-in">
-      <h1>Not Logged In</h1>
-      <p>You need to <a href="/login/">log in</a> to view your profile.</p>
-    </div>
-
-    <!-- Shown when logged in -->
-    <div id="profile-content">
-      <div class="profile-header">
-        <img id="profile-avatar" src="/favicon.svg" alt="Profile avatar" class="profile-avatar" />
-        <div class="profile-info">
-          <h1 id="profile-name">Admin</h1>
-          <p id="profile-email">admin@email.com</p>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Activity Stats</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value" id="stat-pageviews">0</div>
-            <div class="stat-label">Page Views</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="stat-pages">0</div>
-            <div class="stat-label">Unique Pages</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="stat-session">-</div>
-            <div class="stat-label">Session Start</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>Recent Activity</h2>
-        <ul class="activity-list" id="activity-list">
-          <li class="activity-item">
-            <span>No activity recorded yet.</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </main>
-
-  <UserMenu />
+  <div class="loading">
+    <p>Redirecting to your profile...</p>
+  </div>
 
   <script>
-    import { getCurrentUser, authStore } from '../../lib/auth';
-    import { getActivity, getActivitySummary } from '../../lib/auth/activity';
+    import { getCurrentUser } from '../../lib/auth';
 
-    const notLoggedIn = document.getElementById('not-logged-in');
-    const profileContent = document.getElementById('profile-content');
-    const profileName = document.getElementById('profile-name');
-    const profileEmail = document.getElementById('profile-email');
-    const profileAvatar = document.getElementById('profile-avatar') as HTMLImageElement;
-    const statPageviews = document.getElementById('stat-pageviews');
-    const statPages = document.getElementById('stat-pages');
-    const statSession = document.getElementById('stat-session');
-    const activityList = document.getElementById('activity-list');
+    const user = getCurrentUser();
 
-    function updateProfile() {
-      const user = getCurrentUser();
-
-      if (!user) {
-        notLoggedIn!.style.display = 'block';
-        profileContent!.style.display = 'none';
-        return;
-      }
-
-      notLoggedIn!.style.display = 'none';
-      profileContent!.style.display = 'block';
-
-      // Update user info
-      profileName!.textContent = user.name;
-      profileEmail!.textContent = user.email;
-      profileAvatar!.src = user.avatar;
-
-      // Update stats
-      const summary = getActivitySummary();
-      statPageviews!.textContent = summary.totalPageViews.toString();
-      statPages!.textContent = summary.recentPages.length.toString();
-
-      // Session start time
-      const loginTime = authStore.get().loginTime;
-      if (loginTime) {
-        const date = new Date(loginTime);
-        statSession!.textContent = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      }
-
-      // Update activity list
-      const activity = getActivity().reverse().slice(0, 10);
-
-      if (activity.length > 0) {
-        activityList!.innerHTML = activity.map(event => {
-          const time = new Date(event.timestamp);
-          const timeStr = time.toLocaleString([], {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-
-          const typeIcon = event.type === 'login' ? '🔑' :
-                          event.type === 'logout' ? '👋' : '📄';
-
-          return `
-            <li class="activity-item">
-              <span>${typeIcon} <code class="activity-path">${event.path}</code></span>
-              <span class="activity-time">${timeStr}</span>
-            </li>
-          `;
-        }).join('');
-      }
+    if (user) {
+      // Redirect to the user's editable profile
+      window.location.href = `/users/${user.id}/`;
+    } else {
+      // Not logged in, go to login
+      window.location.href = '/login/';
     }
-
-    // Initial update
-    updateProfile();
-
-    // Subscribe to auth changes
-    authStore.subscribe(updateProfile);
   </script>
 </body>
 </html>
