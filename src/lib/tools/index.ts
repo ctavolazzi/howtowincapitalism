@@ -18,3 +18,7 @@ export {
   type DecisionResultData,
   type MakeDecisionOptions,
 } from './decision-matrix';
+
+// Logger - development logging utility (Node.js only, not for browser)
+// Usage: import { log, logSession, logFile, logError } from './logger.mjs';
+// Note: This is an ES module (.mjs) for Node.js scripts, not browser code

@@ -41,19 +41,17 @@ Added comprehensive test suite for the Decision Matrix tool.
 
 **Time:** 4:15 PM PST
 
-Created `_dev/` folder with development logging system.
+Created development logging system. *(Later moved to `src/lib/tools/` on 2025-12-09)*
 
-**Files Created:**
-- `_dev/logger.mjs` - Logger module (340 lines)
-- `_dev/logger.config.json` - Configuration
-- `_dev/README.md` - Documentation
-- `_dev/logs/.gitkeep` - Keep folder in git
+**Files:**
+- `src/lib/tools/logger.mjs` - Logger module (340 lines)
+- `src/lib/tools/logger.config.json` - Configuration
 
 **Features:** Log levels, session tracking, file operation logging, error handling with stack traces, auto-cleanup.
 
 **Usage:**
 ```javascript
-import { log, logSession } from './_dev/logger.mjs';
+import { log, logSession } from './src/lib/tools/logger.mjs';
 log.info('Message');
 logSession.start('Task');
 logSession.end('Task');

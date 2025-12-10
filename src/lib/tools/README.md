@@ -85,6 +85,70 @@ result.toJSON();    // JSON string
 result.toString();  // CLI-formatted output
 ```
 
+---
+
+### Logger
+
+Development logging utility for Node.js scripts (build time, dev server, CLI tools).
+
+> **Note:** This is an ES module (.mjs) for Node.js only, not browser code.
+
+**Import:**
+```javascript
+import { log, logSession, logFile, logError, createLogger } from './logger.mjs';
+```
+
+**Basic Usage:**
+```javascript
+log.info('Something happened');
+log.warn('Watch out');
+log.error('Something broke');
+log.success('Task completed');
+log.debug('Debug details');  // Only if logLevel is 'debug'
+```
+
+**Session Tracking:**
+```javascript
+logSession.start('Build');
+// ... do work ...
+logSession.checkpoint('Build', 'Compiled TypeScript');
+logSession.end('Build');  // Shows duration
+```
+
+**File Operations:**
+```javascript
+logFile.created('src/new-file.ts');
+logFile.modified('src/existing.ts');
+logFile.deleted('src/old-file.ts');
+```
+
+**Error with Stack Trace:**
+```javascript
+try {
+  throw new Error('Oops');
+} catch (e) {
+  logError(e, 'While processing data');
+}
+```
+
+**Scoped Logger:**
+```javascript
+const buildLog = createLogger('build');
+buildLog.info('Starting build');
+```
+
+**Configuration:** Edit `logger.config.json`:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `enabled` | true | Master toggle |
+| `logLevel` | "info" | debug, info, warn, error |
+| `console` | true | Output to terminal |
+| `file` | false | Output to log files |
+| `format` | "pretty" | pretty or json |
+
+---
+
 ## Adding New Tools
 
 1. Create `src/lib/tools/your-tool.ts`
