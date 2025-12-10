@@ -52,15 +52,15 @@
   </div>
 
   <script>
-    import { logout } from '../../lib/auth';
+    import { logout } from '../../lib/auth/api-client';
 
-    // Clear auth state
-    logout();
-
-    // Redirect to login after a brief moment
-    setTimeout(() => {
+    // Clear auth state via API
+    async function performLogout() {
+      await logout();
       window.location.href = '/login/';
-    }, 500);
+    }
+
+    performLogout();
   </script>
 </body>
 </html>

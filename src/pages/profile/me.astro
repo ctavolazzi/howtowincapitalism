@@ -178,8 +178,7 @@
   </div>
 
   <script>
-    import { authStore, getUserById } from '../../lib/auth';
-    import { userExists } from '../../lib/api';
+    import { checkAuth } from '../../lib/auth/api-client';
 
     // DOM Elements
     const loadingState = document.getElementById('loading-state');
@@ -216,61 +215,20 @@
       showLoading('Checking authentication...');
 
       try {
-        // Wait for store to hydrate from localStorage
-        await new Promise((r) => setTimeout(r, 100));
+        const { authenticated, user } = await checkAuth();
 
-        const state = authStore.get();
-        const isLoggedIn = state.isLoggedIn === 'true';
-        const userId = state.userId;
-
-        // Check 1: Is user logged in?
-        if (!isLoggedIn || !userId) {
+        // Check: Is user logged in?
+        if (!authenticated || !user) {
           showLoading('Not logged in. Redirecting to login...');
-
-          // Small delay for user to see the message
           await new Promise((r) => setTimeout(r, 800));
           window.location.href = '/login/?redirect=/profile/me/';
           return;
         }
 
-        // Check 2: Validate user ID is not empty or malformed
-        if (typeof userId !== 'string' || userId.trim() === '') {
-          showError(
-            'Invalid Session',
-            'Your session data appears to be corrupted.',
-            'userId is empty or invalid'
-          );
-          return;
-        }
-
-        // Check 3: Does user profile exist in the system?
-        const profileExists = userExists(userId);
-        if (!profileExists) {
-          showError(
-            'Profile Not Found',
-            `We couldn't find a profile for your account.`,
-            `User ID: ${userId}`
-          );
-          return;
-        }
-
-        // Check 4: Can we load user data?
-        const userData = getUserById(userId);
-        if (!userData) {
-          showError(
-            'Data Loading Error',
-            'Your profile exists but we couldn\'t load the data.',
-            'getUserById returned null'
-          );
-          return;
-        }
-
         // Success: Redirect to user's profile
-        showLoading(`Welcome back, ${userData.name || userId}! Redirecting...`);
-
-        // Small delay for user to see the welcome message
+        showLoading(`Welcome back, ${user.name || user.id}! Redirecting...`);
         await new Promise((r) => setTimeout(r, 500));
-        window.location.href = `/profile/${userId}/`;
+        window.location.href = `/profile/${user.id}/`;
 
       } catch (err) {
         console.error('Redirect error:', err);

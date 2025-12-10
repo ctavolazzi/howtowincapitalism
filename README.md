@@ -143,7 +143,7 @@ AI assistants follow rules in `.cursor/rules/`:
 
 ## Authentication
 
-The site requires login to access content. This is a **client-side mock auth system** for UX demonstration.
+The site requires login to access content. Uses **Cloudflare KV** for storage and **httpOnly cookies** for sessions.
 
 ### Test Credentials
 
@@ -156,10 +156,11 @@ The site requires login to access content. This is a **client-side mock auth sys
 
 ### How It Works
 
-- Auth state stored in `localStorage` (no backend)
-- All routes except `/login/` and `/disclaimer/` require authentication
-- Login redirects back to intended page via `?redirect=` parameter
-- Profile edits persist locally per browser
+- Credentials stored in Cloudflare KV (hashed)
+- Sessions stored in KV with 7-day TTL
+- httpOnly cookies (XSS-resistant)
+- Server-side validation via API routes
+- All routes except `/login/` and `/disclaimer/` require auth
 
 See `_docs/AUTH.md` for full technical documentation.
 
@@ -168,7 +169,7 @@ See `_docs/AUTH.md` for full technical documentation.
 | Layer | Technology |
 |-------|------------|
 | Framework | [Astro](https://astro.build) v5 (SSR) |
-| Auth | Nanostores + localStorage (client-side) |
+| Auth | Cloudflare KV + httpOnly cookies |
 | Content | MDX |
 | Styling | CSS (Wikipedia-inspired) |
 | Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |

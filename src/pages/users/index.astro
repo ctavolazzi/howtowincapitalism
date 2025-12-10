@@ -64,16 +64,15 @@ const users = await getCollection('users');
 </Base>
 
 <script>
-  import { authStore } from '../../lib/auth';
+  import { checkAuth } from '../../lib/auth/api-client';
 
   const authGate = document.getElementById('auth-gate');
   const contentEl = document.getElementById('content');
 
-  async function checkAuth() {
-    await new Promise((r) => setTimeout(r, 100));
+  async function verifyAuth() {
+    const { authenticated } = await checkAuth();
 
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
+    if (!authenticated) {
       window.location.href = '/login/?redirect=/users/';
     } else {
       if (authGate) authGate.style.display = 'none';
@@ -81,14 +80,7 @@ const users = await getCollection('users');
     }
   }
 
-  checkAuth();
-
-  authStore.subscribe(() => {
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
-      window.location.href = '/login/';
-    }
-  });
+  verifyAuth();
 
   // Search functionality
   const searchInput = document.getElementById('user-search') as HTMLInputElement;

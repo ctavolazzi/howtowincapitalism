@@ -4,80 +4,62 @@
 
 ## Overview
 
-How To Win Capitalism uses a **client-side mock authentication system** for UX demonstration purposes. There is no backend server—all auth state is stored in the browser's `localStorage`.
+How To Win Capitalism uses **Cloudflare KV** for authentication storage and **httpOnly cookies** for session management. This is a proper server-side auth system (not localStorage-based).
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        AUTH FLOW                                │
+│                    CLOUDFLARE KV                                │
 ├─────────────────────────────────────────────────────────────────┤
+│  USERS namespace:                                               │
+│    user:{id} → { email, passwordHash, role, accessLevel, ... } │
+│    email:{email} → userId (lookup index)                       │
 │                                                                 │
-│  VISITOR ARRIVES                                                │
-│       ↓                                                         │
-│  ANY PROTECTED ROUTE                                            │
-│       ↓                                                         │
-│  Auth Gate (100ms hydration wait)                               │
-│       ↓                                                         │
-│  ┌─────────────┐        ┌─────────────┐                        │
-│  │ NOT LOGGED  │  ───→  │  /login/    │                        │
-│  │    IN       │        │ ?redirect=  │                        │
-│  └─────────────┘        └─────────────┘                        │
-│       │                        ↓                                │
-│       │                 Login Form                              │
-│       │                        ↓                                │
-│       │                 Success → Redirect back                 │
-│       ↓                                                         │
-│  ┌─────────────┐                                               │
-│  │  LOGGED IN  │  ───→  Show Content                           │
-│  └─────────────┘                                               │
-│                                                                 │
+│  SESSIONS namespace:                                            │
+│    session:{token} → { userId, expiresAt }                     │
+│    (with TTL for auto-expiration)                              │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│           ASTRO API ROUTES (run on Cloudflare Workers)          │
+├─────────────────────────────────────────────────────────────────┤
+│  POST /api/auth/login   → Validate, create session, set cookie  │
+│  POST /api/auth/logout  → Delete session, clear cookie          │
+│  GET  /api/auth/me      → Get user from session cookie          │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       CLIENT                                    │
+├─────────────────────────────────────────────────────────────────┤
+│  httpOnly cookie (XSS-resistant, auto-sent with requests)      │
+│  No secrets in JavaScript or localStorage                       │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Data Stores
+## Auth Flow
 
-### 1. User Store (`src/lib/auth/userStore.ts`)
-
-**Purpose:** Single source of truth for user data.
-
-```typescript
-// Immutable credentials (cannot be changed)
-DEFAULT_USERS = {
-  id, email, password, role, accessLevel, createdAt
-}
-
-// Editable profile data (persists to localStorage)
-usersStore = {
-  name, avatar, bio, isActive
-}
 ```
-
-### 2. Auth Store (`src/lib/auth/store.ts`)
-
-**Purpose:** Tracks who is currently logged in.
-
-```typescript
-authStore = {
-  isLoggedIn: 'true' | 'false',
-  userId: string,
-  name: string,
-  avatar: string,
-  role: string,
-  accessLevel: number
-}
+User submits login form
+       ↓
+POST /api/auth/login
+       ↓
+Server validates credentials against KV
+       ↓
+Server creates session in SESSIONS KV (with TTL)
+       ↓
+Server returns Set-Cookie header (httpOnly, Secure, SameSite)
+       ↓
+Browser stores cookie automatically
+       ↓
+Subsequent requests include cookie automatically
+       ↓
+Server reads cookie, looks up session in KV
+       ↓
+Server returns user data or 401
 ```
-
-### 3. Permissions (`src/lib/auth/permissions.ts`)
-
-**Purpose:** RBAC access control checks.
-
-| Role | Level | Capabilities |
-|------|-------|--------------|
-| admin | 10 | Full CRUD on everything |
-| editor | 5 | Create, Read, Update any (no delete) |
-| contributor | 3 | CRUD on own content only |
-| viewer | 1 | Read public content only |
 
 ## Test Credentials
 
@@ -87,6 +69,127 @@ authStore = {
 | editor@email.com | editor123 | editor |
 | contributor@email.com | contrib123 | contributor |
 | viewer@email.com | viewer123 | viewer |
+
+## Setup
+
+### 1. Create KV Namespaces (already done)
+
+```bash
+wrangler kv namespace create "USERS"
+wrangler kv namespace create "SESSIONS"
+```
+
+### 2. Add Bindings to wrangler.toml
+
+```toml
+[[kv_namespaces]]
+binding = "USERS"
+id = "your-users-namespace-id"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "your-sessions-namespace-id"
+```
+
+### 3. Seed Users
+
+```bash
+npm run seed:users
+```
+
+This hashes passwords and uploads users to KV.
+
+## API Endpoints
+
+### POST /api/auth/login
+
+**Request:**
+```json
+{
+  "email": "admin@email.com",
+  "password": "itcan'tbethateasy..."
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "user": {
+    "id": "admin",
+    "email": "admin@email.com",
+    "name": "Admin User",
+    "role": "admin",
+    "accessLevel": 10
+  }
+}
+```
++ `Set-Cookie: htwc_session=<token>; HttpOnly; Secure; SameSite=Strict`
+
+**Error Response (401):**
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+### POST /api/auth/logout
+
+Clears the session cookie.
+
+**Response (200):**
+```json
+{
+  "success": true
+}
+```
++ `Set-Cookie: htwc_session=; Expires=<past date>`
+
+### GET /api/auth/me
+
+**Authenticated Response (200):**
+```json
+{
+  "authenticated": true,
+  "user": {
+    "id": "admin",
+    "email": "admin@email.com",
+    "name": "Admin User",
+    "role": "admin",
+    "accessLevel": 10
+  }
+}
+```
+
+**Unauthenticated Response (200):**
+```json
+{
+  "authenticated": false,
+  "user": null
+}
+```
+
+## Client-Side Usage
+
+### Check Auth
+
+```typescript
+import { checkAuth } from '../lib/auth/api-client';
+
+const { authenticated, user } = await checkAuth();
+if (!authenticated) {
+  window.location.href = '/login/';
+}
+```
+
+### Logout
+
+```typescript
+import { logout } from '../lib/auth/api-client';
+
+await logout();
+window.location.href = '/login/';
+```
 
 ## Route Protection
 
@@ -100,9 +203,7 @@ authStore = {
 | `/tools/*` | Tools content |
 | `/users/` | Users directory |
 | `/users/[id]/` | User profiles |
-| `/profile/` | Profile redirect |
-| `/profile/edit/` | Edit profile |
-| `/profile/me/` | My profile redirect |
+| `/profile/*` | Profile routes |
 
 ### Public Routes (no auth)
 
@@ -111,151 +212,61 @@ authStore = {
 | `/login/` | Entry point |
 | `/disclaimer/` | Legal requirement |
 
-## Implementation
+## Security Features
 
-### Auth Gate Pattern
-
-Every protected page uses this pattern:
-
-```astro
-<Base title="Page Title">
-  <!-- Auth Gate -->
-  <div id="auth-gate" class="auth-gate">
-    <div class="loading-spinner"></div>
-    <p>Loading...</p>
-  </div>
-
-  <div id="content" style="display: none;">
-    <!-- Page content here -->
-  </div>
-</Base>
-
-<script>
-  import { authStore } from '../lib/auth';
-
-  async function checkAuth() {
-    // Wait for store to hydrate from localStorage
-    await new Promise((r) => setTimeout(r, 100));
-
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
-      // Redirect to login with return URL
-      window.location.href = '/login/?redirect=' + encodeURIComponent(window.location.pathname);
-    } else {
-      // Show content
-      document.getElementById('auth-gate').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
-    }
-  }
-
-  checkAuth();
-
-  // Listen for logout while on page
-  authStore.subscribe(() => {
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
-      window.location.href = '/login/';
-    }
-  });
-</script>
-```
-
-### Login Form Redirect Handling
-
-The login form checks for a `?redirect=` parameter:
-
-```typescript
-function getRedirectUrl(): string {
-  const params = new URLSearchParams(window.location.search);
-  const redirect = params.get('redirect');
-  // Only allow relative paths starting with /
-  if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
-    return redirect;
-  }
-  return '/'; // Default to home
-}
-```
-
-### Login Page Auto-Redirect
-
-If a logged-in user visits `/login/`, they're redirected away:
-
-```typescript
-async function checkIfAlreadyLoggedIn() {
-  await new Promise((r) => setTimeout(r, 100));
-  const state = authStore.get();
-  if (state.isLoggedIn === 'true') {
-    window.location.href = getRedirectUrl();
-  }
-}
-```
-
-## Why localStorage?
-
-### Appropriate for This Project
-
-| Reason | Explanation |
-|--------|-------------|
-| No backend | Static/SSR site on Cloudflare Pages |
-| Client-side auth | Credentials checked in JavaScript |
-| Demo scope | Simulating auth UX, not securing real data |
-| Simplicity | Zero server dependencies |
-
-### Alternatives Considered
-
-| Option | Why Not |
-|--------|---------|
-| Cookies | Better for server-side sessions, but we have no server |
-| sessionStorage | Dies when tab closes (bad UX) |
-| IndexedDB | Async API, overkill for ~1KB of state |
-| Server Sessions | Requires backend, database, token refresh |
-
-### Trade-offs
-
-| ✅ Pros | ❌ Cons |
-|---------|---------|
-| Simple sync API | XSS can read it |
-| 5MB+ storage | No built-in expiration |
-| Persists across tabs | Synchronous (minor) |
-| Works offline | Same-origin only |
-| Zero server dependency | |
-
-### Production Warning
-
-**This is NOT production-ready auth.** For real users with real secrets:
-
-```
-✗ localStorage for tokens
-
-✓ HttpOnly cookies (XSS-resistant)
-✓ Server-side sessions OR JWTs with short expiry
-✓ Refresh token rotation
-✓ CSRF protection
-✓ Secure + SameSite cookie flags
-```
+| Feature | Implementation |
+|---------|----------------|
+| Password hashing | SHA-256 with salt |
+| Session tokens | Cryptographically random (32 bytes) |
+| Cookie security | httpOnly, Secure, SameSite=Strict |
+| Session expiry | 7 days TTL in KV |
+| XSS protection | No secrets in JavaScript |
+| CSRF protection | SameSite=Strict cookie |
 
 ## Files Reference
 
+### Server-Side
+
 | File | Purpose |
 |------|---------|
-| `src/lib/auth/userStore.ts` | User data store |
-| `src/lib/auth/store.ts` | Auth state store |
-| `src/lib/auth/permissions.ts` | RBAC checks |
-| `src/lib/auth/index.ts` | Public exports |
+| `src/lib/auth/kv-auth.ts` | KV auth utilities |
+| `src/pages/api/auth/login.ts` | Login endpoint |
+| `src/pages/api/auth/logout.ts` | Logout endpoint |
+| `src/pages/api/auth/me.ts` | Current user endpoint |
+| `scripts/seed-users.mjs` | Seed users to KV |
+
+### Client-Side
+
+| File | Purpose |
+|------|---------|
+| `src/lib/auth/api-client.ts` | API client wrapper |
 | `src/components/auth/LoginForm.astro` | Login form |
 | `src/components/auth/UserMenu.astro` | Header user menu |
-| `src/components/guards/OwnerGuard.astro` | RBAC UI protection |
 
-## Debugging
+### Configuration
 
-Enable auth logging in browser console:
+| File | Purpose |
+|------|---------|
+| `wrangler.toml` | KV namespace bindings |
+| `src/env.d.ts` | TypeScript types for KV |
 
-```javascript
-localStorage.setItem('debug:auth', 'true');
-```
+## RBAC Levels
 
-View all available debug modules:
+| Role | Level | Capabilities |
+|------|-------|--------------|
+| admin | 10 | Full CRUD on everything |
+| editor | 5 | Create, Read, Update any (no delete) |
+| contributor | 3 | CRUD on own content only |
+| viewer | 1 | Read public content only |
 
-```javascript
-localStorage.setItem('debug', 'true');
-```
+## Comparison: Old vs New
+
+| Aspect | Old (localStorage) | New (Cloudflare KV) |
+|--------|-------------------|---------------------|
+| Storage | Browser localStorage | Cloudflare KV |
+| Credentials | In JavaScript code | Hashed in KV |
+| Sessions | localStorage token | httpOnly cookie |
+| Validation | Client-side | Server-side |
+| XSS risk | High (readable) | Low (httpOnly) |
+| Expiration | None | 7-day TTL |
+| Multi-device | No sync | Session per device |

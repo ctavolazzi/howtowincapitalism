@@ -42,37 +42,23 @@ import Base from '../layouts/Base.astro';
 </Base>
 
 <script>
-  import { authStore } from '../lib/auth';
+  import { checkAuth } from '../lib/auth/api-client';
 
   const authGate = document.getElementById('auth-gate');
   const content = document.getElementById('content');
 
-  async function checkAuth() {
-    // Wait for store to hydrate from localStorage
-    await new Promise((r) => setTimeout(r, 100));
+  async function verifyAuth() {
+    const { authenticated } = await checkAuth();
 
-    const state = authStore.get();
-    const isLoggedIn = state.isLoggedIn === 'true';
-
-    if (!isLoggedIn) {
-      // Not logged in - redirect to login
+    if (!authenticated) {
       window.location.href = '/login/';
     } else {
-      // Logged in - show content
       if (authGate) authGate.style.display = 'none';
       if (content) content.style.display = 'block';
     }
   }
 
-  checkAuth();
-
-  // Also listen for auth changes (logout while on page)
-  authStore.subscribe(() => {
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
-      window.location.href = '/login/';
-    }
-  });
+  verifyAuth();
 </script>
 
 <style>

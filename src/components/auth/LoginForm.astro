@@ -2,8 +2,8 @@
 /**
  * LoginForm Component
  *
- * A login form that validates against mock credentials.
- * Uses client-side JavaScript for form handling.
+ * Login form that validates against Cloudflare KV via API.
+ * Uses httpOnly cookies for session management.
  */
 ---
 
@@ -37,7 +37,7 @@
       Invalid email or password. Please try again.
     </div>
 
-    <button type="submit" class="login-button">
+    <button type="submit" class="login-button" id="login-button">
       Log In
     </button>
   </form>
@@ -48,44 +48,63 @@
 </div>
 
 <script>
-  import { login } from '../../lib/auth';
-
   const form = document.getElementById('login-form') as HTMLFormElement;
   const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+  const loginButton = document.getElementById('login-button') as HTMLButtonElement;
 
-  // Get redirect URL from query params (e.g., /login/?redirect=/profile/edit/)
+  // Get redirect URL from query params
   function getRedirectUrl(): string {
     try {
       const params = new URLSearchParams(window.location.search);
       const redirect = params.get('redirect');
-      // Validate: only allow relative paths starting with /
       if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
         return redirect;
       }
     } catch (e) {
       console.warn('Failed to parse redirect URL:', e);
     }
-    return '/'; // Default to home
+    return '/';
   }
 
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(form);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    if (login(email, password)) {
-      // Success - redirect to intended destination or home
-      const redirectUrl = getRedirectUrl();
-      window.location.href = redirectUrl;
-    } else {
-      // Failed - show error
-      errorMessage.style.display = 'block';
+    // Show loading state
+    loginButton.disabled = true;
+    loginButton.textContent = 'Logging in...';
+    errorMessage.style.display = 'none';
 
-      // Shake the form
-      form.classList.add('shake');
-      setTimeout(() => form.classList.remove('shake'), 500);
+    try {
+      const response = await fetch('/api/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include', // Include cookies
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Success - redirect
+        window.location.href = getRedirectUrl();
+      } else {
+        // Failed - show error
+        errorMessage.textContent = data.error || 'Invalid email or password.';
+        errorMessage.style.display = 'block';
+        form.classList.add('shake');
+        setTimeout(() => form.classList.remove('shake'), 500);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      errorMessage.textContent = 'Network error. Please try again.';
+      errorMessage.style.display = 'block';
+    } finally {
+      loginButton.disabled = false;
+      loginButton.textContent = 'Log In';
     }
   });
 </script>

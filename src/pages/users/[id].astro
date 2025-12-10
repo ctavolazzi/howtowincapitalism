@@ -166,13 +166,11 @@ function getLevelDescription(level: number): string {
 </Base>
 
 <script>
+  import { checkAuth as apiCheckAuth } from '../../lib/auth/api-client';
   import {
-    getCurrentUser,
-    authStore,
     getUserById,
     updateUserProfile,
     subscribeToUser,
-    restoreAuthSubscription,
   } from '../../lib/auth';
   import { debug } from '../../lib/debug';
 
@@ -180,11 +178,10 @@ function getLevelDescription(level: number): string {
   const authGate = document.getElementById('auth-gate');
   const contentEl = document.getElementById('content');
 
-  async function checkAuth() {
-    await new Promise((r) => setTimeout(r, 100));
+  async function verifyAuth(): Promise<boolean> {
+    const { authenticated } = await apiCheckAuth();
 
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true') {
+    if (!authenticated) {
       window.location.href = '/login/?redirect=' + encodeURIComponent(window.location.pathname);
       return false;
     } else {
@@ -195,20 +192,9 @@ function getLevelDescription(level: number): string {
   }
 
   // Check auth first, then initialize the rest
-  checkAuth().then((isAuthed) => {
+  verifyAuth().then((isAuthed) => {
     if (!isAuthed) return;
-
-    // Restore auth subscription on page load
-    restoreAuthSubscription();
     initializePage();
-  });
-
-  // Listen for logout
-  authStore.subscribe(() => {
-    const state = authStore.get();
-    if (state.isLoggedIn !== 'true' && contentEl?.style.display === 'block') {
-      window.location.href = '/login/';
-    }
   });
 
   function initializePage() {

@@ -45,17 +45,7 @@
 </div>
 
 <script>
-  import {
-    authStore,
-    logout,
-    getCurrentUser,
-    restoreAuthSubscription,
-    subscribeToUser,
-    getUserById,
-  } from '../../lib/auth';
-
-  // Restore auth subscription on page load (ensures userStore sync)
-  restoreAuthSubscription();
+  import { checkAuth, logout } from '../../lib/auth/api-client';
 
   const loginLink = document.getElementById('login-link');
   const userDropdown = document.getElementById('user-dropdown');
@@ -66,22 +56,18 @@
   const profileLink = document.querySelector('a[href="/profile/"]') as HTMLAnchorElement;
 
   // Update UI based on auth state
-  function updateUI() {
-    const authUser = getCurrentUser();
+  async function updateUI() {
+    const { authenticated, user } = await checkAuth();
 
-    if (authUser) {
-      // Get the latest user data from userStore
-      const userData = getUserById(authUser.id);
-      const displayName = userData?.name || authUser.name;
-
+    if (authenticated && user) {
       // Logged in
       loginLink!.style.display = 'none';
       userDropdown!.style.display = 'flex';
-      userName!.textContent = displayName;
+      userName!.textContent = user.name;
 
       // Update profile link to go to user's profile
       if (profileLink) {
-        profileLink.href = `/users/${authUser.id}/`;
+        profileLink.href = `/users/${user.id}/`;
       }
     } else {
       // Not logged in
@@ -92,17 +78,6 @@
 
   // Initial update
   updateUI();
-
-  // Subscribe to auth changes
-  authStore.subscribe(() => {
-    updateUI();
-
-    // Also subscribe to user data changes when logged in
-    const user = getCurrentUser();
-    if (user) {
-      subscribeToUser(user.id, updateUI);
-    }
-  });
 
   // Toggle dropdown
   avatarButton?.addEventListener('click', () => {
@@ -117,8 +92,8 @@
   });
 
   // Handle logout
-  logoutButton?.addEventListener('click', () => {
-    logout();
+  logoutButton?.addEventListener('click', async () => {
+    await logout();
     window.location.href = '/login/';
   });
 </script>

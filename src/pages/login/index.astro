@@ -98,14 +98,13 @@ import UserMenu from '../../components/auth/UserMenu.astro';
   <UserMenu />
 
   <script>
-    import { authStore } from '../../lib/auth';
+    import { checkAuth } from '../../lib/auth/api-client';
 
     // If already logged in, redirect away from login page
     async function checkIfAlreadyLoggedIn() {
-      await new Promise((r) => setTimeout(r, 100));
+      const { authenticated } = await checkAuth();
 
-      const state = authStore.get();
-      if (state.isLoggedIn === 'true') {
+      if (authenticated) {
         // Get redirect URL or default to home
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get('redirect');

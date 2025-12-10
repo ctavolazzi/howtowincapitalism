@@ -5,6 +5,15 @@ name = "howtowincapitalism"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
 
+# KV Namespaces for Authentication
+[[kv_namespaces]]
+binding = "USERS"
+id = "5b575785cbaa4b9e90e324501799cd39"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "33ad9f43586e4d11a6059275ced626af"
+
 # Your custom domain will be configured in Cloudflare Dashboard
 # Settings > Custom domains > Add domain
 

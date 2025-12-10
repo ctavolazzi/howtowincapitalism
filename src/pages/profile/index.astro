@@ -36,18 +36,14 @@
   </div>
 
   <script>
-    import { authStore, getCurrentUser } from '../../lib/auth';
+    import { checkAuth } from '../../lib/auth/api-client';
 
     async function redirect() {
-      // Wait for store to hydrate from localStorage
-      await new Promise((r) => setTimeout(r, 100));
+      const { authenticated, user } = await checkAuth();
 
-      const state = authStore.get();
-      const isLoggedIn = state.isLoggedIn === 'true';
-
-      if (isLoggedIn && state.userId) {
+      if (authenticated && user) {
         // Redirect to the user's editable profile
-        window.location.href = `/users/${state.userId}/`;
+        window.location.href = `/users/${user.id}/`;
       } else {
         // Not logged in, go to login
         window.location.href = '/login/?redirect=/profile/';

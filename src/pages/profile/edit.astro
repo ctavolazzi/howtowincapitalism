@@ -116,8 +116,7 @@ try {
 </Base>
 
 <script>
-  import { authStore, getUserById } from '../../lib/auth';
-  import { userExists } from '../../lib/api';
+  import { checkAuth } from '../../lib/auth/api-client';
 
   // DOM Elements
   const stateLoading = document.getElementById('state-loading');
@@ -159,15 +158,10 @@ try {
     showState('loading');
 
     try {
-      // Wait for store to hydrate from localStorage
-      await new Promise((r) => setTimeout(r, 100));
-
-      const state = authStore.get();
-      const isLoggedIn = state.isLoggedIn === 'true';
-      const userId = state.userId;
+      const { authenticated, user } = await checkAuth();
 
       // Check 1: Is user logged in?
-      if (!isLoggedIn || !userId) {
+      if (!authenticated || !user) {
         showState('auth-required');
 
         // Show countdown
@@ -187,39 +181,19 @@ try {
         return;
       }
 
-      // Check 2: Does user profile exist?
-      const profileExists = userExists(userId);
-      if (!profileExists) {
-        showState('profile-missing');
-        if (profileErrorDetail) {
-          profileErrorDetail.textContent = `User ID "${userId}" not found in profile database.`;
-        }
-        return;
-      }
-
-      // Check 3: Can we load user data from store?
-      const userData = getUserById(userId);
-      if (!userData) {
-        showState('profile-missing');
-        if (profileErrorDetail) {
-          profileErrorDetail.textContent = 'Profile data could not be loaded from storage.';
-        }
-        return;
-      }
-
       // Success: Show edit form
       showState('edit');
 
-      // Update form fields with actual user data
+      // Update form fields with user data from API
       const userIdInput = document.querySelector('input[name="userId"]') as HTMLInputElement;
       const usernameInput = document.getElementById('username') as HTMLInputElement;
       const bioInput = document.getElementById('bio') as HTMLTextAreaElement;
       const avatarInput = document.getElementById('avatarUrl') as HTMLInputElement;
 
-      if (userIdInput) userIdInput.value = userId;
-      if (usernameInput) usernameInput.value = userData.name || state.userName || '';
-      if (bioInput) bioInput.value = userData.bio || '';
-      if (avatarInput) avatarInput.value = userData.avatar || '';
+      if (userIdInput) userIdInput.value = user.id;
+      if (usernameInput) usernameInput.value = user.name || '';
+      if (bioInput) bioInput.value = user.bio || '';
+      if (avatarInput) avatarInput.value = user.avatar || '';
 
     } catch (err) {
       console.error('Edit page error:', err);
@@ -233,17 +207,6 @@ try {
   // Event handlers
   btnRetry?.addEventListener('click', () => checkAuthAndLoad());
   btnRetryError?.addEventListener('click', () => checkAuthAndLoad());
-
-  // Listen for auth changes
-  authStore.subscribe(() => {
-    const state = authStore.get();
-    const editVisible = stateEdit?.style.display === 'flex';
-
-    if (state.isLoggedIn !== 'true' && editVisible) {
-      // User logged out while on page
-      window.location.href = '/login/?redirect=/profile/edit/';
-    }
-  });
 
   // Initialize
   checkAuthAndLoad();
