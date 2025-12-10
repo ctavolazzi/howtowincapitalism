@@ -355,6 +355,7 @@ const currentPath = Astro.url.pathname;
     padding: var(--space-md) var(--space-lg);
     background: #fafafa;
     transition: all 0.15s ease;
+    position: relative;
   }
 
   .topic-card:hover {
@@ -391,11 +392,11 @@ const currentPath = Astro.url.pathname;
     font-size: 1.1rem;
     font-weight: 400;
     margin: 0;
-    color: var(--color-text);
+    color: var(--color-link);
   }
 
   .topic-card:hover .topic-card__title {
-    color: var(--color-link);
+    text-decoration: underline;
   }
 
   .topic-card__description {
@@ -403,6 +404,23 @@ const currentPath = Astro.url.pathname;
     font-size: var(--text-sm);
     margin: 0;
     line-height: 1.5;
+  }
+
+  /* Arrow indicator */
+  .topic-card::after {
+    content: "→";
+    position: absolute;
+    right: var(--space-lg);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-link);
+    font-size: 1.25rem;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+  }
+
+  .topic-card:hover::after {
+    opacity: 1;
   }
 
   /* Card Grid */
