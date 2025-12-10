@@ -229,10 +229,87 @@ This runs:
 
 GitHub Actions runs build validation on push (no auto-deploy).
 
+## Authentication & Authorization
+
+### Architecture (Added 2025-12-10)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    UNIFIED USER STORE                           │
+│                 src/lib/auth/userStore.ts                       │
+├─────────────────────────────────────────────────────────────────┤
+│  DEFAULT_USERS (immutable)     usersStore (editable)           │
+│  ├─ id, email, password        ├─ name                         │
+│  ├─ role, accessLevel          ├─ avatar                       │
+│  └─ createdAt                  └─ bio                          │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      AUTH STORE                                 │
+│                  src/lib/auth/store.ts                          │
+├─────────────────────────────────────────────────────────────────┤
+│  - Who is currently logged in                                   │
+│  - Syncs with userStore on login                                │
+│  - Auto-updates when profile changes                            │
+│  - Persists to localStorage via nanostores                      │
+└─────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    PERMISSIONS                                  │
+│               src/lib/auth/permissions.ts                       │
+├─────────────────────────────────────────────────────────────────┤
+│  checkPermission(operation, resourceOwner, visibility)          │
+│  isOwner(), isAdmin(), can.read(), can.update(), can.delete()  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Auth Files
+
+| File | Purpose |
+|------|---------|
+| `userStore.ts` | Single source of truth for user data |
+| `store.ts` | Auth state (who is logged in) |
+| `permissions.ts` | RBAC access control |
+| `activity.ts` | Page view tracking |
+| `mock-user.ts` | Deprecated (backwards compat) |
+| `index.ts` | Public API exports |
+
+### RBAC Levels
+
+| Role | Level | Capabilities |
+|------|-------|--------------|
+| admin | 10 | Full CRUD on everything |
+| editor | 5 | Create, Read, Update any (no delete) |
+| contributor | 3 | CRUD on own content only |
+| viewer | 1 | Read public content only |
+
+### Data Flow
+
+1. **Login** → `userStore.validateCredentials()` → copies to `authStore`
+2. **Profile Edit** → `userStore.updateUserProfile()` → auto-syncs to `authStore`
+3. **UI Display** → subscribes to `userStore` → auto-updates on changes
+4. **Page Reload** → `restoreAuthSubscription()` → re-syncs data
+
+### Client-Side Protection
+
+Use `OwnerGuard.astro` Web Component:
+
+```astro
+<OwnerGuard ownerId={userId} visibility="private">
+  <button slot="controls">Edit</button>
+  <div>Protected content</div>
+</OwnerGuard>
+```
+
+Note: This is UI-level protection only. For true security, a backend would be required.
+
 ## Security
 
 - CSP headers in `public/_headers`
 - No server-side code (static site)
-- No user auth (yet)
+- Mock auth with localStorage (demo/personal use only)
 - URL sanitization in CTA component
+- Password-protected site gate (sessionStorage)
 

@@ -75,7 +75,7 @@ Use Web Components with nanostores:
 ```astro
 <script>
   import { authStore, getCurrentUser } from '../lib/auth';
-  
+
   // Subscribe to changes
   authStore.subscribe(() => {
     const user = getCurrentUser();
