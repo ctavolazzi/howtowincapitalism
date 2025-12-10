@@ -5,3 +5,4 @@
 export { default as ProfileHeader } from './ProfileHeader.astro';
 export { default as SystemBulletin } from './SystemBulletin.astro';
 export { default as ActivityFeed } from './ActivityFeed.astro';
+export { default as ProfileForm } from './ProfileForm.astro';

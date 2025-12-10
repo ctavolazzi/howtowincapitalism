@@ -8,12 +8,19 @@
  * import { fetchUserProfile, getActiveBulletinForRole } from '../lib/api';
  */
 
-// Profile Service
+// Profile Service (Read)
 export {
   fetchUserProfile,
   getAllUserIds,
   userExists,
 } from './profileService';
+
+// Profile Actions (Write)
+export {
+  updateUserProfile,
+  updateUserPreferences,
+  getUserPreferences,
+} from './profileActions';
 
 // System Bulletins (from config)
 export {
@@ -28,3 +35,8 @@ export type {
   UserIdentity,
   ActivityEvent,
 } from './profileService';
+
+export type {
+  ProfileUpdateData,
+  PreferenceUpdateData,
+} from './profileActions';

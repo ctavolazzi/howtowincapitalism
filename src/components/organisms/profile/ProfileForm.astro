@@ -1,0 +1,323 @@
+---
+/**
+ * ProfileForm Component
+ *
+ * Input component for editing user profile data.
+ * Uses client-side JavaScript to handle form submission
+ * and calls profileActions for mock data persistence.
+ *
+ * Features:
+ * - Editable fields: username, bio, avatarUrl
+ * - Privacy toggles: publicEmail, publicActivity
+ * - Loading state during save
+ * - Success/error feedback
+ * - Auto-reload on success to reflect changes
+ */
+
+import type { UserProfile } from '../../../lib/auth/schemas/userProfile';
+
+interface Props {
+  profile: UserProfile;
+}
+
+const { profile } = Astro.props;
+const { identity, preferences } = profile;
+---
+
+<div class="profile-form-container">
+  <h2 class="form-title">Edit Profile</h2>
+
+  <form id="profile-form" class="profile-form">
+    <input type="hidden" name="userId" value={identity.id} />
+
+    <!-- Avatar URL -->
+    <div class="form-group">
+      <label for="avatarUrl">Avatar URL</label>
+      <input
+        type="url"
+        id="avatarUrl"
+        name="avatarUrl"
+        value={identity.avatarUrl}
+        placeholder="https://example.com/avatar.jpg"
+      />
+      <small class="form-hint">Leave blank to use default avatar</small>
+    </div>
+
+    <!-- Username -->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value={identity.username}
+        required
+        minlength="3"
+        maxlength="30"
+      />
+    </div>
+
+    <!-- Bio -->
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea
+        id="bio"
+        name="bio"
+        rows="3"
+        maxlength="500"
+        placeholder="Tell us about yourself..."
+      >{identity.bio}</textarea>
+      <small class="form-hint">Max 500 characters</small>
+    </div>
+
+    <hr class="form-divider" />
+
+    <!-- Privacy & Preferences -->
+    <div class="preferences-section">
+      <h3 class="preferences-title">Privacy & Preferences</h3>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            name="publicEmail"
+            checked={preferences?.publicEmail}
+          />
+          <span>Show email on profile</span>
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            name="publicActivity"
+            checked={preferences?.publicActivity}
+          />
+          <span>Show activity feed publicly</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <span id="status-msg" class="status-message"></span>
+      <button type="submit" id="save-btn" class="save-button">
+        Save Changes
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  import { updateUserProfile, updateUserPreferences } from '../../../lib/api/profileActions';
+
+  const form = document.getElementById('profile-form') as HTMLFormElement;
+  const statusMsg = document.getElementById('status-msg') as HTMLSpanElement;
+  const saveBtn = document.getElementById('save-btn') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!saveBtn || !statusMsg) return;
+
+    // UI Loading State
+    const originalText = saveBtn.innerText;
+    saveBtn.disabled = true;
+    saveBtn.innerText = 'Saving...';
+    statusMsg.className = 'status-message';
+    statusMsg.innerText = '';
+
+    const formData = new FormData(form);
+    const userId = formData.get('userId') as string;
+
+    // 1. Prepare Profile Updates
+    const profileUpdates = {
+      username: formData.get('username') as string,
+      bio: formData.get('bio') as string,
+      avatarUrl: formData.get('avatarUrl') as string,
+    };
+
+    // 2. Prepare Preference Updates
+    const prefUpdates = {
+      publicEmail: formData.get('publicEmail') === 'on',
+      publicActivity: formData.get('publicActivity') === 'on',
+    };
+
+    try {
+      // Execute both actions in parallel
+      const [profileResult, prefResult] = await Promise.all([
+        updateUserProfile(userId, profileUpdates),
+        updateUserPreferences(userId, prefUpdates),
+      ]);
+
+      if (profileResult && prefResult) {
+        // Success Feedback
+        statusMsg.innerText = '✓ Saved successfully!';
+        statusMsg.className = 'status-message success';
+
+        // Reload to show changes in ProfileHeader
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } else {
+        throw new Error('Update failed');
+      }
+    } catch (err) {
+      console.error('Profile update error:', err);
+      statusMsg.innerText = '✗ Error saving changes';
+      statusMsg.className = 'status-message error';
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.innerText = originalText;
+    }
+  });
+</script>
+
+<style>
+  .profile-form-container {
+    background: var(--color-bg, #ffffff);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text, #202122);
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border-light, #eaecef);
+  }
+
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text, #202122);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 4px;
+    font-size: 0.9375rem;
+    background: var(--color-surface, #f8f9fa);
+    color: var(--color-text, #202122);
+    font-family: inherit;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary, #0645ad);
+    box-shadow: 0 0 0 2px rgba(6, 69, 173, 0.15);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #72777d);
+  }
+
+  .form-divider {
+    border: none;
+    border-top: 1px solid var(--color-border-light, #eaecef);
+    margin: 0.5rem 0;
+  }
+
+  .preferences-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .preferences-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text, #202122);
+    margin: 0;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #72777d);
+    cursor: pointer;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-primary, #0645ad);
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+
+  .status-message {
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .status-message.success {
+    color: var(--color-success-text, #22863a);
+    opacity: 1;
+  }
+
+  .status-message.error {
+    color: var(--color-error-text, #cb2431);
+    opacity: 1;
+  }
+
+  .save-button {
+    padding: 0.625rem 1.25rem;
+    background: var(--color-primary, #0645ad);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .save-button:hover:not(:disabled) {
+    background: #003d99;
+  }
+
+  .save-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+</style>
