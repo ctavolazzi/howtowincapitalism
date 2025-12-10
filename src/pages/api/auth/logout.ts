@@ -9,31 +9,55 @@ import {
   deleteSession,
   createLogoutCookie,
 } from '../../../lib/auth/kv-auth';
+import {
+  parseSessionCookieLocal,
+  deleteSessionLocal,
+  createLogoutCookieLocal,
+} from '../../../lib/auth/local-auth';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const { SESSIONS } = locals.runtime.env;
-
-    // Get session token from cookie
     const cookieHeader = request.headers.get('cookie');
-    const token = parseSessionCookie(cookieHeader);
+    const hasKV = locals.runtime?.env?.SESSIONS;
 
-    // Delete session if exists
-    if (token) {
-      await deleteSession(SESSIONS, token);
-    }
+    if (hasKV) {
+      // Production: Use Cloudflare KV
+      const { SESSIONS } = locals.runtime.env;
+      const token = parseSessionCookie(cookieHeader);
 
-    // Return success with cleared cookie
-    return new Response(
-      JSON.stringify({ success: true }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Set-Cookie': createLogoutCookie(),
-        },
+      if (token) {
+        await deleteSession(SESSIONS, token);
       }
-    );
+
+      return new Response(
+        JSON.stringify({ success: true }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': createLogoutCookie(),
+          },
+        }
+      );
+    } else {
+      // Local dev: Use in-memory
+      const token = parseSessionCookieLocal(cookieHeader);
+
+      if (token) {
+        deleteSessionLocal(token);
+      }
+
+      return new Response(
+        JSON.stringify({ success: true }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': createLogoutCookieLocal(),
+          },
+        }
+      );
+    }
   } catch (error) {
     console.error('Logout error:', error);
     return new Response(

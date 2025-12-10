@@ -1,7 +1,7 @@
 /**
  * POST /api/auth/login
  *
- * Validates credentials against KV and creates a session.
+ * Validates credentials against KV (production) or mock data (local dev).
  */
 import type { APIRoute } from 'astro';
 import {
@@ -10,11 +10,14 @@ import {
   createSessionCookie,
   sanitizeUser,
 } from '../../../lib/auth/kv-auth';
+import {
+  validateCredentialsLocal,
+  createSessionLocal,
+  createSessionCookieLocal,
+} from '../../../lib/auth/local-auth';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const { USERS, SESSIONS } = locals.runtime.env;
-
     // Parse request body
     const body = await request.json();
     const { email, password } = body;
@@ -26,33 +29,58 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Validate credentials
-    const user = await validateCredentials(USERS, email, password);
+    // Check if KV is available (production) or use local fallback (dev)
+    const hasKV = locals.runtime?.env?.USERS && locals.runtime?.env?.SESSIONS;
 
-    if (!user) {
+    if (hasKV) {
+      // Production: Use Cloudflare KV
+      const { USERS, SESSIONS } = locals.runtime.env;
+
+      const user = await validateCredentials(USERS, email, password);
+      if (!user) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid email or password' }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { token, expiresAt } = await createSession(SESSIONS, user.id);
+
       return new Response(
-        JSON.stringify({ error: 'Invalid email or password' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ success: true, user: sanitizeUser(user) }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': createSessionCookie(token, expiresAt),
+          },
+        }
+      );
+    } else {
+      // Local dev: Use in-memory mock auth
+      console.log('[auth] Using local fallback (KV not available)');
+
+      const user = validateCredentialsLocal(email, password);
+      if (!user) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid email or password' }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { token, expiresAt } = createSessionLocal(user.id);
+
+      return new Response(
+        JSON.stringify({ success: true, user }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': createSessionCookieLocal(token, expiresAt),
+          },
+        }
       );
     }
-
-    // Create session
-    const { token, expiresAt } = await createSession(SESSIONS, user.id);
-
-    // Return user data with session cookie
-    return new Response(
-      JSON.stringify({
-        success: true,
-        user: sanitizeUser(user),
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Set-Cookie': createSessionCookie(token, expiresAt),
-        },
-      }
-    );
   } catch (error) {
     console.error('Login error:', error);
     return new Response(
