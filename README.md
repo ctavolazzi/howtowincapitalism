@@ -1,43 +1,63 @@
 # How To Win Capitalism
 
-A satirical but practical wiki about financial autonomy.
+A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind.
 
 **Live:** [howtowincapitalism.com](https://howtowincapitalism.com)
-
-## Navigation
-
-| Section | Purpose |
-|---------|---------|
-| **FAQ** | Core concepts, answers to common questions |
-| **Notes** | Research, analysis, observations |
-| **Tools** | Templates, checklists, calculators |
 
 ## Quick Start
 
 ```bash
 npm install       # Install dependencies
 npm run dev       # Start dev server (localhost:4321)
-npm run build     # Build for production
-npm run ship      # Build + commit + push + deploy (one command!)
+npm run ship "message"  # Build + commit + push + deploy
+```
+
+## Site Navigation
+
+| Section | Purpose |
+|---------|---------|
+| **FAQ** | Core concepts, answers to common questions |
+| **Notes** | Research, analysis, observations |
+| **Tools** | Templates, checklists, decision aids |
+
+## Project Structure
+
+```
+howtowincapitalism/
+├── _docs/                # Development documentation
+│   ├── devlog/           # Daily development logs
+│   ├── ARCHITECTURE.md   # Technical architecture
+│   └── PROJECT_POLICIES.md # Standards & conventions
+├── _work_efforts/        # Task tracking (Johnny Decimal)
+├── .cursor/rules/        # AI assistant rules
+├── src/
+│   ├── content/docs/     # Wiki content (.mdx)
+│   │   ├── faq/          # Core concepts
+│   │   ├── notes/        # Research & observations
+│   │   └── tools/        # Templates & calculators
+│   ├── components/       # Astro components (atomic design)
+│   │   ├── atoms/        # Basic elements
+│   │   ├── molecules/    # Composite components
+│   │   └── organisms/    # Complex sections
+│   ├── lib/tools/        # TypeScript utilities
+│   │   ├── decision-matrix.ts  # Quantitative decision tool
+│   │   └── logger.mjs    # Development logger
+│   ├── pages/            # Route pages
+│   └── styles/           # CSS overrides
+├── scripts/              # Build automation
+├── AGENTS.md             # AI assistant instructions
+└── DEVELOPERS.md         # Developer guide
 ```
 
 ## Adding Content
 
-The workflow is simple:
-
-1. **Write** a `.mdx` file in `src/content/docs/`
-2. **Ship** with `npm run ship "your message"`
-3. **Done** — live in ~30 seconds
-
-### Creating Pages
+### Create a Page
 
 ```bash
-# Create in the right folder:
-# - FAQ (concepts):     src/content/docs/faq/
-# - Notes (research):   src/content/docs/notes/
-# - Tools (templates):  src/content/docs/tools/
+# FAQ (concepts):     src/content/docs/faq/
+# Notes (research):   src/content/docs/notes/
+# Tools (templates):  src/content/docs/tools/
 
-# Example: new FAQ article
 touch src/content/docs/faq/my-topic.mdx
 ```
 
@@ -57,6 +77,78 @@ import Breadcrumbs from '../../../components/atoms/Breadcrumbs.astro';
 
 Your content here. Just write markdown.
 ```
+
+### Ship It
+
+```bash
+npm run ship "added my-topic article"
+```
+
+Build → Commit → Push → Deploy. Live in ~30 seconds.
+
+## Development
+
+### Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Build site |
+| `npm run ship "msg"` | **Build + Commit + Push + Deploy** |
+| `npm run check` | Build + validate |
+| `npm test` | Run unit tests |
+
+### Tools
+
+The `src/lib/tools/` folder contains reusable utilities:
+
+| Tool | Purpose |
+|------|---------|
+| `decision-matrix.ts` | Quantitative decision-making tool |
+| `logger.mjs` | Development logging utility |
+
+### Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `AGENTS.md` | AI assistant instructions |
+| `DEVELOPERS.md` | Developer guide |
+| `_docs/ARCHITECTURE.md` | Technical architecture |
+| `_docs/PROJECT_POLICIES.md` | Standards & conventions |
+| `_docs/devlog/` | Daily development logs |
+
+### Work Efforts
+
+Tasks are tracked in `_work_efforts/` using the Johnny Decimal system:
+
+```
+_work_efforts/
+├── 00-09_meta/           # Organization
+├── 10-19_development/    # Dev tasks
+├── 20-29_features/       # Features
+└── 30-39_infrastructure/ # DevOps
+```
+
+### Cursor Rules
+
+AI assistants follow rules in `.cursor/rules/`:
+
+| Rule | Enforces |
+|------|----------|
+| `project-structure.mdc` | Directory organization |
+| `work-efforts.mdc` | Johnny Decimal system |
+| `documentation.mdc` | Documentation standards |
+| `file-naming.mdc` | Naming conventions |
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | [Astro](https://astro.build) v5 + Starlight |
+| Content | MDX |
+| Styling | CSS (Wikipedia-inspired) |
+| Hosting | [Cloudflare Pages](https://pages.cloudflare.com) |
+| Repo | [GitHub](https://github.com/ctavolazzi/howtowincapitalism) |
 
 ## Deployment
 
@@ -82,60 +174,6 @@ git commit -m ""  # 3. Commit
 git push          # 4. Push
 npm run deploy    # 5. Deploy
 ```
-
-## Project Structure
-
-```
-src/
-├── content/docs/       # Content pages (.mdx)
-│   ├── faq/            # Core concepts
-│   ├── notes/          # Research & observations
-│   └── tools/          # Templates & calculators
-├── components/         # Astro components
-├── layouts/
-│   └── Base.astro      # Main layout + global CSS
-├── pages/
-│   ├── index.astro     # Homepage
-│   └── [...slug].astro # Dynamic content routes
-└── lib/
-    └── tools/          # Reusable utilities
-```
-
-## Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `npm run dev` | Start dev server |
-| `npm run build` | Build site |
-| `npm run preview` | Preview built site |
-| `npm run ship` | **Build + Commit + Push + Deploy** |
-| `npm run deploy` | Deploy to Cloudflare only |
-| `npm run check` | Build + validate |
-
-## Tech Stack
-
-- **Framework:** [Astro](https://astro.build) v5
-- **Styling:** Global CSS in `Base.astro`
-- **Hosting:** [Cloudflare Pages](https://pages.cloudflare.com)
-- **Repo:** [GitHub](https://github.com/ctavolazzi/howtowincapitalism)
-
-## Why This Setup?
-
-**Current workflow:**
-1. Write markdown (`.mdx`)
-2. Run `npm run ship`
-3. Live in 30 seconds
-
-**Alternatives considered:**
-
-| Option | Ease | Trade-off |
-|--------|------|-----------|
-| This setup | Write markdown, ship | Need terminal |
-| Tina CMS | Edit in browser | More complexity |
-| Obsidian Publish | Write in app | $8/mo, less control |
-| Ghost | Full platform | $9+/mo, hosted |
-
-The current setup is **free**, **fast**, and **you own everything**.
 
 ## License
 
