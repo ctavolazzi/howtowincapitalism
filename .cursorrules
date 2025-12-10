@@ -1,0 +1,133 @@
+# How To Win Capitalism - Cursor Rules
+
+## Project Context
+
+This is a satirical wiki about financial autonomy built with Astro. It uses a custom Base.astro layout (NOT Starlight) with mock authentication and RBAC permissions.
+
+## Tech Stack
+
+- **Framework:** Astro 5.x (static site with client-side JS)
+- **Auth:** Mock auth with nanostores + localStorage (no backend)
+- **Content:** Astro Content Collections (MDX for docs, MD for users/tools)
+- **Styling:** Global CSS in Base.astro, component-scoped styles
+- **Hosting:** Cloudflare Pages
+
+## Critical Architecture
+
+### Authentication Flow
+```
+userStore.ts (SINGLE SOURCE OF TRUTH)
+    ↓
+store.ts (auth state - who is logged in)
+    ↓
+permissions.ts (RBAC checks)
+```
+
+### User Data
+- `src/lib/auth/userStore.ts` - Runtime user data (editable, persists to localStorage)
+- `src/content/users/*.md` - Build-time user data (static profiles)
+- IDs must match between both systems
+
+### Test Credentials
+| Email | Password | Role |
+|-------|----------|------|
+| admin@email.com | itcan'tbethateasy... | admin |
+| editor@email.com | editor123 | editor |
+| contributor@email.com | contrib123 | contributor |
+| viewer@email.com | viewer123 | viewer |
+
+## Do NOT
+
+- ❌ Run `npm run dev` or `npm run build` (user will do this)
+- ❌ Create a `/users/` public directory (profiles are private)
+- ❌ Use Starlight-specific CSS variables (use `--color-*` from Base.astro)
+- ❌ Create nested date folders (use `2025-12-10_name.md`)
+- ❌ Add React/Vue/Svelte (use vanilla JS or Web Components)
+- ❌ Create `_dev/` folder (use `src/lib/tools/`)
+- ❌ Duplicate user data (userStore.ts is the source of truth)
+
+## Do
+
+- ✅ Use conventional commits (`feat:`, `fix:`, `docs:`, `chore:`)
+- ✅ Keep profile editing at `/users/[id]/` (not a separate page)
+- ✅ Use `debug.log()` from `src/lib/debug.ts` for logging
+- ✅ Export new components from `src/components/index.ts`
+- ✅ Update AGENTS.md when adding major features
+- ✅ Use Web Components for interactive client-side UI
+
+## File Locations
+
+| What | Where |
+|------|-------|
+| Components | `src/components/` (atomic design) |
+| Auth logic | `src/lib/auth/` |
+| Debug utils | `src/lib/debug.ts` |
+| Dev tools | `src/lib/tools/` |
+| Wiki content | `src/content/docs/` |
+| User profiles | `src/content/users/` |
+| Devlogs | `_docs/devlog/YYYY-MM-DD_devlog.md` |
+| Work efforts | `_work_efforts/` (Johnny Decimal) |
+
+## Component Patterns
+
+### Client-Side Interactivity
+Use Web Components with nanostores:
+```astro
+<script>
+  import { authStore, getCurrentUser } from '../lib/auth';
+  
+  // Subscribe to changes
+  authStore.subscribe(() => {
+    const user = getCurrentUser();
+    // Update UI
+  });
+</script>
+```
+
+### Protected UI Elements
+Use the OwnerGuard component:
+```astro
+<OwnerGuard ownerId={userId} visibility="private">
+  <button slot="controls">Edit</button>
+  <div>Protected content</div>
+</OwnerGuard>
+```
+
+## CSS Variables (from Base.astro)
+
+```css
+--color-bg: #ffffff;
+--color-text: #202122;
+--color-text-muted: #666;
+--color-link: #0645ad;
+--color-border: #a2a9b1;
+--color-surface: #f8f9fa;
+--color-surface-alt: #eaecef;
+```
+
+## Git Workflow
+
+1. Make changes
+2. `git add -A`
+3. `git commit -m "type: description"`
+4. `git push`
+
+No PRs needed - push directly to main.
+
+## When User Says "Ship It"
+
+```bash
+git add -A && git commit -m "description" && git push
+```
+
+## Debugging
+
+Enable debug logging in browser console:
+```js
+localStorage.setItem('debug', 'true');
+```
+
+View auth-specific logs:
+```js
+localStorage.setItem('debug:auth', 'true');
+```
