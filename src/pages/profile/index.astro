@@ -36,17 +36,25 @@
   </div>
 
   <script>
-    import { getCurrentUser } from '../../lib/auth';
+    import { authStore, getCurrentUser } from '../../lib/auth';
 
-    const user = getCurrentUser();
+    async function redirect() {
+      // Wait for store to hydrate from localStorage
+      await new Promise((r) => setTimeout(r, 100));
 
-    if (user) {
-      // Redirect to the user's editable profile
-      window.location.href = `/users/${user.id}/`;
-    } else {
-      // Not logged in, go to login
-      window.location.href = '/login/';
+      const state = authStore.get();
+      const isLoggedIn = state.isLoggedIn === 'true';
+
+      if (isLoggedIn && state.userId) {
+        // Redirect to the user's editable profile
+        window.location.href = `/users/${state.userId}/`;
+      } else {
+        // Not logged in, go to login
+        window.location.href = '/login/?redirect=/profile/';
+      }
     }
+
+    redirect();
   </script>
 </body>
 </html>

@@ -96,5 +96,28 @@ import UserMenu from '../../components/auth/UserMenu.astro';
   </main>
 
   <UserMenu />
+
+  <script>
+    import { authStore } from '../../lib/auth';
+
+    // If already logged in, redirect away from login page
+    async function checkIfAlreadyLoggedIn() {
+      await new Promise((r) => setTimeout(r, 100));
+
+      const state = authStore.get();
+      if (state.isLoggedIn === 'true') {
+        // Get redirect URL or default to home
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect');
+        if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
+          window.location.href = redirect;
+        } else {
+          window.location.href = '/';
+        }
+      }
+    }
+
+    checkIfAlreadyLoggedIn();
+  </script>
 </body>
 </html>

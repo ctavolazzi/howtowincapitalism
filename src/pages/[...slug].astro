@@ -15,14 +15,71 @@ const { Content } = await render(doc);
 ---
 
 <Base title={doc.data.title} description={doc.data.description}>
-  <article>
+  <!-- Auth Gate -->
+  <div id="auth-gate" class="auth-gate">
+    <div class="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <article id="content" style="display: none;">
     <h1>{doc.data.title}</h1>
     <Content />
   </article>
 </Base>
 
+<script>
+  import { authStore } from '../lib/auth';
+
+  const authGate = document.getElementById('auth-gate');
+  const content = document.getElementById('content');
+
+  async function checkAuth() {
+    await new Promise((r) => setTimeout(r, 100));
+
+    const state = authStore.get();
+    if (state.isLoggedIn !== 'true') {
+      window.location.href = '/login/?redirect=' + encodeURIComponent(window.location.pathname);
+    } else {
+      if (authGate) authGate.style.display = 'none';
+      if (content) content.style.display = 'block';
+    }
+  }
+
+  checkAuth();
+
+  authStore.subscribe(() => {
+    const state = authStore.get();
+    if (state.isLoggedIn !== 'true') {
+      window.location.href = '/login/';
+    }
+  });
+</script>
+
 <style>
   article h1 {
     margin-top: 0;
+  }
+
+  .auth-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #72777d;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #eaecef;
+    border-top-color: #0645ad;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 </style>

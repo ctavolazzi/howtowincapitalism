@@ -35,7 +35,13 @@ function getLevelDescription(level: number): string {
 ---
 
 <Base title={`${user.data.name} | Profile`}>
-  <div class="profile-page">
+  <!-- Auth Gate -->
+  <div id="auth-gate" class="auth-gate">
+    <div class="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <div class="profile-page" id="content" style="display: none;">
     <!-- Profile Header -->
     <div class="profile-header">
       <div class="avatar-section">
@@ -170,8 +176,42 @@ function getLevelDescription(level: number): string {
   } from '../../lib/auth';
   import { debug } from '../../lib/debug';
 
-  // Restore auth subscription on page load
-  restoreAuthSubscription();
+  // Auth Gate
+  const authGate = document.getElementById('auth-gate');
+  const contentEl = document.getElementById('content');
+
+  async function checkAuth() {
+    await new Promise((r) => setTimeout(r, 100));
+
+    const state = authStore.get();
+    if (state.isLoggedIn !== 'true') {
+      window.location.href = '/login/?redirect=' + encodeURIComponent(window.location.pathname);
+      return false;
+    } else {
+      if (authGate) authGate.style.display = 'none';
+      if (contentEl) contentEl.style.display = 'block';
+      return true;
+    }
+  }
+
+  // Check auth first, then initialize the rest
+  checkAuth().then((isAuthed) => {
+    if (!isAuthed) return;
+
+    // Restore auth subscription on page load
+    restoreAuthSubscription();
+    initializePage();
+  });
+
+  // Listen for logout
+  authStore.subscribe(() => {
+    const state = authStore.get();
+    if (state.isLoggedIn !== 'true' && contentEl?.style.display === 'block') {
+      window.location.href = '/login/';
+    }
+  });
+
+  function initializePage() {
 
   const editProfileBtn = document.getElementById('edit-profile-btn');
   const editForm = document.getElementById('edit-form');
@@ -263,9 +303,33 @@ function getLevelDescription(level: number): string {
       alert('Failed to save profile. Please try again.');
     }
   });
+  } // end initializePage
 </script>
 
 <style>
+  .auth-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #72777d;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #eaecef;
+    border-top-color: #0645ad;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   .profile-page {
     max-width: 100%;
   }
