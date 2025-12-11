@@ -288,7 +288,7 @@ The auth system has comprehensive E2E tests in `tests/auth.spec.ts`:
 18 passed (33.2s)
 
 ✓ Login Page › displays login form
-✓ Login Page › shows error for invalid credentials  
+✓ Login Page › shows error for invalid credentials
 ✓ Login Page › successful login redirects to home
 ✓ Login Page › login with redirect parameter returns to original page
 ✓ Protected Routes › unauthenticated user is redirected to login

@@ -91,8 +91,8 @@
       if (response.ok && data.success) {
         // Success - redirect
         window.location.href = getRedirectUrl();
-      } else {
-        // Failed - show error
+    } else {
+      // Failed - show error
         errorMessage.textContent = data.error || 'Invalid email or password.';
         errorMessage.style.display = 'block';
         form.classList.add('shake');

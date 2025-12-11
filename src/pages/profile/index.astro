@@ -42,10 +42,10 @@
       const { authenticated, user } = await checkAuth();
 
       if (authenticated && user) {
-        // Redirect to the user's editable profile
-        window.location.href = `/users/${user.id}/`;
-      } else {
-        // Not logged in, go to login
+      // Redirect to the user's editable profile
+      window.location.href = `/users/${user.id}/`;
+    } else {
+      // Not logged in, go to login
         window.location.href = '/login/?redirect=/profile/';
       }
     }

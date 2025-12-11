@@ -9,21 +9,20 @@ import Base from '../../layouts/Base.astro';
 import { getCollection, getEntry, render } from 'astro:content';
 import OwnerGuard from '../../components/guards/OwnerGuard.astro';
 
-// Generate static paths for all users
-export async function getStaticPaths() {
-  const users = await getCollection('users');
-  return users.map((user) => ({
-    params: { id: user.id },
-    props: { user },
-  }));
+// In SSR mode, get user from params (getStaticPaths is ignored)
+const { id } = Astro.params;
+const user = await getEntry('users', id as string);
+
+// 404 if user not found
+if (!user) {
+  return Astro.redirect('/users/');
 }
 
-const { user } = Astro.props;
 const { Content } = await render(user);
 
 // Get tools owned by this user
 const allTools = await getCollection('tools');
-const userTools = allTools.filter((tool) => tool.data.owner.id === user.id);
+const userTools = allTools.filter((tool) => tool.data.owner === user.id);
 
 // Get permission level description
 function getLevelDescription(level: number): string {
