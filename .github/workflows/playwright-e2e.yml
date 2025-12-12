@@ -1,4 +1,6 @@
 name: Playwright E2E
+# Required secrets: CF_ACCOUNT_ID, CF_API_TOKEN, CF_ACCESS_CLIENT_ID, CF_ACCESS_CLIENT_SECRET
+# See _docs/PROJECT_POLICIES.md for setup instructions
 
 on:
   pull_request:
