@@ -99,9 +99,14 @@ import ForgotPasswordForm from '../../components/auth/ForgotPasswordForm.astro';
 
     // If already logged in, redirect away
     async function checkIfAlreadyLoggedIn() {
-      const { authenticated } = await checkAuth();
-      if (authenticated) {
-        window.location.href = '/';
+      try {
+        const { authenticated } = await checkAuth();
+        if (authenticated) {
+          window.location.href = '/';
+        }
+      } catch (err) {
+        // If auth check fails, stay on the page to avoid redirect loops
+        console.warn('Auth check failed on forgot-password:', err);
       }
     }
 

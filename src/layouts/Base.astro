@@ -47,11 +47,24 @@ const currentPath = Astro.url.pathname;
       <p><strong>Disclaimer:</strong> The content on this site is for informational and educational purposes only. Nothing here constitutes financial, investment, tax, or legal advice. I am not a licensed financial advisor, CPA, or attorney.</p>
       <p>All investments involve risk, including the possible loss of principal. Past performance does not guarantee future results. Always conduct your own research and consult with qualified professionals before making any financial decisions. You assume full responsibility for any actions you take based on information found on this site.</p>
     </div>
-    <p class="copyright">&copy; {new Date().getFullYear()} How To Win Capitalism &middot; <a href="/disclaimer/">Full Disclaimer</a></p>
+    <p class="copyright">
+      &copy; {new Date().getFullYear()} How To Win Capitalism &middot;
+      <a href="/disclaimer/">Full Disclaimer</a> &middot;
+      <a href="/privacy/">Privacy</a> &middot;
+      <a href="/terms/">Terms</a>
+    </p>
   </footer>
 
   <!-- User Menu (Login/Profile) -->
   <UserMenu />
+
+  <!-- Cookie Consent -->
+  <div id="cookie-consent" class="cookie-consent" hidden>
+    <div class="cookie-message">
+      <strong>Cookies:</strong> We use essential cookies for authentication and security. No advertising or tracking cookies.
+    </div>
+    <button id="cookie-accept" type="button">Got it</button>
+  </div>
 
   <!-- Activity Tracking -->
   <script>
@@ -65,6 +78,29 @@ const currentPath = Astro.url.pathname;
           trackPageView(window.location.pathname);
         }
       }, 100);
+    }
+
+    // Minimal cookie consent (essential-only)
+    const consentKey = 'htwc_cookie_consent';
+    const consentBanner = document.getElementById('cookie-consent');
+    const consentButton = document.getElementById('cookie-accept');
+
+    function hideConsent() {
+      if (consentBanner) consentBanner.hidden = true;
+    }
+
+    if (typeof window !== 'undefined') {
+      const consent = window.localStorage.getItem(consentKey);
+      if (!consent && consentBanner) {
+        consentBanner.hidden = false;
+      }
+
+      if (consentButton) {
+        consentButton.addEventListener('click', () => {
+          window.localStorage.setItem(consentKey, 'accepted');
+          hideConsent();
+        });
+      }
     }
   </script>
 </body>
@@ -276,6 +312,44 @@ const currentPath = Astro.url.pathname;
 
   .copyright a {
     color: var(--color-link);
+  }
+
+  .cookie-consent {
+    position: fixed;
+    bottom: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 720px;
+    width: calc(100% - 2 * var(--space-md));
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: var(--space-md);
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+  }
+
+  .cookie-consent .cookie-message {
+    flex: 1;
+    font-size: var(--text-sm);
+  }
+
+  .cookie-consent button {
+    background: var(--color-link);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .cookie-consent button:hover {
+    background: #053a92;
   }
 
   /* Responsive */
