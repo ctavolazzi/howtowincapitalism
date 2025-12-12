@@ -92,8 +92,7 @@ Build → Commit → Push → Deploy. Live in ~30 seconds.
 
 | Script | Purpose |
 |--------|---------|
-| `npm run dev` | Start dev server **with TinaCMS** |
-| `npm run dev:astro` | Start Astro-only dev server (no CMS) |
+| `npm run dev` | Start dev server |
 | `npm run build` | Build site |
 | `npm run ship "msg"` | **Build + Commit + Push + Deploy** |
 | `npm run check` | Build + validate |
@@ -186,26 +185,6 @@ The site requires login to access content. Uses **Cloudflare KV** for storage an
 - All routes except `/login/` and `/disclaimer/` require auth
 
 See `_docs/AUTH.md` for full technical documentation.
-
-## Content Management (TinaCMS)
-
-The `/admin/` route provides a visual editor for wiki content via TinaCMS.
-
-### Local Development
-
-```bash
-npm run dev          # Starts Astro + TinaCMS admin
-npm run dev:astro    # Starts Astro only (no CMS)
-```
-
-### Environment Variables
-
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `TINA_CLIENT_ID` | Tina Cloud client ID | Production |
-| `TINA_TOKEN` | Tina Cloud token | Production |
-
-See `DEVELOPERS.md` for setup instructions.
 
 ## Tech Stack
 

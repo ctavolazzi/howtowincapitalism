@@ -46,21 +46,4 @@ test.describe('Functional Smoke Tests', () => {
     // await expect(page).toHaveScreenshot('landing-page-baseline.png', { fullPage: true });
   });
 
-  // 4. INFRASTRUCTURE: CMS Asset Check
-  // Verify that the TinaCMS SPA actually loads its JavaScript.
-  // A 200 OK on the HTML isn't enough; we need to see the app mount.
-  test('TinaCMS Admin SPA loads', async ({ page }) => {
-    // Only run if we have the keys to get through the gate
-    if (!HAS_SECRETS) test.skip('Skipping CMS check (No Service Tokens)');
-
-    await page.setExtraHTTPHeaders(CF_HEADERS);
-
-    // Go to the admin entry point
-    await page.goto(`${BASE_URL}/admin/index.html`);
-
-    // Check for the Tina loading state or login prompt.
-    // "Tina" is usually present in the title or the login button text.
-    // This confirms the JS bundle was found and executed.
-    await expect(page.getByText(/tina/i).first()).toBeVisible({ timeout: 10000 });
-  });
 });
