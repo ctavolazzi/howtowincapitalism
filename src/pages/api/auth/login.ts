@@ -37,6 +37,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       const { USERS, SESSIONS } = locals.runtime.env;
 
       const user = await validateCredentials(USERS, email, password);
+
       if (!user) {
         return new Response(
           JSON.stringify({ error: 'Invalid email or password' }),

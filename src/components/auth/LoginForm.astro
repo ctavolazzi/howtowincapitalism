@@ -23,14 +23,26 @@
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        required
-        placeholder="Enter password"
-        autocomplete="current-password"
-      />
+      <div class="password-input-wrapper">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Enter password"
+          autocomplete="current-password"
+        />
+        <button type="button" class="toggle-password" id="toggle-password" aria-label="Show password">
+          <svg class="eye-icon" id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg class="eye-icon hidden" id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div id="error-message" class="error-message" style="display: none;">
@@ -51,6 +63,19 @@
   const form = document.getElementById('login-form') as HTMLFormElement;
   const errorMessage = document.getElementById('error-message') as HTMLDivElement;
   const loginButton = document.getElementById('login-button') as HTMLButtonElement;
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+  const togglePassword = document.getElementById('toggle-password') as HTMLButtonElement;
+  const eyeOpen = document.getElementById('eye-open') as SVGElement;
+  const eyeClosed = document.getElementById('eye-closed') as SVGElement;
+
+  // Password visibility toggle
+  togglePassword?.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    eyeOpen.classList.toggle('hidden', !isPassword);
+    eyeClosed.classList.toggle('hidden', isPassword);
+    togglePassword.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+  });
 
   // Get redirect URL from query params
   function getRedirectUrl(): string {
@@ -148,6 +173,43 @@
   .form-group input:focus {
     outline: 2px solid var(--color-primary, #0645ad);
     outline-offset: 2px;
+  }
+
+  .password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .password-input-wrapper input {
+    flex: 1;
+    padding-right: 3rem;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--color-text-muted, #72777d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggle-password:hover {
+    color: var(--color-text, #202122);
+  }
+
+  .eye-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .eye-icon.hidden {
+    display: none;
   }
 
   .error-message {

@@ -101,7 +101,7 @@ for (const user of users) {
 
   try {
     execSync(
-      `wrangler kv key put --namespace-id=${USERS_ID} "${userKey}" '${userValue.replace(/'/g, "'\\''")}'`,
+      `wrangler kv key put --namespace-id=${USERS_ID} --remote "${userKey}" '${userValue.replace(/'/g, "'\\''")}'`,
       { stdio: 'pipe' }
     );
     console.log(`✅ Created user: ${user.id} (${user.email})`);
@@ -114,7 +114,7 @@ for (const user of users) {
 
   try {
     execSync(
-      `wrangler kv key put --namespace-id=${USERS_ID} "${emailKey}" "${user.id}"`,
+      `wrangler kv key put --namespace-id=${USERS_ID} --remote "${emailKey}" "${user.id}"`,
       { stdio: 'pipe' }
     );
     console.log(`✅ Created email index: ${user.email} → ${user.id}`);
