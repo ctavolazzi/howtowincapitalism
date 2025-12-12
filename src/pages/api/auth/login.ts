@@ -2,6 +2,7 @@
  * POST /api/auth/login
  *
  * Validates credentials against KV (production) or mock data (local dev).
+ * Includes rate limiting and account lockout protection.
  */
 import type { APIRoute } from 'astro';
 import {
@@ -18,6 +19,12 @@ import {
   createSessionCookieLocal,
 } from '../../../lib/auth/local-auth';
 import { validateCSRFToken, getRequestMetadata } from '../../../lib/auth/csrf';
+import {
+  checkRateLimit,
+  checkAccountLockout,
+  recordRateLimitedAction,
+  getRateLimitHeaders,
+} from '../../../lib/auth/rate-limit';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
@@ -32,6 +39,47 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
+    // Get request metadata for rate limiting
+    const { ip } = getRequestMetadata(request);
+
+    // Check if KV is available (production) or use local fallback (dev)
+    const hasKV = (locals as Record<string, unknown>).runtime?.env?.USERS && (locals as Record<string, unknown>).runtime?.env?.SESSIONS;
+
+    // Rate limiting and account lockout (only in production with KV)
+    if (hasKV) {
+      const USERS = (locals as Record<string, unknown>).runtime?.env?.USERS as KVNamespace;
+
+      // Check account lockout first
+      const lockout = await checkAccountLockout(USERS, email);
+      if (lockout.locked) {
+        return new Response(
+          JSON.stringify({ error: lockout.reason }),
+          {
+            status: 429,
+            headers: {
+              'Content-Type': 'application/json',
+              ...getRateLimitHeaders(Math.ceil((lockout.until! - Date.now()) / 1000)),
+            },
+          }
+        );
+      }
+
+      // Check rate limits
+      const rateLimit = await checkRateLimit(USERS, 'login', { ip, email });
+      if (!rateLimit.allowed) {
+        return new Response(
+          JSON.stringify({ error: rateLimit.reason }),
+          {
+            status: 429,
+            headers: {
+              'Content-Type': 'application/json',
+              ...getRateLimitHeaders(rateLimit.retryAfter),
+            },
+          }
+        );
+      }
+    }
+
     // Validate CSRF token (only in production with CSRF_SECRET)
     const csrfSecret = (locals as Record<string, unknown>).runtime?.env?.CSRF_SECRET;
     if (csrfSecret) {
@@ -42,8 +90,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         );
       }
 
-      const { ip, country, userAgent } = getRequestMetadata(request);
-      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, ip, country, userAgent);
+      const { ip: csrfIp, country, userAgent } = getRequestMetadata(request);
+      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, csrfIp, country, userAgent);
       if (!csrfResult.valid) {
         console.warn('CSRF validation failed:', csrfResult.error);
         return new Response(
@@ -52,9 +100,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
         );
       }
     }
-
-    // Check if KV is available (production) or use local fallback (dev)
-    const hasKV = (locals as Record<string, unknown>).runtime?.env?.USERS && (locals as Record<string, unknown>).runtime?.env?.SESSIONS;
 
     if (hasKV) {
       // Production: Use Cloudflare KV
@@ -68,6 +113,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
 
       if (needsConfirmation) {
+        // Record as failed attempt (unconfirmed email counts as failure)
+        await recordRateLimitedAction(USERS, 'login', { ip, email }, false);
         return new Response(
           JSON.stringify({
             error: 'Please confirm your email address before logging in. Check your inbox.',
@@ -78,11 +125,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
 
       if (!user) {
+        // Record failed login attempt
+        await recordRateLimitedAction(USERS, 'login', { ip, email }, false);
         return new Response(
           JSON.stringify({ error: 'Invalid email or password' }),
           { status: 401, headers: { 'Content-Type': 'application/json' } }
         );
       }
+
+      // Record successful login (clears failed attempt counter)
+      await recordRateLimitedAction(USERS, 'login', { ip, email }, true);
 
       // Transparently upgrade V1 password hash to V2 (PBKDF2)
       if (needsHashUpgrade(user.passwordHash)) {

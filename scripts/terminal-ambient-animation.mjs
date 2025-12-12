@@ -19,7 +19,7 @@ if (!process.stdout.isTTY) {
   process.exit(0);
 }
 
-const phrases = [
+const defaultPhrases = [
   'Quiet aurora over late capitalism',
   'Signals pulsing under the radar',
   'Graph paper dreaming of freedom',
@@ -27,11 +27,21 @@ const phrases = [
   'Night shift at the idea factory',
 ];
 
-const palette = {
-  aurora: [30, 36, 42, 48, 84, 120, 84, 48, 42, 36],
-  ember: [202, 208, 214, 220, 214, 208],
-  tide: [37, 38, 44, 80, 44, 38],
+const palettes = {
+  night: {
+    aurora: [30, 36, 42, 48, 84, 120, 84, 48, 42, 36],
+    ember: [202, 208, 214, 220, 214, 208],
+    tide: [37, 38, 44, 80, 44, 38],
+  },
+  dawn: {
+    aurora: [182, 217, 224, 223, 187, 180, 174, 173, 216, 219],
+    ember: [209, 215, 221, 223, 221, 215],
+    tide: [116, 117, 152, 189, 152, 117],
+  },
 };
+
+const palette = palettes[options.palette] ?? palettes.night;
+const phrases = options.phrases.length ? options.phrases : defaultPhrases;
 
 let frameWidth = clampWidth(process.stdout.columns ?? 80);
 const stopAt = typeof options.durationSec === 'number' ? Date.now() + options.durationSec * 1000 : Number.POSITIVE_INFINITY;
@@ -230,11 +240,24 @@ function clampWidth(value) {
   return Math.min(Math.max(value, 56), 120);
 }
 
+function parsePhrases(value) {
+  if (!value) {
+    return [];
+  }
+
+  return value
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
+}
+
 function parseArgs(argv) {
   const defaults = {
     durationSec: clamp(numberFrom(process.env.HTWC_AMBIENT_DURATION), 4, 900),
     speedMs: clamp(numberFrom(process.env.HTWC_AMBIENT_SPEED), 40, 400) ?? 80,
     phraseMs: clamp(numberFrom(process.env.HTWC_AMBIENT_PHRASE_MS), 1000, 10000) ?? 3000,
+    palette: (process.env.HTWC_AMBIENT_PALETTE || 'night').toLowerCase(),
+    phrases: parsePhrases(process.env.HTWC_AMBIENT_PHRASES),
     help: false,
   };
 
@@ -254,6 +277,13 @@ function parseArgs(argv) {
       const value = clamp(numberFrom(arg.split('=')[1]), 1000, 10000);
       if (value) {
         options.phraseMs = value;
+      }
+    } else if (arg.startsWith('--palette=')) {
+      options.palette = arg.split('=')[1].toLowerCase();
+    } else if (arg.startsWith('--phrases=')) {
+      const parsed = parsePhrases(arg.split('=').slice(1).join('='));
+      if (parsed.length) {
+        options.phrases = parsed;
       }
     }
   }
@@ -290,17 +320,21 @@ function printHelp() {
 Ambient terminal animation (press any key to stop)
 
 Usage:
-  npm run terminal:ambient [--duration=seconds] [--speed=ms] [--phrase=ms]
+  npm run terminal:ambient [--duration=seconds] [--speed=ms] [--phrase=ms] [--palette=name] [--phrases=a,b,c]
 
 Options:
   --duration  Total time in seconds (default: runs until key press)
   --speed     Frame speed in milliseconds (default: 80)
   --phrase    Time per phrase in milliseconds (default: 3000)
+  --palette   Color set (night | dawn)
+  --phrases   Comma-separated list of phrases
   --help      Show this help text
 
 Env overrides:
   HTWC_AMBIENT_DURATION   Duration in seconds
   HTWC_AMBIENT_SPEED      Frame speed in milliseconds
   HTWC_AMBIENT_PHRASE_MS  Time per phrase in milliseconds
+  HTWC_AMBIENT_PALETTE    Palette name (night | dawn)
+  HTWC_AMBIENT_PHRASES    Comma-separated list of phrases
 `);
 }

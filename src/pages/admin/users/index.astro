@@ -1,0 +1,455 @@
+---
+/**
+ * Admin User Management Page
+ *
+ * Lists all users with options to create, edit, and delete.
+ * Requires admin role.
+ */
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management | Admin | How To Win Capitalism</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #202122;
+      --color-text-muted: #72777d;
+      --color-primary: #0645ad;
+      --color-border: #a2a9b1;
+      --color-surface: #f8f9fa;
+      --color-danger: #c00;
+      --color-success: #0a0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .site-title:hover {
+      color: var(--color-primary);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-danger {
+      background: var(--color-danger);
+      color: #fff;
+      border-color: var(--color-danger);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--color-text-muted);
+    }
+
+    .error {
+      padding: 1rem;
+      background: #fee;
+      border: 1px solid var(--color-danger);
+      border-radius: 4px;
+      color: var(--color-danger);
+      margin-bottom: 1rem;
+    }
+
+    .unauthorized {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .unauthorized h2 {
+      color: var(--color-danger);
+      margin-bottom: 1rem;
+    }
+
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+    }
+
+    .users-table th,
+    .users-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .users-table th {
+      background: var(--color-surface);
+      font-weight: 600;
+    }
+
+    .users-table tr:hover {
+      background: var(--color-surface);
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .role-admin {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .role-editor {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .role-contributor {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .role-viewer {
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+    }
+
+    .status-confirmed {
+      color: var(--color-success);
+    }
+
+    .status-pending {
+      color: var(--color-danger);
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: var(--color-surface);
+      border-radius: 4px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--color-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 1rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="site-title">How To Win Capitalism</a>
+    <nav>
+      <a href="/admin/users/new/" class="btn btn-primary">+ New User</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="content">
+      <div class="loading">Loading users...</div>
+    </div>
+  </main>
+
+  <!-- Delete confirmation modal -->
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <h3>Delete User</h3>
+      <p>Are you sure you want to delete <strong id="delete-username"></strong>?</p>
+      <p>This action cannot be undone.</p>
+      <div class="modal-buttons">
+        <button class="btn" id="cancel-delete">Cancel</button>
+        <button class="btn btn-danger" id="confirm-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { checkAuth } from '../../../lib/auth/api-client';
+
+    const contentDiv = document.getElementById('content') as HTMLDivElement;
+    const deleteModal = document.getElementById('delete-modal') as HTMLDivElement;
+    const deleteUsername = document.getElementById('delete-username') as HTMLElement;
+    const cancelDelete = document.getElementById('cancel-delete') as HTMLButtonElement;
+    const confirmDelete = document.getElementById('confirm-delete') as HTMLButtonElement;
+
+    let userToDelete: string | null = null;
+
+    async function init() {
+      // Check if user is admin
+      const { authenticated, user } = await checkAuth();
+
+      if (!authenticated || user?.role !== 'admin') {
+        contentDiv.innerHTML = `
+          <div class="unauthorized">
+            <h2>Access Denied</h2>
+            <p>You must be an admin to access this page.</p>
+            <a href="/login/?redirect=/admin/users/" class="btn btn-primary">Log In</a>
+          </div>
+        `;
+        return;
+      }
+
+      // Fetch users
+      await loadUsers();
+    }
+
+    async function loadUsers() {
+      try {
+        const response = await fetch('/api/admin/users/list/', {
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Failed to load users');
+        }
+
+        const data = await response.json();
+        renderUsers(data.users, data.total);
+      } catch (error) {
+        contentDiv.innerHTML = `
+          <div class="error">
+            ${error instanceof Error ? error.message : 'Failed to load users'}
+          </div>
+        `;
+      }
+    }
+
+    function renderUsers(users: any[], total: number) {
+      const adminCount = users.filter(u => u.role === 'admin').length;
+      const confirmedCount = users.filter(u => u.emailConfirmed).length;
+
+      contentDiv.innerHTML = `
+        <div class="page-header">
+          <h1>User Management</h1>
+          <a href="/admin/users/new/" class="btn btn-primary">+ New User</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">${total}</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">${adminCount}</div>
+            <div class="stat-label">Admins</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">${confirmedCount}</div>
+            <div class="stat-label">Confirmed</div>
+          </div>
+        </div>
+
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${users.map(user => `
+              <tr>
+                <td><strong>${user.id}</strong></td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td><span class="role-badge role-${user.role}">${user.role}</span></td>
+                <td class="${user.emailConfirmed ? 'status-confirmed' : 'status-pending'}">
+                  ${user.emailConfirmed ? '✓ Confirmed' : '⏳ Pending'}
+                </td>
+                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                <td class="actions">
+                  <button class="btn btn-sm" onclick="window.editUser('${user.id}')">Edit</button>
+                  <button class="btn btn-sm btn-danger" onclick="window.deleteUser('${user.id}')">Delete</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Global functions for inline onclick handlers
+    (window as any).editUser = (id: string) => {
+      // For now, just show an alert - could open a modal or navigate to edit page
+      alert(`Edit user: ${id}\n\nEdit functionality coming soon!`);
+    };
+
+    (window as any).deleteUser = (id: string) => {
+      userToDelete = id;
+      deleteUsername.textContent = id;
+      deleteModal.classList.add('active');
+    };
+
+    cancelDelete?.addEventListener('click', () => {
+      deleteModal.classList.remove('active');
+      userToDelete = null;
+    });
+
+    confirmDelete?.addEventListener('click', async () => {
+      if (!userToDelete) return;
+
+      try {
+        confirmDelete.disabled = true;
+        confirmDelete.textContent = 'Deleting...';
+
+        const response = await fetch(`/api/admin/users/${userToDelete}/`, {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Failed to delete user');
+        }
+
+        deleteModal.classList.remove('active');
+        userToDelete = null;
+        await loadUsers();
+      } catch (error) {
+        alert(error instanceof Error ? error.message : 'Failed to delete user');
+      } finally {
+        confirmDelete.disabled = false;
+        confirmDelete.textContent = 'Delete';
+      }
+    });
+
+    // Close modal on background click
+    deleteModal?.addEventListener('click', (e) => {
+      if (e.target === deleteModal) {
+        deleteModal.classList.remove('active');
+        userToDelete = null;
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

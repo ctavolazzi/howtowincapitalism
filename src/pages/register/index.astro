@@ -3,11 +3,13 @@
  * Registration Page
  *
  * Public page for new user registration.
+ * Includes Turnstile CAPTCHA for bot protection.
  */
 import RegisterForm from '../../components/auth/RegisterForm.astro';
 
-// Get CSRF token from middleware
+// Get CSRF token and Turnstile site key from environment
 const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
+const turnstileSiteKey = (Astro.locals as Record<string, unknown>).runtime?.env?.TURNSTILE_SITE_KEY as string | undefined;
 ---
 
 <!DOCTYPE html>
@@ -17,6 +19,10 @@ const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account | How To Win Capitalism</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  {/* Load Turnstile script if site key is configured */}
+  {turnstileSiteKey && (
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
   <style>
     :root {
       --color-bg: #ffffff;
@@ -94,7 +100,7 @@ const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string 
       <p>Join the community and start your journey</p>
     </div>
 
-    <RegisterForm csrfToken={csrfToken} />
+    <RegisterForm csrfToken={csrfToken} turnstileSiteKey={turnstileSiteKey} />
   </main>
 
   <script>

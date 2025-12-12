@@ -4,18 +4,30 @@
  *
  * Registration form that creates new users via API.
  * Sends confirmation email after successful registration.
+ * Includes Turnstile CAPTCHA for bot protection.
  */
 
 interface Props {
   csrfToken?: string;
+  turnstileSiteKey?: string;
 }
 
-const { csrfToken } = Astro.props;
+const { csrfToken, turnstileSiteKey } = Astro.props;
 ---
 
 <div class="register-form-container">
   <form id="register-form" class="register-form">
     {csrfToken && <input type="hidden" name="csrf_token" value={csrfToken} />}
+
+    {/* Honeypot field - hidden from humans, bots will fill it */}
+    <div class="hp-field" aria-hidden="true">
+      <label for="website">Website</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+
+    {/* Form load timestamp for time-based detection */}
+    <input type="hidden" id="form-timestamp" name="form_timestamp" />
+
     <div class="form-group">
       <label for="username">Username</label>
       <input
@@ -81,6 +93,14 @@ const { csrfToken } = Astro.props;
       <small class="hint">At least 8 characters with letters and numbers</small>
     </div>
 
+    {/* Turnstile CAPTCHA widget */}
+    {turnstileSiteKey && (
+      <div class="form-group">
+        <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-callback="onTurnstileSuccess"></div>
+        <input type="hidden" id="turnstile-token" name="turnstile_token" />
+      </div>
+    )}
+
     <div id="error-message" class="error-message" style="display: none;">
       An error occurred. Please try again.
     </div>
@@ -100,6 +120,17 @@ const { csrfToken } = Astro.props;
   </p>
 </div>
 
+<!-- Turnstile script (only loads if widget is present) -->
+<script is:inline>
+  // Global callback for Turnstile
+  window.onTurnstileSuccess = function(token) {
+    const tokenInput = document.getElementById('turnstile-token');
+    if (tokenInput) {
+      tokenInput.value = token;
+    }
+  };
+</script>
+
 <script>
   const form = document.getElementById('register-form') as HTMLFormElement;
   const errorMessage = document.getElementById('error-message') as HTMLDivElement;
@@ -109,6 +140,13 @@ const { csrfToken } = Astro.props;
   const togglePassword = document.getElementById('toggle-password') as HTMLButtonElement;
   const eyeOpen = document.getElementById('eye-open') as SVGElement;
   const eyeClosed = document.getElementById('eye-closed') as SVGElement;
+  const turnstileTokenInput = document.getElementById('turnstile-token') as HTMLInputElement | null;
+  const formTimestampInput = document.getElementById('form-timestamp') as HTMLInputElement | null;
+
+  // Set form load timestamp for time-based bot detection
+  if (formTimestampInput) {
+    formTimestampInput.value = String(Date.now());
+  }
 
   // Password visibility toggle
   togglePassword?.addEventListener('click', () => {
@@ -128,10 +166,20 @@ const { csrfToken } = Astro.props;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const csrfToken = formData.get('csrf_token') as string | null;
+    const turnstileToken = turnstileTokenInput?.value || null;
+    const honeypot = formData.get('website') as string | null; // Honeypot field
+    const formTimestamp = formData.get('form_timestamp') as string | null; // Time-based detection
 
     // Client-side validation
     if (!username || !name || !email || !password) {
       errorMessage.textContent = 'All fields are required.';
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    // Check Turnstile token if widget is present
+    if (turnstileTokenInput && !turnstileToken) {
+      errorMessage.textContent = 'Please complete the CAPTCHA verification.';
       errorMessage.style.display = 'block';
       return;
     }
@@ -146,7 +194,16 @@ const { csrfToken } = Astro.props;
       const response = await fetch('/api/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, name, email, password, csrf_token: csrfToken }),
+        body: JSON.stringify({
+          username,
+          name,
+          email,
+          password,
+          csrf_token: csrfToken,
+          turnstile_token: turnstileToken,
+          hp_field: honeypot, // Honeypot field
+          form_timestamp: formTimestamp, // Time-based detection
+        }),
       });
 
       const data = await response.json();
@@ -156,12 +213,20 @@ const { csrfToken } = Astro.props;
         successMessage.style.display = 'block';
         form.reset();
         registerButton.style.display = 'none';
+        // Reset Turnstile if present
+        if (typeof (window as any).turnstile !== 'undefined') {
+          (window as any).turnstile.reset();
+        }
       } else {
         // Failed - show error
         errorMessage.textContent = data.error || 'Registration failed. Please try again.';
         errorMessage.style.display = 'block';
         form.classList.add('shake');
         setTimeout(() => form.classList.remove('shake'), 500);
+        // Reset Turnstile on error
+        if (typeof (window as any).turnstile !== 'undefined') {
+          (window as any).turnstile.reset();
+        }
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -175,6 +240,15 @@ const { csrfToken } = Astro.props;
 </script>
 
 <style>
+  /* Honeypot field - visually hidden but accessible to bots */
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
   .register-form-container {
     max-width: 400px;
     margin: 2rem auto;
@@ -182,6 +256,7 @@ const { csrfToken } = Astro.props;
     background: var(--color-bg, #ffffff);
     border: 1px solid var(--color-border, #a2a9b1);
     border-radius: 8px;
+    position: relative; /* For honeypot positioning */
   }
 
   .register-form {

@@ -73,10 +73,12 @@ const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours - daily auto-logout
 const SESSION_COOKIE_NAME = 'htwc_session';
 
 /**
- * Generate a simple session token
+ * Generate a secure session token using crypto.randomUUID
  */
 function generateToken(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  // Use crypto.randomUUID for cryptographically secure tokens
+  // Combine two UUIDs for extra entropy (removes dashes for cleaner token)
+  return crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
 }
 
 /**
