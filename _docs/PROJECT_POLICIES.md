@@ -136,4 +136,57 @@ Before committing, verify:
 
 ---
 
-*Last updated: 2025-12-09*
+## Deployment Checklist
+
+### Environment Variables (Cloudflare Pages)
+
+Required secrets in Cloudflare Pages → Settings → Environment Variables:
+
+| Variable | Source | Purpose |
+|----------|--------|---------|
+| `TINA_CLIENT_ID` | Tina Cloud dashboard | CMS authentication |
+| `TINA_TOKEN` | Tina Cloud dashboard | CMS git operations |
+| `RESEND_API_KEY` | resend.com | Email confirmation |
+| `TURNSTILE_SITE_KEY` | Cloudflare dashboard | Registration CAPTCHA |
+| `TURNSTILE_SECRET_KEY` | Cloudflare dashboard | Registration CAPTCHA |
+| `CSRF_SECRET` | Generate (32+ chars) | Form protection |
+
+### Tina Cloud Setup
+
+1. Go to [app.tina.io](https://app.tina.io)
+2. Sign in with GitHub
+3. Create project → Link to `ctavolazzi/howtowincapitalism`
+4. Copy Client ID → Add as `TINA_CLIENT_ID` in Cloudflare Pages
+5. Create token → Add as `TINA_TOKEN` in Cloudflare Pages
+
+### Cloudflare Access Policies
+
+Ensure Access policies protect admin routes:
+
+| Policy | Path Pattern |
+|--------|--------------|
+| Production | `howtowincapitalism.com/admin/*` |
+| Preview | `*.howtowincapitalism.pages.dev/admin/*` |
+
+### CI/CD Secrets (GitHub Actions)
+
+Required for `playwright-e2e` workflow:
+
+| Secret | Purpose |
+|--------|---------|
+| `CF_ACCOUNT_ID` | Cloudflare account |
+| `CF_API_TOKEN` | Pages API access |
+| `CF_ACCESS_CLIENT_ID` | Service token for Access gate |
+| `CF_ACCESS_CLIENT_SECRET` | Service token for Access gate |
+
+### Pre-Deploy Verification
+
+- [ ] `npm run build` passes locally
+- [ ] `npm test` passes (security-and-smoke tests)
+- [ ] Environment variables set in Cloudflare Pages
+- [ ] Cloudflare Access policies cover `/admin/*`
+- [ ] Tina Cloud project linked to repository
+
+---
+
+*Last updated: 2025-12-12*
