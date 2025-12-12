@@ -27,11 +27,12 @@ export {
 export type { AuthState } from './store';
 
 // Unified User Store (SINGLE SOURCE OF TRUTH)
+// NOTE: Passwords are NOT stored here - only public profile data
+// Authentication happens server-side via /api/auth/login
 export {
   getAllUsers,
   getUserById,
   getUserByEmail,
-  validateCredentials,
   updateUserProfile,
   resetUserProfile,
   resetAllUsers,
@@ -45,9 +46,9 @@ export {
 } from './userStore';
 export type { UserProfile, UserRole, UsersState } from './userStore';
 
-// Legacy mock-user exports (for backwards compatibility)
-// TODO: Remove these after migrating all imports
-export { MOCK_USERS, MOCK_USER } from './mock-user';
+// NOTE: mock-user.ts contains passwords and is NOT exported
+// It should only be used in server-side code
+// Type-only export for backwards compatibility
 export type { MockUser } from './mock-user';
 
 // Activity tracking

@@ -15,7 +15,6 @@
 
 import { persistentMap } from '@nanostores/persistent';
 import {
-  validateCredentials,
   getUserById,
   subscribeToUser,
   type UserProfile,
@@ -74,46 +73,44 @@ function syncWithUserStore(user: UserProfile | null): void {
 }
 
 /**
- * Attempt to log in with email and password
- * @returns true if successful, false if credentials invalid
+ * @deprecated Client-side login is deprecated. Use API login instead.
+ * Password validation now happens server-side via /api/auth/login
  */
 export function login(email: string, password: string): boolean {
-  debug.log('auth', `Login attempt for: ${email}`);
-
-  // Use unified userStore for validation
-  const user = validateCredentials(email, password);
-
-  if (user) {
-    const previousState = authStore.get().isLoggedIn;
-
-    authStore.set({
-      isLoggedIn: 'true',
-      userId: user.id,                         // THE BRIDGE to content collections
-      userEmail: user.email,
-      userName: user.name,
-      userRole: user.role,
-      userAccessLevel: String(user.accessLevel),
-      userAvatar: user.avatar,
-      loginTime: new Date().toISOString(),
-    });
-
-    // Subscribe to user profile updates (e.g., when they edit their profile)
-    if (userUnsubscribe) userUnsubscribe();
-    userUnsubscribe = subscribeToUser(user.id, syncWithUserStore);
-
-    // Track the login
-    trackActivity('login', '/login');
-
-    // Debug logging
-    authDebug.login(user.id, true);
-    debug.log('auth', `User role: ${user.role}, Access level: ${user.accessLevel}`);
-    authDebug.stateChange(previousState === 'true' ? 'authenticated' : 'anonymous', 'authenticated', 'login');
-
-    return true;
-  }
-
-  authDebug.login(email, false);
+  debug.warn('auth', 'Client-side login() is deprecated. Use API login instead.');
   return false;
+}
+
+/**
+ * Set auth state from API response (called after successful API login)
+ */
+export function setAuthFromUser(user: UserProfile): void {
+  debug.log('auth', `Setting auth state for: ${user.email}`);
+
+  const previousState = authStore.get().isLoggedIn;
+
+  authStore.set({
+    isLoggedIn: 'true',
+    userId: user.id,
+    userEmail: user.email,
+    userName: user.name,
+    userRole: user.role,
+    userAccessLevel: String(user.accessLevel),
+    userAvatar: user.avatar,
+    loginTime: new Date().toISOString(),
+  });
+
+  // Subscribe to user profile updates
+  if (userUnsubscribe) userUnsubscribe();
+  userUnsubscribe = subscribeToUser(user.id, syncWithUserStore);
+
+  // Track the login
+  trackActivity('login', '/login');
+
+  // Debug logging
+  authDebug.login(user.id, true);
+  debug.log('auth', `User role: ${user.role}, Access level: ${user.accessLevel}`);
+  authDebug.stateChange(previousState === 'true' ? 'authenticated' : 'anonymous', 'authenticated', 'login');
 }
 
 /**

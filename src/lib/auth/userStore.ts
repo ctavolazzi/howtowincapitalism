@@ -53,26 +53,25 @@ export interface UsersState {
 }
 
 // =============================================================================
-// DEFAULT USERS (Immutable credentials - like a "seed" database)
+// DEFAULT USERS (Public profile data only - NO PASSWORDS)
+// Passwords are stored ONLY in server-side files (local-auth.ts, kv-auth.ts)
 // =============================================================================
 
-export const DEFAULT_USERS: Record<string, { password: string } & UserProfile> = {
-  crispy: {
-    id: 'crispy',
+export const DEFAULT_USERS: Record<string, UserProfile> = {
+  admin: {
+    id: 'admin',
     email: 'admin@email.com',
-    password: "itcan'tbethateasy...",
-    name: 'Christopher Tavolazzi',
+    name: 'Admin User',
     role: 'admin',
     accessLevel: 10,
     avatar: '/favicon.svg',
-    bio: 'Primary operator of the NovaSystem. Full access to all content and system features.',
+    bio: 'Site administrator with full access.',
     isActive: true,
     createdAt: '2025-01-01T00:00:00Z',
   },
   editor: {
     id: 'editor',
     email: 'editor@email.com',
-    password: 'editor123',
     name: 'Editor',
     role: 'editor',
     accessLevel: 5,
@@ -84,7 +83,6 @@ export const DEFAULT_USERS: Record<string, { password: string } & UserProfile> =
   contributor: {
     id: 'contributor',
     email: 'contributor@email.com',
-    password: 'contrib123',
     name: 'Contributor',
     role: 'contributor',
     accessLevel: 3,
@@ -96,7 +94,6 @@ export const DEFAULT_USERS: Record<string, { password: string } & UserProfile> =
   viewer: {
     id: 'viewer',
     email: 'viewer@email.com',
-    password: 'viewer123',
     name: 'Viewer',
     role: 'viewer',
     accessLevel: 1,
@@ -183,37 +180,19 @@ export function getUserById(id: string): UserProfile | null {
 }
 
 /**
- * Get user by email (for login)
+ * Get user by email (public profile only - NO PASSWORD)
+ * For authentication, use server-side API routes
  */
-export function getUserByEmail(email: string): (UserProfile & { password: string }) | null {
+export function getUserByEmail(email: string): UserProfile | null {
   const defaultUser = Object.values(DEFAULT_USERS).find((u) => u.email === email);
   if (!defaultUser) return null;
 
-  // Combine stored profile with password from defaults
   const profile = usersStore.get()[defaultUser.id];
-  if (!profile) return null;
-
-  return {
-    ...profile,
-    password: defaultUser.password,
-  };
+  return profile || null;
 }
 
-/**
- * Validate login credentials
- */
-export function validateCredentials(
-  email: string,
-  password: string
-): UserProfile | null {
-  const user = getUserByEmail(email);
-  if (user && user.password === password) {
-    // Return profile without password
-    const { password: _, ...profile } = user;
-    return profile;
-  }
-  return null;
-}
+// NOTE: validateCredentials has been removed from client-side code
+// All authentication happens server-side via /api/auth/login
 
 /**
  * Update user profile (editable fields only)
@@ -264,21 +243,16 @@ export function resetUserProfile(userId: string): UserProfile | null {
   const defaultUser = DEFAULT_USERS[userId];
   if (!defaultUser) return null;
 
-  const { password, ...profile } = defaultUser;
-  usersStore.setKey(userId, profile);
+  usersStore.setKey(userId, defaultUser);
   debug.log('users', `Profile reset to defaults for ${userId}`);
-  return profile;
+  return defaultUser;
 }
 
 /**
  * Reset ALL users to defaults (danger!)
  */
 export function resetAllUsers(): void {
-  const defaults: UsersState = {};
-  for (const [id, user] of Object.entries(DEFAULT_USERS)) {
-    const { password, ...profile } = user;
-    defaults[id] = profile;
-  }
+  const defaults: UsersState = { ...DEFAULT_USERS };
   usersStore.set(defaults);
   debug.warn('users', 'All user profiles reset to defaults');
 }
