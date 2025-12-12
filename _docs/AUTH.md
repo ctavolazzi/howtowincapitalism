@@ -63,12 +63,14 @@ Server returns user data or 401
 
 ## Test Credentials
 
+> **Updated 2025-12-11** - Credentials rotated after GitGuardian security alert
+
 | Email | Password | Role |
 |-------|----------|------|
-| admin@email.com | itcan'tbethateasy... | admin |
-| editor@email.com | editor123 | editor |
-| contributor@email.com | contrib123 | contributor |
-| viewer@email.com | viewer123 | viewer |
+| admin@email.com | Adm!n_Secure_2024# | admin |
+| editor@email.com | Ed!tor_Access_2024# | editor |
+| contributor@email.com | Contr!b_Pass_2024# | contributor |
+| viewer@email.com | V!ewer_Read_2024# | viewer |
 
 ## Setup
 
