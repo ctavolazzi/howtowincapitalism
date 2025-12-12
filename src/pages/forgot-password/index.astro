@@ -1,0 +1,111 @@
+---
+/**
+ * Forgot Password Page
+ *
+ * Public page to request a password reset.
+ */
+import ForgotPasswordForm from '../../components/auth/ForgotPasswordForm.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password | How To Win Capitalism</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #202122;
+      --color-text-muted: #72777d;
+      --color-primary: #0645ad;
+      --color-border: #a2a9b1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .site-title:hover {
+      color: var(--color-primary);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+      color: var(--color-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="site-title">How To Win Capitalism</a>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>Forgot Password</h1>
+      <p>Enter your email to receive a password reset link</p>
+    </div>
+
+    <ForgotPasswordForm />
+  </main>
+
+  <script>
+    import { checkAuth } from '../../lib/auth/api-client';
+
+    // If already logged in, redirect away
+    async function checkIfAlreadyLoggedIn() {
+      const { authenticated } = await checkAuth();
+      if (authenticated) {
+        window.location.href = '/';
+      }
+    }
+
+    checkIfAlreadyLoggedIn();
+  </script>
+</body>
+</html>

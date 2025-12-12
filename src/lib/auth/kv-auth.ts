@@ -337,3 +337,118 @@ export async function validateCredentialsWithConfirmation(
 
   return { user, needsConfirmation: false };
 }
+
+// =============================================================================
+// Password Reset Functions
+// =============================================================================
+
+const RESET_TOKEN_DURATION_MS = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Generate a secure password reset token
+ */
+export function generateResetToken(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * Create a password reset request
+ * Returns the reset token if user exists, null otherwise
+ */
+export async function createPasswordReset(
+  users: KVNamespace,
+  email: string
+): Promise<{ resetToken: string; user: KVUser } | null> {
+  const user = await getUserByEmail(users, email);
+  if (!user) {
+    return null; // User not found (don't reveal this to client)
+  }
+
+  const resetToken = generateResetToken();
+  const expires = new Date(Date.now() + RESET_TOKEN_DURATION_MS);
+
+  // Store reset token with TTL (1 hour)
+  await users.put(
+    `reset:${resetToken}`,
+    JSON.stringify({
+      userId: user.id,
+      email: user.email,
+      createdAt: new Date().toISOString(),
+      expiresAt: expires.toISOString(),
+    }),
+    {
+      expirationTtl: Math.floor(RESET_TOKEN_DURATION_MS / 1000),
+    }
+  );
+
+  return { resetToken, user };
+}
+
+/**
+ * Reset password using a valid reset token
+ * Returns true if successful, false if token is invalid/expired
+ */
+export async function resetPassword(
+  users: KVNamespace,
+  token: string,
+  newPassword: string
+): Promise<boolean> {
+  // Look up reset token
+  const tokenData = await users.get(`reset:${token}`);
+  if (!tokenData) {
+    return false; // Token invalid or expired
+  }
+
+  const { userId, expiresAt } = JSON.parse(tokenData);
+
+  // Check if token expired (belt and suspenders - KV TTL should handle this)
+  if (new Date(expiresAt) < new Date()) {
+    await users.delete(`reset:${token}`);
+    return false;
+  }
+
+  // Get user
+  const user = await getUserById(users, userId);
+  if (!user) {
+    return false;
+  }
+
+  // Hash new password
+  const passwordHash = await hashPassword(newPassword);
+
+  // Update user with new password
+  user.passwordHash = passwordHash;
+  await users.put(`user:${user.id}`, JSON.stringify(user));
+
+  // Delete reset token (one-time use)
+  await users.delete(`reset:${token}`);
+
+  return true;
+}
+
+/**
+ * Validate a reset token without using it
+ * Returns user email if valid, null if invalid/expired
+ */
+export async function validateResetToken(
+  users: KVNamespace,
+  token: string
+): Promise<{ email: string; userId: string } | null> {
+  const tokenData = await users.get(`reset:${token}`);
+  if (!tokenData) {
+    return null;
+  }
+
+  const { userId, email, expiresAt } = JSON.parse(tokenData);
+
+  if (new Date(expiresAt) < new Date()) {
+    await users.delete(`reset:${token}`);
+    return null;
+  }
+
+  return { email, userId };
+}
