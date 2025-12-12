@@ -5,10 +5,17 @@
  * Login form that validates against Cloudflare KV via API.
  * Uses httpOnly cookies for session management.
  */
+
+interface Props {
+  csrfToken?: string;
+}
+
+const { csrfToken } = Astro.props;
 ---
 
 <div class="login-form-container">
   <form id="login-form" class="login-form">
+    {csrfToken && <input type="hidden" name="csrf_token" value={csrfToken} />}
     <div class="form-group">
       <label for="email">Email</label>
       <input
@@ -102,6 +109,7 @@
     const formData = new FormData(form);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    const csrfToken = formData.get('csrf_token') as string | null;
 
     // Show loading state
     loginButton.disabled = true;
@@ -112,7 +120,7 @@
       const response = await fetch('/api/auth/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, csrf_token: csrfToken }),
         credentials: 'include', // Include cookies
       });
 

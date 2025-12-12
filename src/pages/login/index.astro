@@ -6,6 +6,9 @@
  */
 import LoginForm from '../../components/auth/LoginForm.astro';
 import UserMenu from '../../components/auth/UserMenu.astro';
+
+// Get CSRF token from middleware
+const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
 ---
 
 <!DOCTYPE html>
@@ -92,7 +95,7 @@ import UserMenu from '../../components/auth/UserMenu.astro';
       <p>Access your profile and track your progress</p>
     </div>
 
-    <LoginForm />
+    <LoginForm csrfToken={csrfToken} />
   </main>
 
   <UserMenu />

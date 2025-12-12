@@ -5,6 +5,9 @@
  * Public page for new user registration.
  */
 import RegisterForm from '../../components/auth/RegisterForm.astro';
+
+// Get CSRF token from middleware
+const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
 ---
 
 <!DOCTYPE html>
@@ -91,7 +94,7 @@ import RegisterForm from '../../components/auth/RegisterForm.astro';
       <p>Join the community and start your journey</p>
     </div>
 
-    <RegisterForm />
+    <RegisterForm csrfToken={csrfToken} />
   </main>
 
   <script>

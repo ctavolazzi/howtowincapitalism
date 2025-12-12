@@ -32,11 +32,36 @@ export interface KVSession {
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const SESSION_COOKIE_NAME = 'htwc_session';
 
+// PBKDF2 Configuration
+const PBKDF2_ITERATIONS = 100000;
+const PBKDF2_SALT_LENGTH = 16; // 16 bytes = 128 bits
+const PBKDF2_KEY_LENGTH = 32; // 32 bytes = 256 bits
+
 /**
- * Simple password hashing using Web Crypto API
- * Note: For production, use bcrypt or argon2 via a worker
+ * Convert ArrayBuffer to hex string
  */
-export async function hashPassword(password: string): Promise<string> {
+function bufferToHex(buffer: ArrayBuffer): string {
+  return Array.from(new Uint8Array(buffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * Convert hex string to ArrayBuffer
+ */
+function hexToBuffer(hex: string): Uint8Array {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+  }
+  return bytes;
+}
+
+/**
+ * V1 password hashing (SHA-256 with static salt) - LEGACY
+ * Kept for backward compatibility during migration
+ */
+async function hashPasswordV1(password: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(password + 'htwc_salt_2024');
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
@@ -44,9 +69,140 @@ export async function hashPassword(password: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+/**
+ * V2 password hashing using PBKDF2 with per-user random salt
+ * Format: v2:${iterations}:${saltHex}:${hashHex}
+ */
+export async function hashPasswordV2(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+
+  // Generate random salt
+  const salt = crypto.getRandomValues(new Uint8Array(PBKDF2_SALT_LENGTH));
+
+  // Import password as key material
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  // Derive key using PBKDF2
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: salt,
+      iterations: PBKDF2_ITERATIONS,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    PBKDF2_KEY_LENGTH * 8 // bits
+  );
+
+  const hashHex = bufferToHex(derivedBits);
+  const saltHex = bufferToHex(salt.buffer);
+
+  return `v2:${PBKDF2_ITERATIONS}:${saltHex}:${hashHex}`;
+}
+
+/**
+ * Verify V2 PBKDF2 password hash
+ */
+async function verifyPasswordV2(password: string, hash: string): Promise<boolean> {
+  const parts = hash.split(':');
+  if (parts.length !== 4 || parts[0] !== 'v2') {
+    return false;
+  }
+
+  const iterations = parseInt(parts[1], 10);
+  const saltHex = parts[2];
+  const storedHashHex = parts[3];
+
+  const encoder = new TextEncoder();
+  const salt = hexToBuffer(saltHex);
+
+  // Import password as key material
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  // Derive key using PBKDF2 with stored salt and iterations
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: salt,
+      iterations: iterations,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    PBKDF2_KEY_LENGTH * 8 // bits
+  );
+
+  const computedHashHex = bufferToHex(derivedBits);
+
+  // Constant-time comparison
+  if (computedHashHex.length !== storedHashHex.length) {
+    return false;
+  }
+  let result = 0;
+  for (let i = 0; i < computedHashHex.length; i++) {
+    result |= computedHashHex.charCodeAt(i) ^ storedHashHex.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+/**
+ * Check if a password hash needs upgrading from V1 to V2
+ */
+export function needsHashUpgrade(hash: string): boolean {
+  return !hash.startsWith('v2:');
+}
+
+/**
+ * Simple password hashing - uses V2 (PBKDF2) by default
+ * For new registrations, always use hashPasswordV2
+ */
+export async function hashPassword(password: string): Promise<string> {
+  return hashPasswordV2(password);
+}
+
+/**
+ * Verify password against stored hash
+ * Automatically detects V1 (SHA-256) vs V2 (PBKDF2) format
+ */
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  const passwordHash = await hashPassword(password);
+  if (hash.startsWith('v2:')) {
+    return verifyPasswordV2(password, hash);
+  }
+  // V1 legacy hash (SHA-256 with static salt)
+  const passwordHash = await hashPasswordV1(password);
   return passwordHash === hash;
+}
+
+/**
+ * Upgrade a user's password hash from V1 to V2
+ * Call this after successful V1 login to transparently migrate
+ */
+export async function upgradePasswordHash(
+  users: KVNamespace,
+  userId: string,
+  password: string
+): Promise<void> {
+  const user = await getUserById(users, userId);
+  if (!user) return;
+
+  // Hash with V2
+  const newHash = await hashPasswordV2(password);
+  user.passwordHash = newHash;
+
+  // Save updated user
+  await users.put(`user:${user.id}`, JSON.stringify(user));
+  console.log(`Upgraded password hash for user ${userId} from V1 to V2 (PBKDF2)`);
 }
 
 /**

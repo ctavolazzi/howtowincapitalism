@@ -6,6 +6,7 @@
 import type { APIRoute } from 'astro';
 import { createUser, getUserByEmail } from '../../../lib/auth/kv-auth';
 import { sendConfirmationEmail } from '../../../lib/email/send-confirmation';
+import { validateCSRFToken, getRequestMetadata } from '../../../lib/auth/csrf';
 
 // Validation helpers
 function isValidEmail(email: string): boolean {
@@ -25,7 +26,28 @@ function isValidPassword(password: string): boolean {
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
-    const { username, name, email, password } = body;
+    const { username, name, email, password, csrf_token } = body;
+
+    // Validate CSRF token (only in production with CSRF_SECRET)
+    const csrfSecret = (locals as Record<string, unknown>).runtime?.env?.CSRF_SECRET;
+    if (csrfSecret) {
+      if (!csrf_token) {
+        return new Response(
+          JSON.stringify({ error: 'CSRF token required' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { ip, country, userAgent } = getRequestMetadata(request);
+      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, ip, country, userAgent);
+      if (!csrfResult.valid) {
+        console.warn('CSRF validation failed:', csrfResult.error);
+        return new Response(
+          JSON.stringify({ error: 'Invalid CSRF token' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+    }
 
     // Validate required fields
     if (!username || !name || !email || !password) {
@@ -64,15 +86,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Check if KV is available
-    const hasKV = locals.runtime?.env?.USERS;
-    if (!hasKV) {
+    const USERS = (locals as Record<string, unknown>).runtime?.env?.USERS as KVNamespace | undefined;
+    if (!USERS) {
       return new Response(
         JSON.stringify({ error: 'Registration not available in local development' }),
         { status: 503, headers: { 'Content-Type': 'application/json' } }
       );
     }
-
-    const { USERS } = locals.runtime.env;
 
     // Check if email already exists
     const existingUser = await getUserByEmail(USERS, email);
@@ -92,7 +112,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
 
     // Send confirmation email
-    const resendApiKey = locals.runtime?.env?.RESEND_API_KEY;
+    const resendApiKey = (locals as Record<string, unknown>).runtime?.env?.RESEND_API_KEY as string | undefined;
     if (resendApiKey) {
       const emailResult = await sendConfirmationEmail({
         to: email,
