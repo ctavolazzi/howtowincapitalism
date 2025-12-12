@@ -4,6 +4,9 @@ import { defineConfig, devices } from '@playwright/test';
  * Playwright Test Configuration for How To Win Capitalism
  * See https://playwright.dev/docs/test-configuration
  */
+const baseURL = process.env.BASE_URL || 'http://localhost:4321';
+const startLocalServer = baseURL.includes('localhost') || baseURL.includes('127.0.0.1');
+
 export default defineConfig({
   testDir: './tests',
 
@@ -28,7 +31,7 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL for navigation */
-    baseURL: 'http://localhost:4321',
+    baseURL,
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -46,10 +49,12 @@ export default defineConfig({
   ],
 
   /* Run local dev server before starting the tests */
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:4321',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  },
+  webServer: startLocalServer
+    ? {
+        command: 'npm run dev',
+        url: 'http://localhost:4321',
+        reuseExistingServer: true, // Always reuse existing server
+        timeout: 120000,
+      }
+    : undefined,
 });
