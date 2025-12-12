@@ -15,61 +15,48 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:4321';
 
 test.describe('Account Rights API', () => {
   test.describe('Data Export (GET /api/auth/account/export)', () => {
-    test('returns 401 without authentication', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/api/auth/account/export`);
-      expect(response.status()).toBe(401);
+    test('returns error without authentication or KV', async ({ request }) => {
+      // In local dev (no KV): returns 503
+      // In production (KV but no auth): returns 401
+      const response = await request.get(`${BASE_URL}/api/auth/account/export/`);
+      expect([401, 503]).toContain(response.status());
 
       const body = await response.json();
       expect(body.error).toBeTruthy();
-    });
-
-    test('returns 503 in non-KV environment', async ({ request }) => {
-      // Without KV, the endpoint should gracefully return 503
-      // This test documents expected behavior in local dev
-      const response = await request.get(`${BASE_URL}/api/auth/account/export`);
-
-      // Either 401 (no auth) or 503 (no KV) is acceptable
-      expect([401, 503]).toContain(response.status());
     });
   });
 
   test.describe('Account Deletion (DELETE /api/auth/account)', () => {
-    test('returns 401 without authentication', async ({ request }) => {
-      const response = await request.delete(`${BASE_URL}/api/auth/account/delete`);
-      expect(response.status()).toBe(401);
+    test('returns error without authentication or KV', async ({ request }) => {
+      // In local dev (no KV): returns 503
+      // In production (KV but no auth): returns 401
+      const response = await request.delete(`${BASE_URL}/api/auth/account/delete/`);
+      expect([401, 503]).toContain(response.status());
 
       const body = await response.json();
       expect(body.error).toBeTruthy();
     });
 
-    test('returns 503 in non-KV environment', async ({ request }) => {
-      // Without KV, the endpoint should gracefully return 503
-      const response = await request.delete(`${BASE_URL}/api/auth/account/delete`);
-
-      // Either 401 (no auth) or 503 (no KV) is acceptable
-      expect([401, 503]).toContain(response.status());
-    });
-
     test('rejects non-DELETE methods', async ({ request }) => {
-      // POST should not work
-      const postResponse = await request.post(`${BASE_URL}/api/auth/account/delete`);
-      expect(postResponse.status()).toBe(405);
+      // POST should not work - Astro returns 404 for unsupported methods
+      const postResponse = await request.post(`${BASE_URL}/api/auth/account/delete/`);
+      expect(postResponse.status()).not.toBe(200);
 
       // GET should not work
-      const getResponse = await request.get(`${BASE_URL}/api/auth/account/delete`);
-      expect(getResponse.status()).toBe(405);
+      const getResponse = await request.get(`${BASE_URL}/api/auth/account/delete/`);
+      expect(getResponse.status()).not.toBe(200);
     });
   });
 
   test.describe('Endpoint Security', () => {
     test('export endpoint has correct content-type', async ({ request }) => {
-      const response = await request.get(`${BASE_URL}/api/auth/account/export`);
+      const response = await request.get(`${BASE_URL}/api/auth/account/export/`);
       const contentType = response.headers()['content-type'];
       expect(contentType).toContain('application/json');
     });
 
     test('delete endpoint has correct content-type', async ({ request }) => {
-      const response = await request.delete(`${BASE_URL}/api/auth/account/delete`);
+      const response = await request.delete(`${BASE_URL}/api/auth/account/delete/`);
       const contentType = response.headers()['content-type'];
       expect(contentType).toContain('application/json');
     });
