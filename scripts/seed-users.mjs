@@ -11,7 +11,7 @@
  */
 
 import { execSync } from 'child_process';
-import { createHash } from 'crypto';
+import { pbkdf2Sync, randomBytes } from 'crypto';
 
 // Check for --preview flag
 const isPreview = process.argv.includes('--preview');
@@ -21,11 +21,26 @@ const USERS_ID = isPreview
   ? '6a7210df39874497b8cac57b112484eb'  // preview
   : '5b575785cbaa4b9e90e324501799cd39'; // production
 
-// Same hashing as kv-auth.ts (SHA-256 with salt)
-function hashPassword(password) {
-  const hash = createHash('sha256');
-  hash.update(password + 'htwc_salt_2024');
-  return hash.digest('hex');
+// PBKDF2 Configuration (must match kv-auth.ts)
+const PBKDF2_ITERATIONS = 100000;
+const PBKDF2_SALT_LENGTH = 16; // 16 bytes = 128 bits
+const PBKDF2_KEY_LENGTH = 32; // 32 bytes = 256 bits
+
+/**
+ * V2 password hashing using PBKDF2 with per-user random salt
+ * Format: v2:${iterations}:${saltHex}:${hashHex}
+ */
+function hashPasswordV2(password) {
+  // Generate random salt
+  const salt = randomBytes(PBKDF2_SALT_LENGTH);
+
+  // Derive key using PBKDF2
+  const derivedKey = pbkdf2Sync(password, salt, PBKDF2_ITERATIONS, PBKDF2_KEY_LENGTH, 'sha256');
+
+  const hashHex = derivedKey.toString('hex');
+  const saltHex = salt.toString('hex');
+
+  return `v2:${PBKDF2_ITERATIONS}:${saltHex}:${hashHex}`;
 }
 
 // Test users - ROTATED 2024-12-10 after GitGuardian alert
@@ -79,8 +94,8 @@ const users = [
 console.log(`🌱 Seeding users to Cloudflare KV (${isPreview ? 'PREVIEW' : 'PRODUCTION'})...\n`);
 
 for (const user of users) {
-  // Hash the password
-  const passwordHash = hashPassword(user.password);
+  // Hash the password using PBKDF2 (V2 format)
+  const passwordHash = hashPasswordV2(user.password);
 
   // Create user object (without plaintext password)
   const userData = {
@@ -126,7 +141,7 @@ for (const user of users) {
   console.log('');
 }
 
-console.log('🎉 Done! Users seeded to KV.');
+console.log('🎉 Done! Users seeded to KV with PBKDF2 (V2) password hashing.');
 console.log(`\nEnvironment: ${isPreview ? 'PREVIEW (local dev)' : 'PRODUCTION'}`);
 console.log('\nTest credentials:');
 console.log('  admin@email.com / Adm!n_Secure_2024#');

@@ -9,18 +9,21 @@ import {
   createSession,
   createSessionCookie,
   sanitizeUser,
+  needsHashUpgrade,
+  upgradePasswordHash,
 } from '../../../lib/auth/kv-auth';
 import {
   validateCredentialsLocal,
   createSessionLocal,
   createSessionCookieLocal,
 } from '../../../lib/auth/local-auth';
+import { validateCSRFToken, getRequestMetadata } from '../../../lib/auth/csrf';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Parse request body
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password, csrf_token } = body;
 
     if (!email || !password) {
       return new Response(
@@ -29,12 +32,34 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
+    // Validate CSRF token (only in production with CSRF_SECRET)
+    const csrfSecret = (locals as Record<string, unknown>).runtime?.env?.CSRF_SECRET;
+    if (csrfSecret) {
+      if (!csrf_token) {
+        return new Response(
+          JSON.stringify({ error: 'CSRF token required' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { ip, country, userAgent } = getRequestMetadata(request);
+      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, ip, country, userAgent);
+      if (!csrfResult.valid) {
+        console.warn('CSRF validation failed:', csrfResult.error);
+        return new Response(
+          JSON.stringify({ error: 'Invalid CSRF token' }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
     // Check if KV is available (production) or use local fallback (dev)
-    const hasKV = locals.runtime?.env?.USERS && locals.runtime?.env?.SESSIONS;
+    const hasKV = (locals as Record<string, unknown>).runtime?.env?.USERS && (locals as Record<string, unknown>).runtime?.env?.SESSIONS;
 
     if (hasKV) {
       // Production: Use Cloudflare KV
-      const { USERS, SESSIONS } = locals.runtime.env;
+      const USERS = (locals as Record<string, unknown>).runtime?.env?.USERS as KVNamespace;
+      const SESSIONS = (locals as Record<string, unknown>).runtime?.env?.SESSIONS as KVNamespace;
 
       const { user, needsConfirmation } = await validateCredentialsWithConfirmation(
         USERS,
@@ -57,6 +82,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
           JSON.stringify({ error: 'Invalid email or password' }),
           { status: 401, headers: { 'Content-Type': 'application/json' } }
         );
+      }
+
+      // Transparently upgrade V1 password hash to V2 (PBKDF2)
+      if (needsHashUpgrade(user.passwordHash)) {
+        await upgradePasswordHash(USERS, user.id, password);
       }
 
       const { token, expiresAt } = await createSession(SESSIONS, user.id);
