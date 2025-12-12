@@ -324,20 +324,6 @@ Note: This is UI-level protection only. For true security, a backend would be re
 
 ## External Dependencies
 
-### TinaCMS (Content Management)
-
-Visual editor at `/admin/` for MDX content in `src/content/docs/`.
-
-| Requirement | Details |
-|-------------|---------|
-| Config | `tina/config.ts` |
-| Build | `tinacms build && astro build` |
-| Dev | `tinacms dev -c "astro dev"` |
-| Env vars | `TINA_CLIENT_ID`, `TINA_TOKEN` (Tina Cloud) |
-| Access gate | Cloudflare Access must protect `/admin/*` |
-
-See `DEVELOPERS.md` → "Content Management System" for full setup.
-
 ### Cloudflare Access
 
 Protects `/admin/` routes in production.
