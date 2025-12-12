@@ -1,15 +1,15 @@
 /**
- * Capture auth flow screenshots against a live/staging base URL.
+ * Capture auth flow screenshots for documentation.
  *
  * Usage:
- *   AUTH_SNAPSHOT_BASE_URL=https://howtowincapitalism.com node scripts/capture-auth-screenshots.mjs
- *   (defaults to production URL and viewer credentials)
+ *   node scripts/capture-auth-screenshots.mjs                    # localhost (default)
+ *   AUTH_SNAPSHOT_BASE_URL=https://howtowincapitalism.com node scripts/capture-auth-screenshots.mjs  # production
  */
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const baseUrl = process.env.AUTH_SNAPSHOT_BASE_URL || 'https://howtowincapitalism.com';
+const baseUrl = process.env.AUTH_SNAPSHOT_BASE_URL || 'http://localhost:4321';
 const loginEmail = process.env.AUTH_SNAPSHOT_EMAIL || 'viewer@email.com';
 const loginPassword = process.env.AUTH_SNAPSHOT_PASSWORD || 'V!ewer_Read_2024#';
 
