@@ -33,7 +33,7 @@ const palette = {
   tide: [37, 38, 44, 80, 44, 38],
 };
 
-const width = clampWidth(process.stdout.columns ?? 80);
+let frameWidth = clampWidth(process.stdout.columns ?? 80);
 const stopAt = typeof options.durationSec === 'number' ? Date.now() + options.durationSec * 1000 : Number.POSITIVE_INFINITY;
 const lineCount = 4;
 
@@ -58,6 +58,10 @@ const interval = setInterval(() => {
   }
 }, options.speedMs);
 
+process.stdout.on('resize', () => {
+  frameWidth = clampWidth(process.stdout.columns ?? frameWidth);
+});
+
 process.on('SIGINT', () => cleanup('Ambient animation stopped (Ctrl+C).', true));
 process.on('SIGTERM', () => cleanup('Ambient animation stopped.', true));
 process.on('exit', () => {
@@ -67,11 +71,11 @@ process.on('exit', () => {
 });
 
 function renderFrame() {
-  const sky = tint(buildSky(frameIndex, width), palette.aurora, frameIndex);
-  const wave = tint(buildWave(frameIndex, width), palette.tide, frameIndex + 6);
-  const undercurrent = tint(buildUndercurrent(frameIndex, width), palette.ember, frameIndex * 2);
+  const sky = tint(buildSky(frameIndex, frameWidth), palette.aurora, frameIndex);
+  const wave = tint(buildWave(frameIndex, frameWidth), palette.tide, frameIndex + 6);
+  const undercurrent = tint(buildUndercurrent(frameIndex, frameWidth), palette.ember, frameIndex * 2);
   const phraseIndex = Math.floor((frameIndex * options.speedMs) / options.phraseMs) % phrases.length;
-  const phrase = tint(centerText(`[ ${phrases[phraseIndex]} ]`, width), palette.ember, frameIndex * 3);
+  const phrase = tint(centerText(`[ ${phrases[phraseIndex]} ]`, frameWidth), palette.ember, frameIndex * 3);
 
   if (!firstRender) {
     readline.moveCursor(process.stdout, 0, -lineCount);
