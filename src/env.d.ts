@@ -5,6 +5,7 @@
 interface Env {
   USERS: KVNamespace;
   SESSIONS: KVNamespace;
+  RESEND_API_KEY: string;
 }
 
 // Extend Astro's locals with our bindings

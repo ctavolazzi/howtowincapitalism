@@ -46,11 +46,6 @@ export {
 } from './userStore';
 export type { UserProfile, UserRole, UsersState } from './userStore';
 
-// NOTE: mock-user.ts contains passwords and is NOT exported
-// It should only be used in server-side code
-// Type-only export for backwards compatibility
-export type { MockUser } from './mock-user';
-
 // Activity tracking
 export { trackActivity, trackPageView, getActivity, getActivitySummary, clearActivity } from './activity';
 export type { ActivityEvent } from './activity';

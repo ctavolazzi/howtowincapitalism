@@ -110,14 +110,9 @@ stateDiagram-v2
 
     Logout --> HomePage: Clear Session
 
-    note right of PasswordGate
-        Password: unlockmenow
-        Stored in sessionStorage
-    end note
-
     note right of LoginPage
-        Email: admin@email.com
-        Password: itcan'tbethateasy...
+        See README.md for
+        current test credentials
     end note
 
     note right of ProfilePage
@@ -133,11 +128,7 @@ stateDiagram-v2
 
 ## User Credentials Reference
 
-| Gate | Credential | Value |
-|------|------------|-------|
-| **Site Password** | Password | `unlockmenow` |
-| **User Login** | Email | `admin@email.com` |
-| **User Login** | Password | `itcan'tbethateasy...` |
+See `README.md` or `_docs/AUTH.md` for current test credentials.
 
 ---
 

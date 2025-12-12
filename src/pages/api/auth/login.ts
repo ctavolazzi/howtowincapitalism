@@ -5,7 +5,7 @@
  */
 import type { APIRoute } from 'astro';
 import {
-  validateCredentials,
+  validateCredentialsWithConfirmation,
   createSession,
   createSessionCookie,
   sanitizeUser,
@@ -36,7 +36,21 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // Production: Use Cloudflare KV
       const { USERS, SESSIONS } = locals.runtime.env;
 
-      const user = await validateCredentials(USERS, email, password);
+      const { user, needsConfirmation } = await validateCredentialsWithConfirmation(
+        USERS,
+        email,
+        password
+      );
+
+      if (needsConfirmation) {
+        return new Response(
+          JSON.stringify({
+            error: 'Please confirm your email address before logging in. Check your inbox.',
+            needsConfirmation: true,
+          }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
 
       if (!user) {
         return new Response(

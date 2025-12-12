@@ -109,7 +109,7 @@ This hashes passwords and uploads users to KV.
 ```json
 {
   "email": "admin@email.com",
-  "password": "itcan'tbethateasy..."
+  "password": "<see test credentials above>"
 }
 ```
 

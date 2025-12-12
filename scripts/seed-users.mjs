@@ -93,6 +93,7 @@ for (const user of users) {
     avatar: user.avatar,
     bio: user.bio,
     createdAt: user.createdAt,
+    emailConfirmed: true, // Seed users are pre-confirmed
   };
 
   // Write user data

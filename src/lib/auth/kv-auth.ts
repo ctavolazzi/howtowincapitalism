@@ -16,6 +16,10 @@ export interface KVUser {
   avatar: string;
   bio: string;
   createdAt: string;
+  // Email confirmation fields
+  emailConfirmed: boolean;
+  confirmToken?: string;
+  confirmTokenExpires?: string;
 }
 
 export interface KVSession {
@@ -193,6 +197,143 @@ export async function getCurrentUser(
  * Public user data (without sensitive fields)
  */
 export function sanitizeUser(user: KVUser) {
-  const { passwordHash, ...publicUser } = user;
+  const { passwordHash, confirmToken, confirmTokenExpires, ...publicUser } = user;
   return publicUser;
+}
+
+/**
+ * Generate a confirmation token
+ */
+export function generateConfirmToken(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * Create a new user in KV (unconfirmed)
+ */
+export async function createUser(
+  users: KVNamespace,
+  data: {
+    username: string;
+    name: string;
+    email: string;
+    password: string;
+  }
+): Promise<{ user: KVUser; confirmToken: string }> {
+  // Check if email already exists
+  const existing = await getUserByEmail(users, data.email);
+  if (existing) {
+    throw new Error('Email already registered');
+  }
+
+  // Check if username already exists
+  const existingUsername = await getUserById(users, data.username);
+  if (existingUsername) {
+    throw new Error('Username already taken');
+  }
+
+  const passwordHash = await hashPassword(data.password);
+  const confirmToken = generateConfirmToken();
+  const now = new Date();
+  const expires = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours
+
+  const user: KVUser = {
+    id: data.username,
+    email: data.email.toLowerCase(),
+    passwordHash,
+    name: data.name,
+    role: 'viewer', // New users start as viewers
+    accessLevel: 1,
+    avatar: '/favicon.svg',
+    bio: '',
+    createdAt: now.toISOString(),
+    emailConfirmed: false,
+    confirmToken,
+    confirmTokenExpires: expires.toISOString(),
+  };
+
+  // Store user
+  await users.put(`user:${user.id}`, JSON.stringify(user));
+
+  // Store email index
+  await users.put(`email:${user.email}`, user.id);
+
+  // Store token index (for lookup during confirmation)
+  await users.put(`confirm:${confirmToken}`, user.id, {
+    expirationTtl: 24 * 60 * 60, // 24 hours
+  });
+
+  return { user, confirmToken };
+}
+
+/**
+ * Confirm a user's email
+ */
+export async function confirmEmail(
+  users: KVNamespace,
+  token: string
+): Promise<KVUser | null> {
+  // Look up user by token
+  const userId = await users.get(`confirm:${token}`);
+  if (!userId) {
+    return null; // Token invalid or expired
+  }
+
+  // Get user
+  const user = await getUserById(users, userId);
+  if (!user) {
+    return null;
+  }
+
+  // Verify token matches
+  if (user.confirmToken !== token) {
+    return null;
+  }
+
+  // Check if token expired
+  if (user.confirmTokenExpires && new Date(user.confirmTokenExpires) < new Date()) {
+    return null;
+  }
+
+  // Update user as confirmed
+  user.emailConfirmed = true;
+  delete user.confirmToken;
+  delete user.confirmTokenExpires;
+
+  // Save updated user
+  await users.put(`user:${user.id}`, JSON.stringify(user));
+
+  // Delete token index
+  await users.delete(`confirm:${token}`);
+
+  return user;
+}
+
+/**
+ * Validate credentials (only for confirmed users)
+ */
+export async function validateCredentialsWithConfirmation(
+  users: KVNamespace,
+  email: string,
+  password: string
+): Promise<{ user: KVUser | null; needsConfirmation: boolean }> {
+  const user = await getUserByEmail(users, email);
+  if (!user) {
+    return { user: null, needsConfirmation: false };
+  }
+
+  const isValid = await verifyPassword(password, user.passwordHash);
+  if (!isValid) {
+    return { user: null, needsConfirmation: false };
+  }
+
+  if (!user.emailConfirmed) {
+    return { user: null, needsConfirmation: true };
+  }
+
+  return { user, needsConfirmation: false };
 }

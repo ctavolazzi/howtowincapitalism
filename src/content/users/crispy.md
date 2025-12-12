@@ -1,5 +1,5 @@
 ---
-name: "Christopher Tavolazzi"
+name: "Crispy Admin"
 role: "admin"
 accessLevel: 10
 avatar: "/favicon.svg"
@@ -7,7 +7,7 @@ avatar: "/favicon.svg"
 
 # System Administrator
 
-Primary operator of the NovaSystem. Full access to all content and system features.
+Site administrator with full access to all content and system features.
 
 ## Permissions
 
