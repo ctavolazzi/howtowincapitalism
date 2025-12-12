@@ -15,13 +15,17 @@ export interface LocalUser {
   bio: string;
 }
 
-// Mock users (same as KV seed data)
-// ROTATED 2024-12-10 after GitGuardian alert
+// =============================================================================
+// LOCAL DEVELOPMENT USERS
+// These are DEVELOPMENT-ONLY credentials, NOT used in production.
+// Production credentials are stored in Cloudflare KV (seeded via env vars).
+// =============================================================================
+// pragma: allowlist nextline secret
 const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   admin: {
     id: 'admin',
     email: 'admin@email.com',
-    password: 'Adm!n_Secure_2024#',
+    password: 'DevAdmin_Local_2024#', // pragma: allowlist secret
     name: 'Admin User',
     role: 'admin',
     accessLevel: 10,
@@ -31,7 +35,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   editor: {
     id: 'editor',
     email: 'editor@email.com',
-    password: 'Ed!tor_Access_2024#',
+    password: 'DevEditor_Local_2024#', // pragma: allowlist secret
     name: 'Editor User',
     role: 'editor',
     accessLevel: 5,
@@ -41,7 +45,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   contributor: {
     id: 'contributor',
     email: 'contributor@email.com',
-    password: 'Contr!b_Pass_2024#',
+    password: 'DevContrib_Local_2024#', // pragma: allowlist secret
     name: 'Contributor User',
     role: 'contributor',
     accessLevel: 3,
@@ -51,7 +55,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   viewer: {
     id: 'viewer',
     email: 'viewer@email.com',
-    password: 'V!ewer_Read_2024#',
+    password: 'DevViewer_Local_2024#', // pragma: allowlist secret
     name: 'Viewer User',
     role: 'viewer',
     accessLevel: 1,

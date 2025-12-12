@@ -7,7 +7,9 @@ import { test, expect, Page } from '@playwright/test';
  */
 
 const SITE_PASSWORD = 'unlockmenow';
-const TEST_USER = { email: 'admin@email.com', password: 'Adm!n_Secure_2024#' };
+// Development-only test credentials (NOT production passwords)
+// pragma: allowlist secret
+const TEST_USER = { email: 'admin@email.com', password: 'DevAdmin_Local_2024#' };
 
 async function loginAndUnlock(page: Page) {
   await page.goto('/login/');

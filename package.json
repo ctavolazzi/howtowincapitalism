@@ -4,11 +4,12 @@
   "type": "module",
   "description": "A satirical but practical wiki about financial autonomy",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "tinacms dev -c \"astro dev\"",
+    "dev:astro": "astro dev",
     "dev:wrangler": "npm run build && wrangler pages dev dist --kv=USERS --kv=SESSIONS",
-    "build": "astro build",
+    "build": "tinacms build && astro build",
     "preview": "astro preview",
-    "check": "astro build && echo '✓ Build passed'",
+    "check": "npm run build && echo '✓ Build passed'",
     "deploy": "wrangler pages deploy dist",
     "ship": "node scripts/ship.mjs",
     "seed:users": "node scripts/seed-users.mjs",
@@ -44,6 +45,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^36.0.1",
     "stylelint-declaration-strict-value": "^1.10.11",
+    "tinacms": "^1.6.0",
     "vitest": "^4.0.15",
     "wrangler": "^4.53.0"
   }

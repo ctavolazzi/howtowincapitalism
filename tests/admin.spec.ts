@@ -12,14 +12,17 @@ import { test, expect } from '@playwright/test';
  * - Admin UI pages
  */
 
+// Development-only test credentials (NOT production passwords)
+// pragma: allowlist nextline secret
 const TEST_ADMIN = {
   email: 'admin@email.com',
-  password: 'Adm!n_Secure_2024#',
+  password: 'DevAdmin_Local_2024#', // pragma: allowlist secret
 };
 
+// pragma: allowlist nextline secret
 const TEST_VIEWER = {
   email: 'viewer@email.com',
-  password: 'V!ewer_Read_2024#',
+  password: 'DevViewer_Local_2024#', // pragma: allowlist secret
 };
 
 test.describe('Admin API Authentication', () => {

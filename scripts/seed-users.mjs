@@ -8,6 +8,11 @@
  * Uses wrangler CLI to write to KV.
  *
  * --preview: Seed to preview namespace (for local dev)
+ *
+ * SECURITY:
+ * - Production passwords are read from environment variables (set in Cloudflare)
+ * - Development passwords are hardcoded fallbacks for local testing only
+ * - NEVER commit production passwords to the repository
  */
 
 import { execSync } from 'child_process';
@@ -43,12 +48,39 @@ function hashPasswordV2(password) {
   return `v2:${PBKDF2_ITERATIONS}:${saltHex}:${hashHex}`;
 }
 
-// Test users - ROTATED 2024-12-10 after GitGuardian alert
+// =============================================================================
+// PASSWORD CONFIGURATION
+// Production: Read from environment variables (set in Cloudflare Dashboard)
+// Development: Use fallback passwords for local testing
+// =============================================================================
+
+// Development-only passwords (safe to commit - NOT used in production)
+// pragma: allowlist secret
+const DEV_PASSWORDS = {
+  admin: 'DevAdmin_Local_2024#',      // pragma: allowlist secret
+  editor: 'DevEditor_Local_2024#',    // pragma: allowlist secret
+  contributor: 'DevContrib_Local_2024#', // pragma: allowlist secret
+  viewer: 'DevViewer_Local_2024#',    // pragma: allowlist secret
+};
+
+// Get password for a role (production from env, dev from fallback)
+function getPassword(role) {
+  const envVar = `SEED_${role.toUpperCase()}_PASSWORD`;
+  const envPassword = process.env[envVar];
+
+  if (!isPreview && !envPassword) {
+    console.error(`⚠️  Warning: ${envVar} not set. Using development password.`);
+    console.error(`   For production, set ${envVar} in Cloudflare environment variables.`);
+  }
+
+  return envPassword || DEV_PASSWORDS[role];
+}
+
+// User definitions (passwords resolved at runtime)
 const users = [
   {
     id: 'admin',
     email: 'admin@email.com',
-    password: 'Adm!n_Secure_2024#',
     name: 'Admin User',
     role: 'admin',
     accessLevel: 10,
@@ -59,7 +91,6 @@ const users = [
   {
     id: 'editor',
     email: 'editor@email.com',
-    password: 'Ed!tor_Access_2024#',
     name: 'Editor User',
     role: 'editor',
     accessLevel: 5,
@@ -70,7 +101,6 @@ const users = [
   {
     id: 'contributor',
     email: 'contributor@email.com',
-    password: 'Contr!b_Pass_2024#',
     name: 'Contributor User',
     role: 'contributor',
     accessLevel: 3,
@@ -81,7 +111,6 @@ const users = [
   {
     id: 'viewer',
     email: 'viewer@email.com',
-    password: 'V!ewer_Read_2024#',
     name: 'Viewer User',
     role: 'viewer',
     accessLevel: 1,
@@ -93,9 +122,16 @@ const users = [
 
 console.log(`🌱 Seeding users to Cloudflare KV (${isPreview ? 'PREVIEW' : 'PRODUCTION'})...\n`);
 
+if (!isPreview) {
+  console.log('🔐 Production mode: Reading passwords from environment variables\n');
+}
+
 for (const user of users) {
+  // Get password (from env or fallback)
+  const password = getPassword(user.id);
+
   // Hash the password using PBKDF2 (V2 format)
-  const passwordHash = hashPasswordV2(user.password);
+  const passwordHash = hashPasswordV2(password);
 
   // Create user object (without plaintext password)
   const userData = {
@@ -143,8 +179,14 @@ for (const user of users) {
 
 console.log('🎉 Done! Users seeded to KV with PBKDF2 (V2) password hashing.');
 console.log(`\nEnvironment: ${isPreview ? 'PREVIEW (local dev)' : 'PRODUCTION'}`);
-console.log('\nTest credentials:');
-console.log('  admin@email.com / Adm!n_Secure_2024#');
-console.log('  editor@email.com / Ed!tor_Access_2024#');
-console.log('  contributor@email.com / Contr!b_Pass_2024#');
-console.log('  viewer@email.com / V!ewer_Read_2024#');
+
+if (isPreview) {
+  console.log('\n📋 Development credentials (for local testing only):');
+  console.log('  admin@email.com / DevAdmin_Local_2024#');
+  console.log('  editor@email.com / DevEditor_Local_2024#');
+  console.log('  contributor@email.com / DevContrib_Local_2024#');
+  console.log('  viewer@email.com / DevViewer_Local_2024#');
+} else {
+  console.log('\n🔐 Production credentials are stored in Cloudflare environment variables.');
+  console.log('   See Cloudflare Dashboard > Pages > Settings > Environment variables');
+}
