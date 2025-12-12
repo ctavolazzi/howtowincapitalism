@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
 
 /**
  * Authentication E2E Tests
@@ -10,9 +11,6 @@ import { test, expect, Page } from '@playwright/test';
  * - Logout functionality
  * - All user roles
  */
-
-// Site-wide password (from Base.astro)
-const SITE_PASSWORD = 'unlockmenow';
 
 /**
  * Helper to unlock the site-wide password gate if present
@@ -27,13 +25,8 @@ async function unlockSiteGate(page: Page) {
   }
 }
 
-// Test credentials matching src/lib/auth/local-auth.ts
-const TEST_USERS = {
-  admin: { email: 'admin@email.com', password: 'Adm!n_Secure_2024#', role: 'admin' },
-  editor: { email: 'editor@email.com', password: 'Ed!tor_Access_2024#', role: 'editor' },
-  contributor: { email: 'contributor@email.com', password: 'Contr!b_Pass_2024#', role: 'contributor' },
-  viewer: { email: 'viewer@email.com', password: 'V!ewer_Read_2024#', role: 'viewer' },
-};
+// Alias for backward compatibility with existing tests
+const TEST_USERS = TEST_CREDENTIALS;
 
 test.describe('Login Page', () => {
   test('displays login form', async ({ page }) => {

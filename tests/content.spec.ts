@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
 
 /**
  * Content Pages E2E Tests
@@ -6,10 +7,7 @@ import { test, expect, Page } from '@playwright/test';
  * Tests that wiki content pages load and render correctly.
  */
 
-const SITE_PASSWORD = 'unlockmenow';
-// Development-only test credentials (NOT production passwords)
-// pragma: allowlist secret
-const TEST_USER = { email: 'admin@email.com', password: 'DevAdmin_Local_2024#' };
+const TEST_USER = TEST_CREDENTIALS.admin;
 
 /**
  * Helper to login and unlock site gate

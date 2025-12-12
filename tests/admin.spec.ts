@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { TEST_CREDENTIALS } from './fixtures/test-credentials';
 
 /**
  * Admin Panel E2E Tests
@@ -12,18 +13,8 @@ import { test, expect } from '@playwright/test';
  * - Admin UI pages
  */
 
-// Development-only test credentials (NOT production passwords)
-// pragma: allowlist nextline secret
-const TEST_ADMIN = {
-  email: 'admin@email.com',
-  password: 'DevAdmin_Local_2024#', // pragma: allowlist secret
-};
-
-// pragma: allowlist nextline secret
-const TEST_VIEWER = {
-  email: 'viewer@email.com',
-  password: 'DevViewer_Local_2024#', // pragma: allowlist secret
-};
+const TEST_ADMIN = TEST_CREDENTIALS.admin;
+const TEST_VIEWER = TEST_CREDENTIALS.viewer;
 
 test.describe('Admin API Authentication', () => {
   test('admin endpoints require authentication', async ({ request }) => {

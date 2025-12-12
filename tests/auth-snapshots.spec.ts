@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
+import { TEST_CREDENTIALS } from './fixtures/test-credentials';
 
 const shouldCapture = process.env.CAPTURE_AUTH_SNAPS === '1';
 test.skip(!shouldCapture, 'Set CAPTURE_AUTH_SNAPS=1 to capture auth flow screenshots.');
@@ -34,8 +35,8 @@ test('capture v0.0.1 auth flow snapshots', async ({ page }) => {
   await save('02_login-error_v0.0.1.png');
 
   // 03: Login success → Home
-  await page.fill('#email', 'admin@email.com');
-  await page.fill('#password', 'Adm!n_Secure_2024#');
+  await page.fill('#email', TEST_CREDENTIALS.admin.email);
+  await page.fill('#password', TEST_CREDENTIALS.admin.password);
   await page.click('#login-button');
   await page.waitForURL('**/');
   await page.waitForSelector('#content', { state: 'visible' });

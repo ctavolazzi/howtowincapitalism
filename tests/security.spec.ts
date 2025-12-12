@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { TEST_CREDENTIALS } from './fixtures/test-credentials';
 
 /**
  * Security Features E2E Tests
@@ -10,10 +11,7 @@ import { test, expect } from '@playwright/test';
  * - Disposable email blocking
  */
 
-const TEST_ADMIN = {
-  email: 'admin@email.com',
-  password: 'Adm!n_Secure_2024#',
-};
+const TEST_ADMIN = TEST_CREDENTIALS.admin;
 
 test.describe('Rate Limiting', () => {
   test('login endpoint returns error after too many attempts', async ({ request }) => {
