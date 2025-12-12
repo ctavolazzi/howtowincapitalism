@@ -51,6 +51,15 @@ howtowincapitalism/
 └── wrangler.toml             # Cloudflare config
 ```
 
+### Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/ship.mjs` | Build → commit → push → deploy |
+| `scripts/new-page.mjs` | Scaffold a new MDX content page |
+| `scripts/terminal-ambient-animation.mjs` | Optional idle terminal animation (manual trigger) |
+| `scripts/generate-*.mjs` | Asset generation (icons, OG images) |
+
 ## Component Architecture
 
 ### Design Pattern: Atomic Design
@@ -312,4 +321,3 @@ Note: This is UI-level protection only. For true security, a backend would be re
 - Mock auth with localStorage (demo/personal use only)
 - URL sanitization in CTA component
 - Password-protected site gate (sessionStorage)
-

@@ -46,29 +46,39 @@ async function run() {
   await page.fill('#email', loginEmail);
   await page.fill('#password', loginPassword);
   await page.click('#login-button');
-  await page.waitForURL('**/');
-  await page.waitForSelector('#content', { state: 'visible', timeout: 15000 });
-  await save(page, '03_home-authenticated_v0.0.1.png');
+  let loggedIn = false;
 
-  // 04: User menu open
-  await page.waitForSelector('#avatar-button', { timeout: 10000 });
-  await page.click('#avatar-button');
-  await page.waitForSelector('.dropdown-menu', { state: 'visible' });
-  await save(page, '04_user-menu_v0.0.1.png');
+  const authResult = await Promise.race([
+    page.waitForSelector('#content', { state: 'visible', timeout: 15000 }).then(() => 'authed'),
+    page.waitForSelector('#error-message', { state: 'visible', timeout: 15000 }).then(() => 'error'),
+  ]).catch(() => 'error');
 
-  // 05: Profile page
-  await page.goto(pageUrl('/users/viewer/'));
-  await page.waitForSelector('#content', { state: 'visible', timeout: 15000 });
-  await save(page, '05_profile-page_v0.0.1.png');
+  if (authResult === 'authed') {
+    loggedIn = true;
+    await save(page, '03_home-authenticated_v0.0.1.png');
 
-  // 06: Logout back to login page
-  await page.goto(pageUrl('/'));
-  await page.waitForSelector('#avatar-button', { timeout: 10000 });
-  await page.click('#avatar-button');
-  await page.click('#logout-button');
-  await page.waitForURL('**/login/**', { timeout: 15000 });
-  await page.waitForSelector('#login-form');
-  await save(page, '06_logged-out_v0.0.1.png');
+    // 04: User menu open
+    await page.waitForSelector('#avatar-button', { timeout: 10000 });
+    await page.click('#avatar-button');
+    await page.waitForSelector('.dropdown-menu', { state: 'visible' });
+    await save(page, '04_user-menu_v0.0.1.png');
+
+    // 05: Profile page
+    await page.goto(pageUrl('/users/viewer/'));
+    await page.waitForSelector('#content', { state: 'visible', timeout: 15000 });
+    await save(page, '05_profile-page_v0.0.1.png');
+
+    // 06: Logout back to login page
+    await page.goto(pageUrl('/'));
+    await page.waitForSelector('#avatar-button', { timeout: 10000 });
+    await page.click('#avatar-button');
+    await page.click('#logout-button');
+    await page.waitForURL('**/login/**', { timeout: 15000 });
+    await page.waitForSelector('#login-form');
+    await save(page, '06_logged-out_v0.0.1.png');
+  } else {
+    await save(page, '03_login-failed_v0.0.1.png');
+  }
 
   // 07: Register page (current state)
   await page.goto(pageUrl('/register/'));
@@ -76,9 +86,14 @@ async function run() {
   await save(page, '07_register-page_v0.0.1.png');
 
   // 08: Forgot password page (current state)
-  await page.goto(pageUrl('/forgot-password/'));
-  await page.waitForSelector('#forgot-password-form');
-  await save(page, '08_forgot-password-page_v0.0.1.png');
+  try {
+    await page.goto(pageUrl('/forgot-password/'));
+    await page.waitForSelector('#forgot-password-form');
+    await save(page, '08_forgot-password-page_v0.0.1.png');
+  } catch (error) {
+    console.warn('Forgot password page failed to load:', error);
+    await save(page, '08_forgot-password-error_v0.0.1.png');
+  }
 
   await browser.close();
 }

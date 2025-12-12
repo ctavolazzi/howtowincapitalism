@@ -23,7 +23,8 @@
     "test:report": "playwright show-report",
     "lint:css": "stylelint 'src/**/*.{css,astro}' --allow-empty-input",
     "lint:css:fix": "stylelint 'src/**/*.{css,astro}' --fix --allow-empty-input",
-    "a11y:colors": "echo '🎨 Color Accessibility Check' && grep -rn '#[0-9a-fA-F]\\{3,6\\}' src/components --include='*.astro' --include='*.css' | grep -v 'var(--' | grep 'color' && echo '❌ Found hardcoded colors!' || echo '✅ No hardcoded colors found'"
+    "a11y:colors": "echo '🎨 Color Accessibility Check' && grep -rn '#[0-9a-fA-F]\\{3,6\\}' src/components --include='*.astro' --include='*.css' | grep -v 'var(--' | grep 'color' && echo '❌ Found hardcoded colors!' || echo '✅ No hardcoded colors found'",
+    "terminal:ambient": "node scripts/terminal-ambient-animation.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",

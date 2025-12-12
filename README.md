@@ -99,6 +99,7 @@ Build → Commit → Push → Deploy. Live in ~30 seconds.
 | `npm test` | Run E2E tests (Playwright) |
 | `npm run test:ui` | Open Playwright test UI |
 | `npm run test:unit` | Run unit tests (Vitest) |
+| `npm run terminal:ambient` | Play a low-impact idle animation in the terminal |
 
 ### Testing
 

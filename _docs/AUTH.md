@@ -221,7 +221,7 @@ window.location.href = '/login/';
 | Password hashing | SHA-256 with salt |
 | Session tokens | Cryptographically random (32 bytes) |
 | Cookie security | httpOnly, Secure, SameSite=Strict |
-| Session expiry | 7 days TTL in KV |
+| Session expiry | 24 hours TTL in KV (daily auto-logout) |
 | XSS protection | No secrets in JavaScript |
 | CSRF protection | SameSite=Strict cookie |
 
