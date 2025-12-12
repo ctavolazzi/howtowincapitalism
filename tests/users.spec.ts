@@ -7,7 +7,7 @@ import { test, expect, Page } from '@playwright/test';
  */
 
 const SITE_PASSWORD = 'unlockmenow';
-const TEST_USER = { email: 'admin@email.com', password: "itcan'tbethateasy..." };
+const TEST_USER = { email: 'admin@email.com', password: 'Adm!n_Secure_2024#' };
 
 /**
  * Helper to login and unlock site gate

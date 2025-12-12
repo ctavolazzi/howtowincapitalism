@@ -29,10 +29,10 @@ async function unlockSiteGate(page: Page) {
 
 // Test credentials matching src/lib/auth/local-auth.ts
 const TEST_USERS = {
-  admin: { email: 'admin@email.com', password: "itcan'tbethateasy...", role: 'admin' },
-  editor: { email: 'editor@email.com', password: 'editor123', role: 'editor' },
-  contributor: { email: 'contributor@email.com', password: 'contrib123', role: 'contributor' },
-  viewer: { email: 'viewer@email.com', password: 'viewer123', role: 'viewer' },
+  admin: { email: 'admin@email.com', password: 'Adm!n_Secure_2024#', role: 'admin' },
+  editor: { email: 'editor@email.com', password: 'Ed!tor_Access_2024#', role: 'editor' },
+  contributor: { email: 'contributor@email.com', password: 'Contr!b_Pass_2024#', role: 'contributor' },
+  viewer: { email: 'viewer@email.com', password: 'V!ewer_Read_2024#', role: 'viewer' },
 };
 
 test.describe('Login Page', () => {

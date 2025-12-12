@@ -28,12 +28,12 @@ function hashPassword(password) {
   return hash.digest('hex');
 }
 
-// Test users (same credentials as before)
+// Test users - ROTATED 2024-12-10 after GitGuardian alert
 const users = [
   {
     id: 'admin',
     email: 'admin@email.com',
-    password: "itcan'tbethateasy...",
+    password: 'Adm!n_Secure_2024#',
     name: 'Admin User',
     role: 'admin',
     accessLevel: 10,
@@ -44,7 +44,7 @@ const users = [
   {
     id: 'editor',
     email: 'editor@email.com',
-    password: 'editor123',
+    password: 'Ed!tor_Access_2024#',
     name: 'Editor User',
     role: 'editor',
     accessLevel: 5,
@@ -55,7 +55,7 @@ const users = [
   {
     id: 'contributor',
     email: 'contributor@email.com',
-    password: 'contrib123',
+    password: 'Contr!b_Pass_2024#',
     name: 'Contributor User',
     role: 'contributor',
     accessLevel: 3,
@@ -66,7 +66,7 @@ const users = [
   {
     id: 'viewer',
     email: 'viewer@email.com',
-    password: 'viewer123',
+    password: 'V!ewer_Read_2024#',
     name: 'Viewer User',
     role: 'viewer',
     accessLevel: 1,
@@ -128,7 +128,7 @@ for (const user of users) {
 console.log('🎉 Done! Users seeded to KV.');
 console.log(`\nEnvironment: ${isPreview ? 'PREVIEW (local dev)' : 'PRODUCTION'}`);
 console.log('\nTest credentials:');
-console.log('  admin@email.com / itcan\'tbethateasy...');
-console.log('  editor@email.com / editor123');
-console.log('  contributor@email.com / contrib123');
-console.log('  viewer@email.com / viewer123');
+console.log('  admin@email.com / Adm!n_Secure_2024#');
+console.log('  editor@email.com / Ed!tor_Access_2024#');
+console.log('  contributor@email.com / Contr!b_Pass_2024#');
+console.log('  viewer@email.com / V!ewer_Read_2024#');
