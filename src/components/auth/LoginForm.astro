@@ -50,6 +50,7 @@ const { csrfToken } = Astro.props;
           </svg>
         </button>
       </div>
+      <a href="/forgot-password/" class="forgot-password-link">Forgot password?</a>
     </div>
 
     <div id="error-message" class="error-message" style="display: none;">
@@ -185,6 +186,18 @@ const { csrfToken } = Astro.props;
   .form-group input:focus {
     outline: 2px solid var(--color-primary, #0645ad);
     outline-offset: 2px;
+  }
+
+  .forgot-password-link {
+    font-size: 0.85rem;
+    color: var(--color-primary, #0645ad);
+    text-decoration: none;
+    align-self: flex-end;
+    margin-top: 0.25rem;
+  }
+
+  .forgot-password-link:hover {
+    text-decoration: underline;
   }
 
   .password-input-wrapper {

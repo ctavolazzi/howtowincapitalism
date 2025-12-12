@@ -1,54 +1,22 @@
 /**
- * Forgot Password API Endpoint
+ * POST /api/auth/forgot-password
  *
- * Generates a password reset token and sends email.
- * Returns ambiguous response regardless of email existence (security).
+ * Initiates password reset flow by sending reset email.
+ * Always returns success to prevent email enumeration attacks.
  */
-
 import type { APIRoute } from 'astro';
-import { getUserByEmail } from '../../../lib/auth/kv-auth';
-import { sendPasswordResetEmail } from '../../../lib/email/send-reset';
-import { validateCSRFToken, getRequestMetadata } from '../../../lib/auth/csrf';
+import { createPasswordReset } from '../../../lib/auth/kv-auth';
+import { sendPasswordResetEmail } from '../../../lib/email/send-password-reset';
 
-// Reset token expiry: 2 hours
-const RESET_TOKEN_TTL_SECONDS = 2 * 60 * 60;
-
-/**
- * Generate a secure random token
- */
-function generateResetToken(): string {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+// Simple email validation
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
-    const { email, csrf_token } = body;
-
-    // Validate CSRF token (only in production with CSRF_SECRET)
-    const csrfSecret = (locals as Record<string, unknown>).runtime?.env?.CSRF_SECRET;
-    if (csrfSecret) {
-      if (!csrf_token) {
-        return new Response(
-          JSON.stringify({ error: 'CSRF token required' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-
-      const { ip, country, userAgent } = getRequestMetadata(request);
-      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, ip, country, userAgent);
-      if (!csrfResult.valid) {
-        console.warn('CSRF validation failed:', csrfResult.error);
-        return new Response(
-          JSON.stringify({ error: 'Invalid CSRF token' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-    }
+    const { email } = body;
 
     if (!email) {
       return new Response(
@@ -57,56 +25,60 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Always return success message (security: don't reveal if email exists)
-    const ambiguousResponse = new Response(
+    if (!isValidEmail(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid email format' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check if KV is available
+    const hasKV = locals.runtime?.env?.USERS;
+    if (!hasKV) {
+      return new Response(
+        JSON.stringify({ error: 'Password reset not available in local development' }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { USERS } = locals.runtime.env;
+
+    // Create password reset request
+    const result = await createPasswordReset(USERS, email.toLowerCase());
+
+    // If user exists, send email
+    if (result) {
+      const resendApiKey = locals.runtime?.env?.RESEND_API_KEY;
+      if (resendApiKey) {
+        const emailResult = await sendPasswordResetEmail({
+          to: result.user.email,
+          name: result.user.name,
+          resetToken: result.resetToken,
+          apiKey: resendApiKey,
+        });
+
+        if (!emailResult.success) {
+          console.error('Failed to send password reset email:', emailResult.error);
+          // Don't reveal this to the user
+        }
+      } else {
+        console.warn('RESEND_API_KEY not configured - skipping password reset email');
+      }
+    }
+
+    // Always return success to prevent email enumeration
+    // Don't reveal whether the email exists or not
+    return new Response(
       JSON.stringify({
-        message: 'If an account exists with that email, you will receive a reset link shortly.',
+        success: true,
+        message: 'If an account exists with that email, you will receive a password reset link.',
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
-
-    // Check for KV availability
-    const USERS = (locals as Record<string, unknown>).runtime?.env?.USERS as KVNamespace | undefined;
-    const RESEND_API_KEY = (locals as Record<string, unknown>).runtime?.env?.RESEND_API_KEY as string | undefined;
-
-    if (!USERS || !RESEND_API_KEY) {
-      console.warn('KV or Resend not configured, skipping password reset');
-      return ambiguousResponse;
-    }
-
-    // Look up user by email
-    const user = await getUserByEmail(USERS, email);
-    if (!user) {
-      // Don't reveal that email doesn't exist
-      return ambiguousResponse;
-    }
-
-    // Generate reset token
-    const resetToken = generateResetToken();
-
-    // Store reset token in KV with TTL
-    await USERS.put(`reset:${resetToken}`, user.id, {
-      expirationTtl: RESET_TOKEN_TTL_SECONDS,
-    });
-
-    // Send reset email
-    const emailResult = await sendPasswordResetEmail({
-      to: user.email,
-      name: user.name,
-      resetToken,
-      apiKey: RESEND_API_KEY,
-    });
-
-    if (!emailResult.success) {
-      console.error('Failed to send reset email:', emailResult.error);
-      // Still return ambiguous response
-    }
-
-    return ambiguousResponse;
   } catch (error) {
     console.error('Forgot password error:', error);
     return new Response(
-      JSON.stringify({ error: 'An error occurred. Please try again.' }),
+      JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

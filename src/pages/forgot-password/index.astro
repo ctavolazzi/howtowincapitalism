@@ -2,11 +2,9 @@
 /**
  * Forgot Password Page
  *
- * Form to request a password reset email.
+ * Public page to request a password reset.
  */
-
-// Get CSRF token from middleware
-const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
+import ForgotPasswordForm from '../../components/auth/ForgotPasswordForm.astro';
 ---
 
 <!DOCTYPE html>
@@ -18,251 +16,96 @@ const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     :root {
-      --primary: #2c5282;
-      --primary-dark: #2b6cb0;
-      --text: #1a202c;
-      --text-muted: #718096;
-      --bg: #f5f5f5;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-      --error: #e53e3e;
-      --success: #38a169;
+      --color-bg: #ffffff;
+      --color-text: #202122;
+      --color-text-muted: #72777d;
+      --color-primary: #0645ad;
+      --color-border: #a2a9b1;
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-    }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .logo h1 {
-      font-size: 24px;
-      color: var(--primary);
-      font-weight: 700;
-    }
-
-    .title {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .title h2 {
-      font-size: 20px;
-      color: var(--text);
+    .site-title {
+      font-size: 1.25rem;
       font-weight: 600;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 16px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 14px 20px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
-    }
-
-    .btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .message {
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 20px;
-      display: none;
-    }
-
-    .message.error {
-      background-color: #fff5f5;
-      color: var(--error);
-      border: 1px solid #feb2b2;
-    }
-
-    .message.success {
-      background-color: #f0fff4;
-      color: var(--success);
-      border: 1px solid #9ae6b4;
-    }
-
-    .back-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .back-link a {
-      color: var(--primary);
+      color: var(--color-text);
       text-decoration: none;
-      font-size: 14px;
     }
 
-    .back-link a:hover {
-      text-decoration: underline;
+    .site-title:hover {
+      color: var(--color-primary);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+      color: var(--color-text-muted);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <div class="logo">
-        <h1>How To Win Capitalism</h1>
-      </div>
+  <header>
+    <a href="/" class="site-title">How To Win Capitalism</a>
+  </header>
 
-      <div class="title">
-        <h2>Forgot Password?</h2>
-      </div>
-
-      <p class="subtitle">
-        Enter your email address and we'll send you a link to reset your password.
-      </p>
-
-      <div id="error-message" class="message error"></div>
-      <div id="success-message" class="message success"></div>
-
-      <form id="forgot-form">
-        {csrfToken && <input type="hidden" name="csrf_token" value={csrfToken} />}
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            autocomplete="email"
-            placeholder="Enter your email"
-          />
-        </div>
-
-        <button type="submit" id="submit-btn" class="btn">
-          Send Reset Link
-        </button>
-      </form>
-
-      <div class="back-link">
-        <a href="/login/">Back to Login</a>
-      </div>
+  <main>
+    <div class="page-header">
+      <h1>Forgot Password</h1>
+      <p>Enter your email to receive a password reset link</p>
     </div>
-  </div>
+
+    <ForgotPasswordForm />
+  </main>
 
   <script>
-    const form = document.getElementById('forgot-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-    const errorMessage = document.getElementById('error-message') as HTMLDivElement;
-    const successMessage = document.getElementById('success-message') as HTMLDivElement;
+    import { checkAuth } from '../../lib/auth/api-client';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-      const email = formData.get('email') as string;
-      const csrfToken = formData.get('csrf_token') as string | null;
-
-      // Hide messages
-      errorMessage.style.display = 'none';
-      successMessage.style.display = 'none';
-
-      // Show loading state
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-
-      try {
-        const response = await fetch('/api/auth/forgot-password/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, csrf_token: csrfToken }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          successMessage.textContent = data.message || 'If an account exists with that email, you will receive a reset link shortly.';
-          successMessage.style.display = 'block';
-          form.reset();
-        } else {
-          errorMessage.textContent = data.error || 'Something went wrong. Please try again.';
-          errorMessage.style.display = 'block';
-        }
-      } catch (error) {
-        errorMessage.textContent = 'Network error. Please check your connection and try again.';
-        errorMessage.style.display = 'block';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Reset Link';
+    // If already logged in, redirect away
+    async function checkIfAlreadyLoggedIn() {
+      const { authenticated } = await checkAuth();
+      if (authenticated) {
+        window.location.href = '/';
       }
-    });
+    }
+
+    checkIfAlreadyLoggedIn();
   </script>
 </body>
 </html>

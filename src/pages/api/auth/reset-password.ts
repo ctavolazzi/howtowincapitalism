@@ -1,115 +1,122 @@
 /**
- * Reset Password API Endpoint
+ * POST /api/auth/reset-password
  *
- * Validates reset token and updates user's password.
- * Tokens are one-time use and deleted after successful reset.
+ * Resets password using a valid reset token.
  */
-
 import type { APIRoute } from 'astro';
-import { getUserById, hashPasswordV2 } from '../../../lib/auth/kv-auth';
-import { sendPasswordChangedEmail } from '../../../lib/email/send-reset';
-import { validateCSRFToken, getRequestMetadata } from '../../../lib/auth/csrf';
+import { resetPassword, validateResetToken } from '../../../lib/auth/kv-auth';
+
+// Password validation
+function isValidPassword(password: string): boolean {
+  // At least 8 chars, with at least one letter and one number
+  return password.length >= 8 && /[a-zA-Z]/.test(password) && /[0-9]/.test(password);
+}
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
-    const { token, password, csrf_token } = body;
+    const { token, password } = body;
 
-    if (!token || !password) {
+    if (!token) {
       return new Response(
-        JSON.stringify({ error: 'Token and password are required' }),
+        JSON.stringify({ error: 'Reset token is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Validate password length
-    if (password.length < 8) {
+    if (!password) {
       return new Response(
-        JSON.stringify({ error: 'Password must be at least 8 characters' }),
+        JSON.stringify({ error: 'Password is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Validate CSRF token (only in production with CSRF_SECRET)
-    const csrfSecret = (locals as Record<string, unknown>).runtime?.env?.CSRF_SECRET;
-    if (csrfSecret) {
-      if (!csrf_token) {
-        return new Response(
-          JSON.stringify({ error: 'CSRF token required' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
-
-      const { ip, country, userAgent } = getRequestMetadata(request);
-      const csrfResult = await validateCSRFToken(csrf_token, csrfSecret, ip, country, userAgent);
-      if (!csrfResult.valid) {
-        console.warn('CSRF validation failed:', csrfResult.error);
-        return new Response(
-          JSON.stringify({ error: 'Invalid CSRF token' }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
-        );
-      }
+    if (!isValidPassword(password)) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid password. Must be at least 8 characters with letters and numbers.',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Check for KV availability
-    const USERS = (locals as Record<string, unknown>).runtime?.env?.USERS as KVNamespace | undefined;
-    const RESEND_API_KEY = (locals as Record<string, unknown>).runtime?.env?.RESEND_API_KEY as string | undefined;
-
-    if (!USERS) {
+    // Check if KV is available
+    const hasKV = locals.runtime?.env?.USERS;
+    if (!hasKV) {
       return new Response(
-        JSON.stringify({ error: 'Service unavailable' }),
+        JSON.stringify({ error: 'Password reset not available in local development' }),
         { status: 503, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Look up user by reset token
-    const userId = await USERS.get(`reset:${token}`);
-    if (!userId) {
+    const { USERS } = locals.runtime.env;
+
+    // Reset password
+    const success = await resetPassword(USERS, token, password);
+
+    if (!success) {
       return new Response(
-        JSON.stringify({ error: 'Invalid or expired reset token' }),
+        JSON.stringify({
+          error: 'Invalid or expired reset link. Please request a new password reset.',
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
-    }
-
-    // Get user
-    const user = await getUserById(USERS, userId);
-    if (!user) {
-      return new Response(
-        JSON.stringify({ error: 'User not found' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Hash new password with V2 (PBKDF2)
-    const newPasswordHash = await hashPasswordV2(password);
-
-    // Update user's password
-    user.passwordHash = newPasswordHash;
-    await USERS.put(`user:${user.id}`, JSON.stringify(user));
-
-    // Delete the reset token (one-time use)
-    await USERS.delete(`reset:${token}`);
-
-    // Send confirmation email
-    if (RESEND_API_KEY) {
-      await sendPasswordChangedEmail({
-        to: user.email,
-        name: user.name,
-        apiKey: RESEND_API_KEY,
-      });
     }
 
     return new Response(
       JSON.stringify({
-        message: 'Password reset successful! You can now log in with your new password.',
+        success: true,
+        message: 'Password reset successful. You can now log in with your new password.',
       }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
     console.error('Reset password error:', error);
     return new Response(
-      JSON.stringify({ error: 'An error occurred. Please try again.' }),
+      JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
+};
+
+/**
+ * GET /api/auth/reset-password?token=xxx
+ *
+ * Validates a reset token without using it.
+ * Used to check if token is valid before showing reset form.
+ */
+export const GET: APIRoute = async ({ url, locals }) => {
+  const token = url.searchParams.get('token');
+
+  if (!token) {
+    return new Response(
+      JSON.stringify({ valid: false, error: 'Token is required' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Check if KV is available
+  const hasKV = locals.runtime?.env?.USERS;
+  if (!hasKV) {
+    return new Response(
+      JSON.stringify({ valid: false, error: 'Service unavailable' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const { USERS } = locals.runtime.env;
+
+  const result = await validateResetToken(USERS, token);
+
+  if (!result) {
+    return new Response(
+      JSON.stringify({ valid: false, error: 'Invalid or expired token' }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  return new Response(
+    JSON.stringify({ valid: true, email: result.email }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  );
 };
