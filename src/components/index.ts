@@ -1,6 +1,6 @@
 /**
  * Component Registry
- * Updated: 2025-12-09
+ * Updated: 2025-12-13
  *
  * ACTIVE (in use on pages):
  *   Atoms:     WikiBox, Breadcrumbs, Collapsible
@@ -8,6 +8,7 @@
  *   Utilities: Empty, CardGrid
  *   Organisms: Footer
  *   Guards:    OwnerGuard
+ *   Trade:     TradeWidget
  *
  * AVAILABLE (exported, not currently used):
  *   Organisms: Hero
@@ -45,6 +46,9 @@ export { default as OwnerGuard } from './guards/OwnerGuard.astro';
 
 // Search
 export { default as GlobalSearch } from './search/GlobalSearch.astro';
+
+// Trade
+export { default as TradeWidget } from './trade/TradeWidget.astro';
 
 // Reserved for future use
 export { default as InfoBox } from './molecules/InfoBox.astro';

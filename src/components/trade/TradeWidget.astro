@@ -1,0 +1,208 @@
+---
+/**
+ * TRADEWIDGET - One Red Paperclip Trading Component
+ *
+ * Fetches current item from GitHub (ctavolazzi/open-shelf)
+ * Display modes: inline, banner
+ *
+ * To update item: Edit trade/current.json in open-shelf repo
+ */
+
+export interface Props {
+  mode?: 'inline' | 'banner';
+  class?: string;
+}
+
+const { mode = 'inline', class: className } = Astro.props;
+
+const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/trade/current.json';
+---
+
+<trade-widget
+  class:list={['trade-widget', `trade-widget--${mode}`, className]}
+  data-url={DATA_URL}
+>
+  <div class="trade-widget__loading">Loading trade item...</div>
+</trade-widget>
+
+<script>
+  class TradeWidgetElement extends HTMLElement {
+    connectedCallback() {
+      this.loadData();
+    }
+
+    async loadData() {
+      const url = this.dataset.url;
+      if (!url) {
+        this.showError();
+        return;
+      }
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        this.render(data);
+      } catch (e) {
+        this.showError();
+      }
+    }
+
+    showError() {
+      this.innerHTML = '<p class="trade-widget__error">Trade widget unavailable</p>';
+    }
+
+    render(data: { name: string; description: string; tradeNumber: number; email: string }) {
+      const subject = encodeURIComponent(`Trade Offer for: ${data.name}`);
+      const body = encodeURIComponent(`Hi! I'd like to trade for your ${data.name}.\n\nI'm offering:\n\n`);
+
+      this.innerHTML = `
+        <header class="trade-widget__header">
+          <span class="trade-widget__badge">Trade #${data.tradeNumber}</span>
+          <span class="trade-widget__title">Currently Trading</span>
+        </header>
+        <div class="trade-widget__content">
+          <p class="trade-widget__item-name">${data.name}</p>
+          <p class="trade-widget__item-desc">${data.description}</p>
+        </div>
+        <a href="mailto:${data.email}?subject=${subject}&body=${body}" class="trade-widget__cta">
+          Make an Offer
+        </a>
+      `;
+    }
+  }
+
+  customElements.define('trade-widget', TradeWidgetElement);
+</script>
+
+<style>
+  /* Base styles */
+  .trade-widget {
+    border: 1px solid var(--color-border, #a2a9b1);
+    background: var(--color-surface, #f8f9fa);
+    padding: 1rem;
+    max-width: 20rem;
+    font-family: inherit;
+  }
+
+  .trade-widget__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .trade-widget__badge {
+    font-size: 0.75rem;
+    background: var(--color-text, #202122);
+    color: var(--color-bg, #fff);
+    padding: 0.125rem 0.5rem;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .trade-widget__title {
+    font-size: 1rem;
+    color: var(--color-text-muted, #666);
+  }
+
+  .trade-widget__content {
+    margin-bottom: 1rem;
+  }
+
+  .trade-widget__item-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0 0 0.25rem;
+    color: var(--color-text, #202122);
+  }
+
+  .trade-widget__item-desc {
+    margin: 0;
+    color: var(--color-text-muted, #666);
+  }
+
+  .trade-widget__cta {
+    display: block;
+    text-align: center;
+    background: var(--color-link, #0645ad);
+    color: var(--color-bg, #fff);
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 2px;
+  }
+
+  .trade-widget__cta:hover {
+    opacity: 0.9;
+  }
+
+  .trade-widget__loading,
+  .trade-widget__error {
+    color: var(--color-text-muted, #666);
+    font-style: italic;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .trade-widget__error {
+    color: var(--color-warning, #d33);
+  }
+
+  /* Banner mode */
+  .trade-widget--banner {
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .trade-widget--banner .trade-widget__header {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .trade-widget--banner .trade-widget__content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    margin: 0;
+  }
+
+  .trade-widget--banner .trade-widget__item-name {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .trade-widget--banner .trade-widget__item-desc {
+    font-size: 0.875rem;
+  }
+
+  .trade-widget--banner .trade-widget__cta {
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Responsive: stack banner on small screens */
+  @media (max-width: 600px) {
+    .trade-widget--banner {
+      flex-wrap: wrap;
+    }
+
+    .trade-widget--banner .trade-widget__content {
+      flex-basis: 100%;
+      order: 2;
+      margin-top: 0.5rem;
+    }
+
+    .trade-widget--banner .trade-widget__cta {
+      order: 3;
+      flex-basis: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+</style>
