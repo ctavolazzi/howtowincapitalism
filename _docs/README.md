@@ -11,6 +11,7 @@ This folder contains internal documentation, architecture notes, and development
 | `DEVLOG.md` | Development log index |
 | `devlog/YYYY-MM-DD_devlog.md` | Daily development entries |
 | `status_reports/` | Project status reports |
+| `COMPONENT_PLANNING_PROCESS.md` | Component planning methodology |
 
 ## Quick Links
 
@@ -27,6 +28,7 @@ This folder contains internal documentation, architecture notes, and development
 | `/.cursor/rules/` | Cursor AI rules for project conventions |
 | `/src/lib/tools/README.md` | Tools API reference |
 | `/_work_efforts/README.md` | Work efforts system guide |
+| `/_planning/` | Component planning templates and sessions |
 
 ## Cursor Rules
 
