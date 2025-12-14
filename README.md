@@ -206,10 +206,10 @@ The site requires login to access content. Uses **Cloudflare KV** for storage an
 
 | Email | Password | Role |
 |-------|----------|------|
-| admin@email.com | Adm!n_Secure_2024# | admin |
-| editor@email.com | Ed!tor_Access_2024# | editor |
-| contributor@email.com | Contr!b_Pass_2024# | contributor |
-| viewer@email.com | V!ewer_Read_2024# | viewer |
+| admin@email.com | test_admin1 | admin |
+| editor@email.com | test_editor1 | editor |
+| contributor@email.com | test_contrib1 | contributor |
+| viewer@email.com | test_viewer1 | viewer |
 
 ### How It Works
 

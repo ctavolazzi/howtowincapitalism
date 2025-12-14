@@ -480,27 +480,27 @@ it('should return null for missing user')
 export const TEST_CREDENTIALS = {
   admin: {
     email: 'admin@email.com',
-    password: 'Adm!n_Secure_2024#',
+    password: 'test_admin1',
     role: 'admin',
   },
   editor: {
     email: 'editor@email.com',
-    password: 'Ed!tor_Access_2024#',
+    password: 'test_editor1',
     role: 'editor',
   },
   contributor: {
     email: 'contributor@email.com',
-    password: 'Contr!b_Pass_2024#',
+    password: 'test_contrib1',
     role: 'contributor',
   },
   viewer: {
     email: 'viewer@email.com',
-    password: 'V!ewer_Read_2024#',
+    password: 'test_viewer1',
     role: 'viewer',
   },
 };
 
-export const SITE_PASSWORD = 'test-site-password';
+export const SITE_PASSWORD = 'unlockmenow';
 ```
 
 ### Helper Functions

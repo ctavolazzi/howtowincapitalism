@@ -66,7 +66,7 @@ test('capture v0.0.1 auth flow snapshots', async ({ page }) => {
   await page.fill('#username', 'snapuser');
   await page.fill('#name', 'Snapshot User');
   await page.fill('#email', 'snap@example.com');
-  await page.fill('#password', 'SnapPass123');
+  await page.fill('#password', 'test_snap1');
   await page.click('#register-button');
   await page.waitForSelector('#error-message', { state: 'visible' });
   await save('07_register-unavailable_v0.0.1.png');

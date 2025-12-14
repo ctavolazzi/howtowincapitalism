@@ -41,7 +41,7 @@ test.describe('Login Page', () => {
     await page.goto('/login/');
 
     await page.fill('input[name="email"]', 'wrong@email.com');
-    await page.fill('input[name="password"]', 'wrongpassword');
+    await page.fill('input[name="password"]', 'wrongpass');
     await page.click('button[type="submit"]');
 
     // Should show error message
@@ -197,7 +197,7 @@ test.describe('Auth API Endpoints', () => {
     const response = await request.post('/api/auth/login/', {
       data: {
         email: 'invalid@email.com',
-        password: 'wrongpassword',
+        password: 'wrongpass',
       },
     });
     const data = await response.json();

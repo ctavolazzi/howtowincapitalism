@@ -57,10 +57,10 @@ function hashPasswordV2(password) {
 // Development-only passwords (safe to commit - NOT used in production)
 // pragma: allowlist secret
 const DEV_PASSWORDS = {
-  admin: 'DevAdmin_Local_2024#',      // pragma: allowlist secret
-  editor: 'DevEditor_Local_2024#',    // pragma: allowlist secret
-  contributor: 'DevContrib_Local_2024#', // pragma: allowlist secret
-  viewer: 'DevViewer_Local_2024#',    // pragma: allowlist secret
+  admin: 'test_admin1',
+  editor: 'test_editor1',   
+  contributor: 'test_contrib1',
+  viewer: 'test_viewer1',   
 };
 
 // Get password for a role (production from env, dev from fallback)
@@ -182,10 +182,10 @@ console.log(`\nEnvironment: ${isPreview ? 'PREVIEW (local dev)' : 'PRODUCTION'}`
 
 if (isPreview) {
   console.log('\n📋 Development credentials (for local testing only):');
-  console.log('  admin@email.com / DevAdmin_Local_2024#');
-  console.log('  editor@email.com / DevEditor_Local_2024#');
-  console.log('  contributor@email.com / DevContrib_Local_2024#');
-  console.log('  viewer@email.com / DevViewer_Local_2024#');
+  console.log('  admin@email.com / test_admin1');
+  console.log('  editor@email.com / test_editor1');
+  console.log('  contributor@email.com / test_contrib1');
+  console.log('  viewer@email.com / test_viewer1');
 } else {
   console.log('\n🔐 Production credentials are stored in Cloudflare environment variables.');
   console.log('   See Cloudflare Dashboard > Pages > Settings > Environment variables');

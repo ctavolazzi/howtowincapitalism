@@ -2,25 +2,26 @@
 
 > Complete documentation for the authentication and authorization system
 >
-> Last Updated: 2025-12-14
+> Last Updated: 2025-12-15
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Authentication Flow](#authentication-flow)
-4. [Password Security](#password-security)
-5. [Session Management](#session-management)
-6. [Email Confirmation](#email-confirmation)
-7. [Password Reset](#password-reset)
-8. [Role-Based Access Control](#role-based-access-control)
-9. [Rate Limiting](#rate-limiting)
-10. [CSRF Protection](#csrf-protection)
-11. [Client-Side Integration](#client-side-integration)
-12. [Development Mode](#development-mode)
-13. [File Reference](#file-reference)
+2. [One-Size-Fits-Most Authentication Playbook](#one-size-fits-most-authentication-playbook)
+3. [Architecture](#architecture)
+4. [Authentication Flow](#authentication-flow)
+5. [Password Security](#password-security)
+6. [Session Management](#session-management)
+7. [Email Confirmation](#email-confirmation)
+8. [Password Reset](#password-reset)
+9. [Role-Based Access Control](#role-based-access-control)
+10. [Rate Limiting](#rate-limiting)
+11. [CSRF Protection](#csrf-protection)
+12. [Client-Side Integration](#client-side-integration)
+13. [Development Mode](#development-mode)
+14. [File Reference](#file-reference)
 
 ---
 
@@ -40,6 +41,53 @@ The authentication system uses **Cloudflare KV** for storage and **httpOnly cook
 | Account Lockout | After 20 failed attempts |
 | Email Confirmation | Required for new accounts |
 | Password Reset | Secure token-based |
+
+---
+
+## One-Size-Fits-Most Authentication Playbook
+
+### Design Principles
+- Server-side sessions with httpOnly, Secure, SameSite=Strict cookies; avoid localStorage/sessionStorage for secrets.
+- API-first integrations; keep authentication logic on the server so it can evolve without client redeploys.
+- Defense-in-depth: CSRF on state-changing POSTs, rate limits + lockouts, bot/risk controls, and email confirmation.
+- Progressive security: MFA (TOTP or WebAuthn) for high-value actions; step-up for admin/sensitive changes.
+- Observability-first: structured logs for auth events, alerts on anomaly spikes, and PII minimization.
+
+### Baseline Controls
+| Area | Controls |
+|------|----------|
+| Passwords | PBKDF2/Argon2 with per-user salts, constant-time compares, legacy hash migration on login |
+| Sessions | 24h TTL (shorter for admin), idle timeout, rotation on privilege change, optional single active session |
+| CSRF | AES-GCM encrypted tokens; required on all state-changing endpoints |
+| Bot/Risk | Turnstile/CAPTCHA on login/registration/reset, IP+email velocity limits, timing/replay checks |
+| Registration Hygiene | Disposable email blocking, password strength checks, honeypot + minimum form time |
+| Email Security | Mandatory verification before login; signed DKIM/SPF; short-lived confirm/reset tokens |
+| Transport/Headers | HTTPS-only, HSTS, CSP, X-Frame-Options, Referrer-Policy, strict cookie flags |
+
+### Reliability & Operations
+- Error handling: user-safe messages; log technical details separately.
+- Metrics to watch: login success/fail ratio, rate-limit hits, reset/confirm sends, MFA prompts vs successes.
+- Alerting: spikes in failures, repeated lockouts, bounce rates on email confirmation/reset.
+- Secret/key rotation: session secrets and token salts on a schedule; rehearse rotation playbook.
+- Break-glass: hardware 2FA-backed admin account with audited use.
+
+### RBAC & Tenancy
+- Enforce roles/permissions server-side only; never trust client flags.
+- Keep a clear permission matrix and map routes/actions to permissions.
+- If/when org tenancy is needed: namespace policies per org, scope audit logs to org, and enforce org-bound MFA rules.
+
+### When to Add an External IdP
+- Add an IdP (e.g., Stytch) when you need SAML/SCIM/OIDC, org-level policy controls, compliance attestations, or high-assurance MFA and device/risk scoring.
+- Prefer API-first providers to keep rendering and sessions on our side (Workers + cookies) while delegating identity proofing.
+- Avoid dashboard-only, frame-based login flows that add latency or weaken control over headers and cookies.
+
+### Implementation Checklist for This Project (Cloudflare Workers + KV)
+- Keep KV + cookie sessions as the primary path; ensure CSRF is enforced on all auth POSTs.
+- Add passkeys/WebAuthn as MFA (not sole factor) and retain TOTP recovery codes.
+- Apply Turnstile to login, registration, and password reset initiation; enforce IP/email velocity limits already configured in `rate-limit.ts`.
+- Instrument auth events (login success/fail, reset sent, confirm sent, MFA step-up) with structured logs; add alert thresholds.
+- Rotate session secrets and PBKDF2 parameters on a schedule; migrate legacy hashes on next login (already supported in `kv-auth.ts`).
+- Maintain SPF/DKIM alignment for auth emails; monitor bounce/complaint rates.
 
 ---
 
@@ -839,8 +887,8 @@ When KV is not available (local development), the system falls back to mock auth
 // src/lib/auth/local-auth.ts
 
 const MOCK_USERS = [
-  { id: 'admin', email: 'admin@email.com', password: 'Adm!n_Secure_2024#', role: 'admin' },
-  { id: 'editor', email: 'editor@email.com', password: 'Ed!tor_Access_2024#', role: 'editor' },
+  { id: 'admin', email: 'admin@email.com', password: 'test_admin1', role: 'admin' },
+  { id: 'editor', email: 'editor@email.com', password: 'test_editor1', role: 'editor' },
   // ...
 ];
 

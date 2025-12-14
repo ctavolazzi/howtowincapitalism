@@ -25,7 +25,7 @@ test.describe('Rate Limiting', () => {
         request.post('/api/auth/login/', {
           data: {
             email: 'test@example.com',
-            password: 'wrongpassword',
+            password: 'wrongpass',
           },
         })
       );
@@ -49,7 +49,7 @@ test.describe('Rate Limiting', () => {
         username: `testuser${Date.now()}`,
         name: 'Test User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -67,7 +67,7 @@ test.describe('Disposable Email Blocking', () => {
         username: `tempusr${timestamp}`.slice(0, 20), // Ensure valid length
         name: 'Temp User',
         email: 'test@tempmail.com',
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -88,7 +88,7 @@ test.describe('Disposable Email Blocking', () => {
         username: `gusr${timestamp}`.slice(0, 20),
         name: 'Guerrilla User',
         email: 'test@guerrillamail.com',
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -102,7 +102,7 @@ test.describe('Disposable Email Blocking', () => {
         username: `musr${timestamp}`.slice(0, 20),
         name: 'Mail User',
         email: 'test@mailinator.com',
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -118,7 +118,7 @@ test.describe('Disposable Email Blocking', () => {
         username: `vusr${timestamp}`.slice(0, 20),
         name: 'Valid User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -138,7 +138,7 @@ test.describe('Honeypot Detection', () => {
         username: `botusr${timestamp}`.slice(0, 20),
         name: 'Bot User',
         email: `bot${timestamp}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         hp_field: 'bot-filled-this', // Honeypot field filled
       },
     });
@@ -160,7 +160,7 @@ test.describe('Honeypot Detection', () => {
         username: `husr${timestamp}`.slice(0, 20),
         name: 'Human User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         hp_field: '', // Honeypot empty - looks human
       },
     });
@@ -179,7 +179,7 @@ test.describe('Time-Based Detection', () => {
         username: `fbot${timestamp}`.slice(0, 20),
         name: 'Fast Bot',
         email: `fast${timestamp}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         form_timestamp: String(Date.now()), // Submitted instantly
       },
     });
@@ -199,7 +199,7 @@ test.describe('Time-Based Detection', () => {
         username: `nusr${timestamp}`.slice(0, 20),
         name: 'Normal User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         form_timestamp: String(Date.now() - 5000), // 5 seconds ago
       },
     });
@@ -269,7 +269,7 @@ test.describe('Username Validation', () => {
         username: 'invalid username',
         name: 'Test User',
         email: `test${Date.now()}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -286,7 +286,7 @@ test.describe('Username Validation', () => {
         username: 'ab', // Too short
         name: 'Test User',
         email: `test${Date.now()}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -299,7 +299,7 @@ test.describe('Username Validation', () => {
         username: 'a'.repeat(21), // Too long
         name: 'Test User',
         email: `test${Date.now()}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 

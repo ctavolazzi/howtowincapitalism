@@ -102,7 +102,7 @@ test.describe('Admin Create User API', () => {
         username: `admintest${Date.now()}`,
         name: 'Admin Test',
         email: 'not-an-email',
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -117,7 +117,7 @@ test.describe('Admin Create User API', () => {
         username: 'invalid username',
         name: 'Admin Test',
         email: `test${Date.now()}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -132,7 +132,7 @@ test.describe('Admin Create User API', () => {
         username: `admintest${Date.now()}`,
         name: 'Admin Test',
         email: `test${Date.now()}@example.com`,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         role: 'superadmin', // Invalid role
       },
     });
@@ -151,7 +151,7 @@ test.describe('Admin Create User API', () => {
         username: uniqueUsername,
         name: 'Admin Test User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         role: 'viewer',
       },
     });

@@ -1,9 +1,22 @@
 # Development Log
 
 > **Note:** Daily devlogs are now in `_docs/devlog/` with format `YYYY-MM-DD_devlog.md`
-> - [2025-12-14_devlog.md](devlog/2025-12-14_devlog.md) — Current session
-> - [2025-12-09_devlog.md](devlog/2025-12-09_devlog.md) — Previous session
+> - [2025-12-15_devlog.md](devlog/2025-12-15_devlog.md) — Current session
+> - [2025-12-14_devlog.md](devlog/2025-12-14_devlog.md) — Previous session
+> - [2025-12-09_devlog.md](devlog/2025-12-09_devlog.md) — Earlier session
 > - [2025-12-08_devlog.md](devlog/2025-12-08_devlog.md) — Earlier session
+
+---
+
+## December 15, 2025
+
+### Session: Auth Playbook Baseline
+
+**Time:** Morning
+
+**Highlights**
+- Added a one-size-fits-most authentication playbook to `_docs/technical/AUTHENTICATION.md`, covering baseline controls, reliability/ops, RBAC/tenancy, IdP triggers, and a project-specific checklist.
+- Logged work effort `10.14_auth_playbook_baseline` to track follow-up items (MFA expansion, telemetry/alerts).
 
 ---
 
@@ -257,4 +270,3 @@ npm run ship "message"          # Build → Commit → Push → Deploy
 npm run og-image     # Regenerate social image
 npm run icons        # Regenerate PWA icons
 ```
-

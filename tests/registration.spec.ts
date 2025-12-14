@@ -17,7 +17,7 @@ const TEST_USER = {
   username: 'folktechnica',
   name: 'Folk Technica',
   email: 'folktechnica@gmail.com',
-  password: 'UserPass1234',
+  password: 'test_user1',
 };
 
 test.describe('Registration Page', () => {
@@ -64,7 +64,7 @@ test.describe('Registration Form Validation', () => {
     await page.fill('input[name="username"]', 'testuser');
     await page.fill('input[name="name"]', 'Test User');
     await page.fill('input[name="email"]', 'notanemail');
-    await page.fill('input[name="password"]', 'ValidPass123');
+    await page.fill('input[name="password"]', 'test_pass1');
     await page.click('button[type="submit"]');
 
     // Wait for error message to appear
@@ -98,7 +98,7 @@ test.describe('Registration Form Validation', () => {
     await page.fill('input[name="username"]', 'invalid username');
     await page.fill('input[name="name"]', 'Test User');
     await page.fill('input[name="email"]', 'test@example.com');
-    await page.fill('input[name="password"]', 'ValidPass123');
+    await page.fill('input[name="password"]', 'test_pass1');
     await page.click('button[type="submit"]');
 
     // Wait for error message to appear
@@ -142,7 +142,7 @@ test.describe('Duplicate Registration', () => {
     await page.fill('input[name="username"]', 'newadmin');
     await page.fill('input[name="name"]', 'New Admin');
     await page.fill('input[name="email"]', 'admin@email.com'); // Already exists
-    await page.fill('input[name="password"]', 'ValidPass123');
+    await page.fill('input[name="password"]', 'test_pass1');
 
     await page.waitForTimeout(3500);
     await page.click('button[type="submit"]');
@@ -169,7 +169,7 @@ test.describe('Registration API Endpoints', () => {
         username: 'testuser',
         name: 'Test User',
         email: 'not-an-email',
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -199,7 +199,7 @@ test.describe('Registration API Endpoints', () => {
         username: 'newadmin',
         name: 'New Admin',
         email: 'admin@email.com', // Already exists
-        password: 'ValidPass123',
+        password: 'test_pass1',
       },
     });
 
@@ -221,7 +221,7 @@ test.describe('Registration API Endpoints', () => {
         username: `tusr${timestamp}`.slice(0, 20),
         name: 'Test User',
         email: uniqueEmail,
-        password: 'ValidPass123',
+        password: 'test_pass1',
         form_timestamp: String(Date.now() - 5000), // Pass time-based detection
       },
     });
@@ -278,7 +278,7 @@ test.describe('Unconfirmed User Cannot Login', () => {
     await page.fill('input[name="username"]', `unc${timestamp}`.slice(0, 20));
     await page.fill('input[name="name"]', 'Unconfirmed User');
     await page.fill('input[name="email"]', uniqueEmail);
-    await page.fill('input[name="password"]', 'ValidPass123');
+    await page.fill('input[name="password"]', 'test_pass1');
 
     await page.waitForTimeout(3500);
     await page.click('button[type="submit"]');
@@ -297,7 +297,7 @@ test.describe('Unconfirmed User Cannot Login', () => {
     // Try to login with unconfirmed email
     await page.goto('/login/');
     await page.fill('input[name="email"]', uniqueEmail);
-    await page.fill('input[name="password"]', 'ValidPass123');
+    await page.fill('input[name="password"]', 'test_pass1');
     await page.click('button[type="submit"]');
 
     // Should show error about confirming email

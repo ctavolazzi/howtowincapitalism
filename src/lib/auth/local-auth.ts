@@ -21,10 +21,10 @@
  *
  * | Role        | Email               | Password               |
  * |-------------|---------------------|------------------------|
- * | admin       | admin@email.com     | DevAdmin_Local_2024#   |
- * | editor      | editor@email.com    | DevEditor_Local_2024#  |
- * | contributor | contributor@email.com| DevContrib_Local_2024# |
- * | viewer      | viewer@email.com    | DevViewer_Local_2024#  |
+ * | admin       | admin@email.com     | test_admin1   |
+ * | editor      | editor@email.com    | test_editor1  |
+ * | contributor | contributor@email.com| test_contrib1 |
+ * | viewer      | viewer@email.com    | test_viewer1  |
  *
  * ## Key Differences from Production
  *
@@ -52,12 +52,12 @@ export interface LocalUser {
 // These are DEVELOPMENT-ONLY credentials, NOT used in production.
 // Production credentials are stored in Cloudflare KV (seeded via env vars).
 // =============================================================================
-// pragma: allowlist nextline secret
+
 const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   admin: {
     id: 'admin',
     email: 'admin@email.com',
-    password: 'DevAdmin_Local_2024#', // pragma: allowlist secret
+    password: 'test_admin1', 
     name: 'Admin User',
     role: 'admin',
     accessLevel: 10,
@@ -67,7 +67,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   editor: {
     id: 'editor',
     email: 'editor@email.com',
-    password: 'DevEditor_Local_2024#', // pragma: allowlist secret
+    password: 'test_editor1', 
     name: 'Editor User',
     role: 'editor',
     accessLevel: 5,
@@ -77,7 +77,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   contributor: {
     id: 'contributor',
     email: 'contributor@email.com',
-    password: 'DevContrib_Local_2024#', // pragma: allowlist secret
+    password: 'test_contrib1', 
     name: 'Contributor User',
     role: 'contributor',
     accessLevel: 3,
@@ -87,7 +87,7 @@ const MOCK_USERS: Record<string, LocalUser & { password: string }> = {
   viewer: {
     id: 'viewer',
     email: 'viewer@email.com',
-    password: 'DevViewer_Local_2024#', // pragma: allowlist secret
+    password: 'test_viewer1', 
     name: 'Viewer User',
     role: 'viewer',
     accessLevel: 1,

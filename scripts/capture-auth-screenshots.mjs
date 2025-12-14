@@ -11,7 +11,7 @@ import path from 'node:path';
 
 const baseUrl = process.env.AUTH_SNAPSHOT_BASE_URL || 'http://localhost:4321';
 const loginEmail = process.env.AUTH_SNAPSHOT_EMAIL || 'viewer@email.com';
-const loginPassword = process.env.AUTH_SNAPSHOT_PASSWORD || 'V!ewer_Read_2024#';
+const loginPassword = process.env.AUTH_SNAPSHOT_PASSWORD || 'test_viewer1';
 
 const screenshotDir = path.resolve('_docs/screenshots/auth-flow/v0.0.1');
 fs.mkdirSync(screenshotDir, { recursive: true });
