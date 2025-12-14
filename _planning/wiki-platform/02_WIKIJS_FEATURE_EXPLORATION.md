@@ -157,15 +157,15 @@ Permissions (per group, per page path)
 **Core Tables:**
 ```sql
 -- Pages
-pages: id, path, hash, title, description, isPrivate, 
+pages: id, path, hash, title, description, isPrivate,
        isPublished, content, render, toc, contentType,
        createdAt, updatedAt, editorKey, localeCode,
        authorId, creatorId
 
 -- Page History (Revisions)
-pageHistory: id, path, hash, title, description, 
-             isPrivate, isPublished, content, 
-             action, actionDate, authorId, 
+pageHistory: id, path, hash, title, description,
+             isPrivate, isPublished, content,
+             action, actionDate, authorId,
              pageId, versionNumber
 
 -- Page Links (for "what links here")
@@ -177,11 +177,11 @@ pageTags: id, tag, title, createdAt, updatedAt
 -- Users
 users: id, email, name, providerId, password,
        tfaIsActive, tfaSecret, jobTitle, location,
-       pictureUrl, timezone, isSystem, isActive, 
+       pictureUrl, timezone, isSystem, isActive,
        isVerified, mustChangePwd, createdAt, updatedAt
 
 -- Groups
-groups: id, name, permissions, pageRules, 
+groups: id, name, permissions, pageRules,
         isSystem, createdAt, updatedAt
 
 -- User Groups (many-to-many)

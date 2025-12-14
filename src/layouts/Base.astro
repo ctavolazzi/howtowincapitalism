@@ -79,29 +79,28 @@ const currentPath = Astro.url.pathname;
         }
       }, 100);
     }
+  </script>
 
-    // Minimal cookie consent (essential-only)
-    const consentKey = 'htwc_cookie_consent';
-    const consentBanner = document.getElementById('cookie-consent');
-    const consentButton = document.getElementById('cookie-accept');
+  <!-- Cookie consent script - inline to ensure DOM is ready -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+      var consentKey = 'htwc_cookie_consent';
+      var consentBanner = document.getElementById('cookie-consent');
+      var consentButton = document.getElementById('cookie-accept');
 
-    function hideConsent() {
-      if (consentBanner) consentBanner.hidden = true;
-    }
+      if (!consentBanner || !consentButton) return;
 
-    if (typeof window !== 'undefined') {
-      const consent = window.localStorage.getItem(consentKey);
-      if (!consent && consentBanner) {
+      // Show banner if no consent recorded
+      if (!localStorage.getItem(consentKey)) {
         consentBanner.hidden = false;
       }
 
-      if (consentButton) {
-        consentButton.addEventListener('click', () => {
-          window.localStorage.setItem(consentKey, 'accepted');
-          hideConsent();
-        });
-      }
-    }
+      // Handle button click
+      consentButton.onclick = function() {
+        localStorage.setItem(consentKey, 'accepted');
+        consentBanner.hidden = true;
+      };
+    });
   </script>
 </body>
 </html>
@@ -325,6 +324,7 @@ const currentPath = Astro.url.pathname;
     color: var(--color-text);
     border: 1px solid var(--color-border);
     border-radius: 6px;
+    z-index: 9999;
     padding: var(--space-md);
     display: flex;
     gap: var(--space-md);
