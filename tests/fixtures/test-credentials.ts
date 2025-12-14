@@ -40,3 +40,5 @@ export const SITE_PASSWORD = 'unlockmenow';
 // Type exports for convenience
 export type TestUserRole = keyof typeof TEST_CREDENTIALS;
 export type TestUser = (typeof TEST_CREDENTIALS)[TestUserRole];
+
+

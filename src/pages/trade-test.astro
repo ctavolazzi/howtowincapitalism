@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { TradeWidget } from '../components';
+---
+
+<Base title="Trade Widget Test">
+  <h1>Trade Widget Test</h1>
+
+  <h2>Inline Mode</h2>
+  <TradeWidget />
+
+  <h2 style="margin-top: 2rem;">Banner Mode</h2>
+  <TradeWidget mode="banner" />
+</Base>
