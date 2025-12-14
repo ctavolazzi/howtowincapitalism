@@ -1,8 +1,62 @@
 /**
- * Rate Limiting Module
+ * @fileoverview Rate Limiting Module for Authentication
  *
- * Uses Cloudflare KV to track and limit login/registration attempts.
- * Protects against brute force and credential stuffing attacks.
+ * Provides comprehensive rate limiting for login and registration endpoints
+ * using Cloudflare KV for distributed tracking. Protects against brute force
+ * attacks, credential stuffing, and automated abuse.
+ *
+ * @module lib/auth/rate-limit
+ * @see {@link module:lib/auth/kv-auth} - Core authentication functions
+ * @see {@link module:pages/api/auth/login} - Login endpoint using rate limiting
+ * @see {@link module:pages/api/auth/register} - Registration endpoint using rate limiting
+ *
+ * ## Rate Limit Configuration
+ *
+ * | Action   | Scope  | Limit | Window    | Purpose                      |
+ * |----------|--------|-------|-----------|------------------------------|
+ * | Login    | IP     | 5     | 15 min    | Prevent brute force          |
+ * | Login    | Email  | 10    | 1 hour    | Protect individual accounts  |
+ * | Register | IP     | 3     | 1 hour    | Prevent mass registration    |
+ * | Register | Global | 100   | 24 hours  | System-wide protection       |
+ *
+ * ## Account Lockout
+ *
+ * After 20 consecutive failed login attempts on an account:
+ * - Account is locked for 1 hour
+ * - Lockout persists even if IP changes (protects against distributed attacks)
+ * - Counter resets on successful login
+ *
+ * ## KV Key Patterns
+ *
+ * ```
+ * rate:login:ip:{ip}        → IP-based login rate tracking
+ * rate:login:email:{email}  → Email-based login rate tracking
+ * rate:register:ip:{ip}     → IP-based registration tracking
+ * rate:register:daily       → Global daily registration counter
+ * failed:{email}            → Failed attempt counter for lockout
+ * lockout:{email}           → Active lockout record
+ * ```
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * // Check rate limit before processing
+ * const { allowed, retryAfter, reason } = await checkRateLimit(
+ *   kv, 'login', { ip, email }
+ * );
+ * if (!allowed) {
+ *   return new Response(JSON.stringify({ error: reason }), {
+ *     status: 429,
+ *     headers: getRateLimitHeaders(retryAfter)
+ *   });
+ * }
+ *
+ * // Record the attempt after processing
+ * await recordRateLimitedAction(kv, 'login', { ip, email }, success);
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Rate limit configuration

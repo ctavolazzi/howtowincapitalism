@@ -1,16 +1,40 @@
 /**
- * Auth Store
+ * @fileoverview Authentication State Store
  *
- * Client-side authentication state management using nanostores.
- * Persists to localStorage for session persistence across page loads.
+ * Client-side authentication state management using nanostores with
+ * localStorage persistence. Maintains the current user's login status
+ * and syncs with userStore for profile data updates.
  *
- * SYNCS WITH: userStore.ts (the single source of truth for user data)
+ * @module lib/auth/store
+ * @see {@link module:lib/auth/userStore} - User profile data (syncs with this)
+ * @see {@link module:lib/auth/permissions} - Permission checking
+ * @see {@link module:lib/auth/api-client} - API authentication calls
  *
- * Flow:
- *   1. login() validates credentials via userStore
- *   2. On success, copies user data to authStore (for quick access)
- *   3. Profile edits go to userStore first, then sync to authStore
- *   4. logout() clears authStore but userStore persists
+ * ## State Flow
+ *
+ * ```
+ * API Login Success → setAuthFromUser() → authStore updated
+ *                                      → subscribeToUser() activated
+ *                                      → trackActivity('login')
+ *
+ * Profile Edit → userStore updated → syncWithUserStore() → authStore synced
+ *
+ * Logout → logout() → unsubscribe → authStore cleared → trackActivity('logout')
+ * ```
+ *
+ * ## localStorage Keys (prefixed with `auth:`)
+ *
+ * - `auth:isLoggedIn` - 'true' or 'false'
+ * - `auth:userId` - User ID
+ * - `auth:userEmail` - Email address
+ * - `auth:userName` - Display name
+ * - `auth:userRole` - Role string
+ * - `auth:userAccessLevel` - Numeric level as string
+ * - `auth:userAvatar` - Avatar URL
+ * - `auth:loginTime` - ISO timestamp
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { persistentMap } from '@nanostores/persistent';

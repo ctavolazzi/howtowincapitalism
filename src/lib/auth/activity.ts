@@ -1,8 +1,35 @@
 /**
- * Activity Tracker
+ * @fileoverview Client-Side Activity Tracker
  *
- * Tracks user activity (page views, login/logout) in localStorage.
- * This is ethical, transparent tracking - all stored client-side.
+ * Tracks user activity (page views, login/logout events) in localStorage.
+ * This is ethical, transparent tracking with all data stored client-side
+ * only - no server-side analytics or third-party tracking.
+ *
+ * @module lib/auth/activity
+ * @see {@link module:lib/auth/store} - Calls trackActivity on login/logout
+ * @see {@link module:components/organisms/profile/ActivityFeed} - Displays activity
+ *
+ * ## Privacy Design
+ *
+ * - All data stored locally in browser's localStorage
+ * - No data sent to servers or third parties
+ * - User can clear all activity data at any time
+ * - Maximum 100 events stored (auto-trimmed)
+ *
+ * ## Event Types
+ *
+ * | Type     | Triggered By           | Contains          |
+ * |----------|------------------------|-------------------|
+ * | pageview | Page load              | Path              |
+ * | login    | Successful login       | Login page path   |
+ * | logout   | User logout            | Current page path |
+ *
+ * ## localStorage Key
+ *
+ * All activity stored under `user_activity` as JSON array.
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface ActivityEvent {

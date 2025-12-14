@@ -1,8 +1,56 @@
 /**
- * CSRF Protection Module
+ * @fileoverview CSRF Protection Module
  *
- * Generates and validates encrypted CSRF tokens using AES-GCM.
- * Tokens include IP, country, user-agent, and expiry for validation.
+ * Generates and validates encrypted CSRF tokens using AES-GCM encryption.
+ * Tokens embed client fingerprint data (IP, country, user-agent) and expiry
+ * to prevent cross-site request forgery attacks.
+ *
+ * @module lib/auth/csrf
+ * @see {@link module:pages/api/auth/login} - Login endpoint using CSRF
+ * @see {@link module:pages/api/auth/register} - Registration endpoint using CSRF
+ *
+ * ## Token Structure
+ *
+ * ```
+ * CSRF Token = iv:ciphertext (hex encoded)
+ *
+ * Plaintext payload:
+ * {
+ *   ip: string,      // Client IP address
+ *   country: string, // CF-IPCountry header
+ *   ua: string,      // User-Agent (truncated to 200 chars)
+ *   exp: number      // Expiry timestamp (60 seconds from creation)
+ * }
+ * ```
+ *
+ * ## Encryption Details
+ *
+ * - Algorithm: AES-256-GCM
+ * - Key derivation: PBKDF2 with 10,000 iterations
+ * - IV: 12 bytes (96 bits), randomly generated per token
+ * - Salt: Static 'csrf-salt-htwc' (acceptable for session tokens)
+ *
+ * ## Validation Checks
+ *
+ * 1. Token not expired (60 second window)
+ * 2. IP address matches
+ * 3. Country code matches (if available)
+ * 4. User-Agent matches
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * // Generate token (in page render)
+ * const token = await generateCSRFToken(secret, ip, country, userAgent);
+ *
+ * // Validate token (in API route)
+ * const { valid, error } = await validateCSRFToken(
+ *   token, secret, ip, country, userAgent
+ * );
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface CSRFTokenPayload {

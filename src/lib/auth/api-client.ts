@@ -1,8 +1,50 @@
 /**
- * Client-side Auth API
+ * @fileoverview Client-Side Authentication API Client
  *
- * Wrapper for the /api/auth/* endpoints.
- * Uses httpOnly cookies (automatically sent with requests).
+ * Wrapper for the /api/auth/* endpoints providing a clean interface for
+ * client-side authentication operations. Handles httpOnly cookies
+ * automatically through fetch credentials.
+ *
+ * @module lib/auth/api-client
+ * @see {@link module:pages/api/auth/me} - Auth check endpoint
+ * @see {@link module:pages/api/auth/logout} - Logout endpoint
+ * @see {@link module:lib/auth/store} - Uses responses to update auth state
+ *
+ * ## Authentication Flow
+ *
+ * ```
+ * Client                           Server
+ *   │                                │
+ *   │──── checkAuth() ──────────────▶│ GET /api/auth/me/
+ *   │◀─── { authenticated, user } ───│
+ *   │                                │
+ *   │──── logout() ─────────────────▶│ POST /api/auth/logout/
+ *   │◀─── Cookie cleared ────────────│
+ *   │                                │
+ *   │──── requireAuth() ────────────▶│ (checks + redirects)
+ *   │                                │
+ * ```
+ *
+ * ## Cookie Handling
+ *
+ * All requests include `credentials: 'include'` to automatically send
+ * the httpOnly session cookie. No manual cookie handling required.
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * // Check if user is logged in
+ * const { authenticated, user } = await checkAuth();
+ *
+ * // Logout
+ * await logout();
+ *
+ * // Require auth (redirects if not authenticated)
+ * const user = await requireAuth('/login/');
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface AuthUser {

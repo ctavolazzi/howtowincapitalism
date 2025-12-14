@@ -1,12 +1,54 @@
 /**
- * User Profile Schema
+ * @fileoverview User Profile Schema and Mock Data
  *
- * Production-ready data contract for Wiki Contributors.
- * This extends the basic auth user with wiki-specific features:
- * - Reputation system (badges, scores)
- * - System injection (global bulletins)
- * - Activity stream (edit history)
- * - User preferences
+ * Production-ready data contracts for Wiki Contributors. Extends basic
+ * authentication users with wiki-specific features including reputation
+ * systems, badges, activity streams, and user preferences.
+ *
+ * @module lib/auth/schemas/userProfile
+ * @see {@link module:lib/auth/userStore} - Basic user storage
+ * @see {@link module:components/organisms/profile} - Profile display components
+ *
+ * ## Schema Overview
+ *
+ * ```
+ * UserProfile
+ * ├── identity: UserIdentity      (core user data, badges, reputation)
+ * ├── systemInjection: Bulletin   (admin-injected announcements)
+ * ├── activityLog: ActivityEvent[] (edit history, actions)
+ * ├── preferences: UserPreferences (theme, notifications)
+ * └── stats: UserStats            (edits, streaks, contributions)
+ * ```
+ *
+ * ## Badge Types
+ *
+ * | Badge           | Earned By                          |
+ * |-----------------|-----------------------------------|
+ * | founder         | Original site creator             |
+ * | early_adopter   | Joined in first month             |
+ * | prolific_editor | Made 100+ edits                   |
+ * | fact_checker    | Verified 50+ claims               |
+ * | streak_7/30     | Maintained edit streak            |
+ * | first_article   | Created first article             |
+ * | thousand_words  | Added 1000+ words total           |
+ *
+ * ## System Injection
+ *
+ * Admins can inject bulletins into user dashboards:
+ * - Severity levels: info, warn, critical
+ * - Can target specific roles or all users
+ * - Optional auto-expiry and dismissible flags
+ *
+ * ## Mock Data
+ *
+ * This module includes realistic mock profiles for testing:
+ * - `MOCK_FULL_PROFILE` - Admin user with full activity
+ * - `MOCK_EDITOR_PROFILE` - Editor with moderate activity
+ * - `MOCK_CONTRIBUTOR_PROFILE` - New contributor
+ * - `MOCK_VIEWER_PROFILE` - Read-only user
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // =============================================================================

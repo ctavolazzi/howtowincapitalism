@@ -1,9 +1,18 @@
 /**
- * Unified User Store
+ * @fileoverview Unified User Store - Client-Side User Data Management
  *
- * SINGLE SOURCE OF TRUTH for all user data in the app.
+ * SINGLE SOURCE OF TRUTH for all user data on the client side. This module
+ * manages user profiles using nanostores with localStorage persistence,
+ * providing reactive state management for user information.
  *
- * Architecture:
+ * @module lib/auth/userStore
+ * @see {@link module:lib/auth/store} - Authentication state management
+ * @see {@link module:lib/auth/kv-auth} - Server-side user storage
+ * @see {@link module:lib/auth/permissions} - RBAC permission checking
+ *
+ * ## Architecture
+ *
+ * ```
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │                         UNIFIED USER STORE                              │
  * ├─────────────────────────────────────────────────────────────────────────┤
@@ -19,6 +28,30 @@
  * │  Permissions read from: userStore (via authStore sync)                 │
  * │                                                                         │
  * └─────────────────────────────────────────────────────────────────────────┘
+ * ```
+ *
+ * ## Security Note
+ *
+ * This module contains NO PASSWORD DATA. Passwords are stored only on the
+ * server side (Cloudflare KV in production, in-memory for local dev).
+ * Authentication happens exclusively through /api/auth/* endpoints.
+ *
+ * ## Field Mutability
+ *
+ * | Field        | Editable | Editor         |
+ * |--------------|----------|----------------|
+ * | id           | No       | -              |
+ * | email        | No       | -              |
+ * | role         | No       | Admin only     |
+ * | accessLevel  | No       | Admin only     |
+ * | createdAt    | No       | -              |
+ * | name         | Yes      | User           |
+ * | avatar       | Yes      | User           |
+ * | bio          | Yes      | User           |
+ * | isActive     | Yes      | Admin only     |
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { persistentMap, persistentAtom } from '@nanostores/persistent';

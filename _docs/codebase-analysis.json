@@ -1,0 +1,5533 @@
+{
+  "generatedAt": "2025-12-14T15:56:18.347Z",
+  "summary": {
+    "totals": {
+      "files": 130,
+      "lines": 23419,
+      "codeLines": 20007,
+      "functions": 243,
+      "withFileHeader": 1,
+      "todoComments": 6,
+      "consoleLogs": 130,
+      "anyTypes": 1
+    },
+    "categories": {
+      "components/atoms": {
+        "fileCount": 5,
+        "codeLines": 432,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 21
+      },
+      "components/auth": {
+        "fileCount": 5,
+        "codeLines": 1352,
+        "functions": 6,
+        "avgDocCoverage": 85,
+        "avgPriority": 63
+      },
+      "components/guards": {
+        "fileCount": 1,
+        "codeLines": 211,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 41
+      },
+      "components/other": {
+        "fileCount": 1,
+        "codeLines": 51,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 20
+      },
+      "components/molecules": {
+        "fileCount": 13,
+        "codeLines": 1492,
+        "functions": 16,
+        "avgDocCoverage": 112,
+        "avgPriority": 16
+      },
+      "components/organisms": {
+        "fileCount": 9,
+        "codeLines": 1192,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 26
+      },
+      "components/search": {
+        "fileCount": 1,
+        "codeLines": 385,
+        "functions": 4,
+        "avgDocCoverage": 25,
+        "avgPriority": 139
+      },
+      "components/simple": {
+        "fileCount": 4,
+        "codeLines": 124,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 20
+      },
+      "components/trade": {
+        "fileCount": 1,
+        "codeLines": 177,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 21
+      },
+      "components/utilities": {
+        "fileCount": 3,
+        "codeLines": 64,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 20
+      },
+      "src/other": {
+        "fileCount": 2,
+        "codeLines": 72,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 24
+      },
+      "layouts": {
+        "fileCount": 1,
+        "codeLines": 537,
+        "functions": 1,
+        "avgDocCoverage": 100,
+        "avgPriority": 72
+      },
+      "lib/api": {
+        "fileCount": 3,
+        "codeLines": 388,
+        "functions": 12,
+        "avgDocCoverage": 138,
+        "avgPriority": -1
+      },
+      "lib/auth": {
+        "fileCount": 12,
+        "codeLines": 2493,
+        "functions": 94,
+        "avgDocCoverage": 163,
+        "avgPriority": -15
+      },
+      "lib/auth/tests": {
+        "fileCount": 4,
+        "codeLines": 606,
+        "functions": 6,
+        "avgDocCoverage": 81,
+        "avgPriority": 54
+      },
+      "lib/config": {
+        "fileCount": 1,
+        "codeLines": 73,
+        "functions": 4,
+        "avgDocCoverage": 150,
+        "avgPriority": -15
+      },
+      "lib/other": {
+        "fileCount": 2,
+        "codeLines": 323,
+        "functions": 4,
+        "avgDocCoverage": 300,
+        "avgPriority": -141
+      },
+      "lib/email": {
+        "fileCount": 3,
+        "codeLines": 474,
+        "functions": 4,
+        "avgDocCoverage": 117,
+        "avgPriority": 24
+      },
+      "lib/tools/tests": {
+        "fileCount": 1,
+        "codeLines": 494,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 41
+      },
+      "lib/tools": {
+        "fileCount": 3,
+        "codeLines": 1176,
+        "functions": 13,
+        "avgDocCoverage": 224,
+        "avgPriority": -60
+      },
+      "pages": {
+        "fileCount": 20,
+        "codeLines": 3290,
+        "functions": 23,
+        "avgDocCoverage": 74,
+        "avgPriority": 65
+      },
+      "api/admin": {
+        "fileCount": 3,
+        "codeLines": 429,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 40
+      },
+      "api/auth": {
+        "fileCount": 9,
+        "codeLines": 896,
+        "functions": 6,
+        "avgDocCoverage": 106,
+        "avgPriority": 28
+      },
+      "scripts": {
+        "fileCount": 8,
+        "codeLines": 1380,
+        "functions": 41,
+        "avgDocCoverage": 62,
+        "avgPriority": 103
+      },
+      "tests": {
+        "fileCount": 12,
+        "codeLines": 1809,
+        "functions": 9,
+        "avgDocCoverage": 108,
+        "avgPriority": 32
+      },
+      "other": {
+        "fileCount": 3,
+        "codeLines": 87,
+        "functions": 0,
+        "avgDocCoverage": 100,
+        "avgPriority": 21
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "src/components/atoms/Avatar.astro",
+      "category": "components/atoms",
+      "metrics": {
+        "lines": {
+          "total": 54,
+          "code": 48,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 5,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/atoms/Breadcrumbs.astro",
+      "category": "components/atoms",
+      "metrics": {
+        "lines": {
+          "total": 109,
+          "code": 94,
+          "blank": 15
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/atoms/Collapsible.astro",
+      "category": "components/atoms",
+      "metrics": {
+        "lines": {
+          "total": 201,
+          "code": 171,
+          "blank": 30
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/atoms/RoleBadge.astro",
+      "category": "components/atoms",
+      "metrics": {
+        "lines": {
+          "total": 72,
+          "code": 65,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/atoms/WikiBox.astro",
+      "category": "components/atoms",
+      "metrics": {
+        "lines": {
+          "total": 61,
+          "code": 54,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/auth/ForgotPasswordForm.astro",
+      "category": "components/auth",
+      "metrics": {
+        "lines": {
+          "total": 209,
+          "code": 178,
+          "blank": 31
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/components/auth/LoginForm.astro",
+      "category": "components/auth",
+      "metrics": {
+        "lines": {
+          "total": 296,
+          "code": 255,
+          "blank": 41
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 6,
+          "technicalDebt": 14,
+          "priority": 51
+        }
+      }
+    },
+    {
+      "path": "src/components/auth/RegisterForm.astro",
+      "category": "components/auth",
+      "metrics": {
+        "lines": {
+          "total": 399,
+          "code": 348,
+          "blank": 51
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 14,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 12,
+          "priority": 46
+        }
+      }
+    },
+    {
+      "path": "src/components/auth/ResetPasswordForm.astro",
+      "category": "components/auth",
+      "metrics": {
+        "lines": {
+          "total": 426,
+          "code": 368,
+          "blank": 58
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 8,
+          "todoCount": 0,
+          "coverage": 25
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 13,
+          "technicalDebt": 24,
+          "priority": 150
+        }
+      }
+    },
+    {
+      "path": "src/components/auth/UserMenu.astro",
+      "category": "components/auth",
+      "metrics": {
+        "lines": {
+          "total": 235,
+          "code": 203,
+          "blank": 32
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 8,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 6,
+          "technicalDebt": 10,
+          "priority": 43
+        }
+      }
+    },
+    {
+      "path": "src/components/guards/OwnerGuard.astro",
+      "category": "components/guards",
+      "metrics": {
+        "lines": {
+          "total": 245,
+          "code": 211,
+          "blank": 34
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 14,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 2,
+          "technicalDebt": 10,
+          "priority": 41
+        }
+      }
+    },
+    {
+      "path": "src/components/index.ts",
+      "category": "components/other",
+      "metrics": {
+        "lines": {
+          "total": 60,
+          "code": 51,
+          "blank": 9
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 8,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/ActivityItem.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 141,
+          "code": 125,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 6,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 300
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 10,
+          "priority": -177
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/BlankSlate.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 190,
+          "code": 166,
+          "blank": 24
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 8,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/CallToAction.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 68,
+          "code": 59,
+          "blank": 9
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 10,
+          "priority": 22
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/CompletenessMeter.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 295,
+          "code": 254,
+          "blank": 41
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 125
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 10,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/DecisionMatrix.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 352,
+          "code": 307,
+          "blank": 45
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 2,
+          "imports": 5,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 10,
+          "priority": 42
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/Disclaimer.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 53,
+          "code": 45,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/FAQ.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 106,
+          "code": 93,
+          "blank": 13
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 7,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 2,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/Favorites.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 298,
+          "code": 248,
+          "blank": 50
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 5,
+          "todoCount": 0,
+          "coverage": 33
+        },
+        "code": {
+          "functions": 9,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 19,
+          "technicalDebt": 20,
+          "priority": 137
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/InfoBox.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 26,
+          "code": 21,
+          "blank": 5
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/NavBox.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 26,
+          "code": 21,
+          "blank": 5
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/NoteBox.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 24,
+          "code": 19,
+          "blank": 5
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/SeeAlso.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 73,
+          "code": 64,
+          "blank": 9
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 7,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 2,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/molecules/TopicCard.astro",
+      "category": "components/molecules",
+      "metrics": {
+        "lines": {
+          "total": 78,
+          "code": 70,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 7,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/ContentSection.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 50,
+          "code": 43,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/Footer.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 238,
+          "code": 202,
+          "blank": 36
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 41
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/Hero.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 172,
+          "code": 150,
+          "blank": 22
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 6,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/PageHeader.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 38,
+          "code": 32,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/profile/ActivityFeed.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 127,
+          "code": 110,
+          "blank": 17
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 5,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/profile/ProfileForm.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 324,
+          "code": 278,
+          "blank": 46
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 46
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/profile/ProfileHeader.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 230,
+          "code": 200,
+          "blank": 30
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 2,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/profile/SystemBulletin.astro",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 197,
+          "code": 170,
+          "blank": 27
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 6,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/organisms/profile/index.ts",
+      "category": "components/organisms",
+      "metrics": {
+        "lines": {
+          "total": 9,
+          "code": 7,
+          "blank": 2
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/search/GlobalSearch.astro",
+      "category": "components/search",
+      "metrics": {
+        "lines": {
+          "total": 441,
+          "code": 385,
+          "blank": 56
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 10,
+          "todoCount": 0,
+          "coverage": 25
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 8,
+          "technicalDebt": 20,
+          "priority": 139
+        }
+      }
+    },
+    {
+      "path": "src/components/simple/Aside.astro",
+      "category": "components/simple",
+      "metrics": {
+        "lines": {
+          "total": 44,
+          "code": 36,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/simple/Steps.astro",
+      "category": "components/simple",
+      "metrics": {
+        "lines": {
+          "total": 45,
+          "code": 39,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/simple/TabItem.astro",
+      "category": "components/simple",
+      "metrics": {
+        "lines": {
+          "total": 18,
+          "code": 15,
+          "blank": 3
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/simple/Tabs.astro",
+      "category": "components/simple",
+      "metrics": {
+        "lines": {
+          "total": 42,
+          "code": 34,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/trade/TradeWidget.astro",
+      "category": "components/trade",
+      "metrics": {
+        "lines": {
+          "total": 209,
+          "code": 177,
+          "blank": 32
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/components/utilities/CardGrid.astro",
+      "category": "components/utilities",
+      "metrics": {
+        "lines": {
+          "total": 47,
+          "code": 41,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/utilities/Empty.astro",
+      "category": "components/utilities",
+      "metrics": {
+        "lines": {
+          "total": 11,
+          "code": 10,
+          "blank": 1
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/components/utilities/ForceLightTheme.astro",
+      "category": "components/utilities",
+      "metrics": {
+        "lines": {
+          "total": 15,
+          "code": 13,
+          "blank": 2
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/content.config.ts",
+      "category": "src/other",
+      "metrics": {
+        "lines": {
+          "total": 53,
+          "code": 48,
+          "blank": 5
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 14,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/layouts/Base.astro",
+      "category": "layouts",
+      "metrics": {
+        "lines": {
+          "total": 634,
+          "code": 537,
+          "blank": 97
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 0,
+          "exports": 1,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 10,
+          "priority": 72
+        }
+      }
+    },
+    {
+      "path": "src/lib/api/index.ts",
+      "category": "lib/api",
+      "metrics": {
+        "lines": {
+          "total": 43,
+          "code": 37,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 3,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/lib/api/profileActions.ts",
+      "category": "lib/api",
+      "metrics": {
+        "lines": {
+          "total": 143,
+          "code": 122,
+          "blank": 21
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 6,
+          "inlineComments": 14,
+          "todoCount": 1,
+          "coverage": 150
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 2,
+          "exports": 3,
+          "imports": 2,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 14,
+          "technicalDebt": 15,
+          "priority": -13
+        }
+      }
+    },
+    {
+      "path": "src/lib/api/profileService.ts",
+      "category": "lib/api",
+      "metrics": {
+        "lines": {
+          "total": 265,
+          "code": 229,
+          "blank": 36
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 13,
+          "inlineComments": 39,
+          "todoCount": 0,
+          "coverage": 163
+        },
+        "code": {
+          "functions": 8,
+          "asyncFunctions": 2,
+          "exports": 4,
+          "imports": 5,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 22,
+          "technicalDebt": 10,
+          "priority": -12
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/activity.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 87,
+          "code": 73,
+          "blank": 14
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 6,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 120
+        },
+        "code": {
+          "functions": 5,
+          "asyncFunctions": 0,
+          "exports": 6,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 12,
+          "technicalDebt": 10,
+          "priority": 6
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/api-client.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 76,
+          "code": 65,
+          "blank": 11
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 133
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 3,
+          "exports": 2,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 13,
+          "technicalDebt": 14,
+          "priority": 2
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/csrf.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 176,
+          "code": 153,
+          "blank": 23
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 7,
+          "inlineComments": 12,
+          "todoCount": 0,
+          "coverage": 117
+        },
+        "code": {
+          "functions": 6,
+          "asyncFunctions": 3,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 18,
+          "technicalDebt": 12,
+          "priority": 16
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/index.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 68,
+          "code": 62,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 4,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/kv-auth.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 611,
+          "code": 519,
+          "blank": 92
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 30,
+          "inlineComments": 49,
+          "todoCount": 0,
+          "coverage": 103
+        },
+        "code": {
+          "functions": 29,
+          "asyncFunctions": 19,
+          "exports": 10,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 87,
+          "technicalDebt": 12,
+          "priority": 115
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/local-auth.test.ts",
+      "category": "lib/auth/tests",
+      "metrics": {
+        "lines": {
+          "total": 144,
+          "code": 115,
+          "blank": 29
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 14,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/local-auth.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 176,
+          "code": 151,
+          "blank": 25
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 10,
+          "inlineComments": 18,
+          "todoCount": 0,
+          "coverage": 111
+        },
+        "code": {
+          "functions": 9,
+          "asyncFunctions": 0,
+          "exports": 9,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 18,
+          "technicalDebt": 10,
+          "priority": 18
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/permissions.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 225,
+          "code": 201,
+          "blank": 24
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 8,
+          "inlineComments": 17,
+          "todoCount": 0,
+          "coverage": 133
+        },
+        "code": {
+          "functions": 6,
+          "asyncFunctions": 0,
+          "exports": 10,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 13,
+          "technicalDebt": 10,
+          "priority": 14
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/rate-limit.test.ts",
+      "category": "lib/auth/tests",
+      "metrics": {
+        "lines": {
+          "total": 186,
+          "code": 151,
+          "blank": 35
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 21,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 9,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 16,
+          "technicalDebt": 10,
+          "priority": 28
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/rate-limit.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 273,
+          "code": 232,
+          "blank": 41
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 10,
+          "inlineComments": 22,
+          "todoCount": 0,
+          "coverage": 111
+        },
+        "code": {
+          "functions": 9,
+          "asyncFunctions": 7,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 31,
+          "technicalDebt": 12,
+          "priority": 49
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/registration-validation.test.ts",
+      "category": "lib/auth/tests",
+      "metrics": {
+        "lines": {
+          "total": 267,
+          "code": 221,
+          "blank": 46
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 12,
+          "todoCount": 0,
+          "coverage": 25
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 9,
+          "technicalDebt": 20,
+          "priority": 140
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/schemas/userProfile.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 547,
+          "code": 507,
+          "blank": 40
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 20,
+          "inlineComments": 61,
+          "todoCount": 0,
+          "coverage": 667
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 0,
+          "exports": 18,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 6,
+          "technicalDebt": 10,
+          "priority": -494
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/store.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 190,
+          "code": 165,
+          "blank": 25
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 8,
+          "inlineComments": 15,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 8,
+          "asyncFunctions": 0,
+          "exports": 8,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 18,
+          "technicalDebt": 10,
+          "priority": 29
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/turnstile.test.ts",
+      "category": "lib/auth/tests",
+      "metrics": {
+        "lines": {
+          "total": 144,
+          "code": 119,
+          "blank": 25
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 9,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 9,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 16,
+          "technicalDebt": 10,
+          "priority": 28
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/turnstile.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 109,
+          "code": 93,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 8,
+          "todoCount": 0,
+          "coverage": 150
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 0,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 4,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 7,
+          "technicalDebt": 18,
+          "priority": -10
+        }
+      }
+    },
+    {
+      "path": "src/lib/auth/userStore.ts",
+      "category": "lib/auth",
+      "metrics": {
+        "lines": {
+          "total": 316,
+          "code": 272,
+          "blank": 44
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 15,
+          "inlineComments": 27,
+          "todoCount": 0,
+          "coverage": 107
+        },
+        "code": {
+          "functions": 14,
+          "asyncFunctions": 0,
+          "exports": 17,
+          "imports": 3,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 31,
+          "technicalDebt": 10,
+          "priority": 49
+        }
+      }
+    },
+    {
+      "path": "src/lib/config/systemBulletins.ts",
+      "category": "lib/config",
+      "metrics": {
+        "lines": {
+          "total": 85,
+          "code": 73,
+          "blank": 12
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 6,
+          "inlineComments": 7,
+          "todoCount": 1,
+          "coverage": 150
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 0,
+          "exports": 3,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 9,
+          "technicalDebt": 15,
+          "priority": -15
+        }
+      }
+    },
+    {
+      "path": "src/lib/constants.ts",
+      "category": "lib/other",
+      "metrics": {
+        "lines": {
+          "total": 27,
+          "code": 21,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 3,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/lib/debug.ts",
+      "category": "lib/other",
+      "metrics": {
+        "lines": {
+          "total": 340,
+          "code": 302,
+          "blank": 38
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 20,
+          "inlineComments": 35,
+          "todoCount": 0,
+          "coverage": 500
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 0,
+          "exports": 5,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 13,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 9,
+          "technicalDebt": 36,
+          "priority": -303
+        }
+      }
+    },
+    {
+      "path": "src/lib/email/send-confirmation.ts",
+      "category": "lib/email",
+      "metrics": {
+        "lines": {
+          "total": 136,
+          "code": 115,
+          "blank": 21
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 14,
+          "priority": 31
+        }
+      }
+    },
+    {
+      "path": "src/lib/email/send-password-reset.ts",
+      "category": "lib/email",
+      "metrics": {
+        "lines": {
+          "total": 149,
+          "code": 126,
+          "blank": 23
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 14,
+          "priority": 31
+        }
+      }
+    },
+    {
+      "path": "src/lib/email/send-reset.ts",
+      "category": "lib/email",
+      "metrics": {
+        "lines": {
+          "total": 271,
+          "code": 233,
+          "blank": 38
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 150
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 4,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 10,
+          "technicalDebt": 18,
+          "priority": 11
+        }
+      }
+    },
+    {
+      "path": "src/lib/tools/decision-matrix.test.ts",
+      "category": "lib/tools/tests",
+      "metrics": {
+        "lines": {
+          "total": 569,
+          "code": 494,
+          "blank": 75
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 41,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 41
+        }
+      }
+    },
+    {
+      "path": "src/lib/tools/decision-matrix.ts",
+      "category": "lib/tools",
+      "metrics": {
+        "lines": {
+          "total": 997,
+          "code": 868,
+          "blank": 129
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 10,
+          "inlineComments": 53,
+          "todoCount": 0,
+          "coverage": 500
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 0,
+          "exports": 8,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 14,
+          "priority": -319
+        }
+      }
+    },
+    {
+      "path": "src/lib/tools/index.ts",
+      "category": "lib/tools",
+      "metrics": {
+        "lines": {
+          "total": 25,
+          "code": 21,
+          "blank": 4
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 5,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/lib/tools/logger.mjs",
+      "category": "lib/tools",
+      "metrics": {
+        "lines": {
+          "total": 341,
+          "code": 287,
+          "blank": 54
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 8,
+          "inlineComments": 31,
+          "todoCount": 0,
+          "coverage": 73
+        },
+        "code": {
+          "functions": 11,
+          "asyncFunctions": 0,
+          "exports": 7,
+          "imports": 4,
+          "tryCatchBlocks": 4
+        },
+        "quality": {
+          "consoleLogs": 9,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 28,
+          "technicalDebt": 28,
+          "priority": 117
+        }
+      }
+    },
+    {
+      "path": "src/middleware.ts",
+      "category": "src/other",
+      "metrics": {
+        "lines": {
+          "total": 30,
+          "code": 24,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/[...slug].astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 80,
+          "code": 64,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 0
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 20,
+          "priority": 143
+        }
+      }
+    },
+    {
+      "path": "src/pages/admin/users/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 456,
+          "code": 391,
+          "blank": 65
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 5,
+          "todoCount": 0,
+          "coverage": 33
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 3,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 1
+        },
+        "scores": {
+          "complexity": 13,
+          "technicalDebt": 23,
+          "priority": 140
+        }
+      }
+    },
+    {
+      "path": "src/pages/admin/users/new.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 347,
+          "code": 295,
+          "blank": 52
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 50
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 9,
+          "technicalDebt": 10,
+          "priority": 95
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/admin/users/[id].ts",
+      "category": "api/admin",
+      "metrics": {
+        "lines": {
+          "total": 272,
+          "code": 234,
+          "blank": 38
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 4,
+          "inlineComments": 20,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 3,
+          "exports": 3,
+          "imports": 1,
+          "tryCatchBlocks": 3
+        },
+        "quality": {
+          "consoleLogs": 5,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 8,
+          "technicalDebt": 20,
+          "priority": 64
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/admin/users/create.ts",
+      "category": "api/admin",
+      "metrics": {
+        "lines": {
+          "total": 151,
+          "code": 131,
+          "blank": 20
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 16,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 14,
+          "priority": 30
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/admin/users/list.ts",
+      "category": "api/admin",
+      "metrics": {
+        "lines": {
+          "total": 74,
+          "code": 64,
+          "blank": 10
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 6,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/account/delete.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 73,
+          "code": 62,
+          "blank": 11
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 14,
+          "priority": 30
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/account/export.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 53,
+          "code": 46,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/confirm.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 39,
+          "code": 31,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/forgot-password.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 86,
+          "code": 75,
+          "blank": 11
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 3,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 3,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 6,
+          "technicalDebt": 16,
+          "priority": 35
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/login.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 189,
+          "code": 168,
+          "blank": 21
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 13,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 3,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 16,
+          "priority": 34
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/logout.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 69,
+          "code": 62,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/me.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 75,
+          "code": 66,
+          "blank": 9
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 12,
+          "priority": 26
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/register.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 312,
+          "code": 281,
+          "blank": 31
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 28,
+          "todoCount": 0,
+          "coverage": 50
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 1,
+          "exports": 1,
+          "imports": 5,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 7,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 13,
+          "technicalDebt": 24,
+          "priority": 125
+        }
+      }
+    },
+    {
+      "path": "src/pages/api/auth/reset-password.ts",
+      "category": "api/auth",
+      "metrics": {
+        "lines": {
+          "total": 123,
+          "code": 105,
+          "blank": 18
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 5,
+          "todoCount": 0,
+          "coverage": 200
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 2,
+          "exports": 2,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 7,
+          "technicalDebt": 12,
+          "priority": -72
+        }
+      }
+    },
+    {
+      "path": "src/pages/confirm/error/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 171,
+          "code": 150,
+          "blank": 21
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/pages/confirm/success/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 127,
+          "code": 112,
+          "blank": 15
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "src/pages/disclaimer.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 64,
+          "code": 48,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/pages/forgot-password/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 117,
+          "code": 101,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 6,
+          "technicalDebt": 12,
+          "priority": 27
+        }
+      }
+    },
+    {
+      "path": "src/pages/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 98,
+          "code": 81,
+          "blank": 17
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 0
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 20,
+          "priority": 143
+        }
+      }
+    },
+    {
+      "path": "src/pages/login/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 126,
+          "code": 107,
+          "blank": 19
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 10,
+          "priority": 23
+        }
+      }
+    },
+    {
+      "path": "src/pages/logout/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 67,
+          "code": 59,
+          "blank": 8
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 10,
+          "priority": 22
+        }
+      }
+    },
+    {
+      "path": "src/pages/privacy/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 36,
+          "code": 29,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/pages/profile/[id].astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 244,
+          "code": 210,
+          "blank": 34
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 1,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 5,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 17,
+          "priority": 56
+        }
+      }
+    },
+    {
+      "path": "src/pages/profile/edit.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 406,
+          "code": 352,
+          "blank": 54
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 12,
+          "todoCount": 0,
+          "coverage": 33
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 4,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 12,
+          "technicalDebt": 24,
+          "priority": 141
+        }
+      }
+    },
+    {
+      "path": "src/pages/profile/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 57,
+          "code": 51,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 2,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 10,
+          "priority": 22
+        }
+      }
+    },
+    {
+      "path": "src/pages/profile/me.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 251,
+          "code": 218,
+          "blank": 33
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 6,
+          "todoCount": 0,
+          "coverage": 33
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 9,
+          "technicalDebt": 22,
+          "priority": 136
+        }
+      }
+    },
+    {
+      "path": "src/pages/register/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 122,
+          "code": 104,
+          "blank": 18
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 10,
+          "priority": 23
+        }
+      }
+    },
+    {
+      "path": "src/pages/reset-password/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 99,
+          "code": 86,
+          "blank": 13
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/pages/terms/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 32,
+          "code": 25,
+          "blank": 7
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "src/pages/users/[id].astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 638,
+          "code": 549,
+          "blank": 89
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 17,
+          "todoCount": 0,
+          "coverage": 25
+        },
+        "code": {
+          "functions": 4,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 5,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 12,
+          "technicalDebt": 20,
+          "priority": 171
+        }
+      }
+    },
+    {
+      "path": "src/pages/users/index.astro",
+      "category": "pages",
+      "metrics": {
+        "lines": {
+          "total": 302,
+          "code": 258,
+          "blank": 44
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 5,
+          "technicalDebt": 10,
+          "priority": 43
+        }
+      }
+    },
+    {
+      "path": "scripts/analyze-codebase.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 645,
+          "code": 550,
+          "blank": 95
+        },
+        "documentation": {
+          "hasFileHeader": true,
+          "jsdocCount": 8,
+          "inlineComments": 50,
+          "todoCount": 0,
+          "coverage": 89
+        },
+        "code": {
+          "functions": 9,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 8,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 22,
+          "technicalDebt": 16,
+          "priority": 104
+        }
+      }
+    },
+    {
+      "path": "scripts/capture-auth-screenshots.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 105,
+          "code": 88,
+          "blank": 17
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 10,
+          "todoCount": 0,
+          "coverage": 33
+        },
+        "code": {
+          "functions": 3,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 3,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 3,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 12,
+          "technicalDebt": 26,
+          "priority": 125
+        }
+      }
+    },
+    {
+      "path": "scripts/generate-icons.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 40,
+          "code": 29,
+          "blank": 11
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 4,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 3,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 2,
+          "technicalDebt": 16,
+          "priority": 33
+        }
+      }
+    },
+    {
+      "path": "scripts/generate-og-image.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 34,
+          "code": 25,
+          "blank": 9
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 0,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 4,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 3,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 3,
+          "technicalDebt": 16,
+          "priority": 34
+        }
+      }
+    },
+    {
+      "path": "scripts/new-page.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 166,
+          "code": 120,
+          "blank": 46
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 50
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 6,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 5,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 7,
+          "technicalDebt": 20,
+          "priority": 94
+        }
+      }
+    },
+    {
+      "path": "scripts/seed-users.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 193,
+          "code": 166,
+          "blank": 27
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 28,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 2
+        },
+        "quality": {
+          "consoleLogs": 18,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 7,
+          "technicalDebt": 46,
+          "priority": 96
+        }
+      }
+    },
+    {
+      "path": "scripts/ship.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 150,
+          "code": 124,
+          "blank": 26
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 13,
+          "todoCount": 0,
+          "coverage": 14
+        },
+        "code": {
+          "functions": 7,
+          "asyncFunctions": 1,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 1
+        },
+        "quality": {
+          "consoleLogs": 5,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 17,
+          "technicalDebt": 30,
+          "priority": 155
+        }
+      }
+    },
+    {
+      "path": "scripts/terminal-ambient-animation.mjs",
+      "category": "scripts",
+      "metrics": {
+        "lines": {
+          "total": 341,
+          "code": 278,
+          "blank": 63
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 6
+        },
+        "code": {
+          "functions": 18,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 2,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 37,
+          "technicalDebt": 24,
+          "priority": 181
+        }
+      }
+    },
+    {
+      "path": "tests/accessibility.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 226,
+          "code": 178,
+          "blank": 48
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 21,
+          "todoCount": 0,
+          "coverage": 50
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 20,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 1,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 35,
+          "technicalDebt": 12,
+          "priority": 92
+        }
+      }
+    },
+    {
+      "path": "tests/account-rights.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 114,
+          "code": 98,
+          "blank": 16
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 25,
+          "todoCount": 3,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 9,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 14,
+          "technicalDebt": 25,
+          "priority": 57
+        }
+      }
+    },
+    {
+      "path": "tests/admin.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 339,
+          "code": 265,
+          "blank": 74
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 37,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 21,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 33,
+          "technicalDebt": 10,
+          "priority": 57
+        }
+      }
+    },
+    {
+      "path": "tests/auth-snapshots.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 82,
+          "code": 68,
+          "blank": 14
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 8,
+          "todoCount": 0,
+          "coverage": 0
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 4,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 7,
+          "technicalDebt": 20,
+          "priority": 144
+        }
+      }
+    },
+    {
+      "path": "tests/auth.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 228,
+          "code": 179,
+          "blank": 49
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 23,
+          "todoCount": 0,
+          "coverage": 200
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 16,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 27,
+          "technicalDebt": 10,
+          "priority": -66
+        }
+      }
+    },
+    {
+      "path": "tests/content.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 195,
+          "code": 158,
+          "blank": 37
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 3,
+          "inlineComments": 15,
+          "todoCount": 0,
+          "coverage": 150
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 16,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 29,
+          "technicalDebt": 10,
+          "priority": -15
+        }
+      }
+    },
+    {
+      "path": "tests/fixtures/test-credentials.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 43,
+          "code": 39,
+          "blank": 4
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 4,
+          "imports": 0,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 0,
+          "technicalDebt": 10,
+          "priority": 20
+        }
+      }
+    },
+    {
+      "path": "tests/navigation.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 164,
+          "code": 133,
+          "blank": 31
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 17,
+          "todoCount": 0,
+          "coverage": 200
+        },
+        "code": {
+          "functions": 1,
+          "asyncFunctions": 12,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 21,
+          "technicalDebt": 10,
+          "priority": -69
+        }
+      }
+    },
+    {
+      "path": "tests/registration.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 307,
+          "code": 254,
+          "blank": 53
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 33,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 17,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 26,
+          "technicalDebt": 10,
+          "priority": 53
+        }
+      }
+    },
+    {
+      "path": "tests/security-and-smoke.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 26,
+          "code": 20,
+          "blank": 6
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 3,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 2,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 4,
+          "technicalDebt": 10,
+          "priority": 22
+        }
+      }
+    },
+    {
+      "path": "tests/security.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 309,
+          "code": 265,
+          "blank": 44
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 27,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 16,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 25,
+          "technicalDebt": 10,
+          "priority": 53
+        }
+      }
+    },
+    {
+      "path": "tests/users.spec.ts",
+      "category": "tests",
+      "metrics": {
+        "lines": {
+          "total": 194,
+          "code": 152,
+          "blank": 42
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 20,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 2,
+          "asyncFunctions": 19,
+          "exports": 0,
+          "imports": 2,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 34,
+          "technicalDebt": 10,
+          "priority": 37
+        }
+      }
+    },
+    {
+      "path": "astro.config.mjs",
+      "category": "other",
+      "metrics": {
+        "lines": {
+          "total": 28,
+          "code": 25,
+          "blank": 3
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 0,
+          "inlineComments": 7,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 4,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 2,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "playwright.config.ts",
+      "category": "other",
+      "metrics": {
+        "lines": {
+          "total": 61,
+          "code": 48,
+          "blank": 13
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 1,
+          "inlineComments": 4,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    },
+    {
+      "path": "vitest.config.ts",
+      "category": "other",
+      "metrics": {
+        "lines": {
+          "total": 16,
+          "code": 14,
+          "blank": 2
+        },
+        "documentation": {
+          "hasFileHeader": false,
+          "jsdocCount": 2,
+          "inlineComments": 1,
+          "todoCount": 0,
+          "coverage": 100
+        },
+        "code": {
+          "functions": 0,
+          "asyncFunctions": 0,
+          "exports": 0,
+          "imports": 1,
+          "tryCatchBlocks": 0
+        },
+        "quality": {
+          "consoleLogs": 0,
+          "anyTypes": 0
+        },
+        "scores": {
+          "complexity": 1,
+          "technicalDebt": 10,
+          "priority": 21
+        }
+      }
+    }
+  ],
+  "priorityOrder": [
+    {
+      "path": "scripts/terminal-ambient-animation.mjs",
+      "priority": 181,
+      "hasHeader": false,
+      "docCoverage": 6,
+      "codeLines": 278
+    },
+    {
+      "path": "src/pages/users/[id].astro",
+      "priority": 171,
+      "hasHeader": false,
+      "docCoverage": 25,
+      "codeLines": 549
+    },
+    {
+      "path": "scripts/ship.mjs",
+      "priority": 155,
+      "hasHeader": false,
+      "docCoverage": 14,
+      "codeLines": 124
+    },
+    {
+      "path": "src/components/auth/ResetPasswordForm.astro",
+      "priority": 150,
+      "hasHeader": false,
+      "docCoverage": 25,
+      "codeLines": 368
+    },
+    {
+      "path": "tests/auth-snapshots.spec.ts",
+      "priority": 144,
+      "hasHeader": false,
+      "docCoverage": 0,
+      "codeLines": 68
+    },
+    {
+      "path": "src/pages/[...slug].astro",
+      "priority": 143,
+      "hasHeader": false,
+      "docCoverage": 0,
+      "codeLines": 64
+    },
+    {
+      "path": "src/pages/index.astro",
+      "priority": 143,
+      "hasHeader": false,
+      "docCoverage": 0,
+      "codeLines": 81
+    },
+    {
+      "path": "src/pages/profile/edit.astro",
+      "priority": 141,
+      "hasHeader": false,
+      "docCoverage": 33,
+      "codeLines": 352
+    },
+    {
+      "path": "src/lib/auth/registration-validation.test.ts",
+      "priority": 140,
+      "hasHeader": false,
+      "docCoverage": 25,
+      "codeLines": 221
+    },
+    {
+      "path": "src/pages/admin/users/index.astro",
+      "priority": 140,
+      "hasHeader": false,
+      "docCoverage": 33,
+      "codeLines": 391
+    },
+    {
+      "path": "src/components/search/GlobalSearch.astro",
+      "priority": 139,
+      "hasHeader": false,
+      "docCoverage": 25,
+      "codeLines": 385
+    },
+    {
+      "path": "src/components/molecules/Favorites.astro",
+      "priority": 137,
+      "hasHeader": false,
+      "docCoverage": 33,
+      "codeLines": 248
+    },
+    {
+      "path": "src/pages/profile/me.astro",
+      "priority": 136,
+      "hasHeader": false,
+      "docCoverage": 33,
+      "codeLines": 218
+    },
+    {
+      "path": "src/pages/api/auth/register.ts",
+      "priority": 125,
+      "hasHeader": false,
+      "docCoverage": 50,
+      "codeLines": 281
+    },
+    {
+      "path": "scripts/capture-auth-screenshots.mjs",
+      "priority": 125,
+      "hasHeader": false,
+      "docCoverage": 33,
+      "codeLines": 88
+    },
+    {
+      "path": "src/lib/tools/logger.mjs",
+      "priority": 117,
+      "hasHeader": false,
+      "docCoverage": 73,
+      "codeLines": 287
+    },
+    {
+      "path": "src/lib/auth/kv-auth.ts",
+      "priority": 115,
+      "hasHeader": false,
+      "docCoverage": 103,
+      "codeLines": 519
+    },
+    {
+      "path": "scripts/analyze-codebase.mjs",
+      "priority": 104,
+      "hasHeader": true,
+      "docCoverage": 89,
+      "codeLines": 550
+    },
+    {
+      "path": "scripts/seed-users.mjs",
+      "priority": 96,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 166
+    },
+    {
+      "path": "src/pages/admin/users/new.astro",
+      "priority": 95,
+      "hasHeader": false,
+      "docCoverage": 50,
+      "codeLines": 295
+    },
+    {
+      "path": "scripts/new-page.mjs",
+      "priority": 94,
+      "hasHeader": false,
+      "docCoverage": 50,
+      "codeLines": 120
+    },
+    {
+      "path": "tests/accessibility.spec.ts",
+      "priority": 92,
+      "hasHeader": false,
+      "docCoverage": 50,
+      "codeLines": 178
+    },
+    {
+      "path": "src/layouts/Base.astro",
+      "priority": 72,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 537
+    },
+    {
+      "path": "src/pages/api/admin/users/[id].ts",
+      "priority": 64,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 234
+    },
+    {
+      "path": "tests/account-rights.spec.ts",
+      "priority": 57,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 98
+    },
+    {
+      "path": "tests/admin.spec.ts",
+      "priority": 57,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 265
+    },
+    {
+      "path": "src/pages/profile/[id].astro",
+      "priority": 56,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 210
+    },
+    {
+      "path": "tests/registration.spec.ts",
+      "priority": 53,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 254
+    },
+    {
+      "path": "tests/security.spec.ts",
+      "priority": 53,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 265
+    },
+    {
+      "path": "src/components/auth/LoginForm.astro",
+      "priority": 51,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 255
+    },
+    {
+      "path": "src/lib/auth/rate-limit.ts",
+      "priority": 49,
+      "hasHeader": false,
+      "docCoverage": 111,
+      "codeLines": 232
+    },
+    {
+      "path": "src/lib/auth/userStore.ts",
+      "priority": 49,
+      "hasHeader": false,
+      "docCoverage": 107,
+      "codeLines": 272
+    },
+    {
+      "path": "src/components/auth/RegisterForm.astro",
+      "priority": 46,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 348
+    },
+    {
+      "path": "src/components/organisms/profile/ProfileForm.astro",
+      "priority": 46,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 278
+    },
+    {
+      "path": "src/components/auth/UserMenu.astro",
+      "priority": 43,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 203
+    },
+    {
+      "path": "src/pages/users/index.astro",
+      "priority": 43,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 258
+    },
+    {
+      "path": "src/components/molecules/DecisionMatrix.astro",
+      "priority": 42,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 307
+    },
+    {
+      "path": "src/components/guards/OwnerGuard.astro",
+      "priority": 41,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 211
+    },
+    {
+      "path": "src/components/organisms/Footer.astro",
+      "priority": 41,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 202
+    },
+    {
+      "path": "src/lib/tools/decision-matrix.test.ts",
+      "priority": 41,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 494
+    },
+    {
+      "path": "tests/users.spec.ts",
+      "priority": 37,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 152
+    },
+    {
+      "path": "src/pages/api/auth/forgot-password.ts",
+      "priority": 35,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 75
+    },
+    {
+      "path": "src/pages/api/auth/login.ts",
+      "priority": 34,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 168
+    },
+    {
+      "path": "scripts/generate-og-image.mjs",
+      "priority": 34,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 25
+    },
+    {
+      "path": "scripts/generate-icons.mjs",
+      "priority": 33,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 29
+    },
+    {
+      "path": "src/lib/email/send-confirmation.ts",
+      "priority": 31,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 115
+    },
+    {
+      "path": "src/lib/email/send-password-reset.ts",
+      "priority": 31,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 126
+    },
+    {
+      "path": "src/pages/api/admin/users/create.ts",
+      "priority": 30,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 131
+    },
+    {
+      "path": "src/pages/api/auth/account/delete.ts",
+      "priority": 30,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 62
+    },
+    {
+      "path": "src/lib/auth/store.ts",
+      "priority": 29,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 165
+    },
+    {
+      "path": "src/lib/auth/rate-limit.test.ts",
+      "priority": 28,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 151
+    },
+    {
+      "path": "src/lib/auth/turnstile.test.ts",
+      "priority": 28,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 119
+    },
+    {
+      "path": "src/pages/forgot-password/index.astro",
+      "priority": 27,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 101
+    },
+    {
+      "path": "src/components/auth/ForgotPasswordForm.astro",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 178
+    },
+    {
+      "path": "src/middleware.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 24
+    },
+    {
+      "path": "src/pages/api/admin/users/list.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 64
+    },
+    {
+      "path": "src/pages/api/auth/account/export.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 46
+    },
+    {
+      "path": "src/pages/api/auth/confirm.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 31
+    },
+    {
+      "path": "src/pages/api/auth/logout.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 62
+    },
+    {
+      "path": "src/pages/api/auth/me.ts",
+      "priority": 26,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 66
+    },
+    {
+      "path": "src/pages/login/index.astro",
+      "priority": 23,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 107
+    },
+    {
+      "path": "src/pages/register/index.astro",
+      "priority": 23,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 104
+    },
+    {
+      "path": "src/components/molecules/CallToAction.astro",
+      "priority": 22,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 59
+    },
+    {
+      "path": "src/pages/logout/index.astro",
+      "priority": 22,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 59
+    },
+    {
+      "path": "src/pages/profile/index.astro",
+      "priority": 22,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 51
+    },
+    {
+      "path": "tests/security-and-smoke.spec.ts",
+      "priority": 22,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 20
+    },
+    {
+      "path": "src/components/atoms/Breadcrumbs.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 94
+    },
+    {
+      "path": "src/components/atoms/Collapsible.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 171
+    },
+    {
+      "path": "src/components/atoms/WikiBox.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 54
+    },
+    {
+      "path": "src/components/molecules/Disclaimer.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 45
+    },
+    {
+      "path": "src/components/molecules/FAQ.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 93
+    },
+    {
+      "path": "src/components/molecules/InfoBox.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 21
+    },
+    {
+      "path": "src/components/molecules/NavBox.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 21
+    },
+    {
+      "path": "src/components/molecules/NoteBox.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 19
+    },
+    {
+      "path": "src/components/molecules/SeeAlso.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 64
+    },
+    {
+      "path": "src/components/molecules/TopicCard.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 70
+    },
+    {
+      "path": "src/components/organisms/ContentSection.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 43
+    },
+    {
+      "path": "src/components/organisms/Hero.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 150
+    },
+    {
+      "path": "src/components/organisms/PageHeader.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 32
+    },
+    {
+      "path": "src/components/organisms/profile/ActivityFeed.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 110
+    },
+    {
+      "path": "src/components/organisms/profile/ProfileHeader.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 200
+    },
+    {
+      "path": "src/components/organisms/profile/SystemBulletin.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 170
+    },
+    {
+      "path": "src/components/trade/TradeWidget.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 177
+    },
+    {
+      "path": "src/content.config.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 48
+    },
+    {
+      "path": "src/lib/api/index.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 37
+    },
+    {
+      "path": "src/lib/auth/local-auth.test.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 115
+    },
+    {
+      "path": "src/lib/constants.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 21
+    },
+    {
+      "path": "src/lib/tools/index.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 21
+    },
+    {
+      "path": "src/pages/disclaimer.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 48
+    },
+    {
+      "path": "src/pages/privacy/index.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 29
+    },
+    {
+      "path": "src/pages/reset-password/index.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 86
+    },
+    {
+      "path": "src/pages/terms/index.astro",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 25
+    },
+    {
+      "path": "astro.config.mjs",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 25
+    },
+    {
+      "path": "playwright.config.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 48
+    },
+    {
+      "path": "vitest.config.ts",
+      "priority": 21,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 14
+    },
+    {
+      "path": "src/components/atoms/Avatar.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 48
+    },
+    {
+      "path": "src/components/atoms/RoleBadge.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 65
+    },
+    {
+      "path": "src/components/index.ts",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 51
+    },
+    {
+      "path": "src/components/molecules/BlankSlate.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 166
+    },
+    {
+      "path": "src/components/molecules/CompletenessMeter.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 125,
+      "codeLines": 254
+    },
+    {
+      "path": "src/components/organisms/profile/index.ts",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 7
+    },
+    {
+      "path": "src/components/simple/Aside.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 36
+    },
+    {
+      "path": "src/components/simple/Steps.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 39
+    },
+    {
+      "path": "src/components/simple/TabItem.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 15
+    },
+    {
+      "path": "src/components/simple/Tabs.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 34
+    },
+    {
+      "path": "src/components/utilities/CardGrid.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 41
+    },
+    {
+      "path": "src/components/utilities/Empty.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 10
+    },
+    {
+      "path": "src/components/utilities/ForceLightTheme.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 13
+    },
+    {
+      "path": "src/lib/auth/index.ts",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 62
+    },
+    {
+      "path": "src/pages/confirm/error/index.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 150
+    },
+    {
+      "path": "src/pages/confirm/success/index.astro",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 112
+    },
+    {
+      "path": "tests/fixtures/test-credentials.ts",
+      "priority": 20,
+      "hasHeader": false,
+      "docCoverage": 100,
+      "codeLines": 39
+    },
+    {
+      "path": "src/lib/auth/local-auth.ts",
+      "priority": 18,
+      "hasHeader": false,
+      "docCoverage": 111,
+      "codeLines": 151
+    },
+    {
+      "path": "src/lib/auth/csrf.ts",
+      "priority": 16,
+      "hasHeader": false,
+      "docCoverage": 117,
+      "codeLines": 153
+    },
+    {
+      "path": "src/lib/auth/permissions.ts",
+      "priority": 14,
+      "hasHeader": false,
+      "docCoverage": 133,
+      "codeLines": 201
+    },
+    {
+      "path": "src/lib/email/send-reset.ts",
+      "priority": 11,
+      "hasHeader": false,
+      "docCoverage": 150,
+      "codeLines": 233
+    },
+    {
+      "path": "src/lib/auth/activity.ts",
+      "priority": 6,
+      "hasHeader": false,
+      "docCoverage": 120,
+      "codeLines": 73
+    },
+    {
+      "path": "src/lib/auth/api-client.ts",
+      "priority": 2,
+      "hasHeader": false,
+      "docCoverage": 133,
+      "codeLines": 65
+    },
+    {
+      "path": "src/lib/auth/turnstile.ts",
+      "priority": -10,
+      "hasHeader": false,
+      "docCoverage": 150,
+      "codeLines": 93
+    },
+    {
+      "path": "src/lib/api/profileService.ts",
+      "priority": -12,
+      "hasHeader": false,
+      "docCoverage": 163,
+      "codeLines": 229
+    },
+    {
+      "path": "src/lib/api/profileActions.ts",
+      "priority": -13,
+      "hasHeader": false,
+      "docCoverage": 150,
+      "codeLines": 122
+    },
+    {
+      "path": "src/lib/config/systemBulletins.ts",
+      "priority": -15,
+      "hasHeader": false,
+      "docCoverage": 150,
+      "codeLines": 73
+    },
+    {
+      "path": "tests/content.spec.ts",
+      "priority": -15,
+      "hasHeader": false,
+      "docCoverage": 150,
+      "codeLines": 158
+    },
+    {
+      "path": "tests/auth.spec.ts",
+      "priority": -66,
+      "hasHeader": false,
+      "docCoverage": 200,
+      "codeLines": 179
+    },
+    {
+      "path": "tests/navigation.spec.ts",
+      "priority": -69,
+      "hasHeader": false,
+      "docCoverage": 200,
+      "codeLines": 133
+    },
+    {
+      "path": "src/pages/api/auth/reset-password.ts",
+      "priority": -72,
+      "hasHeader": false,
+      "docCoverage": 200,
+      "codeLines": 105
+    },
+    {
+      "path": "src/components/molecules/ActivityItem.astro",
+      "priority": -177,
+      "hasHeader": false,
+      "docCoverage": 300,
+      "codeLines": 125
+    },
+    {
+      "path": "src/lib/debug.ts",
+      "priority": -303,
+      "hasHeader": false,
+      "docCoverage": 500,
+      "codeLines": 302
+    },
+    {
+      "path": "src/lib/tools/decision-matrix.ts",
+      "priority": -319,
+      "hasHeader": false,
+      "docCoverage": 500,
+      "codeLines": 868
+    },
+    {
+      "path": "src/lib/auth/schemas/userProfile.ts",
+      "priority": -494,
+      "hasHeader": false,
+      "docCoverage": 667,
+      "codeLines": 507
+    }
+  ]
+}

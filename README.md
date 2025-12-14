@@ -131,14 +131,49 @@ The `src/lib/tools/` folder contains reusable utilities:
 
 ### Documentation
 
+#### Technical Documentation (in `_docs/technical/`)
+
+| Document | Purpose |
+|----------|---------|
+| `INDEX.md` | Master documentation index |
+| `ARCHITECTURE.md` | System architecture, patterns, data flow |
+| `AUTHENTICATION.md` | Auth flows, password security, RBAC |
+| `API_REFERENCE.md` | All API endpoints with request/response formats |
+| `COMPONENTS.md` | Component library documentation |
+| `DATA_MODELS.md` | KV storage schema, TypeScript interfaces |
+| `SECURITY.md` | Security measures, threat model |
+| `TESTING.md` | E2E and unit testing guide |
+| `DEPLOYMENT.md` | Cloudflare deployment, operations |
+
+#### Developer Resources
+
 | Document | Purpose |
 |----------|---------|
 | `AGENTS.md` | AI assistant instructions |
 | `DEVELOPERS.md` | Developer guide |
-| `_docs/ARCHITECTURE.md` | Technical architecture |
-| `_docs/AUTH.md` | Authentication system |
 | `_docs/PROJECT_POLICIES.md` | Standards & conventions |
 | `_docs/devlog/` | Daily development logs |
+| `_docs/documentation-checklist.md` | Generated documentation task list |
+
+#### Code Documentation Standards
+
+All source files should have `@fileoverview` JSDoc headers:
+
+```typescript
+/**
+ * @fileoverview Module description
+ *
+ * Detailed explanation of what this module does.
+ *
+ * @module path/to/module
+ * @see {@link module:related/module} - Description
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
+```
+
+Run `node scripts/analyze-codebase.mjs` to check documentation coverage.
 
 ### Work Efforts
 

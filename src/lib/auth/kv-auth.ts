@@ -1,8 +1,57 @@
 /**
- * Cloudflare KV Authentication
+ * @fileoverview Cloudflare KV Authentication Module
  *
- * Server-side auth utilities using Cloudflare KV for storage.
- * Replaces localStorage-based mock auth with proper API auth.
+ * Server-side authentication utilities using Cloudflare KV for persistent storage.
+ * This module handles all core authentication operations including user management,
+ * session handling, password hashing, and email confirmation flows.
+ *
+ * @module lib/auth/kv-auth
+ * @see {@link module:lib/auth/local-auth} - Local development fallback
+ * @see {@link module:lib/auth/rate-limit} - Rate limiting for auth endpoints
+ * @see {@link module:lib/auth/csrf} - CSRF token protection
+ *
+ * ## Architecture
+ *
+ * ```
+ * ┌─────────────────────────────────────────────────────────────────┐
+ * │                    KV AUTHENTICATION FLOW                       │
+ * ├─────────────────────────────────────────────────────────────────┤
+ * │                                                                 │
+ * │  Client Request → API Route → kv-auth.ts → Cloudflare KV      │
+ * │                                                                 │
+ * │  Key Patterns:                                                  │
+ * │    user:{id}       → Full user object (KVUser)                 │
+ * │    email:{email}   → User ID lookup index                      │
+ * │    session:{token} → Session data with TTL                     │
+ * │    confirm:{token} → Email confirmation with TTL               │
+ * │    reset:{token}   → Password reset with TTL                   │
+ * │                                                                 │
+ * └─────────────────────────────────────────────────────────────────┘
+ * ```
+ *
+ * ## Security Features
+ *
+ * - **PBKDF2 Password Hashing**: 100,000 iterations with random salt
+ * - **V1→V2 Migration**: Automatic upgrade from legacy SHA-256 hashes
+ * - **Secure Sessions**: 32-byte random tokens with 24-hour TTL
+ * - **httpOnly Cookies**: Session tokens never exposed to JavaScript
+ * - **Constant-time Comparison**: Prevents timing attacks on password verification
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * // Validate login credentials
+ * const user = await validateCredentials(USERS, email, password);
+ *
+ * // Create session after successful login
+ * const { token, expiresAt } = await createSession(SESSIONS, user.id);
+ *
+ * // Set session cookie
+ * headers.set('Set-Cookie', createSessionCookie(token, expiresAt));
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Types for KV stored data
