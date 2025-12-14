@@ -16,7 +16,7 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
 ---
 
 <div class="register-form-container">
-  <form id="register-form" class="register-form">
+  <form id="register-form" class="register-form" novalidate>
     {csrfToken && <input type="hidden" name="csrf_token" value={csrfToken} />}
 
     {/* Honeypot field - hidden from humans, bots will fill it */}
@@ -173,6 +173,34 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
     // Client-side validation
     if (!username || !name || !email || !password) {
       errorMessage.textContent = 'All fields are required.';
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    // Username validation: 3-20 characters, letters, numbers, underscores only
+    const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
+    if (!usernamePattern.test(username)) {
+      errorMessage.textContent = 'Username must be 3-20 characters with no spaces (letters, numbers, underscores only).';
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      errorMessage.textContent = 'Please enter a valid email address.';
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    // Password validation: at least 8 characters with letters and numbers
+    if (password.length < 8) {
+      errorMessage.textContent = 'Password must be at least 8 characters.';
+      errorMessage.style.display = 'block';
+      return;
+    }
+    if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+      errorMessage.textContent = 'Password must contain both letters and numbers.';
       errorMessage.style.display = 'block';
       return;
     }
