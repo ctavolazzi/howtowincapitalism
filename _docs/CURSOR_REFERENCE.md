@@ -36,7 +36,7 @@ SQLite database tracking all AI-generated code.
 
 **Schema:**
 ```sql
-ai_code_hashes (hash, source, fileExtension, fileName, 
+ai_code_hashes (hash, source, fileExtension, fileName,
                 requestId, conversationId, timestamp, createdAt)
 scored_commits (commitHash, branchName, scoredAt)
 tracking_state (key, value)

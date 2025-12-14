@@ -72,78 +72,84 @@ const { csrfToken } = Astro.props;
 </div>
 
 <script>
-  const form = document.getElementById('login-form') as HTMLFormElement;
-  const errorMessage = document.getElementById('error-message') as HTMLDivElement;
-  const loginButton = document.getElementById('login-button') as HTMLButtonElement;
-  const passwordInput = document.getElementById('password') as HTMLInputElement;
-  const togglePassword = document.getElementById('toggle-password') as HTMLButtonElement;
-  const eyeOpen = document.getElementById('eye-open') as SVGElement;
-  const eyeClosed = document.getElementById('eye-closed') as SVGElement;
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('login-form') as HTMLFormElement | null;
+    const errorMessage = document.getElementById('error-message') as HTMLDivElement | null;
+    const loginButton = document.getElementById('login-button') as HTMLButtonElement | null;
+    const passwordInput = document.getElementById('password') as HTMLInputElement | null;
+    const togglePassword = document.getElementById('toggle-password') as HTMLButtonElement | null;
+    const eyeOpen = document.querySelector<SVGElement>('#eye-open');
+    const eyeClosed = document.querySelector<SVGElement>('#eye-closed');
 
-  // Password visibility toggle
-  togglePassword?.addEventListener('click', () => {
-    const isPassword = passwordInput.type === 'password';
-    passwordInput.type = isPassword ? 'text' : 'password';
-    eyeOpen.classList.toggle('hidden', !isPassword);
-    eyeClosed.classList.toggle('hidden', isPassword);
-    togglePassword.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-  });
+    if (!form || !errorMessage || !loginButton || !passwordInput) return;
 
-  // Get redirect URL from query params
-  function getRedirectUrl(): string {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const redirect = params.get('redirect');
-      if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
-        return redirect;
-      }
-    } catch (e) {
-      console.warn('Failed to parse redirect URL:', e);
-    }
-    return '/';
-  }
-
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const csrfToken = formData.get('csrf_token') as string | null;
-
-    // Show loading state
-    loginButton.disabled = true;
-    loginButton.textContent = 'Logging in...';
-    errorMessage.style.display = 'none';
-
-    try {
-      const response = await fetch('/api/auth/login/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, csrf_token: csrfToken }),
-        credentials: 'include', // Include cookies
+    // Password visibility toggle
+    if (togglePassword) {
+      togglePassword.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        eyeOpen?.classList.toggle('hidden', !isPassword);
+        eyeClosed?.classList.toggle('hidden', isPassword);
+        togglePassword.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
       });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        // Success - redirect
-        window.location.href = getRedirectUrl();
-    } else {
-      // Failed - show error
-        errorMessage.textContent = data.error || 'Invalid email or password.';
-        errorMessage.style.display = 'block';
-        form.classList.add('shake');
-        setTimeout(() => form.classList.remove('shake'), 500);
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      errorMessage.textContent = 'Network error. Please try again.';
-      errorMessage.style.display = 'block';
-    } finally {
-      loginButton.disabled = false;
-      loginButton.textContent = 'Log In';
     }
+
+    // Get redirect URL from query params
+    function getRedirectUrl(): string {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect');
+        if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
+          return redirect;
+        }
+      } catch (e) {
+        console.warn('Failed to parse redirect URL:', e);
+      }
+      return '/';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      const csrfToken = formData.get('csrf_token') as string | null;
+
+      // Show loading state
+      loginButton.disabled = true;
+      loginButton.textContent = 'Logging in...';
+      errorMessage.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/auth/login/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, csrf_token: csrfToken }),
+          credentials: 'include', // Include cookies
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          // Success - redirect
+          window.location.href = getRedirectUrl();
+        } else {
+          // Failed - show error
+          errorMessage.textContent = data.error || 'Invalid email or password.';
+          errorMessage.style.display = 'block';
+          form.classList.add('shake');
+          setTimeout(() => form.classList.remove('shake'), 500);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        errorMessage.textContent = 'Network error. Please try again.';
+        errorMessage.style.display = 'block';
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = 'Log In';
+      }
+    });
   });
 </script>
 

@@ -31,22 +31,24 @@ const { text = DEFAULTS.disclaimer, id = 'site-disclaimer' } = Astro.props;
 <!-- Styles in Base.astro -->
 
 <script>
-  // Closable disclaimer with localStorage persistence
-  document.querySelectorAll('.disclaimer-wrapper').forEach((wrapper) => {
-    const id = wrapper.getAttribute('data-disclaimer-id');
-    const storageKey = `disclaimer-dismissed-${id}`;
+  document.addEventListener('DOMContentLoaded', () => {
+    // Closable disclaimer with localStorage persistence
+    document.querySelectorAll('.disclaimer-wrapper').forEach((wrapper) => {
+      const id = wrapper.getAttribute('data-disclaimer-id');
+      const storageKey = `disclaimer-dismissed-${id}`;
 
-    // Check if already dismissed
-    if (localStorage.getItem(storageKey) === 'true') {
-      wrapper.setAttribute('hidden', '');
-      return;
-    }
+      // Check if already dismissed
+      if (localStorage.getItem(storageKey) === 'true') {
+        wrapper.setAttribute('hidden', '');
+        return;
+      }
 
-    // Add close handler
-    const closeBtn = wrapper.querySelector('.disclaimer-close');
-    closeBtn?.addEventListener('click', () => {
-      wrapper.setAttribute('hidden', '');
-      localStorage.setItem(storageKey, 'true');
+      // Add close handler
+      const closeBtn = wrapper.querySelector('.disclaimer-close');
+      closeBtn?.addEventListener('click', () => {
+        wrapper.setAttribute('hidden', '');
+        localStorage.setItem(storageKey, 'true');
+      });
     });
   });
 </script>

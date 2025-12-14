@@ -47,54 +47,62 @@
 <script>
   import { checkAuth, logout } from '../../lib/auth/api-client';
 
-  const loginLink = document.getElementById('login-link');
-  const userDropdown = document.getElementById('user-dropdown');
-  const avatarButton = document.getElementById('avatar-button');
-  const dropdownMenu = document.getElementById('dropdown-menu');
-  const logoutButton = document.getElementById('logout-button');
-  const userName = document.getElementById('user-name');
-  const profileLink = document.querySelector('a[href="/profile/"]') as HTMLAnchorElement;
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.getElementById('login-link') as HTMLElement | null;
+    const userDropdown = document.getElementById('user-dropdown') as HTMLElement | null;
+    const avatarButton = document.getElementById('avatar-button');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const logoutButton = document.getElementById('logout-button');
+    const userName = document.getElementById('user-name');
+    const profileLink = document.querySelector('a[href="/profile/"]') as HTMLAnchorElement | null;
 
-  // Update UI based on auth state
-  async function updateUI() {
-    const { authenticated, user } = await checkAuth();
+    if (!loginLink || !userDropdown) return;
 
-    if (authenticated && user) {
-      // Logged in
-      loginLink!.style.display = 'none';
-      userDropdown!.style.display = 'flex';
-      userName!.textContent = user.name;
+    // Capture refs for use in async functions (TypeScript narrowing doesn't work across closures)
+    const loginEl = loginLink;
+    const dropdownEl = userDropdown;
 
-      // Update profile link to go to user's profile
-      if (profileLink) {
-        profileLink.href = `/users/${user.id}/`;
+    // Update UI based on auth state
+    async function updateUI() {
+      const { authenticated, user } = await checkAuth();
+
+      if (authenticated && user) {
+        // Logged in
+        loginEl.style.display = 'none';
+        dropdownEl.style.display = 'flex';
+        if (userName) userName.textContent = user.name;
+
+        // Update profile link to go to user's profile
+        if (profileLink) {
+          profileLink.href = `/users/${user.id}/`;
+        }
+      } else {
+        // Not logged in
+        loginEl.style.display = 'flex';
+        dropdownEl.style.display = 'none';
       }
-    } else {
-      // Not logged in
-      loginLink!.style.display = 'flex';
-      userDropdown!.style.display = 'none';
     }
-  }
 
-  // Initial update
-  updateUI();
+    // Initial update
+    updateUI();
 
-  // Toggle dropdown
-  avatarButton?.addEventListener('click', () => {
-    dropdownMenu?.classList.toggle('open');
-  });
+    // Toggle dropdown
+    avatarButton?.addEventListener('click', () => {
+      dropdownMenu?.classList.toggle('open');
+    });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!userDropdown?.contains(e.target as Node)) {
-      dropdownMenu?.classList.remove('open');
-    }
-  });
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!dropdownEl.contains(e.target as Node)) {
+        dropdownMenu?.classList.remove('open');
+      }
+    });
 
-  // Handle logout
-  logoutButton?.addEventListener('click', async () => {
-    await logout();
-    window.location.href = '/login/';
+    // Handle logout
+    logoutButton?.addEventListener('click', async () => {
+      await logout();
+      window.location.href = '/login/';
+    });
   });
 </script>
 

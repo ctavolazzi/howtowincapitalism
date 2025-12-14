@@ -87,136 +87,143 @@ const { placeholder = 'Search users, tools, content...', compact = false } = Ast
 </div>
 
 <script>
-  // Search data (populated at build time)
-  interface SearchItem {
-    type: 'user' | 'content' | 'tool';
-    title: string;
-    url: string;
-    description?: string;
-    role?: string;
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Search data (populated at build time)
+    interface SearchItem {
+      type: 'user' | 'content' | 'tool';
+      title: string;
+      url: string;
+      description?: string;
+      role?: string;
+    }
 
-  // This would ideally be built from content collections
-  // For now, we'll use a simplified approach
-  const searchData: SearchItem[] = [
-    { type: 'user', title: 'Crispy Admin', url: '/users/crispy/', role: 'admin' },
-    { type: 'user', title: 'Editor', url: '/users/editor/', role: 'editor' },
-    { type: 'user', title: 'Contributor', url: '/users/contributor/', role: 'contributor' },
-    { type: 'user', title: 'Viewer', url: '/users/viewer/', role: 'viewer' },
-    { type: 'content', title: 'Introduction', url: '/faq/introduction/', description: 'Getting started guide' },
-    { type: 'content', title: 'Compound Interest', url: '/faq/compound-interest/', description: 'The engine of wealth' },
-    { type: 'content', title: 'Emergency Fund', url: '/faq/emergency-fund/', description: 'Your first foundation' },
-    { type: 'content', title: 'Decision Matrix', url: '/faq/decision-matrix/', description: 'Quantitative decision tool' },
-    { type: 'tool', title: 'Nova Scraper Agent', url: '/tools/nova-scraper/', description: 'Web scraping agent' },
-  ];
+    // This would ideally be built from content collections
+    // For now, we'll use a simplified approach
+    const searchData: SearchItem[] = [
+      { type: 'user', title: 'Crispy Admin', url: '/users/crispy/', role: 'admin' },
+      { type: 'user', title: 'Editor', url: '/users/editor/', role: 'editor' },
+      { type: 'user', title: 'Contributor', url: '/users/contributor/', role: 'contributor' },
+      { type: 'user', title: 'Viewer', url: '/users/viewer/', role: 'viewer' },
+      { type: 'content', title: 'Introduction', url: '/faq/introduction/', description: 'Getting started guide' },
+      { type: 'content', title: 'Compound Interest', url: '/faq/compound-interest/', description: 'The engine of wealth' },
+      { type: 'content', title: 'Emergency Fund', url: '/faq/emergency-fund/', description: 'Your first foundation' },
+      { type: 'content', title: 'Decision Matrix', url: '/faq/decision-matrix/', description: 'Quantitative decision tool' },
+      { type: 'tool', title: 'Nova Scraper Agent', url: '/tools/nova-scraper/', description: 'Web scraping agent' },
+    ];
 
-  const trigger = document.getElementById('search-trigger');
-  const modal = document.getElementById('search-modal');
-  const backdrop = document.getElementById('search-backdrop');
-  const closeBtn = document.getElementById('search-close');
-  const input = document.getElementById('global-search-input') as HTMLInputElement;
-  const userResults = document.getElementById('user-results');
-  const userResultsList = document.getElementById('user-results-list');
-  const contentResults = document.getElementById('content-results');
-  const contentResultsList = document.getElementById('content-results-list');
-  const searchEmpty = document.getElementById('search-empty');
-  const searchQuery = document.getElementById('search-query');
+    const trigger = document.getElementById('search-trigger');
+    const modal = document.getElementById('search-modal');
+    const backdrop = document.getElementById('search-backdrop');
+    const closeBtn = document.getElementById('search-close');
+    const input = document.getElementById('global-search-input') as HTMLInputElement | null;
+    const userResults = document.getElementById('user-results');
+    const userResultsList = document.getElementById('user-results-list');
+    const contentResults = document.getElementById('content-results');
+    const contentResultsList = document.getElementById('content-results-list');
+    const searchEmpty = document.getElementById('search-empty');
+    const searchQuery = document.getElementById('search-query');
 
-  function openSearch() {
-    modal!.style.display = 'flex';
-    input?.focus();
-    document.body.style.overflow = 'hidden';
-  }
+    if (!trigger || !modal) return;
 
-  function closeSearch() {
-    modal!.style.display = 'none';
-    document.body.style.overflow = '';
-    if (input) input.value = '';
-    resetResults();
-  }
+    // Capture ref for use in nested functions (TypeScript narrowing doesn't work across closures)
+    const modalEl = modal;
 
-  function resetResults() {
-    if (userResults) userResults.style.display = 'none';
-    if (contentResults) contentResults.style.display = 'none';
-    if (searchEmpty) searchEmpty.style.display = 'none';
-  }
+    function openSearch() {
+      modalEl.style.display = 'flex';
+      input?.focus();
+      document.body.style.overflow = 'hidden';
+    }
 
-  function performSearch(query: string) {
-    if (!query.trim()) {
+    function closeSearch() {
+      modalEl.style.display = 'none';
+      document.body.style.overflow = '';
+      if (input) input.value = '';
       resetResults();
-      return;
     }
 
-    const q = query.toLowerCase();
-    const users = searchData.filter(item =>
-      item.type === 'user' && (item.title.toLowerCase().includes(q) || item.role?.includes(q))
-    );
-    const content = searchData.filter(item =>
-      (item.type === 'content' || item.type === 'tool') &&
-      (item.title.toLowerCase().includes(q) || item.description?.toLowerCase().includes(q))
-    );
-
-    // Update user results
-    if (users.length > 0) {
-      userResults!.style.display = 'block';
-      userResultsList!.innerHTML = users.map(item => `
-        <a href="${item.url}" class="result-item">
-          <span class="result-icon">👤</span>
-          <div class="result-info">
-            <span class="result-title">${item.title}</span>
-            <span class="result-meta">${item.role}</span>
-          </div>
-        </a>
-      `).join('');
-    } else {
-      userResults!.style.display = 'none';
+    function resetResults() {
+      if (userResults) userResults.style.display = 'none';
+      if (contentResults) contentResults.style.display = 'none';
+      if (searchEmpty) searchEmpty.style.display = 'none';
     }
 
-    // Update content results
-    if (content.length > 0) {
-      contentResults!.style.display = 'block';
-      contentResultsList!.innerHTML = content.map(item => `
-        <a href="${item.url}" class="result-item">
-          <span class="result-icon">${item.type === 'tool' ? '🛠️' : '📄'}</span>
-          <div class="result-info">
-            <span class="result-title">${item.title}</span>
-            <span class="result-meta">${item.description || ''}</span>
-          </div>
-        </a>
-      `).join('');
-    } else {
-      contentResults!.style.display = 'none';
+    function performSearch(query: string) {
+      if (!query.trim()) {
+        resetResults();
+        return;
+      }
+
+      const q = query.toLowerCase();
+      const users = searchData.filter(item =>
+        item.type === 'user' && (item.title.toLowerCase().includes(q) || item.role?.includes(q))
+      );
+      const content = searchData.filter(item =>
+        (item.type === 'content' || item.type === 'tool') &&
+        (item.title.toLowerCase().includes(q) || item.description?.toLowerCase().includes(q))
+      );
+
+      // Update user results
+      if (users.length > 0 && userResults && userResultsList) {
+        userResults.style.display = 'block';
+        userResultsList.innerHTML = users.map(item => `
+          <a href="${item.url}" class="result-item">
+            <span class="result-icon">👤</span>
+            <div class="result-info">
+              <span class="result-title">${item.title}</span>
+              <span class="result-meta">${item.role}</span>
+            </div>
+          </a>
+        `).join('');
+      } else if (userResults) {
+        userResults.style.display = 'none';
+      }
+
+      // Update content results
+      if (content.length > 0 && contentResults && contentResultsList) {
+        contentResults.style.display = 'block';
+        contentResultsList.innerHTML = content.map(item => `
+          <a href="${item.url}" class="result-item">
+            <span class="result-icon">${item.type === 'tool' ? '🛠️' : '📄'}</span>
+            <div class="result-info">
+              <span class="result-title">${item.title}</span>
+              <span class="result-meta">${item.description || ''}</span>
+            </div>
+          </a>
+        `).join('');
+      } else if (contentResults) {
+        contentResults.style.display = 'none';
+      }
+
+      // Show empty state
+      if (users.length === 0 && content.length === 0 && searchEmpty && searchQuery) {
+        searchEmpty.style.display = 'block';
+        searchQuery.textContent = query;
+      } else if (searchEmpty) {
+        searchEmpty.style.display = 'none';
+      }
     }
 
-    // Show empty state
-    if (users.length === 0 && content.length === 0) {
-      searchEmpty!.style.display = 'block';
-      searchQuery!.textContent = query;
-    } else {
-      searchEmpty!.style.display = 'none';
-    }
-  }
+    // Event listeners
+    trigger.addEventListener('click', openSearch);
+    backdrop?.addEventListener('click', closeSearch);
+    closeBtn?.addEventListener('click', closeSearch);
 
-  // Event listeners
-  trigger?.addEventListener('click', openSearch);
-  backdrop?.addEventListener('click', closeSearch);
-  closeBtn?.addEventListener('click', closeSearch);
+    input?.addEventListener('input', () => {
+      performSearch(input.value);
+    });
 
-  input?.addEventListener('input', () => {
-    performSearch(input.value);
-  });
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    // Open with Cmd/Ctrl + K
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      openSearch();
-    }
-    // Close with Escape
-    if (e.key === 'Escape' && modal?.style.display === 'flex') {
-      closeSearch();
-    }
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Open with Cmd/Ctrl + K
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+      // Close with Escape
+      if (e.key === 'Escape' && modalEl.style.display === 'flex') {
+        closeSearch();
+      }
+    });
   });
 </script>
 
