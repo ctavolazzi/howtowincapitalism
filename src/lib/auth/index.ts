@@ -1,18 +1,43 @@
 /**
- * Auth Module
+ * @fileoverview Authentication Module - Public API Entry Point
  *
- * Mock authentication system for user profiles and activity tracking.
+ * Central export module for all authentication functionality. Re-exports
+ * functions from specialized submodules to provide a clean, unified API.
  *
- * ARCHITECTURE:
- *   userStore.ts  → Single source of truth for all user data
- *   store.ts      → Authentication state (who is logged in)
- *   permissions.ts → RBAC access control
+ * @module lib/auth
+ * @see {@link module:lib/auth/store} - Auth state management
+ * @see {@link module:lib/auth/userStore} - User profile data
+ * @see {@link module:lib/auth/permissions} - RBAC permission system
+ * @see {@link module:lib/auth/activity} - User activity tracking
  *
- * ACCESS LEVELS:
- *   admin (10)       - Full CRUD on everything
- *   editor (5)       - Create, Read, Update any (no delete)
- *   contributor (3)  - CRUD on own content only
- *   viewer (1)       - Read public content only
+ * ## Module Structure
+ *
+ * ```
+ * lib/auth/
+ * ├── index.ts        ← Public API (this file)
+ * ├── store.ts        ← Auth state (isLoggedIn, currentUser)
+ * ├── userStore.ts    ← User profiles (SINGLE SOURCE OF TRUTH)
+ * ├── permissions.ts  ← RBAC permission checking
+ * ├── activity.ts     ← Activity tracking
+ * ├── kv-auth.ts      ← Server-side KV authentication
+ * ├── local-auth.ts   ← Local development fallback
+ * ├── csrf.ts         ← CSRF token handling
+ * ├── rate-limit.ts   ← Rate limiting
+ * ├── turnstile.ts    ← CAPTCHA verification
+ * └── api-client.ts   ← Client-side API wrapper
+ * ```
+ *
+ * ## Access Levels
+ *
+ * | Role        | Level | Capabilities                         |
+ * |-------------|-------|--------------------------------------|
+ * | admin       | 10    | Full CRUD, user management, settings |
+ * | editor      | 5     | Create, Read, Update any content     |
+ * | contributor | 3     | CRUD on own content only             |
+ * | viewer      | 1     | Read public content only             |
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Core auth functions

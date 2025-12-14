@@ -1,28 +1,55 @@
 /**
- * Permissions Module
+ * @fileoverview Role-Based Access Control (RBAC) Permissions Module
  *
- * Centralized permission checking for the RBAC system.
+ * Centralized permission checking for the application. Implements a
+ * hierarchical access level system where higher levels inherit all
+ * permissions of lower levels.
  *
- * ACCESS LEVELS:
- *   admin (10)       - Full CRUD on everything, manage users, system settings
- *   editor (5)       - Create, Read, Update any content (no delete, no user mgmt)
- *   contributor (3)  - CRUD on own content only, read public
- *   viewer (1)       - Read public content only
+ * @module lib/auth/permissions
+ * @see {@link module:lib/auth/store} - Gets current user for permission checks
+ * @see {@link module:components/guards/OwnerGuard} - UI permission guards
  *
- * PERMISSION MATRIX:
- *   ┌──────────────────┬───────┬────────┬─────────────┬────────┐
- *   │ Operation        │ Admin │ Editor │ Contributor │ Viewer │
- *   ├──────────────────┼───────┼────────┼─────────────┼────────┤
- *   │ Create content   │  ✅   │   ✅   │   ✅ (own)  │   ❌   │
- *   │ Read public      │  ✅   │   ✅   │      ✅     │   ✅   │
- *   │ Read private     │  ✅   │   ✅   │   ✅ (own)  │   ❌   │
- *   │ Update any       │  ✅   │   ✅   │      ❌     │   ❌   │
- *   │ Update own       │  ✅   │   ✅   │      ✅     │   ❌   │
- *   │ Delete any       │  ✅   │   ❌   │      ❌     │   ❌   │
- *   │ Delete own       │  ✅   │   ❌   │      ❌     │   ❌   │
- *   │ Manage users     │  ✅   │   ❌   │      ❌     │   ❌   │
- *   │ System settings  │  ✅   │   ❌   │      ❌     │   ❌   │
- *   └──────────────────┴───────┴────────┴─────────────┴────────┘
+ * ## Access Levels
+ *
+ * | Role        | Level | Description                            |
+ * |-------------|-------|----------------------------------------|
+ * | admin       | 10    | Full system access, user management    |
+ * | editor      | 5     | Full content access (no delete/users)  |
+ * | contributor | 3     | Own content only                       |
+ * | viewer      | 1     | Read public content only               |
+ *
+ * ## Permission Matrix
+ *
+ * ```
+ * ┌──────────────────┬───────┬────────┬─────────────┬────────┐
+ * │ Operation        │ Admin │ Editor │ Contributor │ Viewer │
+ * ├──────────────────┼───────┼────────┼─────────────┼────────┤
+ * │ Create content   │  ✅   │   ✅   │   ✅ (own)  │   ❌   │
+ * │ Read public      │  ✅   │   ✅   │      ✅     │   ✅   │
+ * │ Read private     │  ✅   │   ✅   │   ✅ (own)  │   ❌   │
+ * │ Update any       │  ✅   │   ✅   │      ❌     │   ❌   │
+ * │ Update own       │  ✅   │   ✅   │      ✅     │   ❌   │
+ * │ Delete any       │  ✅   │   ❌   │      ❌     │   ❌   │
+ * │ Delete own       │  ✅   │   ❌   │      ❌     │   ❌   │
+ * │ Manage users     │  ✅   │   ❌   │      ❌     │   ❌   │
+ * │ System settings  │  ✅   │   ❌   │      ❌     │   ❌   │
+ * └──────────────────┴───────┴────────┴─────────────┴────────┘
+ * ```
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * // Check specific operation
+ * const { granted, reason } = checkPermission('update', resourceOwnerId);
+ *
+ * // Convenience methods
+ * if (can.delete(ownerId).granted) { ... }
+ * if (isAdmin()) { ... }
+ * if (isOwner(resourceId)) { ... }
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { getCurrentUser } from './store';

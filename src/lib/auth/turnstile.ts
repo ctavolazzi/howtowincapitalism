@@ -1,8 +1,45 @@
 /**
- * Cloudflare Turnstile CAPTCHA Verification
+ * @fileoverview Cloudflare Turnstile CAPTCHA Verification
  *
- * Server-side verification of Turnstile tokens.
- * https://developers.cloudflare.com/turnstile/
+ * Server-side verification of Cloudflare Turnstile CAPTCHA tokens.
+ * Turnstile is a privacy-preserving CAPTCHA alternative that doesn't
+ * require user interaction in most cases.
+ *
+ * @module lib/auth/turnstile
+ * @see {@link https://developers.cloudflare.com/turnstile/} - Turnstile docs
+ * @see {@link module:pages/api/auth/register} - Registration uses Turnstile
+ *
+ * ## Configuration
+ *
+ * Required environment variables:
+ * - `TURNSTILE_SECRET_KEY` - Server-side verification key (keep secret)
+ * - `TURNSTILE_SITE_KEY` - Client-side widget key (public)
+ *
+ * For local development, if `TURNSTILE_SECRET_KEY` is not set,
+ * verification is skipped with a warning.
+ *
+ * ## Verification Flow
+ *
+ * ```
+ * 1. Client renders Turnstile widget with site key
+ * 2. User completes challenge (often invisible)
+ * 3. Widget returns token to client
+ * 4. Client sends token with form submission
+ * 5. Server calls verifyTurnstile() with token
+ * 6. Cloudflare validates and returns result
+ * ```
+ *
+ * ## Error Codes
+ *
+ * | Code                    | User Message                    |
+ * |-------------------------|--------------------------------|
+ * | missing-input-response  | Please complete the CAPTCHA    |
+ * | invalid-input-response  | Invalid CAPTCHA, please retry  |
+ * | timeout-or-duplicate    | CAPTCHA expired, please retry  |
+ * | internal-error          | Verification service error     |
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';

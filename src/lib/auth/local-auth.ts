@@ -1,8 +1,40 @@
 /**
- * Local Development Auth
+ * @fileoverview Local Development Authentication
  *
- * Fallback auth for local development when KV is not available.
- * Uses in-memory storage (resets on server restart).
+ * Fallback authentication for local development when Cloudflare KV is not
+ * available. Uses in-memory storage that resets on server restart. This
+ * provides a seamless development experience without requiring KV setup.
+ *
+ * @module lib/auth/local-auth
+ * @see {@link module:lib/auth/kv-auth} - Production KV-based authentication
+ * @see {@link module:pages/api/auth/login} - Login endpoint that uses this
+ *
+ * ## When This Module Is Used
+ *
+ * The API routes automatically detect the environment:
+ * - If `USERS` and `SESSIONS` KV bindings exist → kv-auth.ts
+ * - Otherwise → local-auth.ts (this file)
+ *
+ * ## Development Users
+ *
+ * Pre-configured test accounts (passwords are development-only):
+ *
+ * | Role        | Email               | Password               |
+ * |-------------|---------------------|------------------------|
+ * | admin       | admin@email.com     | DevAdmin_Local_2024#   |
+ * | editor      | editor@email.com    | DevEditor_Local_2024#  |
+ * | contributor | contributor@email.com| DevContrib_Local_2024# |
+ * | viewer      | viewer@email.com    | DevViewer_Local_2024#  |
+ *
+ * ## Key Differences from Production
+ *
+ * - Sessions stored in memory (Map), not KV
+ * - Passwords stored in plaintext (acceptable for dev only)
+ * - Less strict cookie settings for easier debugging
+ * - No password hashing (direct comparison)
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface LocalUser {
