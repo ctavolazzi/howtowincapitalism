@@ -31,12 +31,12 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Wait for Cloudflare Pages preview
-        uses: kkak10/cloudflare-pages-deploy-status-action@v1.0.0
+        uses: WalshyDev/cf-pages-await@v1
         id: cf_pages
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          project: "howtowincapitalism"
-          token: ${{ secrets.CF_API_TOKEN }}
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          projectName: howtowincapitalism
           commitHash: ${{ github.sha }}
 
       - name: Run Playwright tests (security + smoke)
