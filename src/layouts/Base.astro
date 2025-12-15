@@ -255,8 +255,10 @@ const currentPath = Astro.url.pathname;
 
   /* Layout */
   header {
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border-subtle, #e4e7eb);
     padding: 1rem;
+    background: var(--color-surface-elevated, #ffffff);
+    box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
   }
 
   header nav {

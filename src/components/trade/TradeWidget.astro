@@ -78,11 +78,13 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
 <style>
   /* Base styles */
   .trade-widget {
-    border: 1px solid var(--color-border, #a2a9b1);
+    border: 1px solid var(--color-border-subtle, #e4e7eb);
     background: var(--color-surface, #f8f9fa);
     padding: 1rem;
     max-width: 20rem;
     font-family: inherit;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04));
   }
 
   .trade-widget__header {
@@ -130,11 +132,15 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
     padding: 0.75rem 1rem;
     text-decoration: none;
     font-weight: 600;
-    border-radius: 2px;
+    border-radius: 6px;
+    transition: all 0.2s ease-out;
+    box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
   }
 
   .trade-widget__cta:hover {
-    opacity: 0.9;
+    background: #053a92;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04));
   }
 
   .trade-widget__loading,
