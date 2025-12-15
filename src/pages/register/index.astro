@@ -1,9 +1,18 @@
 ---
 /**
- * Registration Page
+ * @fileoverview Registration page - new user signup.
  *
- * Public page for new user registration.
- * Includes Turnstile CAPTCHA for bot protection.
+ * Public page for new user registration with:
+ * - RegisterForm component with CSRF protection
+ * - Cloudflare Turnstile CAPTCHA for bot protection
+ * - Redirect handling for already authenticated users
+ *
+ * @module pages/register
+ * @see {@link module:components/auth/RegisterForm} - Registration form
+ * @see {@link module:lib/auth/api-client} - Auth client utilities
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import RegisterForm from '../../components/auth/RegisterForm.astro';
 

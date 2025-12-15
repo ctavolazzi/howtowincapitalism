@@ -1,17 +1,24 @@
 ---
 /**
- * Profile "Me" Redirect
+ * @fileoverview Profile "me" redirect - links to current user's profile.
  *
- * Utility route that redirects to the current user's profile.
+ * Utility route enabling "View My Profile" links without knowing user ID.
  *
- * States:
- * - Loading: Checking auth...
- * - Success (logged in): Redirect to /profile/{userId}/
- * - Auth Failed: Redirect to /login/?redirect=/profile/me/
+ * ## States
+ * - Loading: Checking authentication
+ * - Success: Redirect to /profile/{userId}/
+ * - Auth Failed: Redirect to /login with redirect param
  * - System Error: Show error with retry option
  *
- * This allows linking to "your profile" without knowing the user ID.
- * Example: <a href="/profile/me/">View My Profile</a>
+ * @example
+ * <a href="/profile/me/">View My Profile</a>
+ *
+ * @module pages/profile/me
+ * @see {@link module:pages/profile/[id]} - Profile destination
+ * @see {@link module:lib/auth/api-client} - Auth verification
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

@@ -1,9 +1,18 @@
 ---
 /**
- * Reset Password Page
+ * @fileoverview Reset password page - new password entry.
  *
- * Page to set a new password using a reset token.
- * Token is passed via URL query parameter.
+ * Allows users to set a new password using a reset token:
+ * - ResetPasswordForm component for password input
+ * - Token passed via URL query parameter
+ * - Validates token before allowing password change
+ *
+ * @module pages/reset-password
+ * @see {@link module:components/auth/ResetPasswordForm} - Password reset form
+ * @see {@link module:pages/api/auth/reset-password} - Reset API endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import ResetPasswordForm from '../../components/auth/ResetPasswordForm.astro';
 ---

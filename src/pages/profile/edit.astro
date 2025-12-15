@@ -1,24 +1,28 @@
 ---
 /**
- * Edit Profile Page
+ * @fileoverview Edit profile page - authenticated profile editing.
  *
  * Protected route for editing the current user's profile.
- * Auth check happens client-side (nanostores).
+ * Features multiple UI states for different scenarios:
  *
- * Error Handling:
- * - Not logged in -> Redirect to /login?redirect=/profile/edit/
- * - Profile not found -> Show "Profile Setup Required" state
- * - System error -> Show graceful error with retry option
+ * ## Error Handling
+ * - Not logged in: Redirect to /login with countdown
+ * - Profile not found: Show "Profile Setup Required" state
+ * - System error: Show graceful error with retry option
  *
- * Flow:
+ * ## Flow
  * 1. Page renders with loading state
  * 2. Client-side script checks auth
- * 3. If not logged in -> redirect to /login with redirect param
- * 4. If logged in -> verify profile exists
- * 5. If profile exists -> show form
- * 6. If profile missing -> show setup required state
+ * 3. If authenticated, show edit form
+ * 4. If not, redirect to login
+ *
+ * @module pages/profile/edit
+ * @see {@link module:components/organisms/profile/ProfileForm} - Form component
+ * @see {@link module:lib/auth/api-client} - Auth verification
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
-
 import Base from '../../layouts/Base.astro';
 import ProfileForm from '../../components/organisms/profile/ProfileForm.astro';
 import { fetchUserProfile, getAllUserIds, userExists } from '../../lib/api';

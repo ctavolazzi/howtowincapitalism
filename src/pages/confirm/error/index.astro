@@ -1,8 +1,19 @@
 ---
 /**
- * Email Confirmation Error Page
+ * @fileoverview Email confirmation error page.
  *
- * Shown when email confirmation fails (invalid/expired token).
+ * Displayed when email confirmation fails due to:
+ * - Missing, invalid, or expired tokens
+ * - Service unavailability
+ * - Server errors
+ *
+ * Shows error reason and provides recovery options.
+ *
+ * @module pages/confirm/error
+ * @see {@link module:pages/api/auth/confirm} - Confirmation API endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

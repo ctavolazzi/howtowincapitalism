@@ -1,9 +1,16 @@
 ---
 /**
- * Profile Page
+ * @fileoverview Profile redirect page.
  *
- * Redirects to the user's editable profile page.
- * If not logged in, redirects to login.
+ * Utility route that redirects users to their profile:
+ * - Authenticated users: Redirect to /users/{userId}/
+ * - Not logged in: Redirect to /login with redirect param
+ *
+ * @module pages/profile
+ * @see {@link module:pages/users/[id]} - User profile destination
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

@@ -1,8 +1,18 @@
 ---
 /**
- * Login Page
+ * @fileoverview Login page - user authentication entry point.
  *
- * Simple login page with the LoginForm component.
+ * Public page for user login with:
+ * - LoginForm component with CSRF protection
+ * - Redirect handling for authenticated users
+ * - Support for redirect query parameter after login
+ *
+ * @module pages/login
+ * @see {@link module:components/auth/LoginForm} - Login form component
+ * @see {@link module:lib/auth/api-client} - Auth client utilities
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import LoginForm from '../../components/auth/LoginForm.astro';
 import UserMenu from '../../components/auth/UserMenu.astro';

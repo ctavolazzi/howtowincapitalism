@@ -1,8 +1,18 @@
 ---
 /**
- * Forgot Password Page
+ * @fileoverview Forgot password page - password reset request.
  *
- * Public page to request a password reset.
+ * Public page allowing users to request a password reset:
+ * - ForgotPasswordForm component for email input
+ * - Redirects authenticated users away
+ * - Sends reset link to provided email
+ *
+ * @module pages/forgot-password
+ * @see {@link module:components/auth/ForgotPasswordForm} - Reset request form
+ * @see {@link module:lib/auth/api-client} - Auth client utilities
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import ForgotPasswordForm from '../../components/auth/ForgotPasswordForm.astro';
 ---

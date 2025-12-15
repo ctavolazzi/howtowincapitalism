@@ -1,9 +1,22 @@
 ---
 /**
- * User Profile Page
+ * @fileoverview User profile page.
  *
- * Public view of a user's profile.
- * Edit button only visible to owner/admin.
+ * Displays individual user profile with:
+ * - Avatar, name, role, access level
+ * - Edit functionality for owner/admin
+ * - Permissions grid showing capabilities
+ * - Owned tools listing
+ * - Bio from markdown content
+ *
+ * Uses OwnerGuard for edit controls.
+ *
+ * @module pages/users/[id]
+ * @see {@link module:components/guards/OwnerGuard} - Access control
+ * @see {@link module:lib/auth} - User data management
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection, getEntry, render } from 'astro:content';

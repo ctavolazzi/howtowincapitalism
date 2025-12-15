@@ -1,15 +1,25 @@
 ---
 /**
- * User Profile Page (SSR)
+ * @fileoverview User profile page (SSR) - server-rendered profile view.
  *
- * Server-side rendered profile page using the profileService API.
- * Displays user identity, system bulletins, and activity feed.
+ * Displays comprehensive user profile using profileService API:
+ * - User identity (avatar, name, role, badges)
+ * - System bulletins for announcements
+ * - Activity feed with recent actions
+ * - Bento grid responsive layout
  *
- * Privacy-aware: Data is filtered based on viewer context.
- * - Owner sees full profile
+ * Privacy-aware rendering:
+ * - Owner sees full profile data
  * - Visitors see privacy-filtered data
+ *
+ * @module pages/profile/[id]
+ * @see {@link module:lib/api} - Profile data fetching
+ * @see {@link module:components/organisms/profile/ProfileHeader} - Header component
+ * @see {@link module:components/organisms/profile/ActivityFeed} - Activity display
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
-
 import Base from '../../layouts/Base.astro';
 import { fetchUserProfile } from '../../lib/api';
 import ProfileHeader from '../../components/organisms/profile/ProfileHeader.astro';

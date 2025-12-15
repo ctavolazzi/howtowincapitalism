@@ -1,4 +1,22 @@
 ---
+/**
+ * @fileoverview Home page - authenticated landing page.
+ *
+ * Main entry point for authenticated users showing:
+ * - Hero section with site tagline
+ * - FAQ navigation links
+ * - Notes and tools sections
+ * - Trade widget for user interactions
+ *
+ * Redirects to login if user is not authenticated.
+ *
+ * @module pages/index
+ * @see {@link module:components/organisms/Hero} - Hero banner
+ * @see {@link module:components/trade/TradeWidget} - Trade interface
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import Base from '../layouts/Base.astro';
 import { TradeWidget } from '../components';
 import Hero from '../components/organisms/Hero.astro';

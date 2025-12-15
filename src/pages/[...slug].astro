@@ -1,4 +1,21 @@
 ---
+/**
+ * @fileoverview Dynamic content page - catch-all route.
+ *
+ * Renders docs from the content collection based on URL slug.
+ * Uses Astro's catch-all route pattern [...slug] to match any path.
+ *
+ * Features:
+ * - SSR mode content lookup
+ * - Auth gate requiring login
+ * - 404 redirect for missing content
+ *
+ * @module pages/[...slug]
+ * @see {@link module:content.config} - Content collections definition
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { getCollection, render, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 

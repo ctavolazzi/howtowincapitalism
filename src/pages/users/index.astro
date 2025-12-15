@@ -1,9 +1,19 @@
 ---
 /**
- * Users Directory
+ * @fileoverview Users directory page.
  *
- * Lists all users with search functionality.
- * Anyone can view, but only users can see detailed info.
+ * Lists all registered users with:
+ * - Search by name or role
+ * - Grid display with avatar, name, role, level
+ * - Links to individual user profiles
+ *
+ * Requires authentication to view.
+ *
+ * @module pages/users
+ * @see {@link module:pages/users/[id]} - Individual user profiles
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
