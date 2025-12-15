@@ -1,9 +1,31 @@
 ---
 /**
- * UserMenu Component
+ * @fileoverview User menu component with authentication state handling.
  *
- * Shows login link when not authenticated, user avatar when authenticated.
- * This component uses client-side JS to react to auth state changes.
+ * Shows login link when not authenticated, user avatar dropdown when
+ * authenticated. Uses client-side JS to react to auth state changes.
+ *
+ * ## States
+ * - Unauthenticated: Shows "Log In" link
+ * - Authenticated: Shows avatar, username, and dropdown menu
+ *
+ * ## Dropdown Menu Items
+ * - Profile link
+ * - Settings link (if applicable)
+ * - Admin link (admins only)
+ * - Logout button
+ *
+ * @module components/auth/UserMenu
+ * @see {@link module:pages/api/auth/me} - Auth state check
+ * @see {@link module:pages/api/auth/logout} - Logout endpoint
+ *
+ * @example
+ * ```astro
+ * <UserMenu />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

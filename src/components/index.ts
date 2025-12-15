@@ -1,21 +1,30 @@
 /**
- * Component Registry
- * Updated: 2025-12-13
+ * @fileoverview Component registry and barrel export for all components.
  *
- * ACTIVE (in use on pages):
- *   Atoms:     WikiBox, Breadcrumbs, Collapsible
- *   Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter, Favorites
- *   Utilities: Empty, CardGrid
- *   Organisms: Footer
- *   Guards:    OwnerGuard
- *   Trade:     TradeWidget
+ * Central export point for all components in the wiki.
+ * Updated: 2025-12-15
  *
- * AVAILABLE (exported, not currently used):
- *   Organisms: Hero
+ * ## Component Status
  *
- * RESERVED (exported for future use):
- *   Molecules: InfoBox, NoteBox, NavBox, CallToAction
- *   Organisms: PageHeader, ContentSection
+ * ### ACTIVE (in use on pages)
+ * - Atoms: WikiBox, Breadcrumbs, Collapsible
+ * - Molecules: Disclaimer, DecisionMatrix, TopicCard, SeeAlso, FAQ, BlankSlate, CompletenessMeter, Favorites
+ * - Utilities: Empty, CardGrid
+ * - Organisms: Footer
+ * - Guards: OwnerGuard
+ * - Trade: TradeWidget
+ *
+ * ### AVAILABLE (exported, not currently used)
+ * - Organisms: Hero
+ *
+ * ### RESERVED (exported for future use)
+ * - Molecules: InfoBox, NoteBox, NavBox, CallToAction
+ * - Organisms: PageHeader, ContentSection
+ *
+ * @module components
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Atoms

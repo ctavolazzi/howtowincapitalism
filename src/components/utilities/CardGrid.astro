@@ -1,19 +1,34 @@
 ---
 /**
- * CARDGRID - UTILITY
+ * @fileoverview CardGrid utility for responsive card layouts.
  *
  * A responsive grid container for TopicCard components.
  * Handles layout so cards don't need to know about grid.
  *
- * Usage:
- *   <CardGrid>
- *     <TopicCard ... />
- *     <TopicCard ... />
- *   </CardGrid>
+ * ## Column Options
+ * - `2`: Two-column layout (default)
+ * - `3`: Three-column layout
+ * - `4`: Four-column layout
  *
- *   <CardGrid columns={3}>
- *     ...
- *   </CardGrid>
+ * Auto-adjusts to single column on mobile.
+ *
+ * @module components/utilities/CardGrid
+ * @see {@link module:components/molecules/TopicCard} - Child component
+ *
+ * @example
+ * ```astro
+ * <CardGrid>
+ *   <TopicCard ... />
+ *   <TopicCard ... />
+ * </CardGrid>
+ *
+ * <CardGrid columns={3} gap="lg">
+ *   ...
+ * </CardGrid>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface Props {

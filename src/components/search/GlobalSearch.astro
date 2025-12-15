@@ -1,9 +1,28 @@
 ---
 /**
- * Global Search Component
+ * @fileoverview Global search component with modal interface.
  *
  * Provides search across users, tools, and content.
- * Can be placed in header or as a standalone page element.
+ * Can be placed in header (compact) or as standalone element.
+ *
+ * ## Features
+ * - Modal search dialog
+ * - Keyboard navigation (Cmd/Ctrl+K shortcut)
+ * - Search results categorization
+ * - Recent searches
+ * - Compact mode for header
+ *
+ * @module components/search/GlobalSearch
+ *
+ * @example
+ * ```astro
+ * <GlobalSearch />
+ * <GlobalSearch compact={true} />
+ * <GlobalSearch placeholder="Search..." />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

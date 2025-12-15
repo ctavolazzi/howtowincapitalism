@@ -1,9 +1,28 @@
 ---
 /**
- * LoginForm Component
+ * @fileoverview Login form component with API authentication.
  *
- * Login form that validates against Cloudflare KV via API.
- * Uses httpOnly cookies for session management.
+ * Login form that validates credentials against Cloudflare KV via API.
+ * Uses httpOnly cookies for secure session management.
+ *
+ * ## Features
+ * - Email/password authentication
+ * - CSRF protection token
+ * - Client-side validation
+ * - Error message display
+ * - Auto-redirect on success
+ *
+ * @module components/auth/LoginForm
+ * @see {@link module:pages/api/auth/login} - Login API endpoint
+ * @see {@link module:lib/auth/kv-auth} - Authentication logic
+ *
+ * @example
+ * ```astro
+ * <LoginForm csrfToken={csrfToken} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

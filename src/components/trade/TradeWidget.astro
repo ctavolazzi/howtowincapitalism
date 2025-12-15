@@ -1,11 +1,26 @@
 ---
 /**
- * TRADEWIDGET - One Red Paperclip Trading Component
+ * @fileoverview Trade widget for "One Red Paperclip" trading feature.
  *
- * Fetches current item from GitHub (ctavolazzi/open-shelf)
- * Display modes: inline, banner
+ * Fetches and displays current trade item from GitHub open-shelf repo.
+ * Web component with dynamic data loading.
  *
- * To update item: Edit trade/current.json in open-shelf repo
+ * ## Display Modes
+ * - `inline`: Compact inline display
+ * - `banner`: Full-width banner display
+ *
+ * Data Source: ctavolazzi/open-shelf/trade/current.json
+ *
+ * @module components/trade/TradeWidget
+ *
+ * @example
+ * ```astro
+ * <TradeWidget mode="inline" />
+ * <TradeWidget mode="banner" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface Props {

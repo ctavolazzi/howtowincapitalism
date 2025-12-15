@@ -1,6 +1,26 @@
 ---
 /**
- * Aside - Simple callout box
+ * @fileoverview Aside component for callout boxes.
+ *
+ * Simple color-coded callout box for notes, tips, cautions, and danger alerts.
+ *
+ * ## Type Variants
+ * - `note`: Blue - general information
+ * - `tip`: Green - helpful tips
+ * - `caution`: Yellow - warnings
+ * - `danger`: Red - critical warnings
+ *
+ * @module components/simple/Aside
+ *
+ * @example
+ * ```astro
+ * <Aside type="tip" title="Pro Tip">
+ *   <p>Helpful content here</p>
+ * </Aside>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 export interface Props {
   type?: 'note' | 'tip' | 'caution' | 'danger';

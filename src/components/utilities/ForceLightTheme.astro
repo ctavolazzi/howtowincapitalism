@@ -1,9 +1,23 @@
 ---
 /**
- * FORCELIGHTTHEME - UTILITY
+ * @fileoverview Force light theme utility to prevent dark mode.
  *
  * Forces light mode only. Prevents respecting system dark mode preference.
- * Uses meta tag approach to set theme BEFORE page render.
+ * Uses meta tag approach to set theme BEFORE page render (flash prevention).
+ *
+ * Include this in <head> to ensure light-only theme.
+ *
+ * @module components/utilities/ForceLightTheme
+ *
+ * @example
+ * ```astro
+ * <head>
+ *   <ForceLightTheme />
+ * </head>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

@@ -1,15 +1,28 @@
 ---
 /**
- * OwnerGuard Component
+ * @fileoverview Owner guard component for content protection.
  *
  * Bridges build-time content ownership with runtime auth state.
- * Uses Web Components (no React required) + your existing auth store.
+ * Uses Web Components (no React required) + existing auth store.
  *
- * Usage:
- *   <OwnerGuard ownerId="crispy" visibility="private">
- *     <div slot="controls"><button>Edit</button></div>
- *     <p>Protected content here</p>
- *   </OwnerGuard>
+ * ## Visibility Modes
+ * - `public`: Content visible to all
+ * - `private`: Owner-only access
+ * - `team`: Team member access
+ *
+ * @module components/guards/OwnerGuard
+ * @see {@link module:lib/auth/permissions} - Permission checking
+ *
+ * @example
+ * ```astro
+ * <OwnerGuard ownerId="crispy" visibility="private">
+ *   <div slot="controls"><button>Edit</button></div>
+ *   <p>Protected content here</p>
+ * </OwnerGuard>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {
