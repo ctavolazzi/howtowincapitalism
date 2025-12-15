@@ -88,53 +88,30 @@ const currentPath = Astro.url.pathname;
       var consentBanner = document.getElementById('cookie-consent');
       var consentButton = document.getElementById('cookie-accept');
 
-      // #region agent log
-      console.log('[cookie] DOMContentLoaded fired', {banner: !!consentBanner, button: !!consentButton});
-      // #endregion
-
       if (!consentBanner || !consentButton) return;
 
       function hasConsent() {
-        var has = document.cookie.split(';').some(function(c) {
+        return document.cookie.split(';').some(function(c) {
           return c.trim().startsWith(consentName + '=');
         });
-        // #region agent log
-        console.log('[cookie] hasConsent:', has, 'cookies:', document.cookie);
-        // #endregion
-        return has;
       }
 
       function setConsent() {
         var expires = new Date();
         expires.setFullYear(expires.getFullYear() + 1);
-        var cookieStr = consentName + '=accepted; path=/; expires=' + expires.toUTCString() + '; SameSite=Lax';
-        document.cookie = cookieStr;
-        // #region agent log
-        console.log('[cookie] setConsent called, cookie string:', cookieStr);
-        console.log('[cookie] document.cookie after set:', document.cookie);
-        // #endregion
+        document.cookie = consentName + '=accepted; path=/; expires=' + expires.toUTCString() + '; SameSite=Lax';
       }
 
       function dismiss() {
-        // #region agent log
-        console.log('[cookie] dismiss() called');
-        // #endregion
         setConsent();
         consentBanner.hidden = true;
         consentBanner.style.display = 'none';
-        // #region agent log
-        console.log('[cookie] banner hidden:', consentBanner.hidden);
-        // #endregion
       }
 
       if (!hasConsent()) {
         consentBanner.hidden = false;
-        // #region agent log
-        console.log('[cookie] showing banner');
-        // #endregion
       }
 
-      // Use both click and touchend for mobile compatibility
       consentButton.addEventListener('click', dismiss);
       consentButton.addEventListener('touchend', function(e) {
         e.preventDefault();
