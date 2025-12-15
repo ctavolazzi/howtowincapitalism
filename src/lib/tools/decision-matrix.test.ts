@@ -1,9 +1,42 @@
 /**
- * Decision Matrix Tests
- * ---------------------
- * Comprehensive tests for the decision matrix tool.
+ * @fileoverview Decision Matrix Test Suite
  *
- * Run: npm test
+ * Comprehensive tests for the Decision Matrix utility covering all
+ * analysis methods, edge cases, real-world scenarios, and output
+ * formatting.
+ *
+ * @module lib/tools/decision-matrix.test
+ * @see {@link module:lib/tools/decision-matrix} - Module under test
+ *
+ * ## Test Categories
+ *
+ * | Category | Tests | Purpose |
+ * |----------|-------|---------|
+ * | Constructor | 6 | Input validation |
+ * | Analysis Methods | 11 | All 4 methods work correctly |
+ * | DecisionResult | 8 | Output formatting and accessors |
+ * | API Functions | 7 | makeDecision, compareMethods |
+ * | Real-world | 5 | Practical decision scenarios |
+ * | Edge Cases | 6 | Boundary conditions |
+ * | Strengths/Weaknesses | 5 | Analysis accuracy |
+ *
+ * ## Running Tests
+ *
+ * ```bash
+ * npm test                    # Run all tests once
+ * npm run test:watch          # Watch mode
+ * npm run test:unit           # Unit tests only (Vitest)
+ * ```
+ *
+ * ## Test Data
+ *
+ * Uses standardized test fixtures:
+ * - `basicInput` - 3 options, 3 criteria, no weights
+ * - `weightedInput` - Same with importance weights
+ * - Real-world scenarios (investment, career, etc.)
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';

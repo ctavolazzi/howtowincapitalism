@@ -1,25 +1,87 @@
 #!/usr/bin/env node
 /**
- * Development Logger
- * ------------------
- * Flexible logging utility for development and debugging.
+ * @fileoverview Development Logger - Node.js Logging Utility
  *
- * Usage:
- *   import { log, logSession, logFile, logError } from './_dev/logger.mjs';
+ * Flexible logging utility for development scripts with file output,
+ * session tracking, and automatic log rotation. Designed for Node.js
+ * build scripts and automation, NOT for browser code.
  *
- *   log.info('Message');
- *   log.warn('Warning');
- *   log.error('Error');
- *   log.debug('Debug info');
+ * @module lib/tools/logger
+ * @see {@link module:lib/tools} - Parent tools module
+ * @see {@link module:lib/debug} - Browser-compatible debug utility
  *
- *   logSession.start('Task name');
- *   logSession.end('Task name');
+ * ## Features
  *
- *   logFile.created('path/to/file.ts');
- *   logFile.modified('path/to/file.ts');
- *   logFile.deleted('path/to/file.ts');
+ * - Multiple log levels (debug, info, warn, error)
+ * - Session tracking with timing
+ * - File operation logging
+ * - Automatic log file rotation
+ * - JSON and pretty output formats
+ * - Configurable via logger.config.json
  *
- *   logError(error, 'Context message');
+ * ## Log Levels
+ *
+ * | Level | Color | Use Case |
+ * |-------|-------|----------|
+ * | debug | gray | Detailed debugging info |
+ * | info | blue | General information |
+ * | warn | yellow | Warning messages |
+ * | error | red | Error conditions |
+ *
+ * ## Configuration
+ *
+ * Create `logger.config.json` in the same directory:
+ *
+ * ```json
+ * {
+ *   "enabled": true,
+ *   "logLevel": "info",
+ *   "outputDir": "_dev/logs",
+ *   "console": true,
+ *   "file": true,
+ *   "maxFileSizeMB": 5,
+ *   "retainDays": 7
+ * }
+ * ```
+ *
+ * ## Usage
+ *
+ * ```javascript
+ * import { log, logSession, logFile, logError } from './src/lib/tools/logger.mjs';
+ *
+ * // Basic logging
+ * log.info('Build started');
+ * log.warn('Deprecated API used');
+ * log.error('Build failed');
+ * log.debug('Variable value:', someVar);
+ *
+ * // Session tracking
+ * logSession.start('Build Process');
+ * // ... do work ...
+ * logSession.end('Build Process');  // Outputs duration
+ *
+ * // File operations
+ * logFile.created('dist/bundle.js');
+ * logFile.modified('src/index.ts');
+ * logFile.deleted('temp/cache.json');
+ *
+ * // Error handling
+ * try {
+ *   riskyOperation();
+ * } catch (error) {
+ *   logError(error, 'Failed during risky operation');
+ * }
+ * ```
+ *
+ * ## Output Location
+ *
+ * Logs are written to `_dev/logs/` by default:
+ * - `_dev/logs/YYYY-MM-DD.log` - Daily log files
+ * - Auto-rotated when exceeding maxFileSizeMB
+ * - Auto-deleted after retainDays
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, readdirSync, statSync, unlinkSync } from 'fs';

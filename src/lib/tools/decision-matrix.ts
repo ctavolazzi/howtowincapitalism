@@ -1,24 +1,86 @@
 /**
- * Decision Matrix Utility
- * -----------------------
- * A comprehensive decision-making tool for quantifying and comparing options
- * against multiple criteria.
+ * @fileoverview Decision Matrix - Quantitative Decision-Making Tool
  *
- * Usage:
- *   import { makeDecision } from '../lib/tools/decision-matrix';
+ * A comprehensive utility for comparing options against weighted criteria
+ * using multiple analysis methods. Outputs rankings, confidence scores,
+ * strengths/weaknesses, and recommendations.
  *
- *   const result = makeDecision({
- *     options: ["Option A", "Option B", "Option C"],
- *     criteria: ["Cost", "Speed", "Quality"],
- *     scores: {
- *       "Option A": [7, 8, 6],
- *       "Option B": [9, 5, 7],
- *       "Option C": [6, 9, 8]
- *     },
- *     weights: [0.3, 0.2, 0.5]  // Optional: importance of each criterion
- *   });
+ * @module lib/tools/decision-matrix
+ * @see {@link module:lib/tools} - Parent tools module
+ * @see {@link module:components/molecules/DecisionMatrix} - UI renderer
  *
- *   console.log(result.toString());  // Shows ranking and analysis
+ * ## Analysis Methods
+ *
+ * | Method | Description | Best For |
+ * |--------|-------------|----------|
+ * | `weighted` | Sum of (score × weight) | Standard comparison |
+ * | `normalized` | Scores normalized to 0-1 scale | Different scale inputs |
+ * | `ranking` | Position-based scoring | Ordinal comparisons |
+ * | `best_worst` | Best-Worst Method scaling | Extreme criteria importance |
+ *
+ * ## Input Structure
+ *
+ * ```typescript
+ * interface DecisionMatrixInput {
+ *   options: string[];           // Things to compare
+ *   criteria: string[];          // Factors to evaluate
+ *   scores: Record<string, number[]>;  // Scores per option per criterion
+ *   weights?: number[];          // Importance of each criterion (sum to 1)
+ *   method?: AnalysisMethod;     // Analysis algorithm
+ * }
+ * ```
+ *
+ * ## Output Structure
+ *
+ * The `DecisionResult` class provides:
+ * - `winner` - Best option
+ * - `rankings` - All options sorted by score
+ * - `confidenceScore` - How confident the recommendation is (0-1)
+ * - `strengths` / `weaknesses` - Per-option analysis
+ * - `recommendation` - Human-readable suggestion
+ * - `toString()` - Full formatted analysis
+ * - `toTable()` - Comparison table
+ *
+ * ## Usage Examples
+ *
+ * ```typescript
+ * // Basic usage
+ * const result = makeDecision({
+ *   options: ['401k', 'Roth IRA', 'Taxable'],
+ *   criteria: ['Tax Benefit', 'Flexibility', 'Growth'],
+ *   scores: {
+ *     '401k': [9, 3, 7],
+ *     'Roth IRA': [7, 6, 8],
+ *     'Taxable': [2, 9, 7]
+ *   },
+ *   weights: [0.4, 0.3, 0.3]
+ * });
+ *
+ * console.log(result.winner);  // '401k'
+ *
+ * // Compare all methods
+ * const comparison = compareMethods(input);
+ * // Returns results from all 4 methods
+ *
+ * // Use DecisionMatrix class directly
+ * const matrix = new DecisionMatrix(input);
+ * const normalized = matrix.analyzeNormalized();
+ * ```
+ *
+ * ## Integration with Astro
+ *
+ * ```astro
+ * ---
+ * import DecisionMatrix from '@/components/molecules/DecisionMatrix.astro';
+ * import { makeDecision } from '@/lib/tools';
+ *
+ * const result = makeDecision({ ... });
+ * ---
+ * <DecisionMatrix result={result} title="Investment Comparison" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { debug } from '../debug';
