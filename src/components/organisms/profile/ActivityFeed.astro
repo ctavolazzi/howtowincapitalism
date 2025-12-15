@@ -1,12 +1,28 @@
 ---
 /**
- * ActivityFeed Organism
+ * @fileoverview Activity feed organism displaying user activity history.
  *
- * List of recent user activities.
- * Handles empty state gracefully.
+ * List of recent user activities with proper empty state handling.
+ * Supports limiting displayed items and showing "more" indicator.
+ *
+ * ## Features
+ * - Configurable activity limit
+ * - Empty state with helpful messaging
+ * - "Show more" indicator when truncated
+ * - Customizable title
+ *
+ * @module components/organisms/profile/ActivityFeed
+ * @see {@link module:components/molecules/ActivityItem} - Individual activity display
+ * @see {@link module:lib/auth/schemas/userProfile} - ActivityEvent type
  *
  * @example
+ * ```astro
  * <ActivityFeed activities={profile.activityLog} />
+ * <ActivityFeed activities={activities} limit={5} title="Latest" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { ActivityEvent } from '../../../lib/auth/schemas/userProfile';

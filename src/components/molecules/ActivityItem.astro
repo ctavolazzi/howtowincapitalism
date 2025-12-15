@@ -1,18 +1,35 @@
 ---
 /**
- * ActivityItem Molecule
+ * @fileoverview ActivityItem molecule for displaying activity log entries.
  *
  * Displays a single activity log entry with icon, description, and timestamp.
  * Uses absolute dates to prevent SSR hydration mismatches.
  *
+ * ## Activity Types
+ * - `edit`: Page edits with word delta
+ * - `create`: New page creation
+ * - `comment`: Comment activity
+ * - `review`: Content review
+ * - `badge`: Badge earned
+ * - `login`: Login events
+ * - `profile`: Profile updates
+ *
+ * @module components/molecules/ActivityItem
+ * @see {@link module:lib/auth/schemas/userProfile} - ActivityEvent type
+ * @see {@link module:components/organisms/profile/ActivityFeed} - Parent component
+ *
  * @example
+ * ```astro
  * <ActivityItem
  *   type="edit"
- *   pageTitle="Compound Interest"
- *   pageSlug="faq/compound-interest"
+ *   targetPage={{ title: "Compound Interest", slug: "faq/compound-interest" }}
  *   timestamp="2025-12-10T10:30:00Z"
  *   meta={{ wordsDelta: 450, comment: "Added examples" }}
  * />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { ActivityEvent, ActivityMeta, PageReference } from '../../lib/auth/schemas/userProfile';

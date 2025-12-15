@@ -1,17 +1,32 @@
 ---
 /**
- * ProfileForm Component
+ * @fileoverview Profile editing form organism with real-time validation.
  *
- * Input component for editing user profile data.
- * Uses client-side JavaScript to handle form submission
- * and calls profileActions for mock data persistence.
+ * Input component for editing user profile data with client-side
+ * JavaScript form handling and profileActions API integration.
  *
- * Features:
+ * ## Features
  * - Editable fields: username, bio, avatarUrl
  * - Privacy toggles: publicEmail, publicActivity
- * - Loading state during save
- * - Success/error feedback
+ * - Loading state during save with button feedback
+ * - Success/error message display
  * - Auto-reload on success to reflect changes
+ *
+ * ## Client-Side Behavior
+ * Form submission is handled via JavaScript, calling
+ * updateUserProfile and updateUserPreferences in parallel.
+ *
+ * @module components/organisms/profile/ProfileForm
+ * @see {@link module:lib/api/profileActions} - Profile update functions
+ * @see {@link module:lib/auth/schemas/userProfile} - UserProfile type
+ *
+ * @example
+ * ```astro
+ * <ProfileForm profile={userProfile} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { UserProfile } from '../../../lib/auth/schemas/userProfile';

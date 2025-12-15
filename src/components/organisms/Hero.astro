@@ -1,18 +1,32 @@
 ---
 /**
- * HERO COMPONENT - ORGANISM
+ * @fileoverview Hero section organism with compelling call-to-action.
  *
- * 2026 Design Trend: Complex, Awe-Inspiring Hero Areas
+ * A compelling hero section designed to:
+ * - Capture attention immediately with strong typography
+ * - Communicate brand personality (satirical but practical)
+ * - Provide clear call-to-action with animated button
+ * - Use subtle scroll indicator animation for engagement
  *
- * A compelling hero section that:
- * - Captures attention immediately
- * - Communicates brand personality (satirical but practical)
- * - Provides clear call-to-action
- * - Uses subtle animation for engagement
+ * Features 2026 Design Trend: Complex, Awe-Inspiring Hero Areas
+ * with Wikipedia-inspired minimal aesthetic.
  *
- * Usage:
- *   import Hero from '../../components/organisms/Hero.astro';
- *   <Hero />
+ * @module components/organisms/Hero
+ * @see {@link module:pages/index} - Used on homepage
+ *
+ * @example
+ * ```astro
+ * <Hero />
+ * <Hero
+ *   tagline="Custom tagline"
+ *   subtitle="Custom subtitle"
+ *   ctaText="Learn More"
+ *   ctaLink="/about/"
+ * />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

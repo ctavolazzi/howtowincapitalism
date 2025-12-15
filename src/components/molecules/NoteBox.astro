@@ -1,11 +1,30 @@
 ---
 /**
- * NOTEBOX - MOLECULE
+ * @fileoverview NoteBox molecule for informational callouts.
  *
- * Pattern: Composite (composed of WikiBox atom)
- * Pattern: Decorator (adds "Note" semantics)
+ * An informational callout box for tips, notes, and
+ * supplementary information with info styling.
  *
- * An informational callout box for tips and notes.
+ * Design Patterns:
+ * - Composite: Composed of WikiBox atom with info variant
+ * - Decorator: Adds "Note" semantics to WikiBox
+ *
+ * @module components/molecules/NoteBox
+ * @see {@link module:components/atoms/WikiBox} - Container component
+ *
+ * @example
+ * ```astro
+ * <NoteBox>
+ *   <p>Important information here</p>
+ * </NoteBox>
+ *
+ * <NoteBox title="Pro Tip">
+ *   <p>Custom title with tip content</p>
+ * </NoteBox>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 

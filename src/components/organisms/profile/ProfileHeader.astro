@@ -1,12 +1,31 @@
 ---
 /**
- * ProfileHeader Organism
+ * @fileoverview Profile header organism displaying user identity card.
  *
- * Identity card displaying user's core information.
- * Responsive layout: avatar left, details center/right.
+ * Identity card displaying user's core information with responsive
+ * layout: avatar on left, details center/right on desktop,
+ * stacked and centered on mobile.
+ *
+ * ## Displays
+ * - Avatar with badge count indicator
+ * - Username with role badge
+ * - Bio text
+ * - Reputation, join date, last active meta
+ * - Stats row: edits, pages, words, streak
+ *
+ * @module components/organisms/profile/ProfileHeader
+ * @see {@link module:components/atoms/Avatar} - Avatar component
+ * @see {@link module:components/atoms/RoleBadge} - Role badge component
+ * @see {@link module:lib/auth/schemas/userProfile} - UserIdentity, UserStats types
  *
  * @example
+ * ```astro
  * <ProfileHeader identity={profile.identity} stats={profile.stats} />
+ * <ProfileHeader identity={profile.identity} /> <!-- Stats optional -->
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { UserIdentity, UserStats } from '../../../lib/auth/schemas/userProfile';

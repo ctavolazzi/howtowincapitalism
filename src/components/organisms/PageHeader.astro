@@ -1,12 +1,28 @@
 ---
 /**
- * PAGEHEADER - ORGANISM
+ * @fileoverview Page header organism with optional disclaimer banner.
  *
- * Pattern: Composite (composed of multiple molecules)
- * Pattern: Template Method (defined structure with slots)
- * Pattern: Facade (simple interface to complex header layout)
+ * A complete page header section providing consistent page structure
+ * with optional disclaimer banner and customizable slots.
  *
- * A complete page header section with optional components.
+ * Design Patterns:
+ * - Composite: Composed of multiple molecules (Disclaimer)
+ * - Template Method: Defined structure with slots
+ * - Facade: Simple interface to complex header layout
+ *
+ * @module components/organisms/PageHeader
+ * @see {@link module:components/molecules/Disclaimer} - Optional disclaimer component
+ *
+ * @example
+ * ```astro
+ * <PageHeader />
+ * <PageHeader showDisclaimer={false}>
+ *   <h1>Page Title</h1>
+ * </PageHeader>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import Disclaimer from '../molecules/Disclaimer.astro';
 

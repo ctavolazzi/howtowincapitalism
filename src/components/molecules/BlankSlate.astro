@@ -1,28 +1,41 @@
 ---
 /**
- * BLANKSLATE - MOLECULE
+ * @fileoverview BlankSlate molecule for empty states and onboarding.
+ *
+ * Displays a helpful message when a section is empty or to onboard new users.
+ * Encourages first action with clear CTA and supports multiple visual variants.
  *
  * Design Patterns:
  * - Blank Slate (UI-Patterns.com): Guide users when content is empty
  * - Onboarding: Help new users get started
  *
- * Displays a helpful message when a section is empty or to onboard new users.
- * Encourages first action with clear CTA.
+ * ## Variants
+ * - `default`: Standard dashed border style
+ * - `compact`: Smaller padding, solid border
+ * - `hero`: Large, prominent with solid border
  *
- * Usage:
- *   <BlankSlate
- *     title="No reports yet"
- *     description="Check back later for in-depth analysis."
- *     icon="📋"
- *   />
+ * @module components/molecules/BlankSlate
  *
- *   <BlankSlate
- *     title="Welcome to The Protocol"
- *     description="Start your journey to financial autonomy."
- *     ctaText="Begin Reading"
- *     ctaHref="/protocol/introduction/"
- *     icon="🚀"
- *   />
+ * @example
+ * ```astro
+ * <BlankSlate
+ *   title="No reports yet"
+ *   description="Check back later for in-depth analysis."
+ *   icon="📋"
+ * />
+ *
+ * <BlankSlate
+ *   title="Welcome to The Protocol"
+ *   description="Start your journey to financial autonomy."
+ *   ctaText="Begin Reading"
+ *   ctaHref="/protocol/introduction/"
+ *   icon="🚀"
+ *   variant="hero"
+ * />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface Props {

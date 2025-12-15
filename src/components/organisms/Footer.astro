@@ -1,16 +1,28 @@
 ---
 /**
- * FOOTER - ORGANISM
+ * @fileoverview Site-wide footer organism with navigation, resources, and meta info.
+ *
+ * Provides comprehensive footer following Wikipedia-style minimal aesthetic with:
+ * - Navigation links to main sections
+ * - Resource links (privacy, terms, disclaimer)
+ * - Site branding and tagline
+ * - Copyright and attribution
  *
  * Design Patterns:
  * - Fat Footer (UI-Patterns.com): Site-wide navigation and resources
  * - Template Method: Slots for customization
  *
- * Provides comprehensive footer with navigation, resources, and meta info.
- * Wikipedia-style minimal aesthetic.
+ * @module components/organisms/Footer
+ * @see {@link module:layouts/Base} - Used in Base layout
  *
- * Usage in layout:
- *   <Footer />
+ * @example
+ * ```astro
+ * <Footer />
+ * <Footer class="custom-footer" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

@@ -1,21 +1,29 @@
 ---
 /**
- * FAQ - MOLECULE
+ * @fileoverview FAQ accordion molecule with collapsible question/answer items.
+ *
+ * Renders a list of questions and answers using collapsible sections.
+ * Wikipedia-style, accessible, semantic HTML with proper ARIA attributes.
  *
  * Design Patterns:
  * - FAQ (UI-Patterns.com): Common questions in expandable format
  * - Composite: Renders multiple Collapsible atoms
  *
- * Renders a list of questions and answers using collapsible sections.
- * Wikipedia-style, accessible, semantic HTML.
+ * @module components/molecules/FAQ
+ * @see {@link module:components/atoms/Collapsible} - Individual question component
  *
- * Usage:
- *   <FAQ items={[
- *     { question: "What is this?", answer: "A wiki about capitalism." },
- *     { question: "Is this financial advice?", answer: "No." }
- *   ]} />
+ * @example
+ * ```astro
+ * <FAQ items={[
+ *   { question: "What is this?", answer: "A wiki about capitalism." },
+ *   { question: "Is this financial advice?", answer: "No." }
+ * ]} />
  *
- *   <FAQ title="Common Questions" items={...} />
+ * <FAQ title="Common Questions" items={items} firstOpen={true} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import Collapsible from '../atoms/Collapsible.astro';
 import { debug } from '../../lib/debug';

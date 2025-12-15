@@ -1,11 +1,26 @@
 ---
 /**
- * INFOBOX - MOLECULE
+ * @fileoverview InfoBox molecule for sidebar information display.
  *
- * Pattern: Composite (composed of WikiBox atom)
- * Pattern: Template Method (defines structure, content via slot)
+ * A sidebar information box like Wikipedia infoboxes for
+ * displaying supplementary content alongside main articles.
  *
- * A sidebar information box, like Wikipedia infoboxes.
+ * Design Patterns:
+ * - Composite: Composed of WikiBox atom with sidebar variant
+ * - Template Method: Defines structure, content via slot
+ *
+ * @module components/molecules/InfoBox
+ * @see {@link module:components/atoms/WikiBox} - Container component
+ *
+ * @example
+ * ```astro
+ * <InfoBox title="Quick Facts">
+ *   <p>Key information here</p>
+ * </InfoBox>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 

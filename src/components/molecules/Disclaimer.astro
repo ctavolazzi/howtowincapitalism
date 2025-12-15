@@ -1,10 +1,27 @@
 ---
 /**
- * DISCLAIMER - Molecule
+ * @fileoverview Disclaimer banner molecule with dismissal persistence.
  *
- * Patterns: Composite, Decorator
- * Composes WikiBox with warning variant.
- * Closable - remembers dismissal in localStorage.
+ * A closable warning banner that remembers dismissal state in localStorage.
+ * Used to display site-wide disclaimers about financial advice.
+ *
+ * Design Patterns:
+ * - Composite: Composes WikiBox with warning variant
+ * - Decorator: Adds close functionality to WikiBox
+ *
+ * @module components/molecules/Disclaimer
+ * @see {@link module:components/atoms/WikiBox} - Container component
+ * @see {@link module:lib/constants} - Default disclaimer text
+ *
+ * @example
+ * ```astro
+ * <Disclaimer />
+ * <Disclaimer text="Custom warning message" />
+ * <Disclaimer id="custom-disclaimer" text="Specific warning" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import { DEFAULTS } from '../../lib/constants';

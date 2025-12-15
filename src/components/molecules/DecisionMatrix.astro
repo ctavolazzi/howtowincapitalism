@@ -1,25 +1,35 @@
 ---
 /**
- * DECISION MATRIX - MOLECULE
+ * @fileoverview Decision matrix visualization molecule for comparing options.
  *
- * Pattern: Composite (composed of WikiBox atom)
- * Pattern: Adapter (transforms DecisionResult data to HTML)
- *
- * Renders decision matrix results in Wikipedia style.
+ * Renders decision matrix results in Wikipedia style with winner banner,
+ * comparison table, warnings, and detailed strengths/weaknesses breakdown.
  * Use with makeDecision() from lib/tools/decision-matrix.
  *
- * Usage in MDX:
- *   import DecisionMatrix from '../../components/molecules/DecisionMatrix.astro';
- *   import { makeDecision } from '../../lib/tools';
+ * Design Patterns:
+ * - Composite: Composed of WikiBox atom
+ * - Adapter: Transforms DecisionResult data to HTML
  *
- *   export const result = makeDecision({
- *     options: ["401k", "Roth IRA", "Taxable"],
- *     criteria: ["Tax Benefit", "Flexibility", "Growth"],
- *     scores: { "401k": [9, 3, 7], "Roth IRA": [7, 6, 8], "Taxable": [2, 9, 7] },
- *     weights: [0.4, 0.3, 0.3]
- *   });
+ * @module components/molecules/DecisionMatrix
+ * @see {@link module:lib/tools/decision-matrix} - Decision logic
+ * @see {@link module:components/atoms/WikiBox} - Container component
  *
- *   <DecisionMatrix result={result} title="Investment Account Comparison" />
+ * @example
+ * ```astro
+ * import { makeDecision } from '../../lib/tools';
+ *
+ * const result = makeDecision({
+ *   options: ["401k", "Roth IRA", "Taxable"],
+ *   criteria: ["Tax Benefit", "Flexibility", "Growth"],
+ *   scores: { "401k": [9, 3, 7], "Roth IRA": [7, 6, 8], "Taxable": [2, 9, 7] },
+ *   weights: [0.4, 0.3, 0.3]
+ * });
+ *
+ * <DecisionMatrix result={result} title="Investment Account Comparison" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import type { DecisionResultData } from '../../lib/tools/decision-matrix';

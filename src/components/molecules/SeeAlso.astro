@@ -1,19 +1,26 @@
 ---
 /**
- * SEEALSO - MOLECULE
+ * @fileoverview SeeAlso molecule for related content links.
+ *
+ * Wikipedia-style "See also" section for linking related content.
+ * Common wiki pattern for discovery and navigation with optional descriptions.
  *
  * Design Patterns:
  * - Related Content: Surface related articles
  * - Progressive Disclosure: Optional expanded info
  *
- * Wikipedia-style "See also" section for linking related content.
- * Common wiki pattern for discovery and navigation.
+ * @module components/molecules/SeeAlso
  *
- * Usage:
- *   <SeeAlso links={[
- *     { title: "Introduction", href: "/protocol/introduction/" },
- *     { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Tool for comparing options" }
- *   ]} />
+ * @example
+ * ```astro
+ * <SeeAlso links={[
+ *   { title: "Introduction", href: "/protocol/introduction/" },
+ *   { title: "Decision Matrix", href: "/protocol/decision-matrix/", description: "Tool for comparing options" }
+ * ]} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

@@ -1,17 +1,28 @@
 ---
 /**
- * Favorites Component
+ * @fileoverview Favorites bookmarking molecule with localStorage persistence.
  *
  * Allows users to bookmark pages and view their favorites list.
- * Uses localStorage to persist across sessions.
+ * Persists favorites across sessions using localStorage.
  *
- * Usage:
+ * ## Features
+ * - Toggle button to add/remove current page from favorites
+ * - Display favorited pages list with remove functionality
+ * - Compact mode for inline usage (button only)
+ * - localStorage persistence with JSON serialization
+ *
+ * @module components/molecules/Favorites
+ * @see {@link module:lib/constants} - Storage key configuration
+ *
+ * @example
+ * ```astro
  * <Favorites />
+ * <Favorites compact={true} />
+ * <Favorites title="My Bookmarks" />
+ * ```
  *
- * Features:
- * - Add/remove current page from favorites
- * - Display favorites list
- * - Persist across sessions via localStorage
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface Props {

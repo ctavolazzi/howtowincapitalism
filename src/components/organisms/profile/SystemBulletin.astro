@@ -1,12 +1,34 @@
 ---
 /**
- * SystemBulletin Organism
+ * @fileoverview System bulletin organism for admin announcements.
  *
- * High-visibility alert box for admin announcements.
+ * High-visibility alert box for displaying system-wide announcements.
+ * Supports multiple severity levels and optional dismissal.
  * Renders nothing if no bulletin is provided.
  *
+ * ## Severity Levels
+ * - `info`: Blue styling, informational announcements
+ * - `warn`: Amber styling, warning notices
+ * - `critical`: Red styling, urgent alerts with assertive aria-live
+ *
+ * ## Features
+ * - Dismissible bulletins with localStorage persistence
+ * - Animated dismiss transition
+ * - Markdown body content support
+ * - ARIA live regions for accessibility
+ *
+ * @module components/organisms/profile/SystemBulletin
+ * @see {@link module:lib/auth/schemas/userProfile} - SystemInjection type
+ * @see {@link module:lib/config/systemBulletins} - Bulletin configuration
+ *
  * @example
+ * ```astro
  * <SystemBulletin bulletin={profile.systemInjection} />
+ * <SystemBulletin bulletin={bulletin} class="custom-bulletin" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { SystemInjection } from '../../../lib/auth/schemas/userProfile';

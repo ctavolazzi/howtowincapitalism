@@ -1,27 +1,35 @@
 ---
 /**
- * TOPICCARD - MOLECULE
+ * @fileoverview TopicCard molecule for content discovery navigation.
+ *
+ * Displays a clickable card linking to a topic/article.
+ * Used on index pages for scannable content discovery.
  *
  * Design Patterns:
  * - Cards (UI-Patterns.com): Content preview in scannable format
  * - Composite: Composed of WikiBox atom styling
  *
- * Displays a clickable card linking to a topic/article.
- * Used on index pages for content discovery.
+ * @module components/molecules/TopicCard
  *
- * Usage:
- *   <TopicCard
- *     title="Introduction"
- *     description="Start here to understand the framework"
- *     href="/protocol/introduction/"
- *   />
+ * @example
+ * ```astro
+ * <TopicCard
+ *   title="Introduction"
+ *   description="Start here to understand the framework"
+ *   href="/protocol/introduction/"
+ * />
  *
- *   <TopicCard
- *     title="Decision Matrix"
- *     description="Quantitative decision-making tool"
- *     href="/protocol/decision-matrix/"
- *     tag="Tool"
- *   />
+ * <TopicCard
+ *   title="Decision Matrix"
+ *   description="Quantitative decision-making tool"
+ *   href="/protocol/decision-matrix/"
+ *   tag="Tool"
+ *   icon="🎯"
+ * />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

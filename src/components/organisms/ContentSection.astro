@@ -1,11 +1,30 @@
 ---
 /**
- * CONTENTSECTION - ORGANISM
+ * @fileoverview Content section organism with optional WikiBox wrapper.
  *
- * Pattern: Composite (composed of WikiBox + content)
- * Pattern: Template Method (section structure with slots)
+ * A flexible content section that can render content directly or
+ * wrap it in a WikiBox component for consistent styling.
  *
- * A content section with optional sidebar.
+ * Design Patterns:
+ * - Composite: Composed of WikiBox + content
+ * - Template Method: Section structure with slots
+ *
+ * @module components/organisms/ContentSection
+ * @see {@link module:components/atoms/WikiBox} - Optional wrapper component
+ *
+ * @example
+ * ```astro
+ * <ContentSection title="Section Title">
+ *   <p>Content here</p>
+ * </ContentSection>
+ *
+ * <ContentSection title="Boxed Section" boxed variant="info">
+ *   <p>Content in WikiBox</p>
+ * </ContentSection>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 

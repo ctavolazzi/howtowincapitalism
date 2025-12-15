@@ -1,9 +1,33 @@
 ---
 /**
- * CALLTOACTION - Molecule
+ * @fileoverview Call-to-action molecule for monetization and external links.
  *
- * Patterns: Composite, Strategy
- * For monetization (book sales, etc.)
+ * A promotional box for book sales, courses, and other external content.
+ * Includes URL sanitization to prevent javascript: protocol injection.
+ *
+ * Design Patterns:
+ * - Composite: Composed of WikiBox atom with CTA variant
+ * - Strategy: Configurable href for different destinations
+ *
+ * @module components/molecules/CallToAction
+ * @see {@link module:components/atoms/WikiBox} - Container component
+ * @see {@link module:lib/constants} - Default link destinations
+ *
+ * @example
+ * ```astro
+ * <CallToAction title="Get the Book" price="$19" />
+ * <CallToAction
+ *   title="Premium Course"
+ *   buttonText="Enroll Now"
+ *   href="https://example.com/course"
+ *   price="$99"
+ * >
+ *   <p>Learn advanced strategies</p>
+ * </CallToAction>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import WikiBox from '../atoms/WikiBox.astro';
 import { LINKS } from '../../lib/constants';

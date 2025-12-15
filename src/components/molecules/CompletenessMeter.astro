@@ -1,20 +1,32 @@
 ---
 /**
- * COMPLETENESSMETER - MOLECULE
- *
- * Pattern: Completeness Meter (UI-Patterns.com)
- * Pattern: Progress Indicator
+ * @fileoverview CompletenessMeter molecule for tracking reading progress.
  *
  * Tracks user progress through wiki content using localStorage.
  * Shows percentage complete and list of visited/unvisited pages.
  *
- * Usage:
- *   <CompletenessMeter />
+ * Design Patterns:
+ * - Completeness Meter (UI-Patterns.com): Visual progress tracking
+ * - Progress Indicator: Gamification element
  *
- *   <CompletenessMeter
- *     title="Your Progress"
- *     showList={true}
- *   />
+ * ## Features
+ * - Automatic page visit tracking
+ * - Progress bar visualization
+ * - Checklist of trackable pages
+ * - Compact mode for sidebar use
+ * - localStorage persistence
+ *
+ * @module components/molecules/CompletenessMeter
+ *
+ * @example
+ * ```astro
+ * <CompletenessMeter />
+ * <CompletenessMeter title="Your Progress" showList={true} />
+ * <CompletenessMeter compact={true} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 export interface Props {
