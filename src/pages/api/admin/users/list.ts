@@ -1,8 +1,15 @@
 /**
- * GET /api/admin/users/list
+ * @fileoverview GET /api/admin/users/list - Admin user listing endpoint.
  *
- * Admin endpoint to list all users.
- * Returns sanitized user data (no password hashes).
+ * Admin endpoint to list all users with sanitized data.
+ * Returns user info without password hashes.
+ * Requires admin authentication.
+ *
+ * @module pages/api/admin/users/list
+ * @see {@link module:lib/auth/kv-auth} - User retrieval
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser, type KVUser } from '../../../../lib/auth/kv-auth';

@@ -1,8 +1,15 @@
 /**
- * GET /api/auth/account/export
+ * @fileoverview GET /api/auth/account/export - Data export endpoint.
  *
  * Returns a JSON export of the authenticated user's account data.
+ * GDPR-compliant data portability feature.
  * Requires KV (production). Returns 503 in local fallback mode.
+ *
+ * @module pages/api/auth/account/export
+ * @see {@link module:lib/auth/kv-auth} - User data retrieval
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser } from '../../../../lib/auth/kv-auth';

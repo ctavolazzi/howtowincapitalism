@@ -1,14 +1,24 @@
 /**
- * POST /api/auth/init
+ * @fileoverview POST /api/auth/init - User seeding endpoint.
  *
  * Initialize seed users using Cloudflare environment variables.
- * This is the proper way - secrets stay in Cloudflare, never in code.
+ * Secrets stay in Cloudflare, never in code.
  *
- * Call this once after deployment to seed users:
- *   curl -X POST https://yoursite.pages.dev/api/auth/init/
+ * ## Usage
+ * Call once after deployment:
+ * ```bash
+ * curl -X POST https://yoursite.pages.dev/api/auth/init/
+ * ```
  *
- * Requires SEED_ADMIN_PASSWORD (and optionally other SEED_*_PASSWORD vars)
- * to be set in Cloudflare Pages > Settings > Environment Variables.
+ * ## Required Environment Variables
+ * - SEED_ADMIN_PASSWORD: Admin account password
+ * - SEED_*_PASSWORD: Optional additional seed users
+ *
+ * @module pages/api/auth/init
+ * @see {@link module:lib/auth/kv-auth} - User creation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { hashPasswordV2, getUserByEmail } from '../../../lib/auth/kv-auth';

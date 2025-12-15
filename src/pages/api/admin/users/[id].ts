@@ -1,10 +1,19 @@
 /**
- * /api/admin/users/[id]
+ * @fileoverview /api/admin/users/[id] - Admin user management endpoints.
  *
  * Admin endpoints for managing individual users.
- * - GET: Get user details
- * - PUT: Update user
- * - DELETE: Delete user
+ * Requires admin authentication.
+ *
+ * ## HTTP Methods
+ * - GET: Get user details by ID
+ * - PUT: Update user (role, email, password)
+ * - DELETE: Delete user permanently
+ *
+ * @module pages/api/admin/users/[id]
+ * @see {@link module:lib/auth/kv-auth} - User management
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

@@ -1,8 +1,23 @@
 /**
- * POST /api/auth/register
+ * @fileoverview POST /api/auth/register - User registration endpoint.
  *
  * Creates a new user account and sends confirmation email.
  * Includes rate limiting and anti-bot protection.
+ *
+ * ## Security Features
+ * - CSRF token validation
+ * - Turnstile CAPTCHA verification
+ * - Honeypot field detection
+ * - Form timestamp validation
+ * - Disposable email blocking
+ * - Rate limiting per IP
+ *
+ * @module pages/api/auth/register
+ * @see {@link module:lib/auth/kv-auth} - User creation
+ * @see {@link module:lib/email/send-confirmation} - Confirmation emails
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { createUser, getUserByEmail } from '../../../lib/auth/kv-auth';

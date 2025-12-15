@@ -1,8 +1,21 @@
 /**
- * POST /api/auth/login
+ * @fileoverview POST /api/auth/login - User authentication endpoint.
  *
  * Validates credentials against KV (production) or mock data (local dev).
  * Includes rate limiting and account lockout protection.
+ *
+ * ## Security Features
+ * - CSRF token validation
+ * - Rate limiting per IP
+ * - Account lockout after failed attempts
+ * - Password hash upgrade on successful login
+ *
+ * @module pages/api/auth/login
+ * @see {@link module:lib/auth/kv-auth} - KV authentication
+ * @see {@link module:lib/auth/local-auth} - Local dev authentication
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

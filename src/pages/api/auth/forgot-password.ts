@@ -1,8 +1,15 @@
 /**
- * POST /api/auth/forgot-password
+ * @fileoverview POST /api/auth/forgot-password - Password reset request.
  *
  * Initiates password reset flow by sending reset email.
  * Always returns success to prevent email enumeration attacks.
+ *
+ * @module pages/api/auth/forgot-password
+ * @see {@link module:lib/auth/kv-auth} - Reset token creation
+ * @see {@link module:lib/email/send-password-reset} - Reset email
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { createPasswordReset } from '../../../lib/auth/kv-auth';

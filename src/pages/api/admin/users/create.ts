@@ -1,8 +1,15 @@
 /**
- * POST /api/admin/users/create
+ * @fileoverview POST /api/admin/users/create - Admin user creation endpoint.
  *
  * Admin endpoint to create a new user account.
  * Bypasses email confirmation (admin-created users are pre-confirmed).
+ * Requires admin authentication.
+ *
+ * @module pages/api/admin/users/create
+ * @see {@link module:lib/auth/kv-auth} - User creation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

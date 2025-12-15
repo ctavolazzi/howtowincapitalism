@@ -1,7 +1,15 @@
 /**
- * GET /api/auth/me
+ * @fileoverview GET /api/auth/me - Current user info endpoint.
  *
- * Returns current user from session cookie.
+ * Returns current authenticated user from session cookie.
+ * Returns null/401 if not authenticated.
+ *
+ * @module pages/api/auth/me
+ * @see {@link module:lib/auth/kv-auth} - KV user retrieval
+ * @see {@link module:lib/auth/local-auth} - Local dev retrieval
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser } from '../../../lib/auth/kv-auth';

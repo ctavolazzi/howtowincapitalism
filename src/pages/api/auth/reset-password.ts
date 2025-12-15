@@ -1,7 +1,15 @@
 /**
- * POST /api/auth/reset-password
+ * @fileoverview POST /api/auth/reset-password - Password reset completion.
  *
- * Resets password using a valid reset token.
+ * Resets password using a valid reset token from email.
+ * Validates password strength requirements.
+ *
+ * @module pages/api/auth/reset-password
+ * @see {@link module:lib/auth/kv-auth} - Password reset logic
+ * @see {@link module:pages/api/auth/forgot-password} - Reset request
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { resetPassword, validateResetToken } from '../../../lib/auth/kv-auth';

@@ -1,7 +1,15 @@
 /**
- * POST /api/auth/logout
+ * @fileoverview POST /api/auth/logout - User logout endpoint.
  *
- * Deletes session and clears cookie.
+ * Deletes session from storage and clears the session cookie.
+ * Works with both KV (production) and local dev modes.
+ *
+ * @module pages/api/auth/logout
+ * @see {@link module:lib/auth/kv-auth} - KV session management
+ * @see {@link module:lib/auth/local-auth} - Local dev session
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

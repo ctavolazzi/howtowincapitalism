@@ -1,8 +1,14 @@
 /**
- * DELETE /api/auth/account
+ * @fileoverview DELETE /api/auth/account - Account deletion endpoint.
  *
- * Deletes the authenticated user's account.
+ * Deletes the authenticated user's account permanently.
  * Requires KV (production). Returns 503 in local fallback mode.
+ *
+ * @module pages/api/auth/account/delete
+ * @see {@link module:lib/auth/kv-auth} - User deletion
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {
