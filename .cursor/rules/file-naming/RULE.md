@@ -1,3 +1,8 @@
+---
+description: "File naming conventions - self-descriptive names required"
+alwaysApply: true
+---
+
 # File Naming Conventions
 
 **Rule:** All filenames must be self-descriptive without relying on their folder path.

@@ -1,3 +1,8 @@
+---
+description: "Project directory structure and organization conventions"
+alwaysApply: true
+---
+
 # Project Structure
 
 This project follows a specific organizational structure. **Always** maintain these conventions.

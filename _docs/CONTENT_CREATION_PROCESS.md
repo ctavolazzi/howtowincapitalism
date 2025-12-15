@@ -114,7 +114,7 @@ import Collapsible from '../../../components/atoms/Collapsible.astro';
 | Guideline | Example |
 |-----------|---------|
 | **Wikipedia aesthetic** | Factual, neutral, cite concepts |
-| **Satirical tone** | "The game is rigged. Learn the rules anyway." |
+| **Satirical tone** | "the game may be rigged - learn how to win better" |
 | **Practical focus** | Actionable > theoretical |
 | **Use components** | Collapsible for examples, FAQ for questions |
 | **Real numbers** | $10,000 at 7% for 30 years = $81,165 |

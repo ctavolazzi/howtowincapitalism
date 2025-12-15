@@ -1,3 +1,9 @@
+---
+description: "Documentation standards for devlogs, status reports, and architecture docs"
+globs: ["_docs/**/*"]
+alwaysApply: false
+---
+
 # Documentation Standards
 
 All documentation lives in `_docs/` and follows consistent conventions.

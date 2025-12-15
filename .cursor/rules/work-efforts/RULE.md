@@ -1,6 +1,10 @@
-# Work Efforts System
+---
+description: "Johnny Decimal work efforts system for task tracking"
+globs: ["_work_efforts/**/*"]
+alwaysApply: false
+---
 
-glob: _work_efforts/**/*
+# Work Efforts System
 
 The `_work_efforts/` folder uses the **Johnny Decimal** system for organizing tasks and tracking progress.
 
