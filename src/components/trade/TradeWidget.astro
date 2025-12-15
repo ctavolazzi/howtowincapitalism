@@ -52,9 +52,12 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
       this.innerHTML = '<p class="trade-widget__error">Trade widget unavailable</p>';
     }
 
-    render(data: { name: string; description: string; tradeNumber: number; email: string }) {
+    render(data: { name: string; description: string; tradeNumber: number; email: string; image?: string }) {
       const subject = encodeURIComponent(`Trade Offer for: ${data.name}`);
       const body = encodeURIComponent(`Hi! I'd like to trade for your ${data.name}.\n\nI'm offering:\n\n`);
+
+      // Default image if none provided in data
+      const imageUrl = data.image || 'https://cdn11.bigcommerce.com/s-1i834776za/products/63755/images/268005/pilot-30000-better-retractable-fine-0.7mm-ballpoint-pen-black-ink-box-of-12__71093.1728245800.386.513.jpg?c=1';
 
       this.innerHTML = `
         <header class="trade-widget__header">
@@ -62,8 +65,13 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
           <span class="trade-widget__title">Currently Trading</span>
         </header>
         <div class="trade-widget__content">
-          <p class="trade-widget__item-name">${data.name}</p>
-          <p class="trade-widget__item-desc">${data.description}</p>
+          <div class="trade-widget__image-wrapper">
+            <img src="${imageUrl}" alt="${data.name}" class="trade-widget__image" loading="lazy" />
+          </div>
+          <div class="trade-widget__details">
+            <p class="trade-widget__item-name">${data.name}</p>
+            <p class="trade-widget__item-desc">${data.description}</p>
+          </div>
         </div>
         <a href="mailto:${data.email}?subject=${subject}&body=${body}" class="trade-widget__cta">
           Make an Offer
@@ -75,9 +83,10 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
   customElements.define('trade-widget', TradeWidgetElement);
 </script>
 
-<style>
+<style is:global>
   /* Base styles */
   .trade-widget {
+    display: block; /* Custom elements default to inline - must set block for card layout */
     border: 1px solid var(--color-border-subtle, #e4e7eb);
     background: var(--color-surface, #f8f9fa);
     padding: 1rem;
@@ -110,10 +119,35 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
 
   .trade-widget__content {
     margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .trade-widget__image-wrapper {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--color-bg, #fff);
+    border: 1px solid var(--color-border-subtle, #e4e7eb);
+  }
+
+  .trade-widget__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .trade-widget__details {
+    flex: 1;
+    min-width: 0;
   }
 
   .trade-widget__item-name {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: bold;
     margin: 0 0 0.25rem;
     color: var(--color-text, #202122);
@@ -122,6 +156,7 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
   .trade-widget__item-desc {
     margin: 0;
     color: var(--color-text-muted, #666);
+    font-size: 0.875rem;
   }
 
   .trade-widget__cta {
@@ -178,6 +213,11 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
     margin: 0;
   }
 
+  .trade-widget--banner .trade-widget__image-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
   .trade-widget--banner .trade-widget__item-name {
     font-size: 1rem;
     margin: 0;
@@ -203,6 +243,11 @@ const DATA_URL = 'https://raw.githubusercontent.com/ctavolazzi/open-shelf/main/t
       flex-basis: 100%;
       order: 2;
       margin-top: 0.5rem;
+    }
+
+    .trade-widget--banner .trade-widget__image-wrapper {
+      width: 64px;
+      height: 64px;
     }
 
     .trade-widget--banner .trade-widget__cta {
