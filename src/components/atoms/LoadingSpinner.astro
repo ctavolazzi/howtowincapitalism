@@ -1,0 +1,71 @@
+---
+/**
+ * LoadingSpinner - ATOM
+ *
+ * Reusable loading spinner component for consistent loading states.
+ * Used across auth gates, form submissions, and content loading.
+ */
+export interface Props {
+  /** Size of spinner (default: 'md') */
+  size?: 'sm' | 'md' | 'lg';
+  /** Optional text to display below spinner */
+  text?: string;
+  /** Optional CSS class */
+  class?: string;
+}
+
+const {
+  size = 'md',
+  text = 'Loading...',
+  class: className = '',
+} = Astro.props;
+
+const sizeMap = {
+  sm: '24px',
+  md: '40px',
+  lg: '56px',
+};
+
+const spinnerSize = sizeMap[size];
+---
+
+<div class={`loading-spinner-wrapper ${className}`}>
+  <div class="loading-spinner" style={`width: ${spinnerSize}; height: ${spinnerSize};`} aria-hidden="true"></div>
+  {text && <p class="loading-text">{text}</p>}
+</div>
+
+<style>
+  .loading-spinner-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md, 1rem);
+    color: var(--color-text-muted, #72777d);
+  }
+
+  .loading-spinner {
+    border: 3px solid var(--color-surface-alt, #eaecef);
+    border-top-color: var(--color-link, #0645ad);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    margin: 0;
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted, #72777d);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .loading-spinner {
+      animation: none;
+      border-top-color: var(--color-link, #0645ad);
+    }
+  }
+</style>

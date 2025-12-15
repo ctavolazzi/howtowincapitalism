@@ -2,15 +2,16 @@
 /**
  * Base Layout - Simple, clean, yours.
  */
-import UserMenu from '../components/auth/UserMenu.astro';
-import GlobalSearch from '../components/search/GlobalSearch.astro';
+import HamburgerMenu from '../components/organisms/HamburgerMenu.astro';
 
 export interface Props {
   title: string;
   description?: string;
+  /** Hide navigation (for auth pages) */
+  hideNav?: boolean;
 }
 
-const { title, description = 'A wiki about financial autonomy' } = Astro.props;
+const { title, description = 'A wiki about financial autonomy', hideNav = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
@@ -24,21 +25,19 @@ const currentPath = Astro.url.pathname;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
   <header>
     <nav>
       <a href="/" class="site-title">How To Win Capitalism</a>
-      <ul>
-        <li><a href="/faq/" class:list={{ active: currentPath.startsWith('/faq/') }}>FAQ</a></li>
-        <li><a href="/notes/" class:list={{ active: currentPath.startsWith('/notes/') }}>Notes</a></li>
-        <li><a href="/tools/" class:list={{ active: currentPath.startsWith('/tools/') }}>Tools</a></li>
-      </ul>
-      <div class="nav-actions">
-        <GlobalSearch compact />
-      </div>
+      {!hideNav && (
+        <HamburgerMenu />
+      )}
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     <slot />
   </main>
 
@@ -54,9 +53,6 @@ const currentPath = Astro.url.pathname;
       <a href="/terms/">Terms</a>
     </p>
   </footer>
-
-  <!-- User Menu (Login/Profile) -->
-  <UserMenu />
 
   <!-- Cookie Consent -->
   <div id="cookie-consent" class="cookie-consent" hidden>
@@ -257,9 +253,8 @@ const currentPath = Astro.url.pathname;
     max-width: var(--max-width);
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    flex-wrap: wrap;
     gap: 1rem;
   }
 
@@ -268,24 +263,6 @@ const currentPath = Astro.url.pathname;
     font-size: 1.25rem;
     font-weight: 400;
     color: var(--color-text);
-  }
-
-  header ul {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  header a.active {
-    font-weight: 600;
-  }
-
-  header .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
   }
 
   main {
@@ -369,25 +346,6 @@ const currentPath = Astro.url.pathname;
     background: #053a92;
   }
 
-  /* Responsive */
-  @media (max-width: 600px) {
-    header nav {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    header ul {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    header .nav-actions {
-      width: 100%;
-      justify-content: center;
-      margin-top: 0.5rem;
-    }
-  }
 
   /* === Component Styles === */
 
@@ -644,7 +602,162 @@ const currentPath = Astro.url.pathname;
     margin-top: 0;
   }
 
+  /* Skip to content link */
+  .skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-link, #0645ad);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    z-index: 10000;
+    border-radius: 0 0 4px 0;
+  }
+
+  .skip-to-content:focus {
+    top: 0;
+  }
+
+  /* Consolidated Button Styles */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm, 0.5rem);
+    padding: 0.75rem 1.5rem;
+    font-family: inherit;
+    font-size: var(--text-base, 1rem);
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    min-height: 44px; /* Touch target minimum */
+  }
+
+  .btn-primary {
+    background: var(--color-link, #0645ad);
+    color: #ffffff;
+    border-color: var(--color-link, #0645ad);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #053a92;
+    border-color: #053a92;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(6, 69, 173, 0.2);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    background: var(--color-surface, #f8f9fa);
+    color: var(--color-text, #202122);
+    border-color: var(--color-border, #a2a9b1);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--color-surface-alt, #eaecef);
+    border-color: var(--color-text-muted, #666);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-link, #0645ad);
+    outline-offset: 2px;
+  }
+
+  /* Consolidated Form Styles */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    font-weight: 600;
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text, #202122);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 6px;
+    font-size: var(--text-base, 1rem);
+    font-family: inherit;
+    background: var(--color-bg, #ffffff);
+    color: var(--color-text, #202122);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-link, #0645ad);
+    box-shadow: 0 0 0 3px rgba(6, 69, 173, 0.1);
+  }
+
+  .form-input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #dc2626;
+  }
+
+  .form-hint {
+    color: var(--color-text-muted, #72777d);
+    font-size: var(--text-xs, 0.75rem);
+    line-height: 1.4;
+  }
+
+  .form-error {
+    padding: 0.5rem 0.75rem;
+    background: #fee;
+    border: 1px solid #dc2626;
+    border-radius: 4px;
+    color: #dc2626;
+    font-size: var(--text-sm, 0.875rem);
+    line-height: 1.4;
+  }
+
+  /* Improve link transitions */
+  a {
+    transition: color 0.2s ease-out, text-decoration-color 0.2s ease-out;
+  }
+
+  /* Improve focus states for navigation */
+  header a:focus-visible {
+    outline: 2px solid var(--color-link, #0645ad);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+
   @media print {
     .breadcrumbs { display: none; }
+    .skip-to-content { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:hover:not(:disabled) {
+      transform: none;
+    }
+    a {
+      transition: none;
+    }
   }
 </style>

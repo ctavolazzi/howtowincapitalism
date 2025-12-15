@@ -1,0 +1,478 @@
+---
+/**
+ * HamburgerMenu - ORGANISM
+ *
+ * Expandable hamburger menu that combines navigation and auth.
+ * Replaces the top-right login button with a unified menu.
+ */
+import GlobalSearch from '../search/GlobalSearch.astro';
+---
+
+<button
+  class="hamburger-button"
+  id="hamburger-button"
+  aria-label="Toggle menu"
+  aria-expanded="false"
+  aria-controls="hamburger-menu"
+>
+  <span class="hamburger-icon">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </span>
+</button>
+
+<div class="hamburger-menu" id="hamburger-menu" role="menu" aria-labelledby="hamburger-button">
+  <div class="menu-overlay" aria-hidden="true"></div>
+  <div class="menu-content">
+    <!-- Navigation Links -->
+    <nav class="menu-nav" aria-label="Main navigation">
+      <a href="/faq/" class="menu-link" id="menu-link-faq">FAQ</a>
+      <a href="/notes/" class="menu-link" id="menu-link-notes">Notes</a>
+      <a href="/tools/" class="menu-link" id="menu-link-tools">Tools</a>
+    </nav>
+
+    <!-- Search -->
+    <div class="menu-search">
+      <GlobalSearch compact />
+    </div>
+
+    <!-- Auth Section -->
+    <div class="menu-auth">
+      <!-- Default: Login and Register links (shown before JS hydrates) -->
+      <div class="menu-auth-links" id="menu-auth-links">
+        <a href="/login/" class="menu-link menu-link-primary" id="menu-login-link">
+          Log In
+        </a>
+        <a href="/register/" class="menu-link" id="menu-register-link">
+          Create Account
+        </a>
+      </div>
+
+      <!-- Authenticated: User info and actions -->
+      <div class="menu-user" id="menu-user" style="display: none;">
+        <div class="menu-user-info">
+          <svg class="user-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M12 14c-4 0-8 2-8 4v2h16v-2c0-2-4-4-8-4z"/>
+          </svg>
+          <span class="menu-user-name" id="menu-user-name">User</span>
+          <span class="menu-user-initials" id="menu-user-initials" aria-hidden="true">U</span>
+        </div>
+        <a href="/profile/" class="menu-link" id="menu-profile-link">
+          Profile
+        </a>
+        <button class="menu-link menu-link-danger" id="menu-logout-button">
+          Log Out
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { checkAuth, logout } from '../../lib/auth/api-client';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerButton = document.getElementById('hamburger-button');
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const authLinks = document.getElementById('menu-auth-links');
+    const loginLink = document.getElementById('menu-login-link');
+    const registerLink = document.getElementById('menu-register-link');
+    const userSection = document.getElementById('menu-user');
+    const userName = document.getElementById('menu-user-name');
+    const userInitials = document.getElementById('menu-user-initials');
+    const profileLink = document.getElementById('menu-profile-link');
+    const logoutButton = document.getElementById('menu-logout-button');
+
+    if (!hamburgerButton || !hamburgerMenu) return;
+
+    // Get user initials from name
+    function getInitials(name: string): string {
+      return name
+        .split(' ')
+        .map(word => word[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+
+    // Toggle menu
+    function toggleMenu() {
+      if (!hamburgerMenu || !hamburgerButton) return;
+      const isOpen = hamburgerMenu.classList.contains('open');
+      if (isOpen) {
+        hamburgerMenu.classList.remove('open');
+        hamburgerButton.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      } else {
+        hamburgerMenu.classList.add('open');
+        hamburgerButton.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Prevent body scroll when menu is open
+      }
+    }
+
+    // Close menu
+    function closeMenu() {
+      if (!hamburgerMenu || !hamburgerButton) return;
+      hamburgerMenu.classList.remove('open');
+      hamburgerButton.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // Update UI based on auth state
+    async function updateAuthUI() {
+      const { authenticated, user } = await checkAuth();
+
+      if (authenticated && user && authLinks && userSection && userName) {
+        // Logged in - hide auth links, show user section
+        if (authLinks) authLinks.style.display = 'none';
+        if (userSection) userSection.style.display = 'block';
+        userName.textContent = user.name;
+
+        if (userInitials) {
+          userInitials.textContent = getInitials(user.name);
+        }
+
+        if (profileLink && profileLink instanceof HTMLAnchorElement) {
+          profileLink.href = `/users/${user.id}/`;
+        }
+      } else {
+        // Not logged in - show auth links, hide user section
+        if (authLinks) authLinks.style.display = 'flex';
+        if (userSection) userSection.style.display = 'none';
+      }
+    }
+
+    // Initial auth state update
+    updateAuthUI();
+
+    // Toggle menu on button click
+    hamburgerButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    // Close menu when clicking overlay or outside
+    if (hamburgerMenu) {
+      const overlay = hamburgerMenu.querySelector('.menu-overlay');
+      overlay?.addEventListener('click', closeMenu);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (hamburgerMenu && hamburgerButton) {
+        if (!hamburgerMenu.contains(e.target as Node) && !hamburgerButton.contains(e.target as Node)) {
+          closeMenu();
+        }
+      }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && hamburgerMenu.classList.contains('open')) {
+        closeMenu();
+        hamburgerButton.focus();
+      }
+    });
+
+    // Close menu when clicking a menu link
+    const menuLinks = hamburgerMenu.querySelectorAll('.menu-link');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    // Handle logout
+    logoutButton?.addEventListener('click', async () => {
+      await logout();
+      closeMenu();
+      window.location.href = '/login/';
+    });
+
+    // Update active link based on current path
+    if (hamburgerMenu) {
+      const currentPath = window.location.pathname;
+      const linkMap: Record<string, string> = {
+        '/faq/': 'menu-link-faq',
+        '/notes/': 'menu-link-notes',
+        '/tools/': 'menu-link-tools',
+      };
+
+      Object.entries(linkMap).forEach(([path, id]) => {
+        if (currentPath.startsWith(path)) {
+          const link = document.getElementById(id);
+          if (link) {
+            link.classList.add('active');
+          }
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .hamburger-button {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: var(--color-bg, #ffffff);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    z-index: 10001;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .hamburger-button:hover {
+    border-color: var(--color-text-muted, #666);
+    background: var(--color-surface, #f8f9fa);
+  }
+
+  .hamburger-button:focus-visible {
+    outline: 2px solid var(--color-link, #0645ad);
+    outline-offset: 2px;
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 20px;
+    height: 16px;
+  }
+
+  .hamburger-line {
+    width: 100%;
+    height: 2px;
+    background: var(--color-text, #202122);
+    border-radius: 1px;
+    transition: all 0.3s ease-out;
+  }
+
+  .hamburger-button[aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+
+  .hamburger-button[aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-button[aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  .hamburger-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 320px;
+    height: 100vh;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .hamburger-menu.open {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    z-index: -1;
+  }
+
+  .hamburger-menu.open .menu-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--color-bg, #ffffff);
+    border-left: 1px solid var(--color-border, #a2a9b1);
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--color-text, #202122);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: var(--text-base, 1rem);
+    transition: background 0.2s ease-out;
+    min-height: 44px; /* Touch target */
+  }
+
+  .menu-link:hover,
+  .menu-link:focus {
+    background: var(--color-surface, #f8f9fa);
+    outline: none;
+  }
+
+  .menu-link:focus-visible {
+    outline: 2px solid var(--color-link, #0645ad);
+    outline-offset: -2px;
+  }
+
+  .menu-link.active {
+    background: var(--color-surface-alt, #eaecef);
+    font-weight: 600;
+    color: var(--color-link, #0645ad);
+  }
+
+  .menu-link-primary {
+    background: var(--color-link, #0645ad);
+    color: #ffffff;
+    justify-content: center;
+    font-weight: 600;
+  }
+
+  .menu-link-primary:hover,
+  .menu-link-primary:focus {
+    background: #053a92;
+    color: #ffffff;
+  }
+
+  .menu-link-danger {
+    color: #dc2626;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  .menu-link-danger:hover,
+  .menu-link-danger:focus {
+    background: #fee;
+    color: #dc2626;
+  }
+
+  .menu-search {
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border, #a2a9b1);
+  }
+
+  .menu-auth {
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border, #a2a9b1);
+  }
+
+  .menu-auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu-user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface, #f8f9fa);
+    border-radius: 6px;
+  }
+
+  .user-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-text-muted, #666);
+  }
+
+  .menu-user-name {
+    font-weight: 600;
+    color: var(--color-text, #202122);
+    flex: 1;
+  }
+
+  .menu-user-initials {
+    display: none; /* Hidden by default, shown if needed */
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text, #202122);
+    background: var(--color-surface-alt, #eaecef);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+
+  /* Desktop: menu slides from right */
+  @media (min-width: 641px) {
+    .hamburger-menu {
+      max-width: 400px;
+    }
+  }
+
+  /* Mobile: full width menu */
+  @media (max-width: 640px) {
+    .hamburger-menu {
+      max-width: 100%;
+    }
+
+    .menu-user-name {
+      display: none;
+    }
+
+    .menu-user-initials {
+      display: flex;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hamburger-menu,
+    .hamburger-line,
+    .hamburger-menu::before {
+      transition: none;
+    }
+  }
+</style>

@@ -21,6 +21,7 @@
 
 import Base from '../../layouts/Base.astro';
 import ProfileForm from '../../components/organisms/profile/ProfileForm.astro';
+import { LoadingSpinner } from '../../components';
 import { fetchUserProfile, getAllUserIds, userExists } from '../../lib/api';
 
 // For SSR, we pre-render with a placeholder profile
@@ -43,8 +44,7 @@ try {
   <div class="edit-page">
     <!-- State: Loading (shown initially) -->
     <div id="state-loading" class="state-container state-loading">
-      <div class="loading-spinner"></div>
-      <p class="state-text">Checking authentication...</p>
+      <LoadingSpinner text="Checking authentication..." />
     </div>
 
     <!-- State: Auth Required (not logged in) -->
@@ -240,19 +240,6 @@ try {
     color: var(--color-text-muted, #72777d);
   }
 
-  .loading-spinner {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--color-border-light, #eaecef);
-    border-top-color: var(--color-primary, #0645ad);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
 
   .state-text {
     font-size: 0.9375rem;

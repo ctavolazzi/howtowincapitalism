@@ -3,123 +3,75 @@
  * Login Page
  *
  * Simple login page with the LoginForm component.
+ * Uses Base.astro layout for consistency.
  */
+import Base from '../../layouts/Base.astro';
 import LoginForm from '../../components/auth/LoginForm.astro';
-import UserMenu from '../../components/auth/UserMenu.astro';
 
 // Get CSRF token from middleware
-const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const csrfToken = (Astro.locals as any).csrfToken as string | undefined;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In | How To Win Capitalism</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    :root {
-      --color-bg: #ffffff;
-      --color-text: #202122;
-      --color-text-muted: #72777d;
-      --color-primary: #0645ad;
-      --color-border: #a2a9b1;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--color-bg);
-      color: var(--color-text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .site-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--color-text);
-      text-decoration: none;
-    }
-
-    .site-title:hover {
-      color: var(--color-primary);
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .login-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .login-header h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .login-header p {
-      color: var(--color-text-muted);
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <a href="/" class="site-title">How To Win Capitalism</a>
-  </header>
-
-  <main>
-    <div class="login-header">
+<Base title="Log In" description="Access your profile and track your progress" hideNav={false}>
+  <div class="auth-page">
+    <div class="auth-header">
       <h1>Log In</h1>
       <p>Access your profile and track your progress</p>
     </div>
 
     <LoginForm csrfToken={csrfToken} />
-  </main>
+  </div>
+</Base>
 
-  <UserMenu />
+<script>
+  import { checkAuth } from '../../lib/auth/api-client';
 
-  <script>
-    import { checkAuth } from '../../lib/auth/api-client';
+  // If already logged in, redirect away from login page
+  async function checkIfAlreadyLoggedIn() {
+    const { authenticated } = await checkAuth();
 
-    // If already logged in, redirect away from login page
-    async function checkIfAlreadyLoggedIn() {
-      const { authenticated } = await checkAuth();
-
-      if (authenticated) {
-        // Get redirect URL or default to home
-        const params = new URLSearchParams(window.location.search);
-        const redirect = params.get('redirect');
-        if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
-          window.location.href = redirect;
-        } else {
-          window.location.href = '/';
-        }
+    if (authenticated) {
+      // Get redirect URL or default to home
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
+        window.location.href = redirect;
+      } else {
+        window.location.href = '/';
       }
     }
+  }
 
-    checkIfAlreadyLoggedIn();
-  </script>
-</body>
-</html>
+  checkIfAlreadyLoggedIn();
+</script>
+
+<style>
+  .auth-page {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .auth-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+
+  .auth-header p {
+    color: var(--color-text-muted, #72777d);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .auth-page {
+      padding: 3rem 2rem;
+    }
+  }
+</style>

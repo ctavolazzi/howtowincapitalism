@@ -78,6 +78,7 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
           placeholder="Create a password"
           autocomplete="new-password"
           minlength="8"
+          aria-describedby="password-hint password-strength"
         />
         <button type="button" class="toggle-password" id="toggle-password" aria-label="Show password">
           <svg class="eye-icon" id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -90,7 +91,13 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
           </svg>
         </button>
       </div>
-      <small class="hint">At least 8 characters with letters and numbers</small>
+      <div class="password-strength" id="password-strength" role="status" aria-live="polite">
+        <div class="strength-bar">
+          <div class="strength-fill" id="strength-fill"></div>
+        </div>
+        <span class="strength-text" id="strength-text"></span>
+      </div>
+      <small class="hint" id="password-hint">At least 8 characters with letters and numbers</small>
     </div>
 
     {/* Turnstile CAPTCHA widget */}
@@ -143,12 +150,74 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
     const eyeClosed = document.querySelector<SVGElement>('#eye-closed');
     const turnstileTokenInput = document.getElementById('turnstile-token') as HTMLInputElement | null;
     const formTimestampInput = document.getElementById('form-timestamp') as HTMLInputElement | null;
+    const strengthFill = document.getElementById('strength-fill') as HTMLElement | null;
+    const strengthText = document.getElementById('strength-text') as HTMLElement | null;
 
     if (!form || !errorMessage || !successMessage || !registerButton || !passwordInput) return;
 
     // Set form load timestamp for time-based bot detection
     if (formTimestampInput) {
       formTimestampInput.value = String(Date.now());
+    }
+
+    // Password strength calculator
+    function calculatePasswordStrength(password: string): { strength: number; label: string; color: string } {
+      if (!password) {
+        return { strength: 0, label: '', color: 'transparent' };
+      }
+
+      let strength = 0;
+      let label = '';
+      let color = '';
+
+      // Length check
+      if (password.length >= 8) strength += 1;
+      if (password.length >= 12) strength += 1;
+
+      // Character variety
+      if (/[a-z]/.test(password)) strength += 1;
+      if (/[A-Z]/.test(password)) strength += 1;
+      if (/[0-9]/.test(password)) strength += 1;
+      if (/[^a-zA-Z0-9]/.test(password)) strength += 1;
+
+      // Determine label and color
+      if (strength <= 2) {
+        label = 'Weak';
+        color = '#dc2626';
+      } else if (strength <= 4) {
+        label = 'Fair';
+        color = '#f59e0b';
+      } else if (strength <= 5) {
+        label = 'Good';
+        color = '#3b82f6';
+      } else {
+        label = 'Strong';
+        color = '#10b981';
+      }
+
+      return {
+        strength: Math.min(strength, 6) / 6, // Normalize to 0-1
+        label,
+        color,
+      };
+    }
+
+    // Update password strength indicator
+    function updatePasswordStrength() {
+      if (!passwordInput || !strengthFill || !strengthText) return;
+
+      const password = passwordInput.value;
+      const { strength, label, color } = calculatePasswordStrength(password);
+
+      if (password.length === 0) {
+        strengthFill.style.width = '0%';
+        strengthText.textContent = '';
+        strengthFill.style.backgroundColor = 'transparent';
+      } else {
+        strengthFill.style.width = `${strength * 100}%`;
+        strengthText.textContent = label;
+        strengthFill.style.backgroundColor = color;
+      }
     }
 
     // Password visibility toggle
@@ -161,6 +230,9 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
         togglePassword.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
       });
     }
+
+    // Update strength as user types
+    passwordInput.addEventListener('input', updatePasswordStrength);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -324,9 +396,38 @@ const { csrfToken, turnstileSiteKey } = Astro.props;
     outline-offset: 2px;
   }
 
-  .form-group .hint {
+  .form-group   .hint {
     color: var(--color-text-muted, #72777d);
     font-size: 0.8rem;
+  }
+
+  .password-strength {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .strength-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--color-surface-alt, #eaecef);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 2px;
+  }
+
+  .strength-text {
+    font-size: var(--text-xs, 0.75rem);
+    font-weight: 600;
+    min-width: 50px;
+    text-align: right;
   }
 
   .password-input-wrapper {

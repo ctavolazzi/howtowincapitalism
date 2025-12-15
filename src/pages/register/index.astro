@@ -4,118 +4,77 @@
  *
  * Public page for new user registration.
  * Includes Turnstile CAPTCHA for bot protection.
+ * Uses Base.astro layout for consistency.
  */
+import Base from '../../layouts/Base.astro';
 import RegisterForm from '../../components/auth/RegisterForm.astro';
 
 // Get CSRF token and Turnstile site key from environment
-const csrfToken = (Astro.locals as Record<string, unknown>).csrfToken as string | undefined;
-const turnstileSiteKey = (Astro.locals as Record<string, unknown>).runtime?.env?.TURNSTILE_SITE_KEY as string | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const locals = Astro.locals as any;
+const csrfToken = locals.csrfToken as string | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const runtime = locals.runtime as any;
+const turnstileSiteKey = runtime?.env?.TURNSTILE_SITE_KEY as string | undefined;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account | How To Win Capitalism</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<Base title="Create Account" description="Join the community and start your journey" hideNav={false}>
   {/* Load Turnstile script if site key is configured */}
   {turnstileSiteKey && (
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   )}
-  <style>
-    :root {
-      --color-bg: #ffffff;
-      --color-text: #202122;
-      --color-text-muted: #72777d;
-      --color-primary: #0645ad;
-      --color-border: #a2a9b1;
-    }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--color-bg);
-      color: var(--color-text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .site-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--color-text);
-      text-decoration: none;
-    }
-
-    .site-title:hover {
-      color: var(--color-primary);
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .register-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .register-header h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .register-header p {
-      color: var(--color-text-muted);
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <a href="/" class="site-title">How To Win Capitalism</a>
-  </header>
-
-  <main>
-    <div class="register-header">
+  <div class="auth-page">
+    <div class="auth-header">
       <h1>Create Account</h1>
       <p>Join the community and start your journey</p>
     </div>
 
     <RegisterForm csrfToken={csrfToken} turnstileSiteKey={turnstileSiteKey} />
-  </main>
+  </div>
+</Base>
 
-  <script>
-    import { checkAuth } from '../../lib/auth/api-client';
+<script>
+  import { checkAuth } from '../../lib/auth/api-client';
 
-    // If already logged in, redirect away from register page
-    async function checkIfAlreadyLoggedIn() {
-      const { authenticated } = await checkAuth();
+  // If already logged in, redirect away from register page
+  async function checkIfAlreadyLoggedIn() {
+    const { authenticated } = await checkAuth();
 
-      if (authenticated) {
-        window.location.href = '/';
-      }
+    if (authenticated) {
+      window.location.href = '/';
     }
+  }
 
-    checkIfAlreadyLoggedIn();
-  </script>
-</body>
-</html>
+  checkIfAlreadyLoggedIn();
+</script>
+
+<style>
+  .auth-page {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .auth-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+
+  .auth-header p {
+    color: var(--color-text-muted, #72777d);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .auth-page {
+      padding: 3rem 2rem;
+    }
+  }
+</style>
