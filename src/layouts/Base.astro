@@ -78,33 +78,28 @@ const currentPath = Astro.url.pathname;
   </script>
 
   <!-- Cookie consent script - inline to ensure DOM is ready -->
+  <!-- Uses sessionStorage: dismissed once per session, resets when tab closes -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
-      var consentName = 'htwc_consent';
+      var storageKey = 'htwc_cookie_dismissed';
       var consentBanner = document.getElementById('cookie-consent');
       var consentButton = document.getElementById('cookie-accept');
 
       if (!consentBanner || !consentButton) return;
 
-      function hasConsent() {
-        return document.cookie.split(';').some(function(c) {
-          return c.trim().startsWith(consentName + '=');
-        });
-      }
-
-      function setConsent() {
-        var expires = new Date();
-        expires.setFullYear(expires.getFullYear() + 1);
-        document.cookie = consentName + '=accepted; path=/; expires=' + expires.toUTCString() + '; SameSite=Lax';
+      function isDismissed() {
+        // Use sessionStorage - resets when tab/browser closes
+        return sessionStorage.getItem(storageKey) === 'true';
       }
 
       function dismiss() {
-        setConsent();
+        sessionStorage.setItem(storageKey, 'true');
         consentBanner.hidden = true;
         consentBanner.style.display = 'none';
       }
 
-      if (!hasConsent()) {
+      // Show banner if not dismissed this session
+      if (!isDismissed()) {
         consentBanner.hidden = false;
       }
 

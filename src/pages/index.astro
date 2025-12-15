@@ -1,123 +1,87 @@
 ---
 import Base from '../layouts/Base.astro';
-import { LoadingSpinner } from '../components';
+import { SitePasswordGate } from '../components';
 import Hero from '../components/organisms/Hero.astro';
 ---
 
 <Base title="Home">
-  <!-- Auth Gate: Password protection while in development -->
-  <div id="auth-gate" class="auth-gate">
-    <LoadingSpinner />
-  </div>
+  <SitePasswordGate>
+    <Hero
+      tagline="the game may be rigged - learn how to win better"
+      subtitle="A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind."
+      ctaText="Start Reading"
+      ctaLink="/faq/introduction/"
+      showScrollIndicator={true}
+    />
 
-  <div id="content" style="display: none;">
-  <Hero
-    tagline="the game may be rigged - learn how to win better"
-    subtitle="A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind."
-    ctaText="Start Reading"
-    ctaLink="/faq/introduction/"
-    showScrollIndicator={true}
-  />
+    <!-- Key Insight: Give value immediately -->
+    <section class="key-insight">
+      <blockquote>
+        "The single most powerful force in finance is <strong>compound interest</strong>.
+        Einstein allegedly called it the eighth wonder of the world.
+        Whether he said it or not, the math doesn't lie:
+        time in the market beats timing the market, every time."
+      </blockquote>
+      <cite>— <a href="/faq/compound-interest/">Read more about compound interest</a></cite>
+    </section>
 
-  <!-- Key Insight: Give value immediately -->
-  <section class="key-insight">
-    <blockquote>
-      "The single most powerful force in finance is <strong>compound interest</strong>.
-      Einstein allegedly called it the eighth wonder of the world.
-      Whether he said it or not, the math doesn't lie:
-      time in the market beats timing the market, every time."
-    </blockquote>
-    <cite>— <a href="/faq/compound-interest/">Read more about compound interest</a></cite>
-  </section>
+    <!-- Concepts: The core curriculum -->
+    <h2>Concepts</h2>
+    <p>The fundamentals. Start here if you're new.</p>
 
-  <!-- Concepts: The core curriculum -->
-  <h2>Concepts</h2>
-  <p>The fundamentals. Start here if you're new.</p>
+    <div class="concept-grid">
+      <a href="/faq/introduction/" class="concept-card concept-card--featured">
+        <span class="concept-card__label">Start Here</span>
+        <h3>Introduction</h3>
+        <p>What this wiki is, what it isn't, and how to use it.</p>
+      </a>
 
-  <div class="concept-grid">
-    <a href="/faq/introduction/" class="concept-card concept-card--featured">
-      <span class="concept-card__label">Start Here</span>
-      <h3>Introduction</h3>
-      <p>What this wiki is, what it isn't, and how to use it.</p>
-    </a>
+      <a href="/faq/compound-interest/" class="concept-card">
+        <h3>Compound Interest</h3>
+        <p>The mathematical engine of wealth. Why starting early matters more than starting big.</p>
+      </a>
 
-    <a href="/faq/compound-interest/" class="concept-card">
-      <h3>Compound Interest</h3>
-      <p>The mathematical engine of wealth. Why starting early matters more than starting big.</p>
-    </a>
+      <a href="/faq/emergency-fund/" class="concept-card">
+        <h3>Emergency Fund</h3>
+        <p>The boring foundation that makes everything else possible. How much, where to keep it.</p>
+      </a>
 
-    <a href="/faq/emergency-fund/" class="concept-card">
-      <h3>Emergency Fund</h3>
-      <p>The boring foundation that makes everything else possible. How much, where to keep it.</p>
-    </a>
+      <a href="/faq/tax-advantaged-accounts/" class="concept-card">
+        <h3>Tax-Advantaged Accounts</h3>
+        <p>401(k), IRA, HSA — the legal loopholes that actually work.</p>
+      </a>
 
-    <a href="/faq/tax-advantaged-accounts/" class="concept-card">
-      <h3>Tax-Advantaged Accounts</h3>
-      <p>401(k), IRA, HSA — the legal loopholes that actually work.</p>
-    </a>
+      <a href="/faq/debt-strategies/" class="concept-card">
+        <h3>Debt Strategies</h3>
+        <p>Avalanche vs Snowball. When to pay minimums, when to attack.</p>
+      </a>
 
-    <a href="/faq/debt-strategies/" class="concept-card">
-      <h3>Debt Strategies</h3>
-      <p>Avalanche vs Snowball. When to pay minimums, when to attack.</p>
-    </a>
+      <a href="/faq/rent-vs-buy/" class="concept-card">
+        <h3>Rent vs Buy</h3>
+        <p>The math behind housing decisions. Spoiler: it's not always "buying is better."</p>
+      </a>
+    </div>
 
-    <a href="/faq/rent-vs-buy/" class="concept-card">
-      <h3>Rent vs Buy</h3>
-      <p>The math behind housing decisions. Spoiler: it's not always "buying is better."</p>
-    </a>
-  </div>
+    <!-- Notes: Ongoing research -->
+    <h2>Notes</h2>
+    <p>Research, observations, and updates from the field.</p>
+    <ul>
+      <li><a href="/notes/latest/">Latest Updates</a> — Recent additions</li>
+      <li><a href="/notes/automation/">Financial Automation</a> — Set it and forget it</li>
+      <li><a href="/notes/negotiation-tactics/">Negotiation Tactics</a> — Scripts that work</li>
+    </ul>
 
-  <!-- Notes: Ongoing research -->
-  <h2>Notes</h2>
-  <p>Research, observations, and updates from the field.</p>
-  <ul>
-    <li><a href="/notes/latest/">Latest Updates</a> — Recent additions</li>
-    <li><a href="/notes/automation/">Financial Automation</a> — Set it and forget it</li>
-    <li><a href="/notes/negotiation-tactics/">Negotiation Tactics</a> — Scripts that work</li>
-  </ul>
-
-  <!-- Tools: Practical utilities -->
-  <h2>Tools</h2>
-  <p>Templates and calculators for real decisions.</p>
-  <ul>
-    <li><a href="/faq/decision-matrix/">Decision Matrix</a> — Quantitative framework for comparing options</li>
-    <li><a href="/tools/financial-autonomy-checklist/">Financial Autonomy Checklist</a> — Step-by-step roadmap</li>
-  </ul>
-
-  </div>
+    <!-- Tools: Practical utilities -->
+    <h2>Tools</h2>
+    <p>Templates and calculators for real decisions.</p>
+    <ul>
+      <li><a href="/faq/decision-matrix/">Decision Matrix</a> — Quantitative framework for comparing options</li>
+      <li><a href="/tools/financial-autonomy-checklist/">Financial Autonomy Checklist</a> — Step-by-step roadmap</li>
+    </ul>
+  </SitePasswordGate>
 </Base>
 
-<script>
-  import { checkAuth } from '../lib/auth/api-client';
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const authGate = document.getElementById('auth-gate');
-    const content = document.getElementById('content');
-
-    async function verifyAuth() {
-      const { authenticated } = await checkAuth();
-
-      if (!authenticated) {
-        window.location.href = '/login/';
-      } else {
-        if (authGate) authGate.style.display = 'none';
-        if (content) content.style.display = 'block';
-      }
-    }
-
-    verifyAuth();
-  });
-</script>
-
 <style>
-  .auth-gate {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-  }
-
   /* Key Insight Section */
   .key-insight {
     background: var(--color-surface, #f8f9fa);

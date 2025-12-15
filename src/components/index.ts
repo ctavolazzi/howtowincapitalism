@@ -51,6 +51,7 @@ export { default as HamburgerMenu } from './organisms/HamburgerMenu.astro';
 
 // Guards (Auth/Permissions)
 export { default as OwnerGuard } from './guards/OwnerGuard.astro';
+export { default as SitePasswordGate } from './auth/SitePasswordGate.astro';
 
 // Search
 export { default as GlobalSearch } from './search/GlobalSearch.astro';
