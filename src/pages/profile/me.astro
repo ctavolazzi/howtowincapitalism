@@ -1,17 +1,42 @@
 ---
 /**
- * Profile "Me" Redirect
+ * @fileoverview Profile "Me" Redirect Page
  *
- * Utility route that redirects to the current user's profile.
+ * Enhanced redirect utility with loading states and error handling.
+ * Redirects to the current user's profile or login if not authenticated.
  *
- * States:
- * - Loading: Checking auth...
- * - Success (logged in): Redirect to /profile/{userId}/
- * - Auth Failed: Redirect to /login/?redirect=/profile/me/
- * - System Error: Show error with retry option
+ * @module pages/profile/me
+ * @see {@link module:pages/profile/[id]} - Profile destination
+ * @see {@link module:pages/login/index} - Login redirect
+ * @see {@link module:lib/auth/api-client} - Auth checking
  *
- * This allows linking to "your profile" without knowing the user ID.
- * Example: <a href="/profile/me/">View My Profile</a>
+ * ## Route
+ *
+ * `/profile/me/` - Protected (requires authentication)
+ *
+ * ## Page States
+ *
+ * | State | UI | Action |
+ * |-------|------|--------|
+ * | Loading | Spinner + "Checking authentication..." | Check auth |
+ * | Success | "Welcome back, {name}!" | Redirect to profile |
+ * | Not Logged In | Brief message | Redirect to login |
+ * | Error | Error card with retry | Show error details |
+ *
+ * ## Usage
+ *
+ * ```html
+ * <!-- Link to "your profile" without knowing user ID -->
+ * <a href="/profile/me/">View My Profile</a>
+ * ```
+ *
+ * ## Compared to /profile/
+ *
+ * - `/profile/` - Simple redirect, no error handling
+ * - `/profile/me/` - Enhanced UX with states and retry
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

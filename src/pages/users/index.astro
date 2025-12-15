@@ -1,9 +1,45 @@
 ---
 /**
- * Users Directory
+ * @fileoverview Users Directory Page
  *
- * Lists all users with search functionality.
- * Anyone can view, but only users can see detailed info.
+ * Searchable grid listing all registered users. Protected route
+ * requiring authentication. Uses content collection for user data.
+ *
+ * @module pages/users/index
+ * @see {@link module:pages/users/[id]} - Individual user profiles
+ * @see {@link module:layouts/Base} - Page layout
+ * @see {@link module:lib/auth/api-client} - Auth checking
+ *
+ * ## Route
+ *
+ * `/users/` - Protected (requires authentication)
+ *
+ * ## Features
+ *
+ * - Real-time search by name or role
+ * - Responsive grid layout (1-3 columns)
+ * - User cards with avatar, name, role badge, level
+ * - Auth gate with loading spinner
+ * - "No results" message for empty searches
+ *
+ * ## Data Source
+ *
+ * Users loaded from Astro content collection:
+ * ```typescript
+ * const users = await getCollection('users');
+ * ```
+ *
+ * ## Role Badges
+ *
+ * | Role | Color |
+ * |------|-------|
+ * | admin | Yellow/Orange |
+ * | editor | Blue |
+ * | contributor | Green |
+ * | viewer | Gray |
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';

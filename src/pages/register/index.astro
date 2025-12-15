@@ -1,9 +1,41 @@
 ---
 /**
- * Registration Page
+ * @fileoverview Registration Page
  *
- * Public page for new user registration.
- * Includes Turnstile CAPTCHA for bot protection.
+ * Public page for new user account creation. Includes Cloudflare
+ * Turnstile CAPTCHA widget for bot protection when configured.
+ *
+ * @module pages/register/index
+ * @see {@link module:components/auth/RegisterForm} - Form component
+ * @see {@link module:pages/api/auth/register} - Registration API
+ * @see {@link module:pages/login/index} - Login page
+ *
+ * ## Route
+ *
+ * `/register/` - Public, no authentication required
+ *
+ * ## Features
+ *
+ * - CSRF token from middleware injected into form
+ * - Turnstile CAPTCHA widget (if TURNSTILE_SITE_KEY configured)
+ * - Auto-redirect if already logged in
+ * - Link to login page for existing users
+ *
+ * ## Environment Variables
+ *
+ * | Variable | Required | Description |
+ * |----------|----------|-------------|
+ * | TURNSTILE_SITE_KEY | No | Cloudflare Turnstile public key |
+ *
+ * ## Script Loading
+ *
+ * Turnstile script is conditionally loaded only if site key is set:
+ * ```html
+ * <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import RegisterForm from '../../components/auth/RegisterForm.astro';
 

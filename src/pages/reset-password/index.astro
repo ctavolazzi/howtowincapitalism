@@ -1,9 +1,45 @@
 ---
 /**
- * Reset Password Page
+ * @fileoverview Reset Password Page
  *
- * Page to set a new password using a reset token.
- * Token is passed via URL query parameter.
+ * Password reset page that accepts a token from the URL and allows
+ * users to set a new password. Form validates token before showing.
+ *
+ * @module pages/reset-password/index
+ * @see {@link module:components/auth/ResetPasswordForm} - Form component
+ * @see {@link module:pages/api/auth/reset-password} - Reset API
+ * @see {@link module:pages/forgot-password/index} - Token request page
+ *
+ * ## Route
+ *
+ * `/reset-password/?token=...` - Public, requires valid token
+ *
+ * ## URL Parameters
+ *
+ * | Param | Required | Description |
+ * |-------|----------|-------------|
+ * | token | Yes | 64-char hex reset token from email |
+ *
+ * ## Page States
+ *
+ * Handled by ResetPasswordForm component:
+ * 1. Loading - Validating token
+ * 2. Invalid - Token expired or not found
+ * 3. Form - Token valid, enter new password
+ * 4. Success - Password changed, link to login
+ *
+ * ## User Flow
+ *
+ * ```
+ * 1. User clicks link in reset email
+ * 2. Page loads with token in URL
+ * 3. Token validated via API
+ * 4. User enters and confirms new password
+ * 5. Redirected to login on success
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import ResetPasswordForm from '../../components/auth/ResetPasswordForm.astro';
 ---

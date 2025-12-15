@@ -1,8 +1,43 @@
 ---
 /**
- * Email Confirmation Error Page
+ * @fileoverview Email Confirmation Error Page
  *
- * Shown when email confirmation fails (invalid/expired token).
+ * Error page displayed when email confirmation fails. Shows
+ * contextual error messages based on the reason query parameter.
+ *
+ * @module pages/confirm/error/index
+ * @see {@link module:pages/api/auth/confirm} - Redirects here on error
+ * @see {@link module:pages/confirm/success/index} - Success counterpart
+ *
+ * ## Route
+ *
+ * `/confirm/error/?reason=...` - Public
+ *
+ * ## Query Parameters
+ *
+ * | Param | Description |
+ * |-------|-------------|
+ * | reason | Error code for contextual message |
+ *
+ * ## Error Codes
+ *
+ * | Code | Message |
+ * |------|---------|
+ * | missing-token | No confirmation token was provided |
+ * | invalid-token | Link is invalid or already used |
+ * | expired-token | Link has expired (24hr limit) |
+ * | service-unavailable | Service temporarily down |
+ * | server-error | Unexpected error occurred |
+ *
+ * ## UI Elements
+ *
+ * - Error icon (X mark)
+ * - "Confirmation Failed" heading
+ * - Dynamic error message from reason param
+ * - Actions: "Register Again" + "Try Login"
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

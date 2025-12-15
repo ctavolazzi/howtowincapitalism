@@ -1,8 +1,37 @@
 ---
 /**
- * Email Confirmation Success Page
+ * @fileoverview Email Confirmation Success Page
  *
- * Shown after user clicks the confirmation link in their email.
+ * Static success page displayed after successful email confirmation.
+ * User is redirected here from the /api/auth/confirm endpoint.
+ *
+ * @module pages/confirm/success/index
+ * @see {@link module:pages/api/auth/confirm} - Redirects here on success
+ * @see {@link module:pages/confirm/error/index} - Error counterpart
+ * @see {@link module:pages/login/index} - CTA destination
+ *
+ * ## Route
+ *
+ * `/confirm/success/` - Public, no parameters
+ *
+ * ## User Flow
+ *
+ * ```
+ * 1. User clicks confirmation link in email
+ * 2. /api/auth/confirm validates token
+ * 3. Redirect to this page on success
+ * 4. User clicks "Log In Now" button
+ * ```
+ *
+ * ## UI Elements
+ *
+ * - Success icon (checkmark)
+ * - "Email Confirmed!" heading
+ * - Confirmation message
+ * - "Log In Now" CTA button
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

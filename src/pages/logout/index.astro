@@ -1,9 +1,34 @@
 ---
 /**
- * Logout Page
+ * @fileoverview Logout Page
  *
- * Clears the auth session and redirects to home.
- * This is a simple client-side redirect page.
+ * Client-side logout page that clears the user session via API
+ * and redirects to the login page. Shows a loading spinner during
+ * the logout process.
+ *
+ * @module pages/logout/index
+ * @see {@link module:lib/auth/api-client} - Logout function
+ * @see {@link module:pages/api/auth/logout} - Logout API
+ * @see {@link module:pages/login/index} - Redirect destination
+ *
+ * ## Route
+ *
+ * `/logout/` - Public (handles both authenticated and unauthenticated)
+ *
+ * ## Behavior
+ *
+ * 1. Page loads with "Logging out..." message and spinner
+ * 2. Calls `logout()` from api-client to clear session
+ * 3. Redirects to `/login/` after completion
+ *
+ * ## UI Elements
+ *
+ * - Centered loading spinner (CSS animation)
+ * - "Logging out..." text
+ * - No navigation or other controls
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 

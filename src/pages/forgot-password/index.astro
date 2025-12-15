@@ -1,8 +1,35 @@
 ---
 /**
- * Forgot Password Page
+ * @fileoverview Forgot Password Page
  *
- * Public page to request a password reset.
+ * Public page where users can request a password reset email.
+ * Auto-redirects authenticated users away from this page.
+ *
+ * @module pages/forgot-password/index
+ * @see {@link module:components/auth/ForgotPasswordForm} - Form component
+ * @see {@link module:pages/api/auth/forgot-password} - API endpoint
+ * @see {@link module:pages/reset-password/index} - Reset page (linked from email)
+ *
+ * ## Route
+ *
+ * `/forgot-password/` - Public, no authentication required
+ *
+ * ## User Flow
+ *
+ * ```
+ * 1. User visits /forgot-password/
+ * 2. Enters email address in form
+ * 3. Receives "check your email" message
+ * 4. Clicks link in email → /reset-password/?token=...
+ * ```
+ *
+ * ## Auto-Redirect
+ *
+ * Authenticated users are redirected to `/` to prevent confusion.
+ * If auth check fails, user stays on page (avoids redirect loops).
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import ForgotPasswordForm from '../../components/auth/ForgotPasswordForm.astro';
 ---

@@ -1,8 +1,41 @@
 ---
 /**
- * Login Page
+ * @fileoverview Login Page
  *
- * Simple login page with the LoginForm component.
+ * Public authentication page that renders the login form. Includes
+ * CSRF token injection and auto-redirect for already-authenticated users.
+ *
+ * @module pages/login/index
+ * @see {@link module:components/auth/LoginForm} - Form component
+ * @see {@link module:pages/api/auth/login} - Login API
+ * @see {@link module:pages/register/index} - Registration page
+ *
+ * ## Route
+ *
+ * `/login/` - Public, no authentication required
+ *
+ * ## Features
+ *
+ * - CSRF token from middleware injected into form
+ * - Auto-redirect if already logged in
+ * - Respects `?redirect=` query param after login
+ * - Links to registration and forgot password
+ * - UserMenu component for auth state display
+ *
+ * ## Query Parameters
+ *
+ * | Param | Description |
+ * |-------|-------------|
+ * | redirect | URL to redirect to after successful login |
+ *
+ * ## Auto-Redirect Behavior
+ *
+ * If user is already authenticated:
+ * 1. Checks auth state via API on page load
+ * 2. Redirects to `redirect` param or `/` if authenticated
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import LoginForm from '../../components/auth/LoginForm.astro';
 import UserMenu from '../../components/auth/UserMenu.astro';
