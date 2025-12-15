@@ -1,4 +1,20 @@
 // @ts-check
+/**
+ * @fileoverview Astro configuration for How To Win Capitalism.
+ *
+ * Configures the Astro build system with:
+ * - Hybrid SSR mode for dynamic content
+ * - MDX support for enhanced markdown
+ * - Sitemap generation
+ * - Cloudflare Pages deployment (Node.js for local dev)
+ *
+ * @module astro.config
+ * @see https://docs.astro.build/config
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
+
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';

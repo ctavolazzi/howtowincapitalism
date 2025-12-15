@@ -1,6 +1,33 @@
 ---
 /**
- * Base Layout - Simple, clean, yours.
+ * @fileoverview Base layout for all pages in the wiki.
+ *
+ * Provides consistent page structure including header navigation,
+ * footer, and common styles. All pages should extend this layout.
+ *
+ * ## Includes
+ * - Site header with navigation
+ * - UserMenu for authentication state
+ * - GlobalSearch component
+ * - Footer component
+ * - Global CSS variables and styles
+ *
+ * @module layouts/Base
+ * @see {@link module:components/auth/UserMenu} - User authentication menu
+ * @see {@link module:components/search/GlobalSearch} - Search component
+ *
+ * @example
+ * ```astro
+ * ---
+ * import Base from '../layouts/Base.astro';
+ * ---
+ * <Base title="Page Title">
+ *   <p>Page content</p>
+ * </Base>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import UserMenu from '../components/auth/UserMenu.astro';
 import GlobalSearch from '../components/search/GlobalSearch.astro';

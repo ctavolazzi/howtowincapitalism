@@ -1,7 +1,14 @@
 /**
- * Astro Middleware
+ * @fileoverview Astro middleware for request processing.
  *
- * Injects CSRF tokens into locals for forms.
+ * Runs before every request to inject common data into locals.
+ * Currently handles CSRF token generation for form protection.
+ *
+ * @module middleware
+ * @see {@link module:lib/auth/csrf} - CSRF token utilities
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { MiddlewareHandler } from 'astro';

@@ -1,3 +1,18 @@
+/**
+ * @fileoverview Content collections configuration for Astro.
+ *
+ * Defines the schema and validation for content collections:
+ * - users: User identity profiles (links to runtime auth)
+ * - tools: Assets with ownership and visibility
+ * - docs: Wiki content (FAQ, Notes)
+ *
+ * @module content.config
+ * @see https://docs.astro.build/en/guides/content-collections/
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
+
 import { defineCollection, z, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 
