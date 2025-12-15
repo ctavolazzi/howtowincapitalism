@@ -1,17 +1,27 @@
 /**
- * Debug Logger
- * ============
+ * @fileoverview Debug logger for development and debugging.
+ *
  * Simple, toggleable console logging for development/debugging.
  *
+ * ## Features
  * - Auto-disabled in production builds
- * - Can be force-enabled via DEBUG env var
+ * - Can be force-enabled via PUBLIC_DEBUG=true env var
  * - Grouped by module for easy filtering
+ * - Color-coded output in browser console
  *
- * Usage:
- *   import { debug } from '../lib/debug';
- *   debug.log('decision-matrix', 'Starting analysis', { options });
- *   debug.warn('decision-matrix', 'Low confidence score');
- *   debug.error('decision-matrix', 'Validation failed', error);
+ * @module lib/debug
+ *
+ * @example
+ * ```typescript
+ * import { debug } from '../lib/debug';
+ *
+ * debug.log('decision-matrix', 'Starting analysis', { options });
+ * debug.warn('decision-matrix', 'Low confidence score');
+ * debug.error('decision-matrix', 'Validation failed', error);
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Enable in dev OR when DEBUG=true

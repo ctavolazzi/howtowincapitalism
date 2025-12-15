@@ -1,11 +1,26 @@
 /**
- * Profile Actions (Write Layer)
+ * @fileoverview Profile actions for client-side profile updates.
  *
  * Client-side actions for updating user profiles.
- * These wrap the userStore functions with async UX (simulated delay)
+ * Wraps userStore functions with async UX (simulated delay)
  * and field mapping between schema and store.
  *
  * NOTE: This is mock data - in production, these would call real APIs.
+ *
+ * @module lib/api/profileActions
+ * @see {@link module:lib/auth/userStore} - Underlying store
+ * @see {@link module:components/organisms/profile/ProfileForm} - Consumer
+ *
+ * @example
+ * ```typescript
+ * import { updateUserProfile, updateUserPreferences } from '../lib/api';
+ *
+ * await updateUserProfile(userId, { username: 'newname' });
+ * await updateUserPreferences(userId, { publicEmail: false });
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { updateUserProfile as storeUpdateProfile } from '../auth/userStore';

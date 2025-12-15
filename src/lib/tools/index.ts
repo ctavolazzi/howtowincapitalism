@@ -1,7 +1,22 @@
 /**
- * Tools
+ * @fileoverview Tools barrel export for utilities and analysis tools.
  *
- * Reusable utilities for decision-making and analysis.
+ * Reusable utilities for decision-making, analysis, and debugging.
+ *
+ * @module lib/tools
+ * @see {@link module:lib/tools/decision-matrix} - Decision tool
+ * @see {@link module:lib/debug} - Debug utilities
+ *
+ * @example
+ * ```typescript
+ * import { makeDecision, debug } from '../lib/tools';
+ *
+ * const result = makeDecision({ options, criteria, scores });
+ * debug.log('myModule', 'Result', result);
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 // Debug utilities - enable with DEBUG=true or in dev mode

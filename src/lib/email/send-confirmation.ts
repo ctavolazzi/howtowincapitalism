@@ -1,7 +1,27 @@
 /**
- * Email Confirmation Sender
+ * @fileoverview Email confirmation sender using Resend API.
  *
- * Uses Resend to send confirmation emails.
+ * Sends confirmation emails to new users after registration.
+ * Uses Resend service for reliable email delivery.
+ *
+ * @module lib/email/send-confirmation
+ * @see {@link module:pages/api/auth/register} - Registration endpoint
+ * @see {@link module:pages/api/auth/confirm} - Confirmation handler
+ *
+ * @example
+ * ```typescript
+ * import { sendConfirmationEmail } from '../lib/email/send-confirmation';
+ *
+ * await sendConfirmationEmail({
+ *   to: user.email,
+ *   name: user.name,
+ *   confirmToken: token,
+ *   apiKey: env.RESEND_API_KEY,
+ * });
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { Resend } from 'resend';

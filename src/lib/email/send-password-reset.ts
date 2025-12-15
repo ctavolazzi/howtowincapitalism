@@ -1,7 +1,27 @@
 /**
- * Password Reset Email Sender
+ * @fileoverview Password reset email sender using Resend API.
  *
- * Uses Resend to send password reset emails.
+ * Sends password reset emails when users request to reset.
+ * Uses Resend service for reliable email delivery.
+ *
+ * @module lib/email/send-password-reset
+ * @see {@link module:pages/api/auth/forgot-password} - Request handler
+ * @see {@link module:pages/api/auth/reset-password} - Reset handler
+ *
+ * @example
+ * ```typescript
+ * import { sendPasswordResetEmail } from '../lib/email/send-password-reset';
+ *
+ * await sendPasswordResetEmail({
+ *   to: user.email,
+ *   name: user.name,
+ *   resetToken: token,
+ *   apiKey: env.RESEND_API_KEY,
+ * });
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { Resend } from 'resend';

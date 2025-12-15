@@ -1,5 +1,21 @@
 /**
- * Site Constants
+ * @fileoverview Site-wide constants and configuration values.
+ *
+ * Central location for site metadata, default text, and external links.
+ * Import from here for consistent configuration across the codebase.
+ *
+ * @module lib/constants
+ *
+ * @example
+ * ```typescript
+ * import { SITE, DEFAULTS, LINKS } from '../lib/constants';
+ *
+ * console.log(SITE.name); // "How To Win Capitalism"
+ * console.log(DEFAULTS.disclaimer);
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { debug } from './debug';

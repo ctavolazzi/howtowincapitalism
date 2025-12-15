@@ -1,10 +1,10 @@
 /**
- * Profile Service
+ * @fileoverview Profile service for server-side profile fetching.
  *
  * Production-ready server-side service layer for fetching user profiles.
  * Designed to be called from Astro Frontmatter for SSR.
  *
- * Features:
+ * ## Features
  * - Viewer context: Different data returned based on who is viewing
  * - Privacy filtering: Respects user preferences for public/private data
  * - Data normalization: Avatar fallbacks, consistent date formats
@@ -12,7 +12,11 @@
  * - Simulated latency for development/testing
  * - Error state handling for testing 404/500 pages
  *
- * Usage in Astro Frontmatter:
+ * @module lib/api/profileService
+ * @see {@link module:lib/auth/schemas/userProfile} - Profile types
+ * @see {@link module:lib/config/systemBulletins} - System bulletins
+ *
+ * @example
  * ```astro
  * ---
  * import { fetchUserProfile } from '../lib/api';
@@ -26,6 +30,9 @@
  * if (!profile) return Astro.redirect('/404');
  * ---
  * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { UserProfile, UserIdentity, ActivityEvent } from '../auth/schemas/userProfile';

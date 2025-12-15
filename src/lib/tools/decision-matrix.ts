@@ -1,24 +1,38 @@
 /**
- * Decision Matrix Utility
- * -----------------------
+ * @fileoverview Decision matrix utility for quantitative decision-making.
+ *
  * A comprehensive decision-making tool for quantifying and comparing options
- * against multiple criteria.
+ * against multiple criteria with multiple analysis methods.
  *
- * Usage:
- *   import { makeDecision } from '../lib/tools/decision-matrix';
+ * ## Analysis Methods
+ * - `weighted`: Apply weights to criteria (default)
+ * - `normalized`: Normalize scores to 0-100 scale
+ * - `ranking`: Rank-based comparison
+ * - `best_worst`: Best/worst case analysis
  *
- *   const result = makeDecision({
- *     options: ["Option A", "Option B", "Option C"],
- *     criteria: ["Cost", "Speed", "Quality"],
- *     scores: {
- *       "Option A": [7, 8, 6],
- *       "Option B": [9, 5, 7],
- *       "Option C": [6, 9, 8]
- *     },
- *     weights: [0.3, 0.2, 0.5]  // Optional: importance of each criterion
- *   });
+ * @module lib/tools/decision-matrix
+ * @see {@link module:components/molecules/DecisionMatrix} - Visual component
  *
- *   console.log(result.toString());  // Shows ranking and analysis
+ * @example
+ * ```typescript
+ * import { makeDecision } from '../lib/tools/decision-matrix';
+ *
+ * const result = makeDecision({
+ *   options: ["Option A", "Option B", "Option C"],
+ *   criteria: ["Cost", "Speed", "Quality"],
+ *   scores: {
+ *     "Option A": [7, 8, 6],
+ *     "Option B": [9, 5, 7],
+ *     "Option C": [6, 9, 8]
+ *   },
+ *   weights: [0.3, 0.2, 0.5]
+ * });
+ *
+ * console.log(result.toString());
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { debug } from '../debug';

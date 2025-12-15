@@ -1,5 +1,5 @@
 /**
- * System Bulletins Configuration
+ * @fileoverview System bulletins for global announcements.
  *
  * Centralized admin control for global announcements.
  * Edit ACTIVE_BULLETIN to broadcast messages to all user dashboards.
@@ -7,7 +7,19 @@
  * The profileService injects this bulletin into each profile response
  * based on role targeting and expiration rules.
  *
- * // TODO: Move to Cloudflare KV for dynamic updates without redeploy
+ * ## Severity Levels
+ * - `info`: Blue, informational
+ * - `warn`: Yellow, warning
+ * - `critical`: Red, urgent (dismissible: false by default)
+ *
+ * @module lib/config/systemBulletins
+ * @see {@link module:lib/api/profileService} - Bulletin injection
+ * @see {@link module:components/organisms/profile/SystemBulletin} - Display
+ *
+ * @todo Move to Cloudflare KV for dynamic updates without redeploy
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import type { SystemInjection, WikiRole } from '../auth/schemas/userProfile';
