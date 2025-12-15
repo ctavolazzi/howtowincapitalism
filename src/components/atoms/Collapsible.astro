@@ -1,22 +1,36 @@
 ---
 /**
- * COLLAPSIBLE - ATOM
+ * @fileoverview Collapsible atom for progressive disclosure sections.
+ *
+ * Wikipedia-style collapsible section using native <details> element.
+ * Accessible, no JavaScript required, works without CSS.
  *
  * Design Patterns:
  * - Progressive Disclosure (UI-Patterns.com): Show summary, reveal details on demand
  * - Accordion variant: Multiple collapsibles can be grouped
  *
- * Wikipedia-style collapsible section using native <details> element.
- * Accessible, no JavaScript required, works without CSS.
+ * ## Variants
+ * - `default`: Standard collapsible
+ * - `faq`: Q&A style with "Q:" prefix
+ * - `warning`: Yellow/amber warning styling
+ * - `info`: Blue informational styling
  *
- * Usage:
- *   <Collapsible title="More details">
- *     Hidden content here...
- *   </Collapsible>
+ * @module components/atoms/Collapsible
+ * @see {@link module:components/molecules/FAQ} - Uses Collapsible for questions
  *
- *   <Collapsible title="FAQ Question" open>
- *     Answer shown by default
- *   </Collapsible>
+ * @example
+ * ```astro
+ * <Collapsible title="More details">
+ *   Hidden content here...
+ * </Collapsible>
+ *
+ * <Collapsible title="FAQ Question" variant="faq" open>
+ *   Answer shown by default
+ * </Collapsible>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

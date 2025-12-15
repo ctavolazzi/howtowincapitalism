@@ -1,13 +1,28 @@
 ---
 /**
- * RoleBadge Atom
+ * @fileoverview RoleBadge atom for displaying user roles.
  *
  * Colored pill badge indicating user role.
  * Color-coded for quick visual recognition.
  *
+ * ## Role Colors
+ * - `admin`: Rose/red - highest privilege
+ * - `editor`: Indigo - content management
+ * - `contributor`: Emerald/green - content creation
+ * - `viewer`: Slate/gray - read-only (default)
+ *
+ * @module components/atoms/RoleBadge
+ * @see {@link module:components/organisms/profile/ProfileHeader} - Uses RoleBadge
+ *
  * @example
+ * ```astro
  * <RoleBadge role="admin" />
- * <RoleBadge role="editor" />
+ * <RoleBadge role="editor" size="sm" />
+ * <RoleBadge role="contributor" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

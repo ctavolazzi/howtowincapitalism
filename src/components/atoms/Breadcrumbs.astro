@@ -1,17 +1,26 @@
 ---
 /**
- * BREADCRUMBS - ATOM
+ * @fileoverview Breadcrumbs atom for navigation hierarchy visualization.
+ *
+ * Shows the current page's location in the site hierarchy.
+ * Wikipedia-style minimal design using design tokens.
+ * Automatically parses URL path into readable breadcrumb items.
  *
  * Design Patterns:
  * - Breadcrumbs (UI-Patterns.com): Navigation hierarchy visualization
  * - Template Method: Customizable separator and home label
  *
- * Shows the current page's location in the site hierarchy.
- * Wikipedia-style minimal design using design tokens.
+ * @module components/atoms/Breadcrumbs
  *
- * Usage:
- *   <Breadcrumbs />
- *   <Breadcrumbs homeLabel="Wiki" separator="›" />
+ * @example
+ * ```astro
+ * <Breadcrumbs />
+ * <Breadcrumbs homeLabel="Wiki" separator="›" />
+ * <Breadcrumbs hideOnHome={false} />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 

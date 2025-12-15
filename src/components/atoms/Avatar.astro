@@ -1,12 +1,27 @@
 ---
 /**
- * Avatar Atom
+ * @fileoverview Avatar atom for user profile images.
  *
  * Circular avatar image with size variants.
  * Handles missing images gracefully (service provides fallback URL).
  *
+ * ## Size Variants
+ * - `sm`: 32px - inline/compact use
+ * - `md`: 48px - list items (default)
+ * - `lg`: 64px - cards
+ * - `xl`: 96px - profile headers
+ *
+ * @module components/atoms/Avatar
+ * @see {@link module:components/organisms/profile/ProfileHeader} - Uses Avatar
+ *
  * @example
+ * ```astro
  * <Avatar src={user.avatarUrl} alt={user.username} size="lg" />
+ * <Avatar src={profile.identity.avatarUrl} alt="User" size="xl" />
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

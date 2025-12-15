@@ -1,13 +1,42 @@
 ---
 /**
- * WIKIBOX - THE ATOM
+ * @fileoverview WikiBox atom - the foundational container component.
+ *
+ * The base building block for all box-style components in the wiki.
+ * All colors/spacing come from CSS custom properties (single source of truth).
  *
  * Design Patterns:
- * - Composite: Base building block
+ * - Composite: Base building block for molecules
  * - Strategy: Variants for different styles
  * - Template Method: Slots for customization
  *
- * All colors/spacing come from CSS custom properties (single source of truth).
+ * ## Variants
+ * - `default`: Standard bordered box
+ * - `warning`: Yellow/amber alert styling
+ * - `info`: Blue informational styling
+ * - `sidebar`: Floating sidebar styling
+ * - `nav`: Navigation section styling
+ * - `cta`: Call-to-action promotional styling
+ *
+ * ## Slots
+ * - `default`: Main content
+ * - `header-icon`: Icon before title
+ * - `header-actions`: Actions after title
+ * - `footer`: Footer content
+ *
+ * @module components/atoms/WikiBox
+ * @see {@link module:components/molecules/InfoBox} - Uses WikiBox
+ * @see {@link module:components/molecules/NoteBox} - Uses WikiBox
+ *
+ * @example
+ * ```astro
+ * <WikiBox variant="info" title="Note">
+ *   <p>Content here</p>
+ * </WikiBox>
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { debug } from '../../lib/debug';
 
