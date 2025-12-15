@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { TradeWidget } from '../components';
+import Hero from '../components/organisms/Hero.astro';
 ---
 
 <Base title="Home">
@@ -11,8 +12,13 @@ import { TradeWidget } from '../components';
   </div>
 
   <div id="content" style="display: none;">
-  <h1>How To Win Capitalism</h1>
-  <p class="tagline">A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind.</p>
+  <Hero
+    tagline="The game is rigged. Learn the rules anyway."
+    subtitle="A satirical but practical wiki about financial autonomy. Notes on a system for people tired of the grind."
+    ctaText="Start Reading"
+    ctaLink="/faq/introduction/"
+    showScrollIndicator={true}
+  />
 
 
   <h2>FAQ</h2>
@@ -51,34 +57,26 @@ import { TradeWidget } from '../components';
 <script>
   import { checkAuth } from '../lib/auth/api-client';
 
-  const authGate = document.getElementById('auth-gate');
-  const content = document.getElementById('content');
+  document.addEventListener('DOMContentLoaded', () => {
+    const authGate = document.getElementById('auth-gate');
+    const content = document.getElementById('content');
 
-  async function verifyAuth() {
-    const { authenticated } = await checkAuth();
+    async function verifyAuth() {
+      const { authenticated } = await checkAuth();
 
-    if (!authenticated) {
-      window.location.href = '/login/';
-    } else {
-      if (authGate) authGate.style.display = 'none';
-      if (content) content.style.display = 'block';
+      if (!authenticated) {
+        window.location.href = '/login/';
+      } else {
+        if (authGate) authGate.style.display = 'none';
+        if (content) content.style.display = 'block';
+      }
     }
-  }
 
-  verifyAuth();
+    verifyAuth();
+  });
 </script>
 
 <style>
-  h1 {
-    margin-top: 0;
-  }
-
-  .tagline {
-    font-size: 1.25rem;
-    color: #666;
-    margin-bottom: 2rem;
-  }
-
   .auth-gate {
     display: flex;
     flex-direction: column;
