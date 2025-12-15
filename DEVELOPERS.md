@@ -65,11 +65,11 @@ npm run dev
 ┌─────────────────────────────────────────────┐
 │              Cloudflare Pages               │  ← Hosting + CDN
 ├─────────────────────────────────────────────┤
-│                 Astro v5                    │  ← Framework
+│                 Astro v5                    │  ← Framework (SSR)
 ├─────────────────────────────────────────────┤
-│               Starlight                     │  ← Docs theme
+│        Custom Base.astro Layout             │  ← Wikipedia-style theme
 ├─────────────────────────────────────────────┤
-│  Custom CSS (Wikipedia) │ TypeScript Tools  │  ← Customization
+│  nanostores │ Cloudflare KV │ TypeScript    │  ← State, Storage, Types
 └─────────────────────────────────────────────┘
 ```
 

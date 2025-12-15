@@ -25,5 +25,12 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     }
   }
 
-  return next();
+  // Capture response and add security headers to ALL responses (API and pages)
+  const response = await next();
+
+  // Add security headers to ALL responses (API and pages)
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+
+  return response;
 };
