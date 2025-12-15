@@ -1,8 +1,79 @@
 /**
- * POST /api/admin/users/create
+ * @fileoverview Admin User Creation API Endpoint
  *
- * Admin endpoint to create a new user account.
- * Bypasses email confirmation (admin-created users are pre-confirmed).
+ * Creates new user accounts with admin privileges. Admin-created users
+ * bypass email confirmation and are immediately active.
+ *
+ * @module pages/api/admin/users/create
+ * @see {@link module:lib/auth/kv-auth} - User storage and hashing
+ * @see {@link module:pages/api/admin/users/list} - List users
+ * @see {@link module:pages/api/admin/users/[id]} - Update/delete users
+ *
+ * ## Endpoint
+ *
+ * `POST /api/admin/users/create`
+ *
+ * ## Authentication
+ *
+ * Requires valid session cookie with `role: 'admin'`.
+ *
+ * ## Request Body
+ *
+ * ```json
+ * {
+ *   "username": "johndoe",
+ *   "email": "john@example.com",
+ *   "password": "SecureP@ss123",
+ *   "name": "John Doe",
+ *   "role": "editor"
+ * }
+ * ```
+ *
+ * | Field | Required | Validation |
+ * |-------|----------|------------|
+ * | username | Yes | 3-20 chars, alphanumeric + underscore |
+ * | email | Yes | Valid email format |
+ * | password | Yes | Any (admin sets password) |
+ * | name | Yes | Display name |
+ * | role | No | admin/editor/contributor/viewer (default: viewer) |
+ *
+ * ## Response
+ *
+ * **Success (201):**
+ * ```json
+ * {
+ *   "success": true,
+ *   "user": { "id": "johndoe", "email": "...", "role": "editor", ... }
+ * }
+ * ```
+ *
+ * **Error Responses:**
+ *
+ * | Status | Error | Cause |
+ * |--------|-------|-------|
+ * | 400 | Missing required fields | Validation failed |
+ * | 403 | Unauthorized | Not admin |
+ * | 409 | Email/Username exists | Duplicate user |
+ * | 503 | Service unavailable | KV not available |
+ *
+ * ## Role Access Levels
+ *
+ * | Role | Access Level |
+ * |------|-------------|
+ * | admin | 10 |
+ * | editor | 5 |
+ * | contributor | 3 |
+ * | viewer | 1 |
+ *
+ * ## Security Notes
+ *
+ * - Admin-created users have `emailConfirmed: true`
+ * - Password is hashed with PBKDF2 before storage
+ * - User count incremented in `count:users` key
+ * - Action is logged with admin ID
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

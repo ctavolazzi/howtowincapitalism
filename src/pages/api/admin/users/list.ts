@@ -1,8 +1,52 @@
 /**
- * GET /api/admin/users/list
+ * @fileoverview Admin User List API Endpoint
  *
- * Admin endpoint to list all users.
- * Returns sanitized user data (no password hashes).
+ * Lists all users in the system with admin-level access control.
+ * Returns sanitized user data (no password hashes or sensitive info).
+ *
+ * @module pages/api/admin/users/list
+ * @see {@link module:lib/auth/kv-auth} - User retrieval and sanitization
+ * @see {@link module:pages/api/admin/users/create} - Create user
+ * @see {@link module:pages/api/admin/users/[id]} - Individual user operations
+ *
+ * ## Endpoint
+ *
+ * `GET /api/admin/users/list`
+ *
+ * ## Authentication
+ *
+ * Requires valid session cookie with `role: 'admin'`.
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * {
+ *   "success": true,
+ *   "users": [
+ *     { "id": "...", "email": "...", "name": "...", "role": "...", ... }
+ *   ],
+ *   "total": 42
+ * }
+ * ```
+ *
+ * **Error Responses:**
+ *
+ * | Status | Error | Cause |
+ * |--------|-------|-------|
+ * | 403 | Unauthorized | Not logged in or not admin |
+ * | 503 | Service unavailable | KV not available |
+ * | 500 | Internal server error | Unexpected error |
+ *
+ * ## Implementation Notes
+ *
+ * - Users are sorted by creation date (newest first)
+ * - Password hashes are stripped via `sanitizeUser()`
+ * - Total count uses `count:users` KV key if available
+ * - Uses KV `list()` with `user:` prefix to enumerate users
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser, type KVUser } from '../../../../lib/auth/kv-auth';

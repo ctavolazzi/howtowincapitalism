@@ -1,10 +1,76 @@
 /**
- * /api/admin/users/[id]
+ * @fileoverview Admin Individual User Management API
  *
- * Admin endpoints for managing individual users.
- * - GET: Get user details
- * - PUT: Update user
- * - DELETE: Delete user
+ * CRUD operations for individual users by ID. Provides admin-level
+ * access to view, update, and delete user accounts.
+ *
+ * @module pages/api/admin/users/[id]
+ * @see {@link module:lib/auth/kv-auth} - User operations
+ * @see {@link module:pages/api/admin/users/list} - List all users
+ * @see {@link module:pages/api/admin/users/create} - Create user
+ *
+ * ## Endpoints
+ *
+ * | Method | Path | Description |
+ * |--------|------|-------------|
+ * | GET | /api/admin/users/[id] | Get user details |
+ * | PUT | /api/admin/users/[id] | Update user |
+ * | DELETE | /api/admin/users/[id] | Delete user |
+ *
+ * ## Authentication
+ *
+ * All methods require valid session cookie with `role: 'admin'`.
+ *
+ * ## GET /api/admin/users/[id]
+ *
+ * Returns sanitized user details (no password hash).
+ *
+ * **Response (200):**
+ * ```json
+ * { "success": true, "user": { "id": "...", "email": "...", ... } }
+ * ```
+ *
+ * ## PUT /api/admin/users/[id]
+ *
+ * Updates user fields. All fields optional.
+ *
+ * **Request Body:**
+ * ```json
+ * {
+ *   "name": "New Name",
+ *   "role": "editor",
+ *   "bio": "Updated bio",
+ *   "emailConfirmed": true,
+ *   "password": "NewPassword123"
+ * }
+ * ```
+ *
+ * **Safety Rules:**
+ * - Admin cannot demote themselves
+ * - Access level auto-updates with role change
+ * - Password re-hashed if provided
+ *
+ * ## DELETE /api/admin/users/[id]
+ *
+ * Permanently deletes user and associated data.
+ *
+ * **Safety Rules:**
+ * - Admin cannot delete themselves
+ * - Removes user record and email index
+ * - Decrements user count
+ *
+ * ## Error Responses
+ *
+ * | Status | Error | Methods |
+ * |--------|-------|---------|
+ * | 400 | User ID required | All |
+ * | 400 | Cannot demote/delete yourself | PUT/DELETE |
+ * | 403 | Unauthorized | All |
+ * | 404 | User not found | All |
+ * | 503 | Service unavailable | All |
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {
