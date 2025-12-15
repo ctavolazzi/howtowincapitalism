@@ -1,7 +1,47 @@
 /**
- * Password Reset Email Sender
+ * @fileoverview Password Reset Email Sender
  *
- * Uses Resend to send password reset emails.
+ * Sends password reset emails using the Resend API. Includes both
+ * HTML and plaintext versions with branded styling matching the site.
+ *
+ * @module lib/email/send-password-reset
+ * @see {@link module:pages/api/auth/forgot-password} - Triggers this email
+ * @see {@link module:lib/auth/kv-auth} - Creates reset tokens
+ * @see {@link https://resend.com/docs} - Resend API documentation
+ *
+ * ## Configuration
+ *
+ * | Constant | Value | Description |
+ * |----------|-------|-------------|
+ * | SITE_URL | https://howtowincapitalism.com | Base URL for links |
+ * | FROM_EMAIL | noreply@howtowincapitalism.com | Sender address |
+ *
+ * ## Email Content
+ *
+ * - Subject: "Reset your How To Win Capitalism password"
+ * - Includes reset button and fallback link
+ * - Warning about 1-hour expiration
+ * - Safety note about ignoring if not requested
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * import { sendPasswordResetEmail } from './send-password-reset';
+ *
+ * const result = await sendPasswordResetEmail({
+ *   to: 'user@example.com',
+ *   name: 'John Doe',
+ *   resetToken: 'abc123...',
+ *   apiKey: process.env.RESEND_API_KEY,
+ * });
+ *
+ * if (!result.success) {
+ *   console.error('Failed:', result.error);
+ * }
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { Resend } from 'resend';

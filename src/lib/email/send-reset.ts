@@ -1,7 +1,60 @@
 /**
- * Password Reset Email Sender
+ * @fileoverview Password Reset & Changed Email Sender
  *
- * Uses Resend to send password reset emails.
+ * Comprehensive password email module with two functions:
+ * 1. sendPasswordResetEmail - Sends reset link
+ * 2. sendPasswordChangedEmail - Confirms password was changed
+ *
+ * Uses modern HTML email design with gradient headers and responsive layout.
+ *
+ * @module lib/email/send-reset
+ * @see {@link module:pages/api/auth/forgot-password} - Triggers reset email
+ * @see {@link module:pages/api/auth/reset-password} - Triggers changed email
+ * @see {@link https://resend.com/docs} - Resend API documentation
+ *
+ * ## Configuration
+ *
+ * | Constant | Value | Description |
+ * |----------|-------|-------------|
+ * | SITE_URL | https://howtowincapitalism.com | Base URL for links |
+ * | FROM_EMAIL | noreply@howtowincapitalism.com | Sender address |
+ *
+ * ## Exported Functions
+ *
+ * ### sendPasswordResetEmail
+ *
+ * Sends password reset link with 2-hour expiration.
+ *
+ * ```typescript
+ * await sendPasswordResetEmail({
+ *   to: 'user@example.com',
+ *   name: 'John Doe',
+ *   resetToken: 'abc123...',
+ *   apiKey: 're_xxx',
+ * });
+ * ```
+ *
+ * ### sendPasswordChangedEmail
+ *
+ * Confirms password change with security warning.
+ *
+ * ```typescript
+ * await sendPasswordChangedEmail({
+ *   to: 'user@example.com',
+ *   name: 'John Doe',
+ *   apiKey: 're_xxx',
+ * });
+ * ```
+ *
+ * ## Email Design
+ *
+ * - Gradient header (blue tones)
+ * - Responsive table-based layout
+ * - CTA buttons with hover states
+ * - Security warnings with left border
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { Resend } from 'resend';

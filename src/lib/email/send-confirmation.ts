@@ -1,7 +1,47 @@
 /**
- * Email Confirmation Sender
+ * @fileoverview Email Confirmation Sender
  *
- * Uses Resend to send confirmation emails.
+ * Sends email confirmation messages to newly registered users using
+ * the Resend API. Includes both HTML and plaintext versions.
+ *
+ * @module lib/email/send-confirmation
+ * @see {@link module:pages/api/auth/register} - Triggers this email
+ * @see {@link module:pages/api/auth/confirm} - Processes confirmation
+ * @see {@link https://resend.com/docs} - Resend API documentation
+ *
+ * ## Configuration
+ *
+ * | Constant | Value | Description |
+ * |----------|-------|-------------|
+ * | SITE_URL | https://howtowincapitalism.com | Base URL for links |
+ * | FROM_EMAIL | noreply@howtowincapitalism.com | Sender address |
+ *
+ * ## Email Content
+ *
+ * - Subject: "Confirm your How To Win Capitalism account"
+ * - Welcome message with user's name
+ * - Confirmation button and fallback link
+ * - 24-hour expiration notice
+ *
+ * ## Confirmation URL
+ *
+ * Links to: `{SITE_URL}/api/auth/confirm/?token={confirmToken}`
+ *
+ * ## Usage
+ *
+ * ```typescript
+ * import { sendConfirmationEmail } from './send-confirmation';
+ *
+ * const result = await sendConfirmationEmail({
+ *   to: 'user@example.com',
+ *   name: 'John Doe',
+ *   confirmToken: 'abc123...',
+ *   apiKey: process.env.RESEND_API_KEY,
+ * });
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { Resend } from 'resend';
