@@ -1,10 +1,58 @@
 ---
 /**
- * RegisterForm Component
+ * @fileoverview Registration Form Component
  *
- * Registration form that creates new users via API.
- * Sends confirmation email after successful registration.
- * Includes Turnstile CAPTCHA for bot protection.
+ * User registration form with multi-layer bot protection including
+ * Cloudflare Turnstile CAPTCHA, honeypot field, and time-based detection.
+ * Creates new users via API and triggers confirmation email.
+ *
+ * @module components/auth/RegisterForm
+ * @see {@link module:pages/api/auth/register} - Backend registration
+ * @see {@link module:lib/auth/turnstile} - CAPTCHA verification
+ * @see {@link module:components/auth/LoginForm} - Login form
+ *
+ * ## Usage
+ *
+ * ```astro
+ * ---
+ * import RegisterForm from '../components/auth/RegisterForm.astro';
+ * const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY;
+ * ---
+ * <RegisterForm turnstileSiteKey={turnstileSiteKey} />
+ * ```
+ *
+ * ## Props
+ *
+ * | Prop | Type | Required | Description |
+ * |------|------|----------|-------------|
+ * | csrfToken | string | No | CSRF protection token |
+ * | turnstileSiteKey | string | No | Cloudflare Turnstile site key |
+ *
+ * ## Bot Protection Layers
+ *
+ * 1. **Turnstile CAPTCHA** - Cloudflare's privacy-preserving challenge
+ * 2. **Honeypot field** - Hidden "website" field that bots fill
+ * 3. **Time-based detection** - Form timestamp to detect instant submissions
+ *
+ * ## Client-Side Validation
+ *
+ * - Username: 3-20 chars, alphanumeric + underscore
+ * - Email: Valid format check
+ * - Password: 8+ chars with letters and numbers
+ *
+ * ## API Integration
+ *
+ * Submits to `POST /api/auth/register/` with JSON body:
+ * ```json
+ * {
+ *   "username": "...", "name": "...", "email": "...",
+ *   "password": "...", "turnstile_token": "...",
+ *   "hp_field": null, "form_timestamp": "..."
+ * }
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

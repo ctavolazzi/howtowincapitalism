@@ -1,9 +1,52 @@
 ---
 /**
- * LoginForm Component
+ * @fileoverview Login Form Component
  *
- * Login form that validates against Cloudflare KV via API.
- * Uses httpOnly cookies for session management.
+ * Client-side login form that authenticates users via the login API.
+ * Features password visibility toggle, CSRF protection, and redirect
+ * handling for protected routes.
+ *
+ * @module components/auth/LoginForm
+ * @see {@link module:pages/api/auth/login} - Backend authentication
+ * @see {@link module:components/auth/RegisterForm} - Registration form
+ * @see {@link module:lib/auth/csrf} - CSRF token generation
+ *
+ * ## Usage
+ *
+ * ```astro
+ * ---
+ * import LoginForm from '../components/auth/LoginForm.astro';
+ * import { generateCsrfToken } from '../lib/auth/csrf';
+ * const csrfToken = await generateCsrfToken(secretKey);
+ * ---
+ * <LoginForm csrfToken={csrfToken} />
+ * ```
+ *
+ * ## Props
+ *
+ * | Prop | Type | Required | Description |
+ * |------|------|----------|-------------|
+ * | csrfToken | string | No | CSRF token for form protection |
+ *
+ * ## Features
+ *
+ * - Password visibility toggle (eye icon)
+ * - CSRF token support (hidden field)
+ * - Redirect parameter handling (`?redirect=/path`)
+ * - Shake animation on error
+ * - Link to forgot password and registration
+ *
+ * ## API Integration
+ *
+ * Submits to `POST /api/auth/login/` with JSON body:
+ * ```json
+ * { "email": "...", "password": "...", "csrf_token": "..." }
+ * ```
+ *
+ * On success, redirects to `?redirect` param or `/`.
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 interface Props {

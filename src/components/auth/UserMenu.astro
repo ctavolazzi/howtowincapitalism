@@ -1,9 +1,54 @@
 ---
 /**
- * UserMenu Component
+ * @fileoverview User Menu Component
  *
- * Shows login link when not authenticated, user avatar when authenticated.
- * This component uses client-side JS to react to auth state changes.
+ * Fixed-position navigation component that displays login link for
+ * anonymous users or a dropdown menu with profile/logout for
+ * authenticated users. Reacts to auth state changes via API.
+ *
+ * @module components/auth/UserMenu
+ * @see {@link module:lib/auth/api-client} - Auth state checking
+ * @see {@link module:pages/api/auth/me} - Current user endpoint
+ * @see {@link module:pages/api/auth/logout} - Logout endpoint
+ *
+ * ## Usage
+ *
+ * ```astro
+ * ---
+ * import UserMenu from '../components/auth/UserMenu.astro';
+ * ---
+ * <UserMenu />
+ * ```
+ *
+ * ## Position
+ *
+ * Fixed to top-right corner (`position: fixed; top: 12px; right: 16px`)
+ * with z-index: 1000.
+ *
+ * ## States
+ *
+ * **Anonymous (default):**
+ * - Blue "Log In" button linking to /login/
+ *
+ * **Authenticated:**
+ * - User avatar (silhouette icon)
+ * - Display name (hidden on mobile)
+ * - Dropdown with: Profile, Log Out
+ *
+ * ## Dropdown Behavior
+ *
+ * - Opens on avatar button click
+ * - Closes on outside click
+ * - Profile link updates to `/users/{userId}/`
+ * - Logout calls API then redirects to /login/
+ *
+ * ## Responsive Design
+ *
+ * - User name hidden on screens < 600px
+ * - Avatar and dropdown remain visible
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 ---
 
