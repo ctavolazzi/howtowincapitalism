@@ -12,6 +12,7 @@
 
 import Base from '../../layouts/Base.astro';
 import { fetchUserProfile } from '../../lib/api';
+import { getCurrentUserId } from '../../lib/auth/ssr-helpers';
 import ProfileHeader from '../../components/organisms/profile/ProfileHeader.astro';
 import SystemBulletin from '../../components/organisms/profile/SystemBulletin.astro';
 import ActivityFeed from '../../components/organisms/profile/ActivityFeed.astro';
@@ -23,9 +24,8 @@ if (!id) {
   return Astro.redirect('/404/');
 }
 
-// TODO: Get real requester ID from session/cookies
-// For now, simulate anonymous viewer (null = not logged in)
-const requesterId: string | null = null;
+// Get requester ID from session/cookies (for privacy filtering)
+const requesterId = await getCurrentUserId(Astro.request, Astro.locals);
 
 // Fetch profile with viewer context
 let profile;

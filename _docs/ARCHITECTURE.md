@@ -4,11 +4,11 @@
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Astro v5 |
-| Theme | Starlight (docs theme) |
+| Framework | Astro v5 (SSR) |
+| Layout | Custom Base.astro (Wikipedia-inspired) |
 | Styling | Custom CSS (Wikipedia aesthetic) |
 | Hosting | Cloudflare Pages |
-| Search | Pagefind (client-side) |
+| Search | Client-side search (GlobalSearch component) |
 
 ## Directory Structure
 
@@ -34,10 +34,9 @@ howtowincapitalism/
 │   │   ├── utilities/        # Helper components (Empty)
 │   │   └── index.ts          # Component registry
 │   ├── content/docs/         # Markdown content
-│   │   ├── index.mdx         # Home page
-│   │   ├── protocol/         # Wiki definitions
-│   │   ├── field-notes/      # Blog/updates
-│   │   └── reports/          # Downloadable reports
+│   │   ├── faq/              # FAQ (core concepts)
+│   │   ├── notes/            # Research and observations
+│   │   └── tools/            # Templates and calculators
 │   ├── lib/                  # Shared utilities
 │   │   ├── constants.ts      # App constants
 │   │   └── tools/            # Reusable utilities
@@ -46,7 +45,7 @@ howtowincapitalism/
 │   │       └── README.md     # Tool documentation
 │   └── styles/
 │       └── custom.css        # All custom styling
-├── astro.config.mjs          # Astro + Starlight config
+├── astro.config.mjs          # Astro config (SSR with Cloudflare)
 ├── package.json              # Dependencies and scripts
 └── wrangler.toml             # Cloudflare config
 ```
@@ -149,39 +148,31 @@ export const result = makeDecision({ options, criteria, scores, weights });
 
 See `src/lib/tools/README.md` for full API documentation.
 
-### Starlight Integration
+## Layout Structure
 
-Starlight provides:
-- Header with search
-- Sidebar navigation
-- Mobile menu (hamburger)
-- Pagination (disabled)
-- TOC (disabled)
-
-We override via:
-- `customCss` in astro.config.mjs
-- Component overrides (ThemeSelect → Empty.astro)
-- CSS custom properties remapping Starlight's `--sl-*` vars
+The site uses a custom `Base.astro` layout with:
+- Simple header with site title and hamburger menu
+- Main content area (max-width: 800px)
+- Footer with disclaimer and links
+- Cookie consent banner
+- Skip-to-content link for accessibility
 
 ## Box Model / Layout Structure
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ <div class="page">                                      │
-│ ┌─────────────────────────────────────────────────────┐ │
-│ │ <header>                                            │ │
-│ │   [Title]                         [Search] [Menu]   │ │
-│ └─────────────────────────────────────────────────────┘ │
-│ ┌──────────┐ ┌────────────────────────────────────────┐ │
-│ │ <nav>    │ │ <main>                                 │ │
-│ │ Sidebar  │ │ Content                                │ │
-│ │ (hidden  │ │                                        │ │
-│ │  mobile) │ │                                        │ │
-│ └──────────┘ └────────────────────────────────────────┘ │
+│ <header>                                                │
+│   [Site Title]                    [Hamburger Menu]     │
+└─────────────────────────────────────────────────────────┘
+│                                                         │
+│ <main>                                                  │
+│   [Content - max-width: 800px]                         │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+│ <footer>                                                │
+│   [Disclaimer] [Copyright] [Links]                      │
 └─────────────────────────────────────────────────────────┘
 ```
-
-**Key issue:** Search is in `<header>`, Menu button is in `<nav>` - different parents.
 
 ## CSS Architecture
 
@@ -208,17 +199,26 @@ We override via:
 }
 ```
 
-### Starlight Variable Remapping
+### Design Token System
 
-We remap Starlight's variables to our palette:
+All design tokens are defined in `Base.astro` and can be overridden in `custom.css`:
 ```css
 :root {
-  --sl-color-white: var(--color-bg);
-  --sl-color-black: var(--color-text);
-  --sl-color-accent: var(--color-link);
+  --color-bg: #ffffff;
+  --color-text: #202122;
+  --color-link: #0645ad;
   /* etc. */
 }
 ```
+
+## Routing
+
+See [`ROUTING.md`](ROUTING.md) for detailed routing strategy.
+
+**Summary:**
+- Home page: `src/pages/index.astro` (canonical `/`)
+- Content routes: `src/pages/[...slug].astro` handles docs collection
+- Profile routes: `/users/{id}` (public) vs `/profile/{id}` (SSR with privacy)
 
 ## Deployment
 

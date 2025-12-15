@@ -88,5 +88,8 @@ export {
 } from './permissions';
 export type { Operation, PermissionResult } from './permissions';
 
+// SSR helpers
+export { getCurrentUserId } from './ssr-helpers';
+
 // Debug helpers
 export { authDebug } from '../debug';
