@@ -61,7 +61,7 @@ const currentPath = Astro.url.pathname;
   <!-- Cookie Consent -->
   <div id="cookie-consent" class="cookie-consent" hidden>
     <div class="cookie-message">
-      <strong>Cookies:</strong> We use essential cookies for authentication and security. No advertising or tracking cookies.
+      <strong>Cookies:</strong> We use essential cookies for authentication, security, and remembering your preferences. No advertising or tracking cookies.
     </div>
     <button id="cookie-accept" type="button">Got it</button>
   </div>
@@ -84,20 +84,34 @@ const currentPath = Astro.url.pathname;
   <!-- Cookie consent script - inline to ensure DOM is ready -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
-      var consentKey = 'htwc_cookie_consent';
+      var consentName = 'htwc_consent';
       var consentBanner = document.getElementById('cookie-consent');
       var consentButton = document.getElementById('cookie-accept');
 
       if (!consentBanner || !consentButton) return;
 
+      // Check if consent cookie exists
+      function hasConsent() {
+        return document.cookie.split(';').some(function(c) {
+          return c.trim().startsWith(consentName + '=');
+        });
+      }
+
+      // Set consent cookie (1 year expiry)
+      function setConsent() {
+        var expires = new Date();
+        expires.setFullYear(expires.getFullYear() + 1);
+        document.cookie = consentName + '=accepted; path=/; expires=' + expires.toUTCString() + '; SameSite=Lax';
+      }
+
       // Show banner if no consent recorded
-      if (!localStorage.getItem(consentKey)) {
+      if (!hasConsent()) {
         consentBanner.hidden = false;
       }
 
       // Handle button click
       consentButton.onclick = function() {
-        localStorage.setItem(consentKey, 'accepted');
+        setConsent();
         consentBanner.hidden = true;
       };
     });
