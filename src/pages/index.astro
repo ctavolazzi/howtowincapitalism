@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { TradeWidget, LoadingSpinner } from '../components';
+import { LoadingSpinner } from '../components';
 import Hero from '../components/organisms/Hero.astro';
 ---
 
 <Base title="Home">
-  <!-- Auth Gate: Redirect to login if not authenticated -->
+  <!-- Auth Gate: Password protection while in development -->
   <div id="auth-gate" class="auth-gate">
     <LoadingSpinner />
   </div>
@@ -19,189 +19,80 @@ import Hero from '../components/organisms/Hero.astro';
     showScrollIndicator={true}
   />
 
+  <!-- Key Insight: Give value immediately -->
+  <section class="key-insight">
+    <blockquote>
+      "The single most powerful force in finance is <strong>compound interest</strong>. 
+      Einstein allegedly called it the eighth wonder of the world. 
+      Whether he said it or not, the math doesn't lie: 
+      time in the market beats timing the market, every time."
+    </blockquote>
+    <cite>— <a href="/faq/compound-interest/">Read more about compound interest</a></cite>
+  </section>
 
-  <h2>FAQ</h2>
-  <p>Core concepts and answers to common questions.</p>
-  <ul>
-    <li><a href="/faq/introduction/">Introduction</a> — Start here</li>
-    <li><a href="/faq/compound-interest/">Compound Interest</a> — The engine of wealth</li>
-    <li><a href="/faq/emergency-fund/">Emergency Fund</a> — Your first foundation</li>
-    <li><a href="/faq/tax-advantaged-accounts/">Tax-Advantaged Accounts</a> — 401(k), IRA, HSA</li>
-    <li><a href="/faq/debt-strategies/">Debt Strategies</a> — Avalanche vs Snowball</li>
-  </ul>
+  <!-- Concepts: The core curriculum -->
+  <h2>Concepts</h2>
+  <p>The fundamentals. Start here if you're new.</p>
+  
+  <div class="concept-grid">
+    <a href="/faq/introduction/" class="concept-card concept-card--featured">
+      <span class="concept-card__label">Start Here</span>
+      <h3>Introduction</h3>
+      <p>What this wiki is, what it isn't, and how to use it.</p>
+    </a>
+    
+    <a href="/faq/compound-interest/" class="concept-card">
+      <h3>Compound Interest</h3>
+      <p>The mathematical engine of wealth. Why starting early matters more than starting big.</p>
+    </a>
+    
+    <a href="/faq/emergency-fund/" class="concept-card">
+      <h3>Emergency Fund</h3>
+      <p>The boring foundation that makes everything else possible. How much, where to keep it.</p>
+    </a>
+    
+    <a href="/faq/tax-advantaged-accounts/" class="concept-card">
+      <h3>Tax-Advantaged Accounts</h3>
+      <p>401(k), IRA, HSA — the legal loopholes that actually work.</p>
+    </a>
+    
+    <a href="/faq/debt-strategies/" class="concept-card">
+      <h3>Debt Strategies</h3>
+      <p>Avalanche vs Snowball. When to pay minimums, when to attack.</p>
+    </a>
+    
+    <a href="/faq/rent-vs-buy/" class="concept-card">
+      <h3>Rent vs Buy</h3>
+      <p>The math behind housing decisions. Spoiler: it's not always "buying is better."</p>
+    </a>
+  </div>
 
+  <!-- Notes: Ongoing research -->
   <h2>Notes</h2>
-  <p>Research, analysis, and observations.</p>
+  <p>Research, observations, and updates from the field.</p>
   <ul>
-    <li><a href="/notes/latest/">Latest Updates</a></li>
-    <li><a href="/notes/automation/">Financial Automation</a></li>
-    <li><a href="/notes/negotiation-tactics/">Negotiation Tactics</a></li>
+    <li><a href="/notes/latest/">Latest Updates</a> — Recent additions</li>
+    <li><a href="/notes/automation/">Financial Automation</a> — Set it and forget it</li>
+    <li><a href="/notes/negotiation-tactics/">Negotiation Tactics</a> — Scripts that work</li>
   </ul>
 
+  <!-- Tools: Practical utilities -->
   <h2>Tools</h2>
-  <p>Templates and calculators.</p>
+  <p>Templates and calculators for real decisions.</p>
   <ul>
-    <li><a href="/faq/decision-matrix/">Decision Matrix</a> — Quantitative decision tool</li>
-    <li><a href="/tools/financial-autonomy-checklist/">Financial Autonomy Checklist</a></li>
+    <li><a href="/faq/decision-matrix/">Decision Matrix</a> — Quantitative framework for comparing options</li>
+    <li><a href="/tools/financial-autonomy-checklist/">Financial Autonomy Checklist</a> — Step-by-step roadmap</li>
   </ul>
 
-  <h2>Trade With Me</h2>
-  <TradeWidget />
   </div>
 </Base>
 
 <script>
   import { checkAuth } from '../lib/auth/api-client';
 
-  // #region agent log helper
-  const logDebug = (location: string, message: string, data: any, hypothesisId: string) => {
-    // Console log for browser visibility
-    console.group(`🔍 [${hypothesisId}] ${message}`);
-    console.log('Location:', location);
-    console.log('Data:', data);
-    console.groupEnd();
-
-    // Also send to debug server
-    fetch('http://127.0.0.1:7242/ingest/ada0bbff-cfae-40de-a14c-418fc38f3d1d', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ location, message, data, timestamp: Date.now(), sessionId: 'debug-session', runId: 'css-audit', hypothesisId })
-    }).catch(() => {});
-  };
-  // #endregion
-
   document.addEventListener('DOMContentLoaded', () => {
     const authGate = document.getElementById('auth-gate');
     const content = document.getElementById('content');
-
-    // #region agent log - Check CSS Variables from :root
-    const root = document.documentElement;
-    const rootStyle = getComputedStyle(root);
-    logDebug('index.astro:DOMContentLoaded', 'CSS Variables from :root', {
-      // Colors
-      colorBg: rootStyle.getPropertyValue('--color-bg').trim() || 'NOT_SET',
-      colorText: rootStyle.getPropertyValue('--color-text').trim() || 'NOT_SET',
-      colorTextMuted: rootStyle.getPropertyValue('--color-text-muted').trim() || 'NOT_SET',
-      colorLink: rootStyle.getPropertyValue('--color-link').trim() || 'NOT_SET',
-      colorBorder: rootStyle.getPropertyValue('--color-border').trim() || 'NOT_SET',
-      colorBorderSubtle: rootStyle.getPropertyValue('--color-border-subtle').trim() || 'NOT_SET',
-      colorSurface: rootStyle.getPropertyValue('--color-surface').trim() || 'NOT_SET',
-      colorSurfaceAlt: rootStyle.getPropertyValue('--color-surface-alt').trim() || 'NOT_SET',
-      colorSurfaceElevated: rootStyle.getPropertyValue('--color-surface-elevated').trim() || 'NOT_SET',
-      // Shadows
-      shadowXs: rootStyle.getPropertyValue('--shadow-xs').trim() || 'NOT_SET',
-      shadowSm: rootStyle.getPropertyValue('--shadow-sm').trim() || 'NOT_SET',
-      shadowMd: rootStyle.getPropertyValue('--shadow-md').trim() || 'NOT_SET',
-      shadowLg: rootStyle.getPropertyValue('--shadow-lg').trim() || 'NOT_SET',
-      // Spacing
-      spaceXs: rootStyle.getPropertyValue('--space-xs').trim() || 'NOT_SET',
-      spaceSm: rootStyle.getPropertyValue('--space-sm').trim() || 'NOT_SET',
-      spaceMd: rootStyle.getPropertyValue('--space-md').trim() || 'NOT_SET',
-      // Max width
-      maxWidth: rootStyle.getPropertyValue('--max-width').trim() || 'NOT_SET'
-    }, 'A');
-    // #endregion
-
-    // #region agent log - Check key page elements
-    const header = document.querySelector('header');
-    const main = document.querySelector('main');
-    const footer = document.querySelector('footer');
-    const h2s = document.querySelectorAll('h2');
-    const links = document.querySelectorAll('a');
-    const buttons = document.querySelectorAll('button, .btn');
-
-    logDebug('index.astro:DOMContentLoaded', 'Key elements computed styles', {
-      header: header ? {
-        backgroundColor: getComputedStyle(header).backgroundColor,
-        borderBottom: getComputedStyle(header).borderBottom,
-        boxShadow: getComputedStyle(header).boxShadow,
-        padding: getComputedStyle(header).padding
-      } : 'NOT_FOUND',
-      main: main ? {
-        backgroundColor: getComputedStyle(main).backgroundColor,
-        padding: getComputedStyle(main).padding,
-        maxWidth: getComputedStyle(main).maxWidth
-      } : 'NOT_FOUND',
-      footer: footer ? {
-        backgroundColor: getComputedStyle(footer).backgroundColor,
-        borderTop: getComputedStyle(footer).borderTop,
-        color: getComputedStyle(footer).color
-      } : 'NOT_FOUND',
-      h2Count: h2s.length,
-      firstH2: h2s[0] ? {
-        fontSize: getComputedStyle(h2s[0]).fontSize,
-        fontWeight: getComputedStyle(h2s[0]).fontWeight,
-        color: getComputedStyle(h2s[0]).color,
-        borderBottom: getComputedStyle(h2s[0]).borderBottom,
-        marginBottom: getComputedStyle(h2s[0]).marginBottom
-      } : 'NOT_FOUND',
-      linkCount: links.length,
-      buttonCount: buttons.length
-    }, 'B');
-    // #endregion
-
-    // #region agent log - Check Hero component
-    const hero = document.querySelector('.hero');
-    const heroCta = document.querySelector('.hero__cta');
-    logDebug('index.astro:DOMContentLoaded', 'Hero component styles', {
-      hero: hero ? {
-        padding: getComputedStyle(hero).padding,
-        textAlign: getComputedStyle(hero).textAlign,
-        borderBottom: getComputedStyle(hero).borderBottom
-      } : 'NOT_FOUND',
-      heroCta: heroCta ? {
-        backgroundColor: getComputedStyle(heroCta).backgroundColor,
-        borderRadius: getComputedStyle(heroCta).borderRadius,
-        boxShadow: getComputedStyle(heroCta).boxShadow,
-        padding: getComputedStyle(heroCta).padding,
-        color: getComputedStyle(heroCta).color
-      } : 'NOT_FOUND'
-    }, 'C');
-    // #endregion
-
-    // #region agent log - Check stylesheet count and rules
-    const styleSheets = Array.from(document.styleSheets);
-    let totalRules = 0;
-    let baseAstroRules = 0;
-    styleSheets.forEach(sheet => {
-      try {
-        const rules = sheet.cssRules || [];
-        totalRules += rules.length;
-        // Check for Base.astro styles
-        Array.from(rules).forEach(rule => {
-          if (rule instanceof CSSStyleRule) {
-            if (rule.selectorText === ':root' || rule.selectorText?.includes('--color-') ||
-                rule.selectorText === 'header' || rule.selectorText === 'footer' ||
-                rule.selectorText?.includes('.wiki-box')) {
-              baseAstroRules++;
-            }
-          }
-        });
-      } catch (e) { /* cross-origin */ }
-    });
-    logDebug('index.astro:DOMContentLoaded', 'Stylesheet audit', {
-      stylesheetCount: styleSheets.length,
-      totalRules,
-      baseAstroRulesFound: baseAstroRules
-    }, 'D');
-    // #endregion
-
-    // #region agent log - Check body and overall page styling
-    const body = document.body;
-    logDebug('index.astro:DOMContentLoaded', 'Body and page styles', {
-      body: {
-        fontFamily: getComputedStyle(body).fontFamily,
-        fontSize: getComputedStyle(body).fontSize,
-        lineHeight: getComputedStyle(body).lineHeight,
-        backgroundColor: getComputedStyle(body).backgroundColor,
-        color: getComputedStyle(body).color,
-        margin: getComputedStyle(body).margin
-      },
-      html: {
-        fontSize: getComputedStyle(document.documentElement).fontSize
-      }
-    }, 'E');
-    // #endregion
 
     async function verifyAuth() {
       const { authenticated } = await checkAuth();
@@ -211,35 +102,6 @@ import Hero from '../components/organisms/Hero.astro';
       } else {
         if (authGate) authGate.style.display = 'none';
         if (content) content.style.display = 'block';
-
-        // #region agent log - Check elements after auth reveal
-        setTimeout(() => {
-          const tradeWidget = document.querySelector('trade-widget');
-          const lists = document.querySelectorAll('ul');
-          const listItems = document.querySelectorAll('li');
-
-          logDebug('index.astro:afterAuth', 'Content elements after reveal', {
-            tradeWidget: tradeWidget ? {
-              display: getComputedStyle(tradeWidget).display,
-              border: getComputedStyle(tradeWidget).border,
-              borderRadius: getComputedStyle(tradeWidget).borderRadius,
-              boxShadow: getComputedStyle(tradeWidget).boxShadow,
-              maxWidth: getComputedStyle(tradeWidget).maxWidth
-            } : 'NOT_FOUND',
-            listCount: lists.length,
-            firstList: lists[0] ? {
-              listStyleType: getComputedStyle(lists[0]).listStyleType,
-              paddingLeft: getComputedStyle(lists[0]).paddingLeft,
-              margin: getComputedStyle(lists[0]).margin
-            } : 'NOT_FOUND',
-            listItemCount: listItems.length,
-            firstListItem: listItems[0] ? {
-              marginBottom: getComputedStyle(listItems[0]).marginBottom,
-              lineHeight: getComputedStyle(listItems[0]).lineHeight
-            } : 'NOT_FOUND'
-          }, 'F');
-        }, 300);
-        // #endregion
       }
     }
 
@@ -254,5 +116,91 @@ import Hero from '../components/organisms/Hero.astro';
     align-items: center;
     justify-content: center;
     min-height: 300px;
+  }
+
+  /* Key Insight Section */
+  .key-insight {
+    background: var(--color-surface, #f8f9fa);
+    border-left: 4px solid var(--color-text, #202122);
+    padding: var(--space-lg, 16px) var(--space-xl, 24px);
+    margin: var(--space-xl, 24px) 0;
+  }
+
+  .key-insight blockquote {
+    margin: 0;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-text, #202122);
+    font-style: normal;
+  }
+
+  .key-insight cite {
+    display: block;
+    margin-top: var(--space-sm, 8px);
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted, #54595d);
+  }
+
+  /* Concept Grid */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md, 12px);
+    margin: var(--space-lg, 16px) 0 var(--space-xl, 24px);
+  }
+
+  .concept-card {
+    display: block;
+    padding: var(--space-md, 12px) var(--space-lg, 16px);
+    background: var(--color-bg, #ffffff);
+    border: 1px solid var(--color-border, #a2a9b1);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .concept-card:hover {
+    border-color: var(--color-link, #0645ad);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.06));
+  }
+
+  .concept-card h3 {
+    margin: 0 0 var(--space-xs, 4px);
+    font-size: 1rem;
+    color: var(--color-link, #0645ad);
+    border: none;
+    padding: 0;
+  }
+
+  .concept-card p {
+    margin: 0;
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--color-text-muted, #54595d);
+    line-height: 1.4;
+  }
+
+  /* Featured card */
+  .concept-card--featured {
+    background: var(--color-surface, #f8f9fa);
+    border-width: 2px;
+    position: relative;
+  }
+
+  .concept-card__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #54595d);
+    margin-bottom: var(--space-xs, 4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .concept-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
