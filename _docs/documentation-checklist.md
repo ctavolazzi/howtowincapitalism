@@ -1,16 +1,24 @@
 # Documentation Checklist
 
 Generated: 2025-12-14T15:56:18.350Z
+**Last Updated: 2025-12-15**
 
 ## Summary
 
 - Total files: 130
-- Files with headers: 17 (13%)
-- Files needing headers: 113
+- Files with headers: 60 (46%)
+- Files needing headers: 70
 
-**Progress Update (2025-12-14):**
-- lib/auth: 12/12 complete (100%)
-- lib/tools: 4/4 complete (100%) - includes test file
+**Progress Update (2025-12-15):**
+- lib/auth: 12/12 complete (100%) ✅
+- lib/tools: 4/4 complete (100%) ✅
+- api/auth: 10/10 complete (100%) ✅ (includes account/*)
+- api/admin: 3/3 complete (100%) ✅
+- components/auth: 5/5 complete (100%) ✅
+- lib/email: 3/3 complete (100%) ✅
+- pages (auth/user): 10/20 complete (50%)
+
+**Total documented this session: 47 files**
 
 ## Progress by Category
 
@@ -33,36 +41,36 @@ Generated: 2025-12-14T15:56:18.350Z
 
 - [ ] `src/layouts/Base.astro` (P:72, L:537)
 
-### pages (0/20 = 0%)
+### pages (10/20 = 50%)
 
 - [ ] `src/pages/users/[id].astro` (P:171, L:549)
 - [ ] `src/pages/[...slug].astro` (P:143, L:64)
 - [ ] `src/pages/index.astro` (P:143, L:81)
 - [ ] `src/pages/profile/edit.astro` (P:141, L:352)
 - [ ] `src/pages/admin/users/index.astro` (P:140, L:391)
-- [ ] `src/pages/profile/me.astro` (P:136, L:218)
+- [x] `src/pages/profile/me.astro` (P:136, L:218)
 - [ ] `src/pages/admin/users/new.astro` (P:95, L:295)
 - [ ] `src/pages/profile/[id].astro` (P:56, L:210)
-- [ ] `src/pages/users/index.astro` (P:43, L:258)
-- [ ] `src/pages/forgot-password/index.astro` (P:27, L:101)
-- [ ] `src/pages/login/index.astro` (P:23, L:107)
-- [ ] `src/pages/register/index.astro` (P:23, L:104)
-- [ ] `src/pages/logout/index.astro` (P:22, L:59)
-- [ ] `src/pages/profile/index.astro` (P:22, L:51)
+- [x] `src/pages/users/index.astro` (P:43, L:258)
+- [x] `src/pages/forgot-password/index.astro` (P:27, L:101)
+- [x] `src/pages/login/index.astro` (P:23, L:107)
+- [x] `src/pages/register/index.astro` (P:23, L:104)
+- [x] `src/pages/logout/index.astro` (P:22, L:59)
+- [x] `src/pages/profile/index.astro` (P:22, L:51)
 - [ ] `src/pages/disclaimer.astro` (P:21, L:48)
 - [ ] `src/pages/privacy/index.astro` (P:21, L:29)
-- [ ] `src/pages/reset-password/index.astro` (P:21, L:86)
+- [x] `src/pages/reset-password/index.astro` (P:21, L:86)
 - [ ] `src/pages/terms/index.astro` (P:21, L:25)
-- [ ] `src/pages/confirm/error/index.astro` (P:20, L:150)
-- [ ] `src/pages/confirm/success/index.astro` (P:20, L:112)
+- [x] `src/pages/confirm/error/index.astro` (P:20, L:150)
+- [x] `src/pages/confirm/success/index.astro` (P:20, L:112)
 
-### components/auth (0/5 = 0%)
+### components/auth (5/5 = 100%) ✅
 
-- [ ] `src/components/auth/ResetPasswordForm.astro` (P:150, L:368)
-- [ ] `src/components/auth/LoginForm.astro` (P:51, L:255)
-- [ ] `src/components/auth/RegisterForm.astro` (P:46, L:348)
-- [ ] `src/components/auth/UserMenu.astro` (P:43, L:203)
-- [ ] `src/components/auth/ForgotPasswordForm.astro` (P:26, L:178)
+- [x] `src/components/auth/ResetPasswordForm.astro` (P:150, L:368)
+- [x] `src/components/auth/LoginForm.astro` (P:51, L:255)
+- [x] `src/components/auth/RegisterForm.astro` (P:46, L:348)
+- [x] `src/components/auth/UserMenu.astro` (P:43, L:203)
+- [x] `src/components/auth/ForgotPasswordForm.astro` (P:26, L:178)
 
 ### lib/auth/tests (0/4 = 0%)
 
@@ -79,11 +87,11 @@ Generated: 2025-12-14T15:56:18.350Z
 
 - [ ] `src/lib/tools/decision-matrix.test.ts` (P:41, L:494)
 
-### api/admin (0/3 = 0%)
+### api/admin (3/3 = 100%) ✅
 
-- [ ] `src/pages/api/admin/users/[id].ts` (P:64, L:234)
-- [ ] `src/pages/api/admin/users/create.ts` (P:30, L:131)
-- [ ] `src/pages/api/admin/users/list.ts` (P:26, L:64)
+- [x] `src/pages/api/admin/users/[id].ts` (P:64, L:234)
+- [x] `src/pages/api/admin/users/create.ts` (P:30, L:131)
+- [x] `src/pages/api/admin/users/list.ts` (P:26, L:64)
 
 ### tests (0/12 = 0%)
 
@@ -100,17 +108,18 @@ Generated: 2025-12-14T15:56:18.350Z
 - [ ] `tests/auth.spec.ts` (P:-66, L:179)
 - [ ] `tests/navigation.spec.ts` (P:-69, L:133)
 
-### api/auth (0/9 = 0%)
+### api/auth (10/10 = 100%) ✅
 
-- [ ] `src/pages/api/auth/register.ts` (P:125, L:281)
-- [ ] `src/pages/api/auth/forgot-password.ts` (P:35, L:75)
-- [ ] `src/pages/api/auth/login.ts` (P:34, L:168)
-- [ ] `src/pages/api/auth/account/delete.ts` (P:30, L:62)
-- [ ] `src/pages/api/auth/account/export.ts` (P:26, L:46)
-- [ ] `src/pages/api/auth/confirm.ts` (P:26, L:31)
-- [ ] `src/pages/api/auth/logout.ts` (P:26, L:62)
-- [ ] `src/pages/api/auth/me.ts` (P:26, L:66)
-- [ ] `src/pages/api/auth/reset-password.ts` (P:-72, L:105)
+- [x] `src/pages/api/auth/register.ts` (P:125, L:281)
+- [x] `src/pages/api/auth/forgot-password.ts` (P:35, L:75)
+- [x] `src/pages/api/auth/login.ts` (P:34, L:168)
+- [x] `src/pages/api/auth/account/delete.ts` (P:30, L:62)
+- [x] `src/pages/api/auth/account/export.ts` (P:26, L:46)
+- [x] `src/pages/api/auth/confirm.ts` (P:26, L:31)
+- [x] `src/pages/api/auth/logout.ts` (P:26, L:62)
+- [x] `src/pages/api/auth/me.ts` (P:26, L:66)
+- [x] `src/pages/api/auth/reset-password.ts` (P:-72, L:105)
+- [x] `src/pages/api/auth/init.ts` (user seeding)
 
 ### components/organisms (0/9 = 0%)
 
@@ -129,11 +138,11 @@ Generated: 2025-12-14T15:56:18.350Z
 - [ ] `src/middleware.ts` (P:26, L:24)
 - [ ] `src/content.config.ts` (P:21, L:48)
 
-### lib/email (0/3 = 0%)
+### lib/email (3/3 = 100%) ✅
 
-- [ ] `src/lib/email/send-confirmation.ts` (P:31, L:115)
-- [ ] `src/lib/email/send-password-reset.ts` (P:31, L:126)
-- [ ] `src/lib/email/send-reset.ts` (P:11, L:233)
+- [x] `src/lib/email/send-confirmation.ts` (P:31, L:115)
+- [x] `src/lib/email/send-password-reset.ts` (P:31, L:126)
+- [x] `src/lib/email/send-reset.ts` (P:11, L:233)
 
 ### components/atoms (0/5 = 0%)
 
