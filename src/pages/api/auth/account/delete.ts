@@ -1,8 +1,42 @@
 /**
- * DELETE /api/auth/account
+ * @fileoverview Account Deletion API Endpoint
  *
- * Deletes the authenticated user's account.
- * Requires KV (production). Returns 503 in local fallback mode.
+ * Permanently deletes the authenticated user's account and all
+ * associated data. Implements GDPR "right to be forgotten".
+ *
+ * @module pages/api/auth/account/delete
+ * @see {@link module:lib/auth/kv-auth} - User deletion
+ * @see {@link module:pages/api/auth/account/export} - Data export (do first)
+ *
+ * ## Endpoint
+ *
+ * `DELETE /api/auth/account`
+ *
+ * ## Request
+ *
+ * Requires authenticated session (cookie).
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * { "success": true, "message": "Account deleted" }
+ * ```
+ * + Session cookie cleared
+ *
+ * **Error (401/503):**
+ * ```json
+ * { "error": "Not authenticated" | "Not available in dev mode" }
+ * ```
+ *
+ * ## Data Deleted
+ *
+ * - User record (`user:{id}`)
+ * - Email index (`email:{email}`)
+ * - Active sessions
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

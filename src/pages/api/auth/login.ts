@@ -1,8 +1,55 @@
 /**
- * POST /api/auth/login
+ * @fileoverview Login API Endpoint
  *
- * Validates credentials against KV (production) or mock data (local dev).
- * Includes rate limiting and account lockout protection.
+ * Authenticates users against Cloudflare KV (production) or mock data (local).
+ * Implements comprehensive security including rate limiting, account lockout,
+ * CSRF protection, and automatic password hash upgrades.
+ *
+ * @module pages/api/auth/login
+ * @see {@link module:lib/auth/kv-auth} - KV authentication functions
+ * @see {@link module:lib/auth/rate-limit} - Rate limiting
+ * @see {@link module:lib/auth/csrf} - CSRF validation
+ *
+ * ## Endpoint
+ *
+ * `POST /api/auth/login`
+ *
+ * ## Request Body
+ *
+ * ```json
+ * {
+ *   "email": "user@example.com",
+ *   "password": "userpassword",
+ *   "csrfToken": "encrypted-token"
+ * }
+ * ```
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * {
+ *   "success": true,
+ *   "user": { "id", "email", "name", "role", "accessLevel", "avatar", "bio" }
+ * }
+ * ```
+ * + `Set-Cookie: htwc_session=...; HttpOnly; Secure; SameSite=Strict`
+ *
+ * **Error (401/429):**
+ * ```json
+ * { "error": "Invalid credentials" | "Account locked" | "Rate limited" }
+ * ```
+ *
+ * ## Security Features
+ *
+ * - Rate limiting (5/IP/15min, 10/email/hour)
+ * - Account lockout after 20 failed attempts
+ * - CSRF token validation
+ * - Automatic V1→V2 password hash upgrade
+ * - Email confirmation check
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

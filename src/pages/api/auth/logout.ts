@@ -1,7 +1,36 @@
 /**
- * POST /api/auth/logout
+ * @fileoverview Logout API Endpoint
  *
- * Deletes session and clears cookie.
+ * Terminates user session by deleting the session from KV/memory
+ * and clearing the session cookie.
+ *
+ * @module pages/api/auth/logout
+ * @see {@link module:lib/auth/kv-auth} - Session deletion
+ * @see {@link module:lib/auth/local-auth} - Local session deletion
+ *
+ * ## Endpoint
+ *
+ * `POST /api/auth/logout`
+ *
+ * ## Request
+ *
+ * No body required. Session identified by `htwc_session` cookie.
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * { "success": true }
+ * ```
+ * + `Set-Cookie: htwc_session=; Expires=Thu, 01 Jan 1970...`
+ *
+ * **Error (500):**
+ * ```json
+ * { "error": "Logout failed" }
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import {

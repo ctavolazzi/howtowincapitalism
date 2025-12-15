@@ -1,14 +1,54 @@
 /**
- * POST /api/auth/init
+ * @fileoverview User Seeding API Endpoint
  *
- * Initialize seed users using Cloudflare environment variables.
- * This is the proper way - secrets stay in Cloudflare, never in code.
+ * Initializes seed users using Cloudflare environment variables.
+ * Secrets stay in Cloudflare dashboard, never in code. Call once
+ * after deployment to create initial admin/test accounts.
  *
- * Call this once after deployment to seed users:
- *   curl -X POST https://yoursite.pages.dev/api/auth/init/
+ * @module pages/api/auth/init
+ * @see {@link module:lib/auth/kv-auth} - User creation
  *
- * Requires SEED_ADMIN_PASSWORD (and optionally other SEED_*_PASSWORD vars)
- * to be set in Cloudflare Pages > Settings > Environment Variables.
+ * ## Endpoint
+ *
+ * `POST /api/auth/init`
+ *
+ * ## Usage
+ *
+ * ```bash
+ * curl -X POST https://yoursite.pages.dev/api/auth/init/
+ * ```
+ *
+ * ## Required Environment Variables
+ *
+ * Set in Cloudflare Pages > Settings > Environment Variables:
+ *
+ * | Variable | Required | Description |
+ * |----------|----------|-------------|
+ * | SEED_ADMIN_PASSWORD | Yes | Admin account password |
+ * | SEED_EDITOR_PASSWORD | No | Editor account password |
+ * | SEED_CONTRIBUTOR_PASSWORD | No | Contributor password |
+ * | SEED_VIEWER_PASSWORD | No | Viewer account password |
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * { "success": true, "created": ["admin", "editor"], "skipped": ["viewer"] }
+ * ```
+ *
+ * **Error (400/500):**
+ * ```json
+ * { "error": "No seed passwords configured" | "KV not available" }
+ * ```
+ *
+ * ## Security Notes
+ *
+ * - Only creates users if they don't exist
+ * - Passwords hashed with PBKDF2 before storage
+ * - Should be called once, not repeatedly
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { hashPasswordV2, getUserByEmail } from '../../../lib/auth/kv-auth';

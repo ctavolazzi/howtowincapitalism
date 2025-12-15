@@ -1,7 +1,46 @@
 /**
- * GET /api/auth/me
+ * @fileoverview Current User API Endpoint
  *
- * Returns current user from session cookie.
+ * Returns the currently authenticated user's profile data based on
+ * the session cookie. Used by client-side auth checks.
+ *
+ * @module pages/api/auth/me
+ * @see {@link module:lib/auth/kv-auth} - KV user lookup
+ * @see {@link module:lib/auth/api-client} - Client-side usage
+ *
+ * ## Endpoint
+ *
+ * `GET /api/auth/me`
+ *
+ * ## Request
+ *
+ * No body. Requires `htwc_session` cookie.
+ *
+ * ## Response
+ *
+ * **Authenticated (200):**
+ * ```json
+ * {
+ *   "authenticated": true,
+ *   "user": {
+ *     "id": "username",
+ *     "email": "user@example.com",
+ *     "name": "Display Name",
+ *     "role": "admin|editor|contributor|viewer",
+ *     "accessLevel": 1-10,
+ *     "avatar": "/path/to/avatar",
+ *     "bio": "User bio"
+ *   }
+ * }
+ * ```
+ *
+ * **Not Authenticated (200):**
+ * ```json
+ * { "authenticated": false, "user": null }
+ * ```
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser } from '../../../lib/auth/kv-auth';

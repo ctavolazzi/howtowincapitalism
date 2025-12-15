@@ -1,8 +1,38 @@
 /**
- * GET /api/auth/confirm
+ * @fileoverview Email Confirmation API Endpoint
  *
- * Confirms a user's email address via token.
- * Redirects to success or error page.
+ * Confirms a user's email address using a token sent via email.
+ * Redirects to success or error page based on validation result.
+ *
+ * @module pages/api/auth/confirm
+ * @see {@link module:lib/auth/kv-auth} - Token validation
+ * @see {@link module:pages/confirm/success} - Success page
+ * @see {@link module:pages/confirm/error} - Error page
+ *
+ * ## Endpoint
+ *
+ * `GET /api/auth/confirm?token=...`
+ *
+ * ## Query Parameters
+ *
+ * | Param | Required | Description |
+ * |-------|----------|-------------|
+ * | token | Yes | 64-char hex confirmation token |
+ *
+ * ## Response
+ *
+ * Redirects to:
+ * - `/confirm/success/` - Token valid, email confirmed
+ * - `/confirm/error/?reason=...` - Token invalid/expired
+ *
+ * ## Error Reasons
+ *
+ * - `missing-token` - No token provided
+ * - `invalid-token` - Token not found or expired
+ * - `server-error` - KV not available
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { confirmEmail } from '../../../lib/auth/kv-auth';

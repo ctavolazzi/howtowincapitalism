@@ -1,8 +1,39 @@
 /**
- * POST /api/auth/forgot-password
+ * @fileoverview Forgot Password API Endpoint
  *
- * Initiates password reset flow by sending reset email.
+ * Initiates password reset flow by sending a reset email.
  * Always returns success to prevent email enumeration attacks.
+ *
+ * @module pages/api/auth/forgot-password
+ * @see {@link module:lib/auth/kv-auth} - Reset token creation
+ * @see {@link module:lib/email/send-password-reset} - Email sending
+ *
+ * ## Endpoint
+ *
+ * `POST /api/auth/forgot-password`
+ *
+ * ## Request Body
+ *
+ * ```json
+ * { "email": "user@example.com" }
+ * ```
+ *
+ * ## Response
+ *
+ * **Always (200):**
+ * ```json
+ * { "success": true, "message": "If account exists, email sent" }
+ * ```
+ *
+ * ## Security Notes
+ *
+ * - Always returns success (prevents email enumeration)
+ * - Reset tokens expire after 1 hour
+ * - Tokens are one-time use
+ * - Requires KV (production only)
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { createPasswordReset } from '../../../lib/auth/kv-auth';

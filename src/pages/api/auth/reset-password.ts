@@ -1,7 +1,46 @@
 /**
- * POST /api/auth/reset-password
+ * @fileoverview Reset Password API Endpoint
  *
- * Resets password using a valid reset token.
+ * Completes password reset using a valid reset token.
+ * Validates new password meets security requirements.
+ *
+ * @module pages/api/auth/reset-password
+ * @see {@link module:lib/auth/kv-auth} - Password reset
+ * @see {@link module:pages/api/auth/forgot-password} - Token generation
+ *
+ * ## Endpoint
+ *
+ * `POST /api/auth/reset-password`
+ *
+ * ## Request Body
+ *
+ * ```json
+ * {
+ *   "token": "64-char-reset-token",
+ *   "password": "NewSecureP@ss123"
+ * }
+ * ```
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * { "success": true, "message": "Password reset successfully" }
+ * ```
+ *
+ * **Error (400):**
+ * ```json
+ * { "error": "Invalid token" | "Password too weak" }
+ * ```
+ *
+ * ## Password Requirements
+ *
+ * - Minimum 8 characters
+ * - At least one letter
+ * - At least one number
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { resetPassword, validateResetToken } from '../../../lib/auth/kv-auth';

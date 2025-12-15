@@ -1,8 +1,59 @@
 /**
- * POST /api/auth/register
+ * @fileoverview User Registration API Endpoint
  *
- * Creates a new user account and sends confirmation email.
- * Includes rate limiting and anti-bot protection.
+ * Creates new user accounts with email confirmation flow.
+ * Implements comprehensive anti-abuse measures including rate limiting,
+ * CAPTCHA verification, and disposable email blocking.
+ *
+ * @module pages/api/auth/register
+ * @see {@link module:lib/auth/kv-auth} - User creation
+ * @see {@link module:lib/email/send-confirmation} - Confirmation email
+ * @see {@link module:lib/auth/turnstile} - CAPTCHA verification
+ *
+ * ## Endpoint
+ *
+ * `POST /api/auth/register`
+ *
+ * ## Request Body
+ *
+ * ```json
+ * {
+ *   "username": "desired_username",
+ *   "name": "Display Name",
+ *   "email": "user@example.com",
+ *   "password": "SecureP@ssword123",
+ *   "csrfToken": "encrypted-token",
+ *   "turnstileToken": "captcha-response"
+ * }
+ * ```
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * { "success": true, "message": "Check your email..." }
+ * ```
+ *
+ * **Error (400/429):**
+ * ```json
+ * { "error": "Email already registered" | "Rate limited" | ... }
+ * ```
+ *
+ * ## Validation Rules
+ *
+ * - Username: 3-20 chars, alphanumeric + underscore
+ * - Email: Valid format, not disposable domain
+ * - Password: 8+ chars, uppercase, lowercase, number, special char
+ *
+ * ## Security Features
+ *
+ * - Rate limiting (3/IP/hour, 100/day global)
+ * - Turnstile CAPTCHA verification
+ * - Disposable email blocking
+ * - CSRF token validation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { createUser, getUserByEmail } from '../../../lib/auth/kv-auth';

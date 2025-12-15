@@ -1,8 +1,48 @@
 /**
- * GET /api/auth/account/export
+ * @fileoverview Account Data Export API Endpoint
  *
  * Returns a JSON export of the authenticated user's account data.
- * Requires KV (production). Returns 503 in local fallback mode.
+ * Implements GDPR "right to data portability".
+ *
+ * @module pages/api/auth/account/export
+ * @see {@link module:lib/auth/kv-auth} - User data retrieval
+ * @see {@link module:pages/api/auth/account/delete} - Account deletion
+ *
+ * ## Endpoint
+ *
+ * `GET /api/auth/account/export`
+ *
+ * ## Request
+ *
+ * Requires authenticated session (cookie).
+ *
+ * ## Response
+ *
+ * **Success (200):**
+ * ```json
+ * {
+ *   "exportDate": "2025-01-01T00:00:00.000Z",
+ *   "user": {
+ *     "id", "email", "name", "role", "accessLevel",
+ *     "avatar", "bio", "createdAt", "emailConfirmed"
+ *   }
+ * }
+ * ```
+ * + `Content-Disposition: attachment; filename="account-export.json"`
+ *
+ * **Error (401/503):**
+ * ```json
+ * { "error": "Not authenticated" | "Not available in dev mode" }
+ * ```
+ *
+ * ## Excluded Data
+ *
+ * - Password hash (security)
+ * - Session tokens (security)
+ * - Confirmation tokens (expired)
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import type { APIRoute } from 'astro';
 import { getCurrentUser, sanitizeUser } from '../../../../lib/auth/kv-auth';
