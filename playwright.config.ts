@@ -1,9 +1,20 @@
-import { defineConfig, devices } from '@playwright/test';
-
 /**
- * Playwright Test Configuration for How To Win Capitalism
- * See https://playwright.dev/docs/test-configuration
+ * @fileoverview Playwright test configuration.
+ *
+ * E2E test settings for browser automation:
+ * - Chromium browser testing
+ * - Automatic dev server startup
+ * - Screenshot on failure
+ * - Trace collection on retry
+ *
+ * @see https://playwright.dev/docs/test-configuration
+ *
+ * @module playwright.config
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
+import { defineConfig, devices } from '@playwright/test';
 const baseURL = process.env.BASE_URL || 'http://localhost:4321';
 const startLocalServer = baseURL.includes('localhost') || baseURL.includes('127.0.0.1');
 

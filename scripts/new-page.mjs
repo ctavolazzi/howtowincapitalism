@@ -1,11 +1,19 @@
 #!/usr/bin/env node
 /**
- * NEW PAGE SCRIPT
+ * @fileoverview New page generator script.
  *
- * Create a new content page:
+ * Creates new content pages from templates:
  *   npm run new protocol my-concept
  *   npm run new field-notes my-update
  *   npm run new reports my-report
+ *
+ * Generates MDX files with proper frontmatter in
+ * the src/content/docs directory structure.
+ *
+ * @module scripts/new-page
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { writeFileSync, existsSync, mkdirSync } from 'fs';

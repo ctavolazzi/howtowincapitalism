@@ -1,18 +1,24 @@
 #!/usr/bin/env node
 /**
- * Seed Users to Cloudflare KV
+ * @fileoverview User seeding script for Cloudflare KV.
  *
- * Run: node scripts/seed-users.mjs [--preview]
+ * Seeds test/production users to Cloudflare KV storage:
+ * - Hashes passwords with PBKDF2 (V2 format)
+ * - Uploads user records via wrangler CLI
+ * - Creates email-to-id index mappings
  *
- * This script hashes passwords and uploads users to KV.
- * Uses wrangler CLI to write to KV.
+ * Usage: node scripts/seed-users.mjs [--preview]
  *
- * --preview: Seed to preview namespace (for local dev)
- *
- * SECURITY:
- * - Production passwords are read from environment variables (set in Cloudflare)
- * - Development passwords are hardcoded fallbacks for local testing only
+ * Security:
+ * - Production passwords read from environment variables
+ * - Development passwords are hardcoded fallbacks only
  * - NEVER commit production passwords to the repository
+ *
+ * @module scripts/seed-users
+ * @see {@link module:lib/auth/kv-auth} - KV auth implementation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { execSync } from 'child_process';

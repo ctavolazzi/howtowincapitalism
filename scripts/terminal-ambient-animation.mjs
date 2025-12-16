@@ -1,7 +1,17 @@
 #!/usr/bin/env node
 /**
- * Ambient terminal animation for How To Win Capitalism.
- * Manual trigger: npm run terminal:ambient
+ * @fileoverview Ambient terminal animation script.
+ *
+ * Decorative terminal animation for branding:
+ * - Animated text phrases with color palettes
+ * - TTY-only (requires interactive terminal)
+ *
+ * Usage: npm run terminal:ambient
+ *
+ * @module scripts/terminal-ambient-animation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import readline from 'node:readline';

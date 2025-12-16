@@ -1,18 +1,27 @@
 #!/usr/bin/env node
 /**
- * SHIP SCRIPT
+ * @fileoverview Ship script - one-command deployment pipeline.
  *
- * One command to rule them all:
+ * Automates the full deployment workflow:
+ * 1. Build verification (astro build)
+ * 2. Git commit with message
+ * 3. Push to remote
+ * 4. Cloudflare Pages deployment
+ *
+ * Usage:
  *   npm run ship
  *   npm run ship "commit message"
- *
- * Sequence: Build → Commit → Push → Deploy
  *
  * Safeguards:
  * - Stops immediately if any step fails
  * - Verifies git status before starting
  * - Checks branch is main
  * - Validates build before committing
+ *
+ * @module scripts/ship
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import { execSync } from 'child_process';

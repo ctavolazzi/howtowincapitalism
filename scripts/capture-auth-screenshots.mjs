@@ -1,9 +1,19 @@
 /**
- * Capture auth flow screenshots for documentation.
+ * @fileoverview Auth flow screenshot capture script.
+ *
+ * Captures versioned screenshots for documentation:
+ * - Login flow (default, error, success states)
+ * - User menu and profile pages
+ * - Registration and password reset pages
  *
  * Usage:
- *   node scripts/capture-auth-screenshots.mjs                    # localhost (default)
- *   AUTH_SNAPSHOT_BASE_URL=https://howtowincapitalism.com node scripts/capture-auth-screenshots.mjs  # production
+ *   node scripts/capture-auth-screenshots.mjs                    # localhost
+ *   AUTH_SNAPSHOT_BASE_URL=https://... node scripts/...          # production
+ *
+ * @module scripts/capture-auth-screenshots
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';

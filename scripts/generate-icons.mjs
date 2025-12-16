@@ -1,8 +1,18 @@
 #!/usr/bin/env node
 /**
- * Generate PNG icons from SVG favicon
+ * @fileoverview Icon generator script.
  *
- * Run: npm run icons
+ * Generates PNG icons from SVG favicon:
+ * - icon-192.png (PWA manifest)
+ * - icon-512.png (PWA manifest)
+ * - apple-touch-icon.png (iOS)
+ *
+ * Usage: npm run icons
+ *
+ * @module scripts/generate-icons
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import sharp from 'sharp';

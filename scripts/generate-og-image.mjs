@@ -1,7 +1,16 @@
 /**
- * Generate OG Image (PNG) from SVG
+ * @fileoverview Open Graph image generator script.
  *
- * Run: node scripts/generate-og-image.mjs
+ * Converts og-image.svg to og-image.png (1200x630):
+ * - Social media preview image
+ * - Used in meta tags for link sharing
+ *
+ * Usage: node scripts/generate-og-image.mjs
+ *
+ * @module scripts/generate-og-image
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 
 import sharp from 'sharp';
