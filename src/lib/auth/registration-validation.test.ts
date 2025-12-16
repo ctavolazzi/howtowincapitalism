@@ -1,13 +1,19 @@
 /**
- * Registration Validation Unit Tests
+ * @fileoverview Registration validation unit tests.
  *
- * Tests for:
- * - Email validation
- * - Username validation
- * - Password validation
- * - Disposable email blocking
- * - Honeypot detection
- * - Time-based detection
+ * Tests for registration form validation:
+ * - Email format validation
+ * - Username format/length validation
+ * - Password strength requirements
+ * - Disposable email domain blocking
+ * - Honeypot field detection
+ * - Time-based bot detection (too-fast submissions)
+ *
+ * @module lib/auth/registration-validation.test
+ * @see {@link module:pages/api/auth/register} - Registration endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { describe, it, expect } from 'vitest';
 

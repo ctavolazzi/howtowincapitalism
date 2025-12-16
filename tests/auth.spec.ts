@@ -1,16 +1,25 @@
-import { test, expect, Page } from '@playwright/test';
-import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
-
 /**
- * Authentication E2E Tests
+ * @fileoverview Authentication E2E tests.
  *
  * Tests the complete authentication flow:
- * - Login with valid/invalid credentials
- * - Session persistence across pages
- * - Protected route redirects
+ * - Login page display and form handling
+ * - Valid/invalid credential handling
+ * - Redirect parameter support
+ * - Protected route access control
+ * - Session persistence across navigation
  * - Logout functionality
- * - All user roles
+ * - All user role logins
+ * - Auth API endpoint responses
+ *
+ * @module tests/auth.spec
+ * @see {@link module:pages/api/auth/login} - Login endpoint
+ * @see {@link module:pages/api/auth/logout} - Logout endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
+import { test, expect, Page } from '@playwright/test';
+import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
 
 /**
  * Helper to unlock the site-wide password gate if present

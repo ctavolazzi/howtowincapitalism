@@ -1,11 +1,19 @@
+/**
+ * @fileoverview Navigation E2E tests.
+ *
+ * Tests site navigation functionality:
+ * - Header navigation and logo links
+ * - Content navigation between pages
+ * - Breadcrumb rendering and navigation
+ * - 404 handling for non-existent pages
+ *
+ * @module tests/navigation.spec
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect, Page } from '@playwright/test';
 import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
-
-/**
- * Navigation E2E Tests
- *
- * Tests site navigation, breadcrumbs, and link behavior.
- */
 
 const TEST_USER = TEST_CREDENTIALS.admin;
 

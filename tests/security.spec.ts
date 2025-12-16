@@ -1,15 +1,23 @@
+/**
+ * @fileoverview Security features E2E tests.
+ *
+ * Tests for security protections:
+ * - Rate limiting (login attempts)
+ * - Disposable email blocking (tempmail, guerrillamail, etc.)
+ * - Honeypot detection (anti-bot)
+ * - Time-based detection (too-fast submissions)
+ * - Password validation (length, complexity)
+ * - Username validation (format, length)
+ *
+ * @module tests/security.spec
+ * @see {@link module:lib/auth/rate-limit} - Rate limiting
+ * @see {@link module:lib/auth/registration-validation} - Validation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect } from '@playwright/test';
 import { TEST_CREDENTIALS } from './fixtures/test-credentials';
-
-/**
- * Security Features E2E Tests
- *
- * Tests for:
- * - Rate limiting
- * - Account lockout
- * - Anti-bot measures (honeypot, time-based)
- * - Disposable email blocking
- */
 
 const TEST_ADMIN = TEST_CREDENTIALS.admin;
 

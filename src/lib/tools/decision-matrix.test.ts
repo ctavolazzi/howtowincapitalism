@@ -1,11 +1,22 @@
 /**
- * Decision Matrix Tests
- * ---------------------
- * Comprehensive tests for the decision matrix tool.
+ * @fileoverview Decision matrix tool unit tests.
  *
- * Run: npm test
+ * Comprehensive tests for the quantitative decision-making tool:
+ * - DecisionMatrix class construction and validation
+ * - Analysis methods (weighted, normalized, ranking, best_worst)
+ * - DecisionResult output formatting (toString, toJSON)
+ * - makeDecision() convenience function
+ * - compareMethods() multi-method comparison
+ * - Real-world scenarios and edge cases
+ * - Strengths/weaknesses identification
+ * - Winner explanation generation
+ *
+ * @module lib/tools/decision-matrix.test
+ * @see {@link module:lib/tools/decision-matrix} - Implementation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   DecisionMatrix,

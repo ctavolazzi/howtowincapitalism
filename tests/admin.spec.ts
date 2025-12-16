@@ -1,17 +1,24 @@
+/**
+ * @fileoverview Admin panel E2E tests.
+ *
+ * Tests for admin functionality:
+ * - Admin authentication requirements
+ * - User list API (GET /api/admin/users/list)
+ * - Create user API (POST /api/admin/users/create)
+ * - Update user API (PUT /api/admin/users/[id])
+ * - Delete user API (DELETE /api/admin/users/[id])
+ * - Admin UI page access control
+ *
+ * @module tests/admin.spec
+ * @see {@link module:pages/api/admin/users/list} - List endpoint
+ * @see {@link module:pages/api/admin/users/create} - Create endpoint
+ * @see {@link module:pages/api/admin/users/[id]} - Update/delete endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect } from '@playwright/test';
 import { TEST_CREDENTIALS } from './fixtures/test-credentials';
-
-/**
- * Admin Panel E2E Tests
- *
- * Tests for:
- * - Admin authentication
- * - User list endpoint
- * - Create user endpoint
- * - Update user endpoint
- * - Delete user endpoint
- * - Admin UI pages
- */
 
 const TEST_ADMIN = TEST_CREDENTIALS.admin;
 const TEST_VIEWER = TEST_CREDENTIALS.viewer;

@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Auth flow screenshot capture tests.
+ *
+ * Captures versioned screenshots of the authentication flow:
+ * - Login page (default and error states)
+ * - Home page (authenticated)
+ * - User menu dropdown
+ * - Profile page
+ * - Logout flow
+ * - Register page (unavailable locally)
+ * - Forgot password (unavailable locally)
+ *
+ * Enable with: CAPTURE_AUTH_SNAPS=1 npm test
+ *
+ * @module tests/auth-snapshots.spec
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';

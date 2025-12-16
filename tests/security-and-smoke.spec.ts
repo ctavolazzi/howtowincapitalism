@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Security and smoke E2E tests.
+ *
+ * Infrastructure verification tests:
+ * - Security gates (admin access control)
+ * - Smoke tests (basic page rendering)
+ * - Cloudflare Access enforcement (when enabled)
+ *
+ * @module tests/security-and-smoke.spec
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4321';

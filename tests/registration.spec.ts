@@ -1,17 +1,22 @@
-import { test, expect } from '@playwright/test';
-
 /**
- * User Registration E2E Tests (TDD)
+ * @fileoverview User registration E2E tests (TDD).
  *
  * Tests the complete registration flow:
  * - Registration form display
- * - Form validation
- * - Successful registration
+ * - Client-side form validation
+ * - Server-side validation (email, username, password)
  * - Duplicate email handling
- * - Email confirmation
+ * - Email confirmation flow
+ * - Unconfirmed user login blocking
  *
- * Test user: folktechnica@gmail.com
+ * @module tests/registration.spec
+ * @see {@link module:pages/api/auth/register} - Registration endpoint
+ * @see {@link module:pages/api/auth/confirm} - Confirmation endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
+import { test, expect } from '@playwright/test';
 
 const TEST_USER = {
   username: 'folktechnica',

@@ -1,11 +1,21 @@
+/**
+ * @fileoverview Accessibility E2E tests.
+ *
+ * Basic accessibility compliance checks:
+ * - Document structure (h1, lang, title)
+ * - Form accessibility (labels, input types)
+ * - Image accessibility (alt attributes)
+ * - Link accessibility (discernible text)
+ * - Keyboard navigation
+ * - Focus management
+ *
+ * @module tests/accessibility.spec
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect, Page } from '@playwright/test';
 import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
-
-/**
- * Accessibility E2E Tests
- *
- * Basic accessibility checks for the site.
- */
 
 const TEST_USER = TEST_CREDENTIALS.admin;
 

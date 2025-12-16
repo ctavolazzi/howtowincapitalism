@@ -1,5 +1,18 @@
 /**
- * Turnstile CAPTCHA Verification Unit Tests
+ * @fileoverview Turnstile CAPTCHA verification unit tests.
+ *
+ * Tests for Cloudflare Turnstile integration:
+ * - Token validation requirements
+ * - API call parameter formatting
+ * - Success/failure response handling
+ * - Network error handling
+ * - Error code message mapping
+ *
+ * @module lib/auth/turnstile.test
+ * @see {@link module:lib/auth/turnstile} - Implementation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 

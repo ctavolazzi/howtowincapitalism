@@ -1,15 +1,22 @@
-import { test, expect } from '@playwright/test';
-
 /**
- * Account Rights API Tests (GDPR Art. 17 & 20)
+ * @fileoverview Account rights API E2E tests (GDPR compliance).
  *
- * Tests for DELETE /api/auth/account (right to erasure)
- * and GET /api/auth/account/export (right to data portability).
+ * Tests for GDPR data rights:
+ * - Art. 17 (Right to Erasure): DELETE /api/auth/account
+ * - Art. 20 (Data Portability): GET /api/auth/account/export
  *
- * NOTE: These endpoints require KV (Cloudflare Workers).
+ * @note These endpoints require KV (Cloudflare Workers).
  * In local/non-KV environments, they return 503.
  * Run against a KV-backed preview or production for full coverage.
+ *
+ * @module tests/account-rights.spec
+ * @see {@link module:pages/api/auth/account/delete} - Delete endpoint
+ * @see {@link module:pages/api/auth/account/export} - Export endpoint
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
+import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4321';
 

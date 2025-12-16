@@ -1,5 +1,20 @@
 /**
- * Rate Limiting Module Unit Tests
+ * @fileoverview Rate limiting unit tests.
+ *
+ * Tests for rate limiting and account lockout:
+ * - Rate window calculations (expiry detection)
+ * - IP-based rate limiting (allow/block logic)
+ * - Account lockout (detection, expiration)
+ * - Failed attempt tracking (increment, threshold)
+ * - Rate limit header generation
+ *
+ * Uses mock KV namespace for isolated testing.
+ *
+ * @module lib/auth/rate-limit.test
+ * @see {@link module:lib/auth/rate-limit} - Implementation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 

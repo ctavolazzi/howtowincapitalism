@@ -1,11 +1,22 @@
+/**
+ * @fileoverview User and profile E2E tests.
+ *
+ * Tests for user functionality:
+ * - Users directory listing and display
+ * - Profile page rendering and redirects
+ * - Profile editing page access
+ * - User profile pages for all roles
+ * - User menu integration and dropdown
+ *
+ * @module tests/users.spec
+ * @see {@link module:pages/users} - Users directory
+ * @see {@link module:pages/users/[id]} - User profiles
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect, Page } from '@playwright/test';
 import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
-
-/**
- * User & Profile E2E Tests
- *
- * Tests user directory, profile pages, and profile editing.
- */
 
 const TEST_USER = TEST_CREDENTIALS.admin;
 

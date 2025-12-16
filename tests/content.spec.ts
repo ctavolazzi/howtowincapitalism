@@ -1,11 +1,21 @@
+/**
+ * @fileoverview Content pages E2E tests.
+ *
+ * Tests for wiki content page rendering:
+ * - Home page loading and content display
+ * - FAQ pages (Introduction, Compound Interest, etc.)
+ * - Notes pages (Automation, Inflation, etc.)
+ * - Tools pages (Decision Matrix, Checklist)
+ * - Disclaimer page accessibility
+ * - MDX component rendering
+ *
+ * @module tests/content.spec
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
+ */
 import { test, expect, Page } from '@playwright/test';
 import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
-
-/**
- * Content Pages E2E Tests
- *
- * Tests that wiki content pages load and render correctly.
- */
 
 const TEST_USER = TEST_CREDENTIALS.admin;
 

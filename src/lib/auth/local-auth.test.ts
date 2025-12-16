@@ -1,7 +1,18 @@
 /**
- * Local Auth Unit Tests
+ * @fileoverview Local auth unit tests.
  *
- * Tests for local development authentication fallback.
+ * Tests for local development authentication fallback:
+ * - Session token generation (cryptographic security)
+ * - Session management (duration, expiry)
+ * - Cookie attributes (SameSite, HttpOnly)
+ * - User lookup (case-insensitive email)
+ * - Password handling (sanitization)
+ *
+ * @module lib/auth/local-auth.test
+ * @see {@link module:lib/auth/local-auth} - Implementation
+ *
+ * @author How To Win Capitalism Team
+ * @since 1.0.0
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
