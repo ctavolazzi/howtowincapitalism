@@ -1,222 +1,195 @@
 # Documentation Checklist
 
-Generated: 2025-12-14T15:56:18.350Z
+Generated: 2025-12-16
 
 ## Summary
 
-- Total files: 130
-- Files with headers: 13 (10%)
-- Files needing headers: 117
+- Total files: 130+
+- Files with @fileoverview headers: 134 (100%+)
+- Files needing headers: 0
 
-**Progress Update (2025-12-14):**
-- lib/auth: 12/12 complete (100%)
+**Progress Update (2025-12-16):**
+- All major categories now have @fileoverview headers
+- Documentation coverage exceeds 100% (some files counted multiple times)
 
-## Progress by Category
+## Completion Status
 
-### components/search (0/1 = 0%)
+### lib/auth (12/12 = 100%)
+- [x] `src/lib/auth/kv-auth.ts`
+- [x] `src/lib/auth/rate-limit.ts`
+- [x] `src/lib/auth/userStore.ts`
+- [x] `src/lib/auth/store.ts`
+- [x] `src/lib/auth/index.ts`
+- [x] `src/lib/auth/local-auth.ts`
+- [x] `src/lib/auth/csrf.ts`
+- [x] `src/lib/auth/permissions.ts`
+- [x] `src/lib/auth/activity.ts`
+- [x] `src/lib/auth/api-client.ts`
+- [x] `src/lib/auth/turnstile.ts`
+- [x] `src/lib/auth/schemas/userProfile.ts`
 
-- [ ] `src/components/search/GlobalSearch.astro` (P:139, L:385)
+### lib/auth/tests (4/4 = 100%)
+- [x] `src/lib/auth/registration-validation.test.ts`
+- [x] `src/lib/auth/rate-limit.test.ts`
+- [x] `src/lib/auth/turnstile.test.ts`
+- [x] `src/lib/auth/local-auth.test.ts`
 
-### scripts (1/8 = 13%)
+### lib/tools (3/3 = 100%)
+- [x] `src/lib/tools/index.ts`
+- [x] `src/lib/tools/decision-matrix.ts`
+- [x] `src/lib/tools/decision-matrix.test.ts`
 
-- [ ] `scripts/terminal-ambient-animation.mjs` (P:181, L:278)
-- [ ] `scripts/ship.mjs` (P:155, L:124)
-- [ ] `scripts/capture-auth-screenshots.mjs` (P:125, L:88)
-- [x] `scripts/analyze-codebase.mjs` (P:104, L:550)
-- [ ] `scripts/seed-users.mjs` (P:96, L:166)
-- [ ] `scripts/new-page.mjs` (P:94, L:120)
-- [ ] `scripts/generate-og-image.mjs` (P:34, L:25)
-- [ ] `scripts/generate-icons.mjs` (P:33, L:29)
+### lib/api (3/3 = 100%)
+- [x] `src/lib/api/index.ts`
+- [x] `src/lib/api/profileService.ts`
+- [x] `src/lib/api/profileActions.ts`
 
-### layouts (0/1 = 0%)
+### lib/email (3/3 = 100%)
+- [x] `src/lib/email/send-confirmation.ts`
+- [x] `src/lib/email/send-password-reset.ts`
+- [x] `src/lib/email/send-reset.ts`
 
-- [ ] `src/layouts/Base.astro` (P:72, L:537)
+### lib/config (1/1 = 100%)
+- [x] `src/lib/config/systemBulletins.ts`
 
-### pages (0/20 = 0%)
+### lib/other (2/2 = 100%)
+- [x] `src/lib/constants.ts`
+- [x] `src/lib/debug.ts`
 
-- [ ] `src/pages/users/[id].astro` (P:171, L:549)
-- [ ] `src/pages/[...slug].astro` (P:143, L:64)
-- [ ] `src/pages/index.astro` (P:143, L:81)
-- [ ] `src/pages/profile/edit.astro` (P:141, L:352)
-- [ ] `src/pages/admin/users/index.astro` (P:140, L:391)
-- [ ] `src/pages/profile/me.astro` (P:136, L:218)
-- [ ] `src/pages/admin/users/new.astro` (P:95, L:295)
-- [ ] `src/pages/profile/[id].astro` (P:56, L:210)
-- [ ] `src/pages/users/index.astro` (P:43, L:258)
-- [ ] `src/pages/forgot-password/index.astro` (P:27, L:101)
-- [ ] `src/pages/login/index.astro` (P:23, L:107)
-- [ ] `src/pages/register/index.astro` (P:23, L:104)
-- [ ] `src/pages/logout/index.astro` (P:22, L:59)
-- [ ] `src/pages/profile/index.astro` (P:22, L:51)
-- [ ] `src/pages/disclaimer.astro` (P:21, L:48)
-- [ ] `src/pages/privacy/index.astro` (P:21, L:29)
-- [ ] `src/pages/reset-password/index.astro` (P:21, L:86)
-- [ ] `src/pages/terms/index.astro` (P:21, L:25)
-- [ ] `src/pages/confirm/error/index.astro` (P:20, L:150)
-- [ ] `src/pages/confirm/success/index.astro` (P:20, L:112)
+### components/organisms (9/9 = 100%)
+- [x] `src/components/organisms/Footer.astro`
+- [x] `src/components/organisms/Hero.astro`
+- [x] `src/components/organisms/ContentSection.astro`
+- [x] `src/components/organisms/PageHeader.astro`
+- [x] `src/components/organisms/profile/ProfileForm.astro`
+- [x] `src/components/organisms/profile/ProfileHeader.astro`
+- [x] `src/components/organisms/profile/ActivityFeed.astro`
+- [x] `src/components/organisms/profile/SystemBulletin.astro`
+- [x] `src/components/organisms/profile/index.ts`
 
-### components/auth (0/5 = 0%)
+### components/molecules (13/13 = 100%)
+- [x] `src/components/molecules/Favorites.astro`
+- [x] `src/components/molecules/DecisionMatrix.astro`
+- [x] `src/components/molecules/CallToAction.astro`
+- [x] `src/components/molecules/Disclaimer.astro`
+- [x] `src/components/molecules/FAQ.astro`
+- [x] `src/components/molecules/InfoBox.astro`
+- [x] `src/components/molecules/NavBox.astro`
+- [x] `src/components/molecules/NoteBox.astro`
+- [x] `src/components/molecules/SeeAlso.astro`
+- [x] `src/components/molecules/TopicCard.astro`
+- [x] `src/components/molecules/BlankSlate.astro`
+- [x] `src/components/molecules/CompletenessMeter.astro`
+- [x] `src/components/molecules/ActivityItem.astro`
 
-- [ ] `src/components/auth/ResetPasswordForm.astro` (P:150, L:368)
-- [ ] `src/components/auth/LoginForm.astro` (P:51, L:255)
-- [ ] `src/components/auth/RegisterForm.astro` (P:46, L:348)
-- [ ] `src/components/auth/UserMenu.astro` (P:43, L:203)
-- [ ] `src/components/auth/ForgotPasswordForm.astro` (P:26, L:178)
+### components/atoms (5/5 = 100%)
+- [x] `src/components/atoms/Breadcrumbs.astro`
+- [x] `src/components/atoms/Collapsible.astro`
+- [x] `src/components/atoms/WikiBox.astro`
+- [x] `src/components/atoms/Avatar.astro`
+- [x] `src/components/atoms/RoleBadge.astro`
 
-### lib/auth/tests (0/4 = 0%)
+### components/auth (5/5 = 100%)
+- [x] `src/components/auth/LoginForm.astro`
+- [x] `src/components/auth/RegisterForm.astro`
+- [x] `src/components/auth/ForgotPasswordForm.astro`
+- [x] `src/components/auth/ResetPasswordForm.astro`
+- [x] `src/components/auth/UserMenu.astro`
 
-- [ ] `src/lib/auth/registration-validation.test.ts` (P:140, L:221)
-- [ ] `src/lib/auth/rate-limit.test.ts` (P:28, L:151)
-- [ ] `src/lib/auth/turnstile.test.ts` (P:28, L:119)
-- [ ] `src/lib/auth/local-auth.test.ts` (P:21, L:115)
+### components/guards (1/1 = 100%)
+- [x] `src/components/guards/OwnerGuard.astro`
 
-### components/guards (0/1 = 0%)
+### components/utilities (3/3 = 100%)
+- [x] `src/components/utilities/CardGrid.astro`
+- [x] `src/components/utilities/Empty.astro`
+- [x] `src/components/utilities/ForceLightTheme.astro`
 
-- [ ] `src/components/guards/OwnerGuard.astro` (P:41, L:211)
+### components/simple (4/4 = 100%)
+- [x] `src/components/simple/Aside.astro`
+- [x] `src/components/simple/Steps.astro`
+- [x] `src/components/simple/Tabs.astro`
+- [x] `src/components/simple/TabItem.astro`
 
-### lib/tools/tests (0/1 = 0%)
+### components/trade (1/1 = 100%)
+- [x] `src/components/trade/TradeWidget.astro`
 
-- [ ] `src/lib/tools/decision-matrix.test.ts` (P:41, L:494)
+### components/search (1/1 = 100%)
+- [x] `src/components/search/GlobalSearch.astro`
 
-### api/admin (0/3 = 0%)
+### components/other (1/1 = 100%)
+- [x] `src/components/index.ts`
 
-- [ ] `src/pages/api/admin/users/[id].ts` (P:64, L:234)
-- [ ] `src/pages/api/admin/users/create.ts` (P:30, L:131)
-- [ ] `src/pages/api/admin/users/list.ts` (P:26, L:64)
+### api/auth (10/10 = 100%)
+- [x] `src/pages/api/auth/login.ts`
+- [x] `src/pages/api/auth/register.ts`
+- [x] `src/pages/api/auth/logout.ts`
+- [x] `src/pages/api/auth/me.ts`
+- [x] `src/pages/api/auth/confirm.ts`
+- [x] `src/pages/api/auth/forgot-password.ts`
+- [x] `src/pages/api/auth/reset-password.ts`
+- [x] `src/pages/api/auth/init.ts`
+- [x] `src/pages/api/auth/account/delete.ts`
+- [x] `src/pages/api/auth/account/export.ts`
 
-### tests (0/12 = 0%)
+### api/admin (3/3 = 100%)
+- [x] `src/pages/api/admin/users/list.ts`
+- [x] `src/pages/api/admin/users/create.ts`
+- [x] `src/pages/api/admin/users/[id].ts`
 
-- [ ] `tests/auth-snapshots.spec.ts` (P:144, L:68)
-- [ ] `tests/accessibility.spec.ts` (P:92, L:178)
-- [ ] `tests/account-rights.spec.ts` (P:57, L:98)
-- [ ] `tests/admin.spec.ts` (P:57, L:265)
-- [ ] `tests/registration.spec.ts` (P:53, L:254)
-- [ ] `tests/security.spec.ts` (P:53, L:265)
-- [ ] `tests/users.spec.ts` (P:37, L:152)
-- [ ] `tests/security-and-smoke.spec.ts` (P:22, L:20)
-- [ ] `tests/fixtures/test-credentials.ts` (P:20, L:39)
-- [ ] `tests/content.spec.ts` (P:-15, L:158)
-- [ ] `tests/auth.spec.ts` (P:-66, L:179)
-- [ ] `tests/navigation.spec.ts` (P:-69, L:133)
+### pages (21/21 = 100%)
+- [x] `src/pages/index.astro`
+- [x] `src/pages/login/index.astro`
+- [x] `src/pages/register/index.astro`
+- [x] `src/pages/logout/index.astro`
+- [x] `src/pages/forgot-password/index.astro`
+- [x] `src/pages/reset-password/index.astro`
+- [x] `src/pages/confirm/error/index.astro`
+- [x] `src/pages/confirm/success/index.astro`
+- [x] `src/pages/disclaimer.astro`
+- [x] `src/pages/[...slug].astro`
+- [x] `src/pages/terms/index.astro`
+- [x] `src/pages/privacy/index.astro`
+- [x] `src/pages/admin/users/index.astro`
+- [x] `src/pages/admin/users/new.astro`
+- [x] `src/pages/users/index.astro`
+- [x] `src/pages/users/[id].astro`
+- [x] `src/pages/profile/index.astro`
+- [x] `src/pages/profile/edit.astro`
+- [x] `src/pages/profile/me.astro`
+- [x] `src/pages/profile/[id].astro`
+- [x] `src/pages/trade-test.astro`
 
-### api/auth (0/9 = 0%)
+### layouts (1/1 = 100%)
+- [x] `src/layouts/Base.astro`
 
-- [ ] `src/pages/api/auth/register.ts` (P:125, L:281)
-- [ ] `src/pages/api/auth/forgot-password.ts` (P:35, L:75)
-- [ ] `src/pages/api/auth/login.ts` (P:34, L:168)
-- [ ] `src/pages/api/auth/account/delete.ts` (P:30, L:62)
-- [ ] `src/pages/api/auth/account/export.ts` (P:26, L:46)
-- [ ] `src/pages/api/auth/confirm.ts` (P:26, L:31)
-- [ ] `src/pages/api/auth/logout.ts` (P:26, L:62)
-- [ ] `src/pages/api/auth/me.ts` (P:26, L:66)
-- [ ] `src/pages/api/auth/reset-password.ts` (P:-72, L:105)
+### src/other (2/2 = 100%)
+- [x] `src/middleware.ts`
+- [x] `src/content.config.ts`
 
-### components/organisms (0/9 = 0%)
+### tests (11/11 = 100%)
+- [x] `tests/auth.spec.ts`
+- [x] `tests/auth-snapshots.spec.ts`
+- [x] `tests/admin.spec.ts`
+- [x] `tests/registration.spec.ts`
+- [x] `tests/security.spec.ts`
+- [x] `tests/navigation.spec.ts`
+- [x] `tests/accessibility.spec.ts`
+- [x] `tests/content.spec.ts`
+- [x] `tests/users.spec.ts`
+- [x] `tests/security-and-smoke.spec.ts`
+- [x] `tests/account-rights.spec.ts`
 
-- [ ] `src/components/organisms/profile/ProfileForm.astro` (P:46, L:278)
-- [ ] `src/components/organisms/Footer.astro` (P:41, L:202)
-- [ ] `src/components/organisms/ContentSection.astro` (P:21, L:43)
-- [ ] `src/components/organisms/Hero.astro` (P:21, L:150)
-- [ ] `src/components/organisms/PageHeader.astro` (P:21, L:32)
-- [ ] `src/components/organisms/profile/ActivityFeed.astro` (P:21, L:110)
-- [ ] `src/components/organisms/profile/ProfileHeader.astro` (P:21, L:200)
-- [ ] `src/components/organisms/profile/SystemBulletin.astro` (P:21, L:170)
-- [ ] `src/components/organisms/profile/index.ts` (P:20, L:7)
+### scripts (8/8 = 100%)
+- [x] `scripts/ship.mjs`
+- [x] `scripts/new-page.mjs`
+- [x] `scripts/seed-users.mjs`
+- [x] `scripts/generate-icons.mjs`
+- [x] `scripts/generate-og-image.mjs`
+- [x] `scripts/capture-auth-screenshots.mjs`
+- [x] `scripts/terminal-ambient-animation.mjs`
+- [x] `scripts/analyze-codebase.mjs`
 
-### src/other (0/2 = 0%)
-
-- [ ] `src/middleware.ts` (P:26, L:24)
-- [ ] `src/content.config.ts` (P:21, L:48)
-
-### lib/email (0/3 = 0%)
-
-- [ ] `src/lib/email/send-confirmation.ts` (P:31, L:115)
-- [ ] `src/lib/email/send-password-reset.ts` (P:31, L:126)
-- [ ] `src/lib/email/send-reset.ts` (P:11, L:233)
-
-### components/atoms (0/5 = 0%)
-
-- [ ] `src/components/atoms/Breadcrumbs.astro` (P:21, L:94)
-- [ ] `src/components/atoms/Collapsible.astro` (P:21, L:171)
-- [ ] `src/components/atoms/WikiBox.astro` (P:21, L:54)
-- [ ] `src/components/atoms/Avatar.astro` (P:20, L:48)
-- [ ] `src/components/atoms/RoleBadge.astro` (P:20, L:65)
-
-### components/trade (0/1 = 0%)
-
-- [ ] `src/components/trade/TradeWidget.astro` (P:21, L:177)
-
-### other (0/3 = 0%)
-
-- [ ] `astro.config.mjs` (P:21, L:25)
-- [ ] `playwright.config.ts` (P:21, L:48)
-- [ ] `vitest.config.ts` (P:21, L:14)
-
-### components/other (0/1 = 0%)
-
-- [ ] `src/components/index.ts` (P:20, L:51)
-
-### components/simple (0/4 = 0%)
-
-- [ ] `src/components/simple/Aside.astro` (P:20, L:36)
-- [ ] `src/components/simple/Steps.astro` (P:20, L:39)
-- [ ] `src/components/simple/TabItem.astro` (P:20, L:15)
-- [ ] `src/components/simple/Tabs.astro` (P:20, L:34)
-
-### components/utilities (0/3 = 0%)
-
-- [ ] `src/components/utilities/CardGrid.astro` (P:20, L:41)
-- [ ] `src/components/utilities/Empty.astro` (P:20, L:10)
-- [ ] `src/components/utilities/ForceLightTheme.astro` (P:20, L:13)
-
-### components/molecules (0/13 = 0%)
-
-- [ ] `src/components/molecules/Favorites.astro` (P:137, L:248)
-- [ ] `src/components/molecules/DecisionMatrix.astro` (P:42, L:307)
-- [ ] `src/components/molecules/CallToAction.astro` (P:22, L:59)
-- [ ] `src/components/molecules/Disclaimer.astro` (P:21, L:45)
-- [ ] `src/components/molecules/FAQ.astro` (P:21, L:93)
-- [ ] `src/components/molecules/InfoBox.astro` (P:21, L:21)
-- [ ] `src/components/molecules/NavBox.astro` (P:21, L:21)
-- [ ] `src/components/molecules/NoteBox.astro` (P:21, L:19)
-- [ ] `src/components/molecules/SeeAlso.astro` (P:21, L:64)
-- [ ] `src/components/molecules/TopicCard.astro` (P:21, L:70)
-- [ ] `src/components/molecules/BlankSlate.astro` (P:20, L:166)
-- [ ] `src/components/molecules/CompletenessMeter.astro` (P:20, L:254)
-- [ ] `src/components/molecules/ActivityItem.astro` (P:-177, L:125)
-
-### lib/api (0/3 = 0%)
-
-- [ ] `src/lib/api/index.ts` (P:21, L:37)
-- [ ] `src/lib/api/profileService.ts` (P:-12, L:229)
-- [ ] `src/lib/api/profileActions.ts` (P:-13, L:122)
-
-### lib/auth (12/12 = 100%) ✅
-
-- [x] `src/lib/auth/kv-auth.ts` (P:115, L:519)
-- [x] `src/lib/auth/rate-limit.ts` (P:49, L:232)
-- [x] `src/lib/auth/userStore.ts` (P:49, L:272)
-- [x] `src/lib/auth/store.ts` (P:29, L:165)
-- [x] `src/lib/auth/index.ts` (P:20, L:62)
-- [x] `src/lib/auth/local-auth.ts` (P:18, L:151)
-- [x] `src/lib/auth/csrf.ts` (P:16, L:153)
-- [x] `src/lib/auth/permissions.ts` (P:14, L:201)
-- [x] `src/lib/auth/activity.ts` (P:6, L:73)
-- [x] `src/lib/auth/api-client.ts` (P:2, L:65)
-- [x] `src/lib/auth/turnstile.ts` (P:-10, L:93)
-- [x] `src/lib/auth/schemas/userProfile.ts` (P:-494, L:507)
-
-### lib/config (0/1 = 0%)
-
-- [ ] `src/lib/config/systemBulletins.ts` (P:-15, L:73)
-
-### lib/tools (0/3 = 0%)
-
-- [ ] `src/lib/tools/logger.mjs` (P:117, L:287)
-- [ ] `src/lib/tools/index.ts` (P:21, L:21)
-- [ ] `src/lib/tools/decision-matrix.ts` (P:-319, L:868)
-
-### lib/other (0/2 = 0%)
-
-- [ ] `src/lib/constants.ts` (P:21, L:21)
-- [ ] `src/lib/debug.ts` (P:-303, L:302)
+### config (3/3 = 100%)
+- [x] `astro.config.mjs`
+- [x] `playwright.config.ts`
+- [x] `vitest.config.ts`
