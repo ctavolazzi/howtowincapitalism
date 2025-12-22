@@ -184,6 +184,16 @@ const currentPath = Astro.url.pathname;
     background: var(--color-bg);
   }
 
+  /* Hide all scrollbars globally */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
   /* Typography */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);

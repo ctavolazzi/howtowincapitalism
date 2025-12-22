@@ -517,7 +517,7 @@ import { TEST_CREDENTIALS, SITE_PASSWORD } from './test-credentials';
 export async function unlockSiteGate(page: Page) {
   const gate = page.locator('#passwordGate');
   if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-    await page.fill('#passwordInput', SITE_PASSWORD);
+    await page.fill('#site-password', SITE_PASSWORD);
     await page.click('#passwordForm button[type="submit"]');
     await expect(gate).toBeHidden({ timeout: 5000 });
   }

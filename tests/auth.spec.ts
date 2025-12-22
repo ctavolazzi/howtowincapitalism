@@ -16,10 +16,10 @@ import { TEST_CREDENTIALS, SITE_PASSWORD } from './fixtures/test-credentials';
  * Helper to unlock the site-wide password gate if present
  */
 async function unlockSiteGate(page: Page) {
-  const gate = page.locator('#passwordGate');
+  const gate = page.locator('#password-gate');
   if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-    await page.fill('#passwordInput', SITE_PASSWORD);
-    await page.click('#passwordForm button[type="submit"]');
+    await page.fill('#site-password', SITE_PASSWORD);
+    await page.click('#password-form button[type="submit"]');
     // Wait for gate to be hidden
     await expect(gate).toBeHidden({ timeout: 5000 });
   }

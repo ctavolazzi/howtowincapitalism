@@ -20,10 +20,10 @@ async function loginAndUnlock(page: Page) {
   await expect(page).toHaveURL('/', { timeout: 10000 });
 
   // Unlock site gate if present
-  const gate = page.locator('#passwordGate');
+  const gate = page.locator('#password-gate');
   if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-    await page.fill('#passwordInput', SITE_PASSWORD);
-    await page.click('#passwordForm button[type="submit"]');
+    await page.fill('#site-password', SITE_PASSWORD);
+    await page.click('#password-form button[type="submit"]');
     await expect(gate).toBeHidden({ timeout: 5000 });
   }
 }
@@ -42,10 +42,10 @@ test.describe('Header Navigation', () => {
     await page.goto('/faq/introduction/');
 
     // Unlock gate on content page
-    const gate = page.locator('#passwordGate');
+    const gate = page.locator('#password-gate');
     if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await page.fill('#passwordInput', SITE_PASSWORD);
-      await page.click('#passwordForm button[type="submit"]');
+      await page.fill('#site-password', SITE_PASSWORD);
+      await page.click('#password-form button[type="submit"]');
     }
 
     // Wait for content
@@ -83,10 +83,10 @@ test.describe('Content Navigation', () => {
     await page.goto('/faq/introduction/');
 
     // Unlock gate
-    const gate = page.locator('#passwordGate');
+    const gate = page.locator('#password-gate');
     if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await page.fill('#passwordInput', SITE_PASSWORD);
-      await page.click('#passwordForm button[type="submit"]');
+      await page.fill('#site-password', SITE_PASSWORD);
+      await page.click('#password-form button[type="submit"]');
     }
 
     // Wait for content
@@ -113,10 +113,10 @@ test.describe('Breadcrumbs', () => {
     await page.goto('/faq/introduction/');
 
     // Unlock gate
-    const gate = page.locator('#passwordGate');
+    const gate = page.locator('#password-gate');
     if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await page.fill('#passwordInput', SITE_PASSWORD);
-      await page.click('#passwordForm button[type="submit"]');
+      await page.fill('#site-password', SITE_PASSWORD);
+      await page.click('#password-form button[type="submit"]');
     }
 
     // Wait for content
@@ -131,10 +131,10 @@ test.describe('Breadcrumbs', () => {
     await page.goto('/faq/introduction/');
 
     // Unlock gate
-    const gate = page.locator('#passwordGate');
+    const gate = page.locator('#password-gate');
     if (await gate.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await page.fill('#passwordInput', SITE_PASSWORD);
-      await page.click('#passwordForm button[type="submit"]');
+      await page.fill('#site-password', SITE_PASSWORD);
+      await page.click('#password-form button[type="submit"]');
     }
 
     // Wait for content
